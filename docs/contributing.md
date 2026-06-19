@@ -7,8 +7,17 @@
 1. 시작할 때 [working/current-state.md](working/current-state.md)를 먼저 읽는다.
 2. 이어서 [working/meeting-notes.md](working/meeting-notes.md)를 읽고, 이전 가정을 제품 기준으로 확대 해석하지 않는다.
 3. 코드 변경 전 Next.js 16 관련 내용은 `node_modules/next/dist/docs/`에서 확인한다.
-4. 끝날 때 새로 확인한 사실이나 사용자가 명시한 방향만 [working/meeting-notes.md](working/meeting-notes.md)에 추가한다.
-5. 다음 세션의 첫 문맥이 달라졌으면 [working/current-state.md](working/current-state.md)를 짧게 갱신한다.
+4. 사용자가 `정리 시작`, `세션 정리해줘`, `기록해줘`, `회의록 정리해줘`처럼 말하면 기록 모드로 전환한다.
+5. 기록 모드에서는 새로 확인한 사실이나 사용자가 명시한 방향만 [working/meeting-notes.md](working/meeting-notes.md)에 추가한다.
+6. 다음 세션의 첫 문맥이 달라졌으면 [working/current-state.md](working/current-state.md)를 짧게 갱신한다.
+
+## 기록 모드 체크리스트
+
+1. 사용자가 명시한 방향, 결정, 취소한 가정을 분리한다.
+2. 작업 결과가 있으면 `git status --short`와 필요한 diff로 변경 파일을 확인한다.
+3. 추정은 확정처럼 쓰지 않는다.
+4. 날짜별 항목을 [working/meeting-notes.md](working/meeting-notes.md)에 추가한다.
+5. 커밋/푸시는 사용자가 명시적으로 요청했을 때만 한다.
 
 ## 문서 규칙
 

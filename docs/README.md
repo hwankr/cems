@@ -18,6 +18,10 @@ cems 문서는 현재 확정된 제품 계획을 담는 핸드북이 아니다. 
 | [working/meeting-notes.md](working/meeting-notes.md) | 날짜별 회의록과 확정된 사용자 발화 |
 | [contributing.md](contributing.md) | 회의록식 docs 유지 규칙 |
 
+## 기록 시작 방식
+
+사용자가 `정리 시작`, `세션 정리해줘`, `기록해줘`, `회의록 정리해줘`처럼 말하면 AI는 기록 모드로 전환한다. 이때 현재 대화의 결정, 작업 중 확인한 사실, 변경 파일을 확인한 뒤 [working/meeting-notes.md](working/meeting-notes.md)에 날짜별로 정리한다.
+
 ## 유지 원칙
 
 - 사용자가 말하지 않은 제품 방향, 모델, 데이터, 화면, 배포 계획을 문서에 먼저 만들지 않는다.
