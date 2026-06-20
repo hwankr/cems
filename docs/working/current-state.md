@@ -26,11 +26,16 @@ The key abstraction is an **energy saving subject**. A subject can be a building
 
 ## Actual Repository State
 
-- The app is still a basic Next.js 16.2.9, React 19.2.4, TypeScript, Tailwind CSS v4 scaffold.
-- `package.json` has `dev`, `build`, `start`, and `lint` scripts.
-- `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/globals.css`, and `src/app/favicon.ico` are still close to the create-next-app baseline.
-- No production UI, API, database, authentication, energy data pipeline, ML pipeline, or deployment configuration has been implemented yet.
-- A previous Mapbox-only implementation plan was replaced by a broader campus energy platform MVP plan.
+- The repository now contains the first campus energy MVP, committed and pushed as `94560de Add campus energy MVP`.
+- The stack is Next.js 16.2.9, React 19.2.4, TypeScript, Tailwind CSS v4, Mapbox GL JS, lucide-react, and Vitest.
+- The main app route renders `CampusEnergyApp` from `src/features/campus-energy/components/campus-energy-app.tsx`.
+- `src/features/campus-energy/domain/` contains shared energy comparison, scoring, ranking, and character progression logic.
+- `src/features/campus-energy/data/demo-campus.ts` contains Yeungnam University demo school, building, group, participant, and mock energy readings.
+- Admin mode shows actual versus forecast usage, saved and overused kWh, building diagnosis ranking, selected building details, and a Mapbox-backed campus map.
+- Participant mode shows the demo user's affiliation, affiliation points, saved energy, rank, group leaderboard, and character progress.
+- The app builds without a Mapbox token. If `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` is missing, the map area shows a configuration state instead of constructing a map.
+- No real API, database, authentication, energy ingestion pipeline, ML pipeline, deployment configuration, or full RPG system has been implemented yet.
+- `.env.example` intentionally leaves `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` blank so example files do not look like real Mapbox tokens.
 
 ## Working Docs
 
@@ -38,8 +43,14 @@ Read these files at the start of the next session:
 
 1. `docs/working/current-state.md` - current repo and product context
 2. `docs/working/meeting-notes.md` - user-stated decisions and directions
-3. `docs/product/campus-energy-platform.md` - current product framing
-4. `docs/superpowers/plans/2026-06-20-campus-energy-platform-mvp.md` - current implementation plan
+3. `docs/README.md` - docs map and maintenance rules
+
+After that, use the docs map to open:
+
+- `docs/product/campus-energy-platform.md` - current product framing
+- `docs/technical/campus-energy-mvp.md` - implemented MVP structure and verification notes
+
+`docs/superpowers/plans/2026-06-20-campus-energy-platform-mvp.md` is a completed execution plan, not the current backlog.
 
 Before editing Next.js code, follow `AGENTS.md` and read the relevant local Next.js docs under `node_modules/next/dist/docs/`.
 

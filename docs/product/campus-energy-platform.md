@@ -66,18 +66,18 @@ points = savingsKwh * pointMultiplier
 
 Administrator UI should present this as operational diagnosis. Participant UI should present this as points, ranking, and character growth.
 
-## Initial MVP Boundary
+## Current MVP
 
-The first MVP should use Yeungnam University as the first school and implement:
+The first MVP uses Yeungnam University as the first school and implements:
 
 - Yeungnam building map
 - mock actual electricity usage
 - mock forecast electricity usage
 - building-level overuse and saving status
 - admin dashboard panel with ranking and summary
-- participant mode with affiliation selection, points, ranking, and a simple character card
+- participant mode with demo affiliation, points, ranking, and a simple character card
 
-The MVP should not require real authentication, a real database, or a trained ML model. Those should be added after the interaction model is proven.
+The MVP does not require real authentication, a real database, or a trained ML model. Those should be added after the interaction model is proven.
 
 ## Later Expansion
 

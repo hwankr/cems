@@ -1,5 +1,7 @@
 # Campus Energy Platform MVP Implementation Plan
 
+**Status:** Completed in commit `94560de Add campus energy MVP`. This document is retained as the execution plan record, not as the current backlog.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build the first campus energy platform MVP using Yeungnam University as the initial school, with both an admin energy dashboard and a participant points and character surface.

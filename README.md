@@ -8,7 +8,12 @@ Before starting work, read:
 
 1. [docs/working/current-state.md](docs/working/current-state.md)
 2. [docs/working/meeting-notes.md](docs/working/meeting-notes.md)
-3. [docs/product/campus-energy-platform.md](docs/product/campus-energy-platform.md)
+3. [docs/README.md](docs/README.md)
+
+Then use the docs map for product and technical references:
+
+- [docs/product/campus-energy-platform.md](docs/product/campus-energy-platform.md)
+- [docs/technical/campus-energy-mvp.md](docs/technical/campus-energy-mvp.md)
 
 Before editing Next.js code, follow [AGENTS.md](AGENTS.md) and read the relevant local Next.js 16 docs under `node_modules/next/dist/docs/`.
 

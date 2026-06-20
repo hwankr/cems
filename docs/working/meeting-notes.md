@@ -16,6 +16,10 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - The reward should be used to grow a character, with an RPG-style experience later.
 - The product should have two UI surfaces: an administrator-facing advanced energy dashboard and a user-facing participation and character experience.
 - The implementation plan should be reset from a Yeungnam-only Mapbox view to a campus energy platform MVP that uses Yeungnam as the first school.
+- The first campus energy MVP was implemented and pushed as `94560de Add campus energy MVP`.
+- The implemented MVP contains admin and participant modes, mock Yeungnam energy data, shared energy comparison and scoring logic, a Mapbox-backed admin map with a missing-token fallback, and Vitest domain tests.
+- The verified checks for the MVP were `npm run test`, `npm run lint`, `npm run build`, and `git diff --check`.
+- `.env.example` leaves `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` blank so the repository does not contain a Mapbox-looking token value.
 
 ## 2026-06-19
 
