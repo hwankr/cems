@@ -1,19 +1,34 @@
 # Meeting Notes
 
-사용자 발화와 작업 중 확인한 사실만 날짜별로 누적한다. 제품 방향, 모델, 데이터, 화면, 배포 계획은 사용자가 명시했거나 실제 구현 근거가 생긴 뒤에만 확정처럼 적는다.
+User-stated decisions and verified working facts are recorded here by date. Do not treat unstated product, architecture, ML, or deployment ideas as confirmed.
+
+## 2026-06-20
+
+- The user first asked for a Mapbox web view that shows Yeungnam University buildings well.
+- The direction was then expanded beyond a Yeungnam-only map. Yeungnam University should be the first concrete demo case, but the system should support multiple schools later.
+- The user clarified that the product goal is not only a map. It is a campus energy platform that lets schools see electricity usage, forecast usage, and savings.
+- Admin and facility-team users should be able to identify which buildings are using more electricity than predicted.
+- The user plans to add a prediction model later, such as LightGBM, to estimate expected electricity usage.
+- The user stated that energy is often not saved because the actual actors, such as students and faculty, lack interest, not only because monitoring systems are missing.
+- The product should therefore include a competition or engagement system.
+- Participants should register their school and affiliation.
+- If their school or affiliation saves electricity compared with predicted usage, that saving should become points or another reward format.
+- The reward should be used to grow a character, with an RPG-style experience later.
+- The product should have two UI surfaces: an administrator-facing advanced energy dashboard and a user-facing participation and character experience.
+- The implementation plan should be reset from a Yeungnam-only Mapbox view to a campus energy platform MVP that uses Yeungnam as the first school.
 
 ## 2026-06-19
 
-- 사용자는 자동 백그라운드 기록보다, 사용자가 말하면 정리를 시작하는 방식으로 먼저 운영하고 싶다고 밝혔다.
-- 기록 트리거 문구를 `정리 시작`, `세션 정리해줘`, `기록해줘`, `회의록 정리해줘` 같은 표현으로 보고, 이 요청이 오면 현재 대화와 작업 결과를 `meeting-notes.md`에 정리하는 규칙을 추가했다.
+- The user preferred manual session recording over always-on background logging.
+- Recording mode should start only when the user explicitly asks with phrases such as `정리 시작`, `세션 정리해줘`, `기록해줘`, or `회의록 정리해줘`.
 
 ## 2026-06-18
 
-- 사용자는 프로젝트 문서를 자동으로 기록하는 시스템을 만들고 싶은 느낌이라고 설명했고, 이를 하네스라고 부를 수 있는지 물었다.
-- 현재 단계에서는 이 아이디어를 `session recorder`, `context logger`, `agent session recorder`, `session logging harness`에 가까운 개념으로 정리했다.
+- The user explored the idea of a system that records project context from Codex sessions.
+- The idea was described as close to a `session recorder`, `context logger`, `agent session recorder`, or `session logging harness`.
 
 ## 2026-06-17
 
-- 사용자는 기존 docs에 들어간 계획성 내용이 앞으로의 흐름과 달라질 수 있어, 그 문맥을 기준으로 이어가기보다 다시 쌓아가고 싶다고 밝혔다.
-- 기존 계획 문서는 보관하지 않고 제거해도 된다고 판단했다.
-- 앞으로 docs는 핸드북식 계획 문서가 아니라 회의록처럼 사용자 발화와 확인된 사실을 점진적으로 누적하는 방식으로 관리한다.
+- The user said the existing docs contained planning content that no longer matched the desired direction.
+- The old planning docs should not be preserved as the baseline.
+- Going forward, docs should work more like meeting notes: user statements and facts verified during work should be accumulated gradually.

@@ -1,25 +1,48 @@
-# Current State — cems
+# Current State - cems
 
-**마지막 업데이트: 2026-06-19**
+**Last updated:** 2026-06-20
 
-## 현재 문맥
+## Current Context
 
-기존 제품/ML/아키텍처 기획 문서는 제거했다. 프로젝트 방향이 바뀔 수 있으므로, 새 세션은 오래된 계획을 기준으로 삼지 않고 [meeting-notes.md](meeting-notes.md)에 누적된 사용자 발화와 확인된 사실만 참고한다.
+The project direction is now a campus energy management and engagement platform.
+The first concrete demo target is Yeungnam University, but Yeungnam should be treated as the first registered school and a scalable sample dataset, not as a product limit.
 
-## 실제 저장소 상태
+The core product idea is that energy saving should be measured against predicted electricity usage. The same saving result supports two product surfaces:
 
-- Next.js 16.2.9, React 19, TypeScript, Tailwind CSS v4 기반 스캐폴드가 있다.
-- `package.json`에 `dev`, `build`, `start`, `lint` scripts가 있다.
-- `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/globals.css`, `src/app/favicon.ico`는 create-next-app 기본 상태에 가깝다.
-- 제품 UI, API, 데이터, ML, 배포 설정은 아직 구현하지 않았다.
+- an administrator dashboard for facility teams to find buildings or groups that use more electricity than forecast
+- a user engagement experience where students, faculty, or other members register an affiliation, earn points from verified savings, and grow a character
 
-## 세션 시작 규칙
+The key abstraction is an **energy saving subject**. A subject can be a building, department, college, dormitory, school, region, or any other comparable group.
 
-1. 이 파일을 먼저 읽는다.
-2. [meeting-notes.md](meeting-notes.md)를 읽는다.
-3. 사용자가 새로 말한 내용과 작업 중 확인한 사실만 docs에 누적한다.
-4. Next.js 코드를 수정하기 전에는 `node_modules/next/dist/docs/`의 관련 문서를 확인한다.
+## Confirmed Product Direction
 
-## 기록 트리거
+- Admin users need a map and dashboard that compares actual electricity usage with forecast electricity usage.
+- A future prediction model, such as LightGBM, should produce expected usage baselines.
+- User-facing competition exists because monitoring alone does not create energy saving behavior. The product should raise interest from the actual people who can influence energy use.
+- Participants should register their school and affiliation.
+- Savings against forecast should become points or another reward value.
+- Points should support a character or RPG-style growth system.
+- Admin and participant experiences should be separate UI surfaces but share the same energy comparison and scoring logic.
 
-사용자가 `정리 시작`, `세션 정리해줘`, `기록해줘`, `회의록 정리해줘`처럼 말하면 기록 모드로 전환한다. 기록 모드는 현재 대화와 작업 결과를 확인해 [meeting-notes.md](meeting-notes.md)에 날짜별로 추가하는 수동 트리거 방식이다.
+## Actual Repository State
+
+- The app is still a basic Next.js 16.2.9, React 19.2.4, TypeScript, Tailwind CSS v4 scaffold.
+- `package.json` has `dev`, `build`, `start`, and `lint` scripts.
+- `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/globals.css`, and `src/app/favicon.ico` are still close to the create-next-app baseline.
+- No production UI, API, database, authentication, energy data pipeline, ML pipeline, or deployment configuration has been implemented yet.
+- A previous Mapbox-only implementation plan was replaced by a broader campus energy platform MVP plan.
+
+## Working Docs
+
+Read these files at the start of the next session:
+
+1. `docs/working/current-state.md` - current repo and product context
+2. `docs/working/meeting-notes.md` - user-stated decisions and directions
+3. `docs/product/campus-energy-platform.md` - current product framing
+4. `docs/superpowers/plans/2026-06-20-campus-energy-platform-mvp.md` - current implementation plan
+
+Before editing Next.js code, follow `AGENTS.md` and read the relevant local Next.js docs under `node_modules/next/dist/docs/`.
+
+## Recording Rule
+
+When the user asks to record or summarize the session, append only user-stated decisions, cancelled assumptions, and facts verified during work to `docs/working/meeting-notes.md`. Update this file only if the next session entry point changes. Commit and push only when the user explicitly asks.
