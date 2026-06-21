@@ -90,3 +90,9 @@ Later versions should add:
 - verified school or affiliation membership
 - seasonal missions and leaderboards
 - richer character growth and RPG interactions
+
+## Product Language Direction
+
+The project uses Korean as the default product language.
+
+The UI should keep language switching available through a shared i18n layer so a future settings screen can change the user's language without rewriting feature components. The first supported locales are Korean (`ko`) and English (`en`).

@@ -1,3 +1,8 @@
+"use client";
+
+import { useI18n } from "@/i18n/client";
+import { formatKwh, formatPoints } from "@/i18n/format";
+import { interpolate } from "@/i18n/interpolate";
 import type { AffiliationGroup, RankedEnergySubject } from "../domain/types";
 
 type GroupRankTableProps = {
@@ -11,10 +16,14 @@ export function GroupRankTable({
   rankings,
   selectedGroupId,
 }: GroupRankTableProps) {
+  const { locale, messages } = useI18n();
+
   return (
     <div className="border border-slate-200 bg-white">
       <div className="border-b border-slate-200 px-4 py-3">
-        <h2 className="font-semibold text-slate-950">Affiliation ranking</h2>
+        <h2 className="font-semibold text-slate-950">
+          {messages.participant.affiliationRanking}
+        </h2>
       </div>
       {rankings.map((ranking) => {
         const group = groups.find((item) => item.id === ranking.subjectId);
@@ -35,11 +44,13 @@ export function GroupRankTable({
                 {group.name}
               </span>
               <span className="block text-xs text-slate-500">
-                {ranking.savingsKwh.toLocaleString()} kWh saved
+                {interpolate(messages.participant.savedLine, {
+                  value: formatKwh(locale, ranking.savingsKwh),
+                })}
               </span>
             </span>
             <span className="text-sm font-semibold text-emerald-700">
-              {ranking.points.toLocaleString()} pts
+              {formatPoints(locale, ranking.points)}
             </span>
           </div>
         );

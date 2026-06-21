@@ -7,6 +7,11 @@ export type EnergySubjectType =
 
 export type EnergyStatus = "saving" | "neutral" | "overuse";
 
+export type CharacterTitleKey =
+  | "campusSaver"
+  | "energyHero"
+  | "gridGuardian";
+
 export type EnergySubject = {
   id: string;
   schoolId: string;
@@ -53,7 +58,7 @@ export type CharacterProgress = {
   currentLevelPoints: number;
   nextLevelPoints: number;
   progressRate: number;
-  title: string;
+  titleKey: CharacterTitleKey;
 };
 
 export type School = {

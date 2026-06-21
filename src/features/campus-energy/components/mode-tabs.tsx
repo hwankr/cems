@@ -1,5 +1,7 @@
 "use client";
 
+import { useI18n } from "@/i18n/client";
+
 type Mode = "admin" | "participant";
 
 type ModeTabsProps = {
@@ -8,16 +10,19 @@ type ModeTabsProps = {
 };
 
 export function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
+  const { messages } = useI18n();
+  const tabs: { label: string; value: Mode }[] = [
+    { label: messages.modes.admin, value: "admin" },
+    { label: messages.modes.participant, value: "participant" },
+  ];
+
   return (
     <div className="inline-flex border border-slate-300 bg-white p-1">
-      {[
-        ["admin", "Admin Dashboard"],
-        ["participant", "Participant Mode"],
-      ].map(([value, label]) => (
+      {tabs.map(({ value, label }) => (
         <button
           key={value}
           type="button"
-          onClick={() => onModeChange(value as Mode)}
+          onClick={() => onModeChange(value)}
           className={`px-3 py-2 text-sm font-medium ${
             mode === value
               ? "bg-slate-950 text-white"

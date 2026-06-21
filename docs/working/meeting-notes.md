@@ -2,6 +2,19 @@
 
 User-stated decisions and verified working facts are recorded here by date. Do not treat unstated product, architecture, ML, or deployment ideas as confirmed.
 
+## 2026-06-21
+
+- The user wanted the project's default language to be Korean.
+- The user also wanted multilingual support implemented early so the language can later be changed from settings.
+- A Korean-first i18n implementation plan was created at `docs/superpowers/plans/2026-06-21-korean-first-i18n.md`.
+- The implementation added locale-prefixed routes for `/ko` and `/en`.
+- Locale-less requests are handled by `src/proxy.ts`, which redirects to a valid `cems-locale` cookie or to Korean (`ko`) by default.
+- Korean and English message dictionaries now live under `src/i18n/messages/`.
+- Client components read locale and messages through `I18nProvider` and `useI18n`, and the current header language selector writes the `cems-locale` cookie for future settings reuse.
+- Demo school, subject, group, and participant display names are localized through `src/features/campus-energy/data/localized-demo-campus.ts`.
+- Character progression now stores a title key instead of hard-coded English display text.
+- Verified checks were `npm run test`, `npm run lint`, `npm run build`, `git diff --check`, and runtime HTTP checks for `/`, `/ko`, `/en`, the saved-locale cookie redirect, Korean text, English text, language options, and the missing Mapbox token fallback.
+
 ## 2026-06-20
 
 - The user first asked for a Mapbox web view that shows Yeungnam University buildings well.

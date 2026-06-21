@@ -61,3 +61,16 @@ Current test coverage is focused on pure domain logic:
 - multi-school onboarding UI
 - production deployment
 - full RPG gameplay beyond character progress display
+
+## Internationalization
+
+The app uses Korean as the default locale and supports English through locale-prefixed routes:
+
+- `/ko`
+- `/en`
+
+Requests without a locale are handled by `src/proxy.ts`. The proxy redirects to the saved `cems-locale` cookie when it is valid, or to Korean (`ko`) when no valid cookie exists.
+
+Locale dictionaries live under `src/i18n/messages/`. Server routes load messages with `src/i18n/dictionaries.ts`, then pass the selected locale and messages into the client app. Client components read them through `I18nProvider` and `useI18n`.
+
+The language selector currently appears in the app header. It writes the same locale cookie that a future settings screen should use.

@@ -4,6 +4,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 import mapboxgl from "mapbox-gl";
 import { useEffect, useMemo, useRef } from "react";
+import { useI18n } from "@/i18n/client";
 import type { EnergyComparison, EnergySubject, School } from "../domain/types";
 
 type FeatureProperties = {
@@ -27,6 +28,7 @@ export function CampusMap({
   selectedSubjectId,
   onSelectSubject,
 }: CampusMapProps) {
+  const { messages } = useI18n();
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const selectedSubject = subjects.find(
@@ -155,6 +157,13 @@ export function CampusMap({
   ]);
 
   useEffect(() => {
+    const source = mapRef.current?.getSource("energy-subjects");
+    if (source && "setData" in source) {
+      (source as mapboxgl.GeoJSONSource).setData(featureCollection);
+    }
+  }, [featureCollection]);
+
+  useEffect(() => {
     if (!selectedSubject || !mapRef.current) return;
     mapRef.current.flyTo({
       center: [selectedSubject.lng, selectedSubject.lat],
@@ -168,9 +177,9 @@ export function CampusMap({
     return (
       <div className="flex h-full min-h-[28rem] items-center justify-center bg-slate-950 p-6 text-white">
         <div className="max-w-sm border border-white/15 bg-white/10 p-5">
-          <h2 className="font-semibold">Mapbox token required</h2>
+          <h2 className="font-semibold">{messages.map.missingTokenTitle}</h2>
           <p className="mt-2 text-sm text-white/70">
-            Set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in .env.local.
+            {messages.map.missingTokenDescription}
           </p>
         </div>
       </div>

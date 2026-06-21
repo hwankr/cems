@@ -60,7 +60,7 @@ describe("getCharacterProgress", () => {
       currentLevelPoints: 750,
       nextLevelPoints: 1000,
       progressRate: 0.75,
-      title: "Campus Saver",
+      titleKey: "campusSaver",
     });
   });
 });

@@ -1,6 +1,6 @@
 # Current State - cems
 
-**Last updated:** 2026-06-20
+**Last updated:** 2026-06-21
 
 ## Current Context
 
@@ -28,9 +28,14 @@ The key abstraction is an **energy saving subject**. A subject can be a building
 
 - The repository now contains the first campus energy MVP, committed and pushed as `94560de Add campus energy MVP`.
 - The stack is Next.js 16.2.9, React 19.2.4, TypeScript, Tailwind CSS v4, Mapbox GL JS, lucide-react, and Vitest.
-- The main app route renders `CampusEnergyApp` from `src/features/campus-energy/components/campus-energy-app.tsx`.
+- The app now uses locale-prefixed routes for the main MVP: `/ko` and `/en`.
+- `src/proxy.ts` redirects locale-less requests to the saved `cems-locale` cookie when valid, or to Korean (`ko`) by default.
+- The main localized route renders `CampusEnergyApp` from `src/app/[locale]/page.tsx` and passes locale messages into the client app.
+- Korean is the default product language. English is also supported through `src/i18n/messages/`.
+- `src/i18n/client.tsx` provides `I18nProvider` and `useI18n` for client components, and `src/features/campus-energy/components/language-switcher.tsx` writes the same locale cookie that a future settings screen should reuse.
 - `src/features/campus-energy/domain/` contains shared energy comparison, scoring, ranking, and character progression logic.
 - `src/features/campus-energy/data/demo-campus.ts` contains Yeungnam University demo school, building, group, participant, and mock energy readings.
+- `src/features/campus-energy/data/localized-demo-campus.ts` maps the demo school, subjects, groups, and participant name into the active locale.
 - Admin mode shows actual versus forecast usage, saved and overused kWh, building diagnosis ranking, selected building details, and a Mapbox-backed campus map.
 - Participant mode shows the demo user's affiliation, affiliation points, saved energy, rank, group leaderboard, and character progress.
 - The app builds without a Mapbox token. If `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` is missing, the map area shows a configuration state instead of constructing a map.
@@ -51,6 +56,7 @@ After that, use the docs map to open:
 - `docs/technical/campus-energy-mvp.md` - implemented MVP structure and verification notes
 
 `docs/superpowers/plans/2026-06-20-campus-energy-platform-mvp.md` is a completed execution plan, not the current backlog.
+`docs/superpowers/plans/2026-06-21-korean-first-i18n.md` records the Korean-first i18n implementation plan.
 
 Before editing Next.js code, follow `AGENTS.md` and read the relevant local Next.js docs under `node_modules/next/dist/docs/`.
 

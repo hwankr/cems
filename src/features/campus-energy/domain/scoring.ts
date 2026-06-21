@@ -1,5 +1,6 @@
 import type {
   CharacterProgress,
+  CharacterTitleKey,
   EnergyComparison,
   RankedEnergySubject,
 } from "./types";
@@ -31,10 +32,10 @@ export function rankSubjects(
     }));
 }
 
-function getTitle(level: number) {
-  if (level >= 10) return "Grid Guardian";
-  if (level >= 5) return "Energy Hero";
-  return "Campus Saver";
+function getTitleKey(level: number): CharacterTitleKey {
+  if (level >= 10) return "gridGuardian";
+  if (level >= 5) return "energyHero";
+  return "campusSaver";
 }
 
 export function getCharacterProgress(points: number): CharacterProgress {
@@ -48,6 +49,6 @@ export function getCharacterProgress(points: number): CharacterProgress {
     currentLevelPoints,
     nextLevelPoints: POINTS_PER_LEVEL,
     progressRate,
-    title: getTitle(level),
+    titleKey: getTitleKey(level),
   };
 }

@@ -1,5 +1,8 @@
 "use client";
 
+import { useI18n } from "@/i18n/client";
+import { formatKwh, formatSignedKwh } from "@/i18n/format";
+import { interpolate } from "@/i18n/interpolate";
 import type { EnergyComparison, EnergySubject } from "../domain/types";
 import { StatusBadge } from "./status-badge";
 
@@ -16,6 +19,7 @@ export function BuildingRankTable({
   selectedSubjectId,
   onSelectSubject,
 }: BuildingRankTableProps) {
+  const { locale, messages } = useI18n();
   const rows = comparisons
     .map((comparison) => ({
       comparison,
@@ -34,7 +38,9 @@ export function BuildingRankTable({
   return (
     <div className="overflow-hidden border border-slate-200 bg-white">
       <div className="border-b border-slate-200 px-4 py-3">
-        <h2 className="font-semibold text-slate-950">Building diagnosis</h2>
+        <h2 className="font-semibold text-slate-950">
+          {messages.admin.buildingDiagnosis}
+        </h2>
       </div>
       <div className="max-h-80 overflow-y-auto">
         {rows.map(({ subject, comparison }) => (
@@ -53,15 +59,16 @@ export function BuildingRankTable({
                 {subject.name}
               </span>
               <span className="mt-1 block text-xs text-slate-500">
-                Actual {comparison.actualKwh.toLocaleString()} kWh / Forecast{" "}
-                {comparison.forecastKwh.toLocaleString()} kWh
+                {interpolate(messages.admin.actualForecastLine, {
+                  actual: formatKwh(locale, comparison.actualKwh),
+                  forecast: formatKwh(locale, comparison.forecastKwh),
+                })}
               </span>
             </span>
             <span className="flex flex-col items-end gap-2">
               <StatusBadge status={comparison.status} />
               <span className="text-xs text-slate-500">
-                {comparison.deltaKwh > 0 ? "+" : ""}
-                {comparison.deltaKwh} kWh
+                {formatSignedKwh(locale, comparison.deltaKwh)}
               </span>
             </span>
           </button>

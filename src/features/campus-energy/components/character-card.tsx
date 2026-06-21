@@ -1,4 +1,9 @@
+"use client";
+
 import { Sparkles } from "lucide-react";
+import { useI18n } from "@/i18n/client";
+import { formatNumber, formatPoints } from "@/i18n/format";
+import { interpolate } from "@/i18n/interpolate";
 import type { CharacterProgress } from "../domain/types";
 
 type CharacterCardProps = {
@@ -7,6 +12,8 @@ type CharacterCardProps = {
 };
 
 export function CharacterCard({ progress, points }: CharacterCardProps) {
+  const { locale, messages } = useI18n();
+
   return (
     <section className="border border-emerald-200 bg-emerald-50 p-5">
       <div className="flex items-center gap-3">
@@ -15,15 +22,17 @@ export function CharacterCard({ progress, points }: CharacterCardProps) {
         </div>
         <div>
           <p className="text-sm font-semibold text-emerald-800">
-            {progress.title}
+            {messages.character.titles[progress.titleKey]}
           </p>
           <h2 className="text-2xl font-semibold text-emerald-950">
-            Level {progress.level}
+            {interpolate(messages.character.level, { level: progress.level })}
           </h2>
         </div>
       </div>
       <p className="mt-4 text-sm text-emerald-900">
-        {points.toLocaleString()} total energy points
+        {interpolate(messages.character.totalPoints, {
+          points: formatPoints(locale, points),
+        })}
       </p>
       <div className="mt-3 h-3 bg-emerald-100">
         <div
@@ -32,8 +41,10 @@ export function CharacterCard({ progress, points }: CharacterCardProps) {
         />
       </div>
       <p className="mt-2 text-xs text-emerald-800">
-        {progress.currentLevelPoints} / {progress.nextLevelPoints} points to
-        next level
+        {interpolate(messages.character.nextLevel, {
+          current: formatNumber(locale, progress.currentLevelPoints),
+          next: formatNumber(locale, progress.nextLevelPoints),
+        })}
       </p>
     </section>
   );

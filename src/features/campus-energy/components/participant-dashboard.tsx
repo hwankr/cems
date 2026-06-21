@@ -1,20 +1,30 @@
+"use client";
+
+import { useI18n } from "@/i18n/client";
+import { formatKwh, formatPoints } from "@/i18n/format";
 import {
-  demoGroups,
-  demoParticipant,
   getDemoGroupRankings,
 } from "../data/demo-campus";
+import type { AffiliationGroup, ParticipantProfile } from "../domain/types";
 import { getCharacterProgress } from "../domain/scoring";
 import { CharacterCard } from "./character-card";
 import { GroupRankTable } from "./group-rank-table";
 import { MetricCard } from "./metric-card";
 
-export function ParticipantDashboard() {
+type ParticipantDashboardProps = {
+  groups: AffiliationGroup[];
+  participant: ParticipantProfile;
+};
+
+export function ParticipantDashboard({
+  groups,
+  participant,
+}: ParticipantDashboardProps) {
+  const { locale, messages } = useI18n();
   const groupRankings = getDemoGroupRankings();
-  const myGroup = demoGroups.find(
-    (group) => group.id === demoParticipant.groupId,
-  );
+  const myGroup = groups.find((group) => group.id === participant.groupId);
   const myRanking = groupRankings.find(
-    (ranking) => ranking.subjectId === demoParticipant.groupId,
+    (ranking) => ranking.subjectId === participant.groupId,
   );
   const points = myRanking?.points ?? 0;
   const progress = getCharacterProgress(points);
@@ -24,32 +34,35 @@ export function ParticipantDashboard() {
       <section className="grid content-start gap-4">
         <div className="border border-slate-200 bg-white p-5">
           <p className="text-xs font-semibold uppercase text-blue-700">
-            My affiliation
+            {messages.participant.myAffiliation}
           </p>
           <h2 className="mt-1 text-2xl font-semibold text-slate-950">
-            {myGroup?.name ?? "Unassigned"}
+            {myGroup?.name ?? messages.participant.unassigned}
           </h2>
           <p className="mt-2 text-sm text-slate-600">
-            Points come from electricity saved against the forecast baseline.
+            {messages.participant.pointsDescription}
           </p>
         </div>
         <div className="grid gap-3 sm:grid-cols-3">
           <MetricCard
-            label="My points"
-            value={points.toLocaleString()}
+            label={messages.participant.myPoints}
+            value={formatPoints(locale, points)}
             tone="saving"
           />
           <MetricCard
-            label="Saved energy"
-            value={`${myRanking?.savingsKwh.toLocaleString() ?? "0"} kWh`}
+            label={messages.participant.savedEnergy}
+            value={formatKwh(locale, myRanking?.savingsKwh ?? 0)}
             tone="saving"
           />
-          <MetricCard label="Rank" value={`#${myRanking?.rank ?? "-"}`} />
+          <MetricCard
+            label={messages.participant.rank}
+            value={`#${myRanking?.rank ?? "-"}`}
+          />
         </div>
         <GroupRankTable
-          groups={demoGroups}
+          groups={groups}
           rankings={groupRankings}
-          selectedGroupId={demoParticipant.groupId}
+          selectedGroupId={participant.groupId}
         />
       </section>
       <aside>
