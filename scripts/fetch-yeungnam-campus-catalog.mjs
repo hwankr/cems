@@ -1,11 +1,14 @@
-#!/usr/bin/env node
-
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { runInNewContext } from "node:vm";
 
-export const KOREAN_CATALOG_URL = "https://www.yu.ac.kr/campus_vr-k/vr.php";
-export const ENGLISH_CATALOG_URL =
+export const KOREAN_CAMPUS_MAP_URL =
+  "https://www.yu.ac.kr/main/intro/campus-map.do";
+export const ENGLISH_CAMPUS_MAP_URL =
+  "https://www.yu.ac.kr/english/about/campus-map.do";
+export const LEGACY_KOREAN_CATALOG_URL = "https://www.yu.ac.kr/campus_vr-k/vr.php";
+export const LEGACY_ENGLISH_CATALOG_URL =
   "https://www.yu.ac.kr/campus_vr-e/vr_eng.php";
 
 const OUTPUT_URL = new URL(
@@ -14,9 +17,9 @@ const OUTPUT_URL = new URL(
 );
 
 const SCHOOL_ID = "yeungnam";
-const CAMPUS_ID = "gyeongsan";
+const OFFICIAL_CAMPUS_MAP_CAPTURED_AT = "2026-06-22T00:00:00.000Z";
 const USER_AGENT =
-  "cems-data-pipeline/0.1 (Yeungnam building catalog; local development)";
+  "cems-data-pipeline/0.1 (Yeungnam official campus map; local development)";
 
 const LANDMARK_CODES = new Set([
   "A01",
@@ -30,179 +33,9 @@ const LANDMARK_CODES = new Set([
   "G48",
   "G49",
 ]);
-const OUTDOOR_CODES = new Set(["A09", "A14", "B01", "C31"]);
-const UTILITY_CODES = new Set(["G65"]);
 
 function isMainModule() {
   return process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
-}
-
-function decodeHtmlEntities(value) {
-  const named = {
-    amp: "&",
-    apos: "'",
-    gt: ">",
-    lt: "<",
-    nbsp: " ",
-    quot: '"',
-  };
-
-  return value.replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (entity, body) => {
-    const lower = body.toLowerCase();
-
-    if (lower.startsWith("#x")) {
-      return String.fromCodePoint(Number.parseInt(lower.slice(2), 16));
-    }
-
-    if (lower.startsWith("#")) {
-      return String.fromCodePoint(Number.parseInt(lower.slice(1), 10));
-    }
-
-    return named[lower] ?? entity;
-  });
-}
-
-function stripTags(value) {
-  return decodeHtmlEntities(value)
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "")
-    .replace(/<[^>]*>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function resolveUrl(href, sourceUrl) {
-  if (!href) {
-    return undefined;
-  }
-
-  return new URL(decodeHtmlEntities(href), sourceUrl).href;
-}
-
-function parseArea(block) {
-  const dtMatch = block.match(/<dt\b[^>]*>([\s\S]*?)<\/dt>/i);
-  const dtText = dtMatch ? stripTags(dtMatch[1]) : "";
-  const areaMatch = dtText.match(/[A-H]/i);
-  return areaMatch ? areaMatch[0].toUpperCase() : undefined;
-}
-
-export function parseCampusCatalogHtml(html, sourceUrl) {
-  const entries = [];
-  const dlPattern = /<dl\b[^>]*>([\s\S]*?)<\/dl>/gi;
-
-  for (const dlMatch of html.matchAll(dlPattern)) {
-    const block = dlMatch[1];
-    const blockArea = parseArea(block);
-    const ddPattern = /<dd\b[^>]*>([\s\S]*?)<\/dd>/gi;
-
-    for (const ddMatch of block.matchAll(ddPattern)) {
-      const ddHtml = ddMatch[1];
-      const entryMatch = ddHtml.match(
-        /<span\b[^>]*>\s*([A-Z]\d{2})\s*<\/span>\s*([\s\S]*)/i,
-      );
-
-      if (!entryMatch) {
-        continue;
-      }
-
-      const hrefMatch = ddHtml.match(/\bhref\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+))/i);
-      const code = entryMatch[1].toUpperCase();
-      const name = stripTags(entryMatch[2]);
-
-      if (!name) {
-        continue;
-      }
-
-      entries.push({
-        code,
-        area: blockArea ?? code[0],
-        name,
-        detailUrl: resolveUrl(hrefMatch?.[1] ?? hrefMatch?.[2] ?? hrefMatch?.[3], sourceUrl),
-      });
-    }
-  }
-
-  return entries;
-}
-
-export function classifyCatalogKind(entry) {
-  const code = entry.officialCode ?? entry.code;
-
-  if (LANDMARK_CODES.has(code)) {
-    return "landmark";
-  }
-
-  if (OUTDOOR_CODES.has(code)) {
-    return "outdoor";
-  }
-
-  if (UTILITY_CODES.has(code)) {
-    return "utility";
-  }
-
-  const haystack = `${entry.nameKo ?? ""} ${entry.nameEn ?? ""}`.toLowerCase();
-
-  if (
-    haystack.includes("tennis court") ||
-    haystack.includes("amphitheater") ||
-    haystack.includes("baseball field")
-  ) {
-    return "outdoor";
-  }
-
-  if (
-    haystack.includes("gate") ||
-    haystack.includes("metro square") ||
-    haystack.includes("folklore")
-  ) {
-    return "landmark";
-  }
-
-  if (haystack.includes("filtration") || haystack.includes("water work")) {
-    return "utility";
-  }
-
-  return "building";
-}
-
-export function buildCatalog(koEntries, enEntries) {
-  const englishByCode = new Map(enEntries.map((entry) => [entry.code, entry]));
-  const sortedKoreanEntries = [...koEntries].sort((left, right) =>
-    left.code.localeCompare(right.code, "en", { numeric: true }),
-  );
-
-  return sortedKoreanEntries.map((koEntry) => {
-    const enEntry = englishByCode.get(koEntry.code);
-    const nameEn = enEntry?.name;
-    const sourceUrls = [
-      KOREAN_CATALOG_URL,
-      ENGLISH_CATALOG_URL,
-      koEntry.detailUrl,
-      enEntry?.detailUrl,
-    ].filter(Boolean);
-    const uniqueSourceUrls = [...new Set(sourceUrls)];
-    const entry = {
-      id: `yu-${koEntry.code.toLowerCase()}`,
-      schoolId: SCHOOL_ID,
-      campusId: CAMPUS_ID,
-      area: koEntry.area,
-      officialCode: koEntry.code,
-      name: nameEn ?? koEntry.name,
-      nameKo: koEntry.name,
-      shortName: koEntry.code,
-      kind: "building",
-      sourceUrl: koEntry.detailUrl ?? KOREAN_CATALOG_URL,
-      sourceUrls: uniqueSourceUrls,
-    };
-
-    if (nameEn) {
-      entry.nameEn = nameEn;
-    }
-
-    entry.kind = classifyCatalogKind(entry);
-
-    return entry;
-  });
 }
 
 function extractCharset(contentType) {
@@ -230,32 +63,307 @@ async function fetchText(url) {
   }
 }
 
-export async function generateCatalog() {
-  const [koHtml, enHtml] = await Promise.all([
-    fetchText(KOREAN_CATALOG_URL),
-    fetchText(ENGLISH_CATALOG_URL),
-  ]);
-  const koEntries = parseCampusCatalogHtml(koHtml, KOREAN_CATALOG_URL);
-  const enEntries = parseCampusCatalogHtml(enHtml, ENGLISH_CATALOG_URL);
-  const buildings = buildCatalog(koEntries, enEntries);
+function extractCampusListJson(html) {
+  const startMatch = html.match(/\bvar\s+campusList\s*=/);
 
-  if (buildings.length < 90) {
-    throw new Error(
-      `Expected at least 90 Yeungnam catalog entries, found ${buildings.length}`,
-    );
+  if (!startMatch?.index && startMatch?.index !== 0) {
+    throw new Error("Official Yeungnam campus map did not contain campusList.");
   }
+
+  const arrayStart = html.indexOf("[", startMatch.index + startMatch[0].length);
+
+  if (arrayStart < 0) {
+    throw new Error("Official Yeungnam campus map campusList was not an array.");
+  }
+
+  const arrayEnd = findJavaScriptArrayEnd(html, arrayStart);
+
+  if (arrayEnd < 0) {
+    throw new Error("Official Yeungnam campus map campusList array was not closed.");
+  }
+
+  return parseCampusListArrayLiteral(html.slice(arrayStart, arrayEnd + 1));
+}
+
+function parseCampusListArrayLiteral(arrayLiteral) {
+  try {
+    return JSON.parse(arrayLiteral);
+  } catch {
+    const value = runInNewContext(`(${arrayLiteral})`, Object.create(null), {
+      timeout: 1000,
+    });
+
+    if (!Array.isArray(value)) {
+      throw new Error("Official Yeungnam campus map campusList did not evaluate to an array.");
+    }
+
+    return value;
+  }
+}
+
+function findJavaScriptArrayEnd(value, arrayStart) {
+  let depth = 0;
+  let inString = false;
+  let quote = "";
+  let escaped = false;
+
+  for (let index = arrayStart; index < value.length; index += 1) {
+    const char = value[index];
+
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === "\\") {
+        escaped = true;
+      } else if (char === quote) {
+        inString = false;
+        quote = "";
+      }
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      inString = true;
+      quote = char;
+      continue;
+    }
+
+    if (char === "[") {
+      depth += 1;
+    } else if (char === "]") {
+      depth -= 1;
+
+      if (depth === 0) {
+        return index;
+      }
+    }
+  }
+
+  return -1;
+}
+
+function parseGps(value, context) {
+  if (typeof value !== "string" || value.trim() === "") {
+    throw new Error(`Missing bGPS for official Yeungnam campus-map entry: ${context}`);
+  }
+
+  const [lngText, latText] = value.split(",");
+  const lng = Number(lngText);
+  const lat = Number(latText);
+
+  if (!Number.isFinite(lng) || !Number.isFinite(lat)) {
+    throw new Error(`Invalid bGPS for official Yeungnam campus-map entry: ${context}`);
+  }
+
+  return [lng, lat];
+}
+
+function campusIdFromName(campusName, officialCode) {
+  const normalized = String(campusName ?? "").toLowerCase();
+
+  return officialCode?.startsWith("H") ||
+    normalized.includes("대명") ||
+    normalized.includes("대구") ||
+    normalized.includes("daegu") ||
+    normalized.includes("daemyeong")
+    ? "daemyeong"
+    : "gyeongsan";
+}
+
+function areaFromName(areaName, officialCode) {
+  const codeArea = officialCode?.match(/^[A-Z]/)?.[0];
+  const nameArea = String(areaName ?? "").match(/[A-H]/)?.[0];
+
+  return codeArea ?? nameArea ?? "ETC";
+}
+
+function stableIdForOfficialEntry(entry) {
+  if (entry.officialCode) {
+    return `yu-${entry.officialCode.toLowerCase()}`;
+  }
+
+  return `yu-official-${entry.officialMapUuid.slice(0, 8).toLowerCase()}`;
+}
+
+function classifyOfficialEntry(entry) {
+  const code = entry.officialCode;
+  const haystack = [
+    entry.nameKo,
+    entry.nameEn,
+    entry.sourceUse,
+    entry.areaName,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  if (code && LANDMARK_CODES.has(code)) {
+    return "landmark";
+  }
+
+  if (
+    /\b(?:gate|square|clock|park|pond|folklore)\b|정문|동문|서문|남문|북문|지문|게이트|광장|시계|공원|연못|못/.test(
+      haystack,
+    )
+  ) {
+    return "landmark";
+  }
+
+  if (
+    /tennis|baseball|soccer|basketball|field|gymnasium|테니스|야구|축구|농구|운동장|체육|경기장/.test(
+      haystack,
+    )
+  ) {
+    return "outdoor";
+  }
+
+  if (/water|filtration|상수도|여과지/.test(haystack)) {
+    return "utility";
+  }
+
+  return "building";
+}
+
+export function parseOfficialCampusMapHtml(html, locale) {
+  return extractCampusListJson(html).flatMap((campus) =>
+    (campus.dList ?? []).flatMap((district) =>
+      (district.bList ?? []).map((building) => {
+        const officialCode =
+          typeof building.bNo === "string" && building.bNo.trim()
+            ? building.bNo.trim().toUpperCase()
+            : undefined;
+        const nameKo = typeof building.bName === "string" ? building.bName.trim() : "";
+        const nameEn =
+          typeof building.bEngName === "string" && building.bEngName.trim()
+            ? building.bEngName.trim()
+            : undefined;
+        const officialMapUuid =
+          typeof building["@UUID@"] === "string" && building["@UUID@"].trim()
+            ? building["@UUID@"].trim()
+            : `${officialCode ?? nameKo}-${building.bGPS}`;
+
+        return {
+          ...(officialCode ? { officialCode } : {}),
+          officialMapUuid,
+          campusId: campusIdFromName(campus.cName, officialCode),
+          campusName: campus.cName,
+          area: areaFromName(district.dName, officialCode),
+          areaName: district.dName,
+          nameKo,
+          ...(nameEn ? { nameEn } : {}),
+          gps: parseGps(building.bGPS, officialCode ?? nameKo),
+          sourceUse: building.bUse ?? "",
+          locale,
+        };
+      }),
+    ),
+  );
+}
+
+function entryKey(entry) {
+  if (entry.officialCode) {
+    return `code:${entry.officialCode}`;
+  }
+
+  return `uuid:${entry.officialMapUuid}`;
+}
+
+function gpsKey(entry) {
+  return `${entry.gps[0]},${entry.gps[1]}`;
+}
+
+function findEnglishEntry(koEntry, englishByKey, englishByGps) {
+  return englishByKey.get(entryKey(koEntry)) ?? englishByGps.get(gpsKey(koEntry));
+}
+
+export function buildOfficialCampusCatalog({ koEntries, enEntries, capturedAt }) {
+  const englishByKey = new Map(enEntries.map((entry) => [entryKey(entry), entry]));
+  const englishByGps = new Map(enEntries.map((entry) => [gpsKey(entry), entry]));
+
+  const buildings = koEntries
+    .map((koEntry) => {
+      const enEntry = findEnglishEntry(koEntry, englishByKey, englishByGps);
+      const nameEn = enEntry?.nameEn;
+      const id = stableIdForOfficialEntry(koEntry);
+      const entry = {
+        id,
+        schoolId: SCHOOL_ID,
+        campusId: koEntry.campusId,
+        area: koEntry.area,
+        officialMapUuid: koEntry.officialMapUuid,
+        name: nameEn ?? koEntry.nameKo,
+        nameKo: koEntry.nameKo,
+        shortName: koEntry.officialCode ?? koEntry.nameKo,
+        kind: classifyOfficialEntry({ ...koEntry, nameEn }),
+        sourceUrl: KOREAN_CAMPUS_MAP_URL,
+        sourceUrls: [KOREAN_CAMPUS_MAP_URL, ENGLISH_CAMPUS_MAP_URL],
+        officialPoint: {
+          type: "Point",
+          coordinates: koEntry.gps,
+          geometrySource: {
+            kind: "official-campus-map",
+            name: "Yeungnam University campus map",
+            url: KOREAN_CAMPUS_MAP_URL,
+            capturedAt,
+          },
+          geometryConfidence: "verified",
+        },
+      };
+
+      if (koEntry.officialCode) {
+        entry.officialCode = koEntry.officialCode;
+      }
+
+      if (nameEn) {
+        entry.nameEn = nameEn;
+      }
+
+      return entry;
+    })
+    .sort(
+      (left, right) =>
+        left.area.localeCompare(right.area, "en", { numeric: true }) ||
+        left.shortName.localeCompare(right.shortName, "ko", { numeric: true }),
+    );
 
   return {
     metadata: {
       schoolId: SCHOOL_ID,
-      campusId: CAMPUS_ID,
-      generatedAt: new Date().toISOString(),
-      sourceUrls: [KOREAN_CATALOG_URL, ENGLISH_CATALOG_URL],
+      generatedAt: capturedAt,
+      sourceUrls: [KOREAN_CAMPUS_MAP_URL, ENGLISH_CAMPUS_MAP_URL],
       koreanEntryCount: koEntries.length,
       englishEntryCount: enEntries.length,
+      officialGpsEntryCount: buildings.filter((building) => building.officialPoint).length,
     },
     buildings,
   };
+}
+
+export async function generateCatalog() {
+  const capturedAt = OFFICIAL_CAMPUS_MAP_CAPTURED_AT;
+  const [koHtml, enHtml] = await Promise.all([
+    fetchText(KOREAN_CAMPUS_MAP_URL),
+    fetchText(ENGLISH_CAMPUS_MAP_URL),
+  ]);
+  const koEntries = parseOfficialCampusMapHtml(koHtml, "ko");
+  const enEntries = parseOfficialCampusMapHtml(enHtml, "en");
+  const catalog = buildOfficialCampusCatalog({ koEntries, enEntries, capturedAt });
+
+  if (catalog.buildings.length < 120) {
+    throw new Error(
+      `Expected at least 120 official Yeungnam campus-map entries, found ${catalog.buildings.length}`,
+    );
+  }
+
+  const missingGps = catalog.buildings.filter((building) => !building.officialPoint);
+
+  if (missingGps.length > 0) {
+    throw new Error(
+      `Expected every official Yeungnam campus-map entry to have GPS, missing ${missingGps.length}`,
+    );
+  }
+
+  return catalog;
 }
 
 async function main() {

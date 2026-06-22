@@ -15,7 +15,8 @@ type CatalogBuilding = {
   id: string;
   schoolId: string;
   campusId: string;
-  officialCode: string;
+  officialCode?: string;
+  officialMapUuid?: string;
   name: string;
   nameKo?: string;
   nameEn?: string;
@@ -31,7 +32,8 @@ export type YeungnamBuildingSubject = EnergySubject & {
 
 type GeneratedGeometryFeature = {
   properties: {
-    officialCode: string;
+    subjectId?: string;
+    officialCode?: string;
     geometrySource: string;
     geometryConfidence: string;
     sourceUrl?: string;
@@ -45,14 +47,24 @@ type GeneratedGeometryFeature = {
 const catalogBuildings = readCatalogBuildings(buildingCatalog);
 const geometryFeatures = readGeneratedGeometryFeatures(buildingGeometries);
 
+const catalogById = new Map(catalogBuildings.map((building) => [building.id, building]));
 const catalogByOfficialCode = new Map(
-  catalogBuildings.map((building) => [building.officialCode, building]),
+  catalogBuildings
+    .filter((building): building is CatalogBuilding & { officialCode: string } =>
+      Boolean(building.officialCode),
+    )
+    .map((building) => [building.officialCode, building]),
 );
+const geometryBySubjectId = createGeometryBySubjectId(geometryFeatures);
 const geometryByOfficialCode = createGeometryByOfficialCode(geometryFeatures);
 
 export const yeungnamBuildingSubjects: YeungnamBuildingSubject[] =
   catalogBuildings.map((catalogBuilding) => {
-    const geometry = geometryByOfficialCode.get(catalogBuilding.officialCode);
+    const geometry =
+      geometryBySubjectId.get(catalogBuilding.id) ??
+      (catalogBuilding.officialCode
+        ? geometryByOfficialCode.get(catalogBuilding.officialCode)
+        : undefined);
     const center = geometry ? getGeometryCenter(geometry) : undefined;
 
     return {
@@ -66,16 +78,50 @@ export const yeungnamBuildingSubjects: YeungnamBuildingSubject[] =
       shortName: catalogBuilding.shortName,
       ...(center ? { lng: center[0], lat: center[1] } : {}),
       ...(geometry ? { geometry } : {}),
-      officialCode: catalogBuilding.officialCode,
+      ...(catalogBuilding.officialCode
+        ? { officialCode: catalogBuilding.officialCode }
+        : {}),
       campusPlaceKind: catalogBuilding.kind,
     };
   });
+
+function createGeometryBySubjectId(features: GeneratedGeometryFeature[]) {
+  const geometriesBySubjectId = new Map<string, SubjectGeometry>();
+
+  features.forEach((feature) => {
+    const subjectId = feature.properties.subjectId;
+
+    if (!subjectId) {
+      return;
+    }
+
+    if (!catalogById.has(subjectId)) {
+      throw new Error(
+        `Unknown Yeungnam subject id in generated geometry: ${subjectId}`,
+      );
+    }
+
+    if (geometriesBySubjectId.has(subjectId)) {
+      throw new Error(
+        `Duplicate Yeungnam geometry feature for subject id: ${subjectId}`,
+      );
+    }
+
+    geometriesBySubjectId.set(subjectId, createSubjectGeometry(feature));
+  });
+
+  return geometriesBySubjectId;
+}
 
 function createGeometryByOfficialCode(features: GeneratedGeometryFeature[]) {
   const geometriesByOfficialCode = new Map<string, SubjectGeometry>();
 
   features.forEach((feature) => {
     const officialCode = feature.properties.officialCode;
+
+    if (!officialCode || feature.properties.subjectId) {
+      return;
+    }
 
     if (!catalogByOfficialCode.has(officialCode)) {
       throw new Error(
@@ -96,10 +142,11 @@ function createGeometryByOfficialCode(features: GeneratedGeometryFeature[]) {
 }
 
 function createSubjectGeometry(feature: GeneratedGeometryFeature): SubjectGeometry {
+  const context = geometryFeatureContext(feature);
   const geometrySource = createGeometrySource(feature);
   const geometryConfidence = toGeometryConfidence(
     feature.properties.geometryConfidence,
-    feature.properties.officialCode,
+    context,
   );
 
   switch (feature.geometry.type) {
@@ -108,7 +155,7 @@ function createSubjectGeometry(feature: GeneratedGeometryFeature): SubjectGeomet
         type: "Point",
         coordinates: toCoordinate(
           feature.geometry.coordinates,
-          feature.properties.officialCode,
+          context,
         ),
         geometrySource,
         geometryConfidence,
@@ -118,7 +165,7 @@ function createSubjectGeometry(feature: GeneratedGeometryFeature): SubjectGeomet
         type: "Polygon",
         coordinates: toPolygonCoordinates(
           feature.geometry.coordinates,
-          feature.properties.officialCode,
+          context,
         ),
         geometrySource,
         geometryConfidence,
@@ -128,14 +175,14 @@ function createSubjectGeometry(feature: GeneratedGeometryFeature): SubjectGeomet
         type: "MultiPolygon",
         coordinates: toMultiPolygonCoordinates(
           feature.geometry.coordinates,
-          feature.properties.officialCode,
+          context,
         ),
         geometrySource,
         geometryConfidence,
       };
     default:
       throw new Error(
-        `Unsupported Yeungnam geometry type for ${feature.properties.officialCode}: ${feature.geometry.type}`,
+        `Unsupported Yeungnam geometry type for ${context}: ${feature.geometry.type}`,
       );
   }
 }
@@ -157,18 +204,21 @@ function readCatalogBuilding(value: unknown, index: number): CatalogBuilding {
     value,
     `Invalid Yeungnam catalog building at index ${index}`,
   );
-  const officialCode = readRequiredString(
+  const officialCode = readOptionalString(
     building,
     "officialCode",
     `Invalid Yeungnam catalog building at index ${index}`,
   );
-  const context = `Invalid Yeungnam catalog building ${officialCode} at index ${index}`;
+  const context = officialCode
+    ? `Invalid Yeungnam catalog building ${officialCode} at index ${index}`
+    : `Invalid Yeungnam catalog building at index ${index}`;
 
   return {
     id: readRequiredString(building, "id", context),
     schoolId: readRequiredString(building, "schoolId", context),
     campusId: readRequiredString(building, "campusId", context),
-    officialCode,
+    ...(officialCode ? { officialCode } : {}),
+    officialMapUuid: readOptionalString(building, "officialMapUuid", context),
     name: readRequiredString(building, "name", context),
     nameKo: readOptionalString(building, "nameKo", context),
     nameEn: readOptionalString(building, "nameEn", context),
@@ -221,12 +271,23 @@ function readGeneratedGeometryFeature(
     feature.properties,
     `Invalid Yeungnam geometry feature at index ${index} properties`,
   );
-  const officialCode = readRequiredString(
+  const subjectId = readOptionalString(
+    properties,
+    "subjectId",
+    `Invalid Yeungnam geometry feature at index ${index} properties`,
+  );
+  const officialCode = readOptionalString(
     properties,
     "officialCode",
     `Invalid Yeungnam geometry feature at index ${index} properties`,
   );
-  const context = `Invalid Yeungnam geometry feature ${officialCode} at index ${index}`;
+  if (!subjectId && !officialCode) {
+    throw new Error(
+      `Invalid Yeungnam geometry feature at index ${index} properties: expected subjectId or officialCode.`,
+    );
+  }
+
+  const context = `Invalid Yeungnam geometry feature ${subjectId ?? officialCode} at index ${index}`;
   const geometry = toRecord(feature.geometry, `${context} geometry`);
 
   if (!("coordinates" in geometry)) {
@@ -235,7 +296,8 @@ function readGeneratedGeometryFeature(
 
   return {
     properties: {
-      officialCode,
+      ...(subjectId ? { subjectId } : {}),
+      ...(officialCode ? { officialCode } : {}),
       geometrySource: readRequiredString(
         properties,
         "geometrySource",
@@ -305,7 +367,7 @@ function readOptionalString(
 function createGeometrySource(feature: GeneratedGeometryFeature): GeometrySource {
   const kind = toGeometrySourceKind(
     feature.properties.geometrySource,
-    feature.properties.officialCode,
+    geometryFeatureContext(feature),
   );
   const source: GeometrySource = {
     kind,
@@ -321,7 +383,7 @@ function createGeometrySource(feature: GeneratedGeometryFeature): GeometrySource
 
 function toGeometrySourceKind(
   value: string,
-  officialCode: string,
+  context: string,
 ): GeometrySourceKind {
   switch (value) {
     case "official-campus-map":
@@ -331,7 +393,7 @@ function toGeometrySourceKind(
       return value;
     default:
       throw new Error(
-        `Unsupported Yeungnam geometry source for ${officialCode}: ${value}`,
+        `Unsupported Yeungnam geometry source for ${context}: ${value}`,
       );
   }
 }
@@ -353,7 +415,7 @@ function getGeometrySourceName(kind: GeometrySourceKind) {
 
 function toGeometryConfidence(
   value: string,
-  officialCode: string,
+  context: string,
 ): GeometryConfidence {
   switch (value) {
     case "verified":
@@ -362,9 +424,13 @@ function toGeometryConfidence(
       return value;
     default:
       throw new Error(
-        `Unsupported Yeungnam geometry confidence for ${officialCode}: ${value}`,
+        `Unsupported Yeungnam geometry confidence for ${context}: ${value}`,
       );
   }
+}
+
+function geometryFeatureContext(feature: GeneratedGeometryFeature) {
+  return feature.properties.subjectId ?? feature.properties.officialCode ?? "unknown";
 }
 
 function toMultiPolygonCoordinates(

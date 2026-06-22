@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-22T01:09:14.805Z",
-  "strict": false,
+  "generatedAt": "2026-06-22T00:00:00.000Z",
+  "strict": true,
   "sources": {
     "catalog": "src/features/campus-energy/data/yeungnam-building-catalog.json",
     "osmBuildings": "data/raw/yeungnam-osm-buildings.geojson",
@@ -12,36 +12,33 @@
     "matches": false,
     "manualGeometries": false
   },
-  "catalogEntries": 101,
+  "catalogEntries": 121,
   "osmFootprints": 305,
   "manualFeatures": 0,
   "matchEntries": 48,
-  "mappedGeometries": 48,
-  "missingCount": 53,
-  "unmatchedOsmFootprints": 257,
-  "missingCatalogEntries": [
+  "mappedGeometries": 121,
+  "officialPointFallbackCount": 73,
+  "officialPointFallbackAcceptanceAllowed": true,
+  "officialPointFallbacks": [
     {
       "subjectId": "yu-a01",
       "officialCode": "A01",
       "name": "CHUNMA Gate/YU Metro Square",
       "nameKo": "천마지문",
-      "nameEn": "CHUNMA Gate/YU Metro Square",
       "kind": "landmark"
     },
     {
       "subjectId": "yu-a06",
       "officialCode": "A06",
-      "name": "College of Design & Art-Design Building",
-      "nameKo": "디자인미술대학 디자인관",
-      "nameEn": "College of Design & Art-Design Building",
+      "name": "College of Arts-Design Building",
+      "nameKo": "예술대학 디자인관",
       "kind": "building"
     },
     {
       "subjectId": "yu-a07",
       "officialCode": "A07",
-      "name": "College of Design & Art-Art Building",
-      "nameKo": "디자인미술대학 미술관",
-      "nameEn": "College of Design & Art-Art Building",
+      "name": "College of Arts-Art Building",
+      "nameKo": "예술대학 미술관",
       "kind": "building"
     },
     {
@@ -49,7 +46,6 @@
       "officialCode": "A08",
       "name": "College of Education Building",
       "nameKo": "사범대학",
-      "nameEn": "College of Education Building",
       "kind": "building"
     },
     {
@@ -57,15 +53,13 @@
       "officialCode": "A09",
       "name": "Tennis Court",
       "nameKo": "중앙테니스장",
-      "nameEn": "Tennis Court",
       "kind": "outdoor"
     },
     {
       "subjectId": "yu-a11",
       "officialCode": "A11",
-      "name": "Symphony Hall of College of Music",
-      "nameKo": "음악대학 심포니홀",
-      "nameEn": "Symphony Hall of College of Music",
+      "name": "College of Arts-Symphony Hall",
+      "nameKo": "예술대학 심포니홀",
       "kind": "building"
     },
     {
@@ -73,39 +67,48 @@
       "officialCode": "A12",
       "name": "Facilities Maintenance Support Center",
       "nameKo": "시설관리지원센터",
-      "nameEn": "Facilities Maintenance Support Center",
       "kind": "building"
     },
     {
       "subjectId": "yu-a16",
       "officialCode": "A16",
-      "name": "벤처창업관",
+      "name": "Venture Incubation Center",
       "nameKo": "벤처창업관",
-      "nameEn": null,
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-a17",
+      "officialCode": "A17",
+      "name": "Y-STAR Workshops for Young Creators in Gyeongsan",
+      "nameKo": "Y-STAR 경산 청년창의창작소",
       "kind": "building"
     },
     {
       "subjectId": "yu-a24",
       "officialCode": "A24",
-      "name": "디자인미술대학 세라믹실기동",
-      "nameKo": "디자인미술대학 세라믹실기동",
-      "nameEn": null,
+      "name": "College of Arts-Pottery Workshop",
+      "nameKo": "예술대학 세라믹 실기동",
       "kind": "building"
     },
     {
       "subjectId": "yu-a25",
       "officialCode": "A25",
-      "name": "태권도장",
+      "name": "Taekwondo Arena",
       "nameKo": "태권도장",
-      "nameEn": null,
       "kind": "building"
     },
     {
       "subjectId": "yu-a27",
       "officialCode": "A27",
-      "name": "탁구장",
+      "name": "Table Tennis Arena",
       "nameKo": "탁구장",
-      "nameEn": null,
+      "kind": "outdoor"
+    },
+    {
+      "subjectId": "yu-a29",
+      "officialCode": "A29",
+      "name": "Dokdo Ecological Greenhouse",
+      "nameKo": "독도자연생태온실",
       "kind": "building"
     },
     {
@@ -113,7 +116,6 @@
       "officialCode": "B03",
       "name": "College of Liberal Arts",
       "nameKo": "인문관",
-      "nameEn": "College of Liberal Arts",
       "kind": "building"
     },
     {
@@ -121,7 +123,6 @@
       "officialCode": "B06",
       "name": "Student Center",
       "nameKo": "학생회관",
-      "nameEn": "Student Center",
       "kind": "building"
     },
     {
@@ -129,23 +130,20 @@
       "officialCode": "C01",
       "name": "Headquarters",
       "nameKo": "본부본관",
-      "nameEn": "Headquarters",
       "kind": "building"
     },
     {
       "subjectId": "yu-c03",
       "officialCode": "C03",
-      "name": "General Lecture Hall",
-      "nameKo": "종합강의동",
-      "nameEn": "General Lecture Hall",
+      "name": "Chunma Hall",
+      "nameKo": "천마관",
       "kind": "building"
     },
     {
       "subjectId": "yu-c04",
       "officialCode": "C04",
-      "name": "Cafeteria of Liberal Arts",
-      "nameKo": "인문계식당",
-      "nameEn": "Cafeteria of Liberal Arts",
+      "name": "AI Smart Education Center",
+      "nameKo": "AI스마트교육센터",
       "kind": "building"
     },
     {
@@ -153,7 +151,6 @@
       "officialCode": "C06",
       "name": "Baseball Field",
       "nameKo": "야구부실내연습장",
-      "nameEn": "Baseball Field",
       "kind": "outdoor"
     },
     {
@@ -161,7 +158,6 @@
       "officialCode": "C07",
       "name": "Athletes' Dormitory",
       "nameKo": "승리관",
-      "nameEn": "Athletes' Dormitory",
       "kind": "building"
     },
     {
@@ -169,23 +165,20 @@
       "officialCode": "C21",
       "name": "University Registrar Office",
       "nameKo": "학사민원실",
-      "nameEn": "University Registrar Office",
       "kind": "building"
     },
     {
       "subjectId": "yu-c24",
       "officialCode": "C24",
-      "name": "명상실",
+      "name": "Meditation Room",
       "nameKo": "명상실",
-      "nameEn": null,
       "kind": "building"
     },
     {
       "subjectId": "yu-c25",
       "officialCode": "C25",
       "name": "Head Quarters of University Reserve Forces",
-      "nameKo": "연대본부/노동조합",
-      "nameEn": "Head Quarters of University Reserve Forces",
+      "nameKo": "연대본부 및 노동조합",
       "kind": "building"
     },
     {
@@ -193,7 +186,6 @@
       "officialCode": "C26",
       "name": "University Press",
       "nameKo": "출판부",
-      "nameEn": "University Press",
       "kind": "building"
     },
     {
@@ -201,7 +193,6 @@
       "officialCode": "C27",
       "name": "Liberal Arts Hall 2",
       "nameKo": "제2인문관",
-      "nameEn": "Liberal Arts Hall 2",
       "kind": "building"
     },
     {
@@ -209,7 +200,6 @@
       "officialCode": "C31",
       "name": "Facilities Maintenance Support Center",
       "nameKo": "교직원테니스장",
-      "nameEn": "Facilities Maintenance Support Center",
       "kind": "outdoor"
     },
     {
@@ -217,7 +207,6 @@
       "officialCode": "D09",
       "name": "Dormitory Restarurant",
       "nameKo": "생활관식당",
-      "nameEn": "Dormitory Restarurant",
       "kind": "building"
     },
     {
@@ -225,7 +214,6 @@
       "officialCode": "D21",
       "name": "Hyangto Hall",
       "nameKo": "생활관(향토관,기독생활관)",
-      "nameEn": "Hyangto Hall",
       "kind": "building"
     },
     {
@@ -233,15 +221,6 @@
       "officialCode": "E29",
       "name": "Mechanical Engineering Buliding",
       "nameKo": "기계관",
-      "nameEn": "Mechanical Engineering Buliding",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-f01",
-      "officialCode": "F01",
-      "name": "College of Pharmacy",
-      "nameKo": "약대본관",
-      "nameEn": "College of Pharmacy",
       "kind": "building"
     },
     {
@@ -249,7 +228,6 @@
       "officialCode": "F06",
       "name": "Ins' of Information & Computing Systems",
       "nameKo": "정보통신연구소",
-      "nameEn": "Ins' of Information & Computing Systems",
       "kind": "building"
     },
     {
@@ -257,23 +235,20 @@
       "officialCode": "F25",
       "name": "College of Science Cafeteria",
       "nameKo": "자연계식당",
-      "nameEn": "College of Science Cafeteria",
       "kind": "building"
     },
     {
       "subjectId": "yu-f26",
       "officialCode": "F26",
-      "name": "Biotechnology Hall",
-      "nameKo": "생명응용과학대학제1실험동",
-      "nameEn": "Biotechnology Hall",
+      "name": "Lab Ⅰ, College of Life and Applied Sciences",
+      "nameKo": "생명응용과학대 제1실험동",
       "kind": "building"
     },
     {
       "subjectId": "yu-f27",
       "officialCode": "F27",
-      "name": "HQ : College of Life and Applied Sciences",
+      "name": "Main Building, College of Life and Applied Sciences",
       "nameKo": "생명응용과학대본관",
-      "nameEn": "HQ : College of Life and Applied Sciences",
       "kind": "building"
     },
     {
@@ -281,7 +256,6 @@
       "officialCode": "F28",
       "name": "Lab Ⅱ, College of Life and Applied Sciences",
       "nameKo": "생명응용과학대제2실험동",
-      "nameEn": "Lab Ⅱ, College of Life and Applied Sciences",
       "kind": "building"
     },
     {
@@ -289,7 +263,6 @@
       "officialCode": "F29",
       "name": "Lab Ⅲ, College of Life and Applied Sciences",
       "nameKo": "생명응용과학대제3실험동",
-      "nameEn": "Lab Ⅲ, College of Life and Applied Sciences",
       "kind": "building"
     },
     {
@@ -297,23 +270,20 @@
       "officialCode": "G04",
       "name": "Law School",
       "nameKo": "대학원/법학전문대학원",
-      "nameEn": "Law School",
       "kind": "building"
     },
     {
       "subjectId": "yu-g13",
       "officialCode": "G13",
-      "name": "I-A Co-operation Technology Center",
+      "name": "Robot Engineering Building",
       "nameKo": "로봇관",
-      "nameEn": "I-A Co-operation Technology Center",
       "kind": "building"
     },
     {
       "subjectId": "yu-g16",
       "officialCode": "G16",
-      "name": "Laboratory Plant",
+      "name": "Automotive Engineering Building",
       "nameKo": "자동차관",
-      "nameEn": "Laboratory Plant",
       "kind": "building"
     },
     {
@@ -321,31 +291,20 @@
       "officialCode": "G17",
       "name": "Wind Tunnel Laboratory",
       "nameKo": "풍동실험실",
-      "nameEn": "Wind Tunnel Laboratory",
       "kind": "building"
     },
     {
       "subjectId": "yu-g18",
       "officialCode": "G18",
-      "name": "제2공장형실습장",
+      "name": "Ladoratory Plant II",
       "nameKo": "제2공장형실습장",
-      "nameEn": null,
       "kind": "building"
     },
     {
       "subjectId": "yu-g19",
       "officialCode": "G19",
-      "name": "안전체험교육장",
-      "nameKo": "안전체험교육장",
-      "nameEn": null,
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-g20",
-      "officialCode": "G20",
-      "name": "Gyeongbuk Technopark",
-      "nameKo": "경북테크노파크",
-      "nameEn": "Gyeongbuk Technopark",
+      "name": "Security Education Practice Yard",
+      "nameKo": "안전교육체험장",
       "kind": "building"
     },
     {
@@ -353,7 +312,6 @@
       "officialCode": "G41",
       "name": "KUGAESEOWON",
       "nameKo": "구계서원",
-      "nameEn": "KUGAESEOWON",
       "kind": "landmark"
     },
     {
@@ -361,7 +319,6 @@
       "officialCode": "G42",
       "name": "KACHI-GUMEONGJIB",
       "nameKo": "까치구멍집",
-      "nameEn": "KACHI-GUMEONGJIB",
       "kind": "landmark"
     },
     {
@@ -369,7 +326,6 @@
       "officialCode": "G45",
       "name": "Folklore Park / Toilet",
       "nameKo": "민속촌해우소",
-      "nameEn": "Folklore Park / Toilet",
       "kind": "landmark"
     },
     {
@@ -377,7 +333,6 @@
       "officialCode": "G46",
       "name": "HWASANSEODANG",
       "nameKo": "화산서당",
-      "nameEn": "HWASANSEODANG",
       "kind": "landmark"
     },
     {
@@ -385,7 +340,6 @@
       "officialCode": "G47",
       "name": "Gable-foofed House",
       "nameKo": "경주맞배집",
-      "nameEn": "Gable-foofed House",
       "kind": "landmark"
     },
     {
@@ -393,7 +347,6 @@
       "officialCode": "G48",
       "name": "ILHYUDANG",
       "nameKo": "일휴당",
-      "nameEn": "ILHYUDANG",
       "kind": "landmark"
     },
     {
@@ -401,50 +354,187 @@
       "officialCode": "G49",
       "name": "SSANGSONG-JEONG",
       "nameKo": "쌍송정",
-      "nameEn": "SSANGSONG-JEONG",
       "kind": "landmark"
-    },
-    {
-      "subjectId": "yu-g65",
-      "officialCode": "G65",
-      "name": "Water Work Filtration Facility",
-      "nameKo": "상수도여과지",
-      "nameEn": "Water Work Filtration Facility",
-      "kind": "utility"
     },
     {
       "subjectId": "yu-h01",
       "officialCode": "H01",
-      "name": "Professional Graduate Schools / Center for Continuing Education",
-      "nameKo": "특수대학원/사회교육원(경영관)",
-      "nameEn": "Professional Graduate Schools / Center for Continuing Education",
+      "name": "Professional Graduate Schools / Global Institute of Lifelong Education",
+      "nameKo": "경영관(특수대학원/글로벌평생교육원)",
       "kind": "building"
     },
     {
       "subjectId": "yu-h02",
       "officialCode": "H02",
       "name": "College of Medicine",
-      "nameKo": "의대본관",
-      "nameEn": "College of Medicine",
+      "nameKo": "의과대학 본관",
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-h03",
+      "officialCode": "H03",
+      "name": "College of Medicine Dormitory",
+      "nameKo": "의과대학 생활관",
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-h04",
+      "officialCode": "H04",
+      "name": "College of Medicine Lecture Center",
+      "nameKo": "의과대학 강의동",
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-h05",
+      "officialCode": "H05",
+      "name": "College of Medicine Experimental animal center",
+      "nameKo": "의과대학 동물사",
       "kind": "building"
     },
     {
       "subjectId": "yu-h06",
       "officialCode": "H06",
       "name": "Yeungnam University Medical Center",
-      "nameKo": "영대의료원(병원본관(A동))",
-      "nameEn": "Yeungnam University Medical Center",
+      "nameKo": "영남대학교병원 본관",
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-h11",
+      "officialCode": "H11",
+      "name": "Yeungnam University Medical Center West Building(Regional Emergency Center)",
+      "nameKo": "영남대학교병원 서관(권역응급의료센터)",
       "kind": "building"
     },
     {
       "subjectId": "yu-h15",
       "officialCode": "H15",
-      "name": "Yeungnam Academy Corporate Office",
-      "nameKo": "법인사무국(영의관)",
-      "nameEn": "Yeungnam Academy Corporate Office",
+      "name": "Yeonguigwan(Yeungnam Academy Corporate Office)",
+      "nameKo": "영의관(법인사무국)",
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-h16",
+      "officialCode": "H16",
+      "name": "Yeungnam University Medical Center Funeral hall",
+      "nameKo": "장례식장",
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-h19",
+      "officialCode": "H19",
+      "name": "Yeungnam University Medical Center Respiratory Center",
+      "nameKo": "권역호흡기전문질환센터",
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-official-1e7fd624",
+      "officialCode": null,
+      "name": "Baseball Field",
+      "nameKo": "야구장",
+      "kind": "outdoor"
+    },
+    {
+      "subjectId": "yu-official-1ffc1f78",
+      "officialCode": null,
+      "name": "Gyeongbuk Technopark",
+      "nameKo": "경북테크노파크",
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-official-8ed6b600",
+      "officialCode": null,
+      "name": "2nd Manufacturing Laboratory",
+      "nameKo": "제2실험생산공장",
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-official-269e22c0",
+      "officialCode": null,
+      "name": "Chunmaro Clock Tower",
+      "nameKo": "천마로 시계탑",
+      "kind": "landmark"
+    },
+    {
+      "subjectId": "yu-official-523a54d7",
+      "officialCode": null,
+      "name": "Pond(College of Life and Applied Sciences)",
+      "nameKo": "생명응용과학대연못",
+      "kind": "landmark"
+    },
+    {
+      "subjectId": "yu-official-07635a23",
+      "officialCode": null,
+      "name": "Pond(Samchonji)",
+      "nameKo": "삼천지",
+      "kind": "landmark"
+    },
+    {
+      "subjectId": "yu-official-aec72671",
+      "officialCode": null,
+      "name": "Artificial turf Arena",
+      "nameKo": "인조잔디축구장",
+      "kind": "outdoor"
+    },
+    {
+      "subjectId": "yu-official-baceee38",
+      "officialCode": null,
+      "name": "Basketball Court",
+      "nameKo": "야외농구장",
+      "kind": "outdoor"
+    },
+    {
+      "subjectId": "yu-official-d4a42b92",
+      "officialCode": null,
+      "name": "Mirror Pond",
+      "nameKo": "거울못",
+      "kind": "landmark"
+    },
+    {
+      "subjectId": "yu-official-d215c1e8",
+      "officialCode": null,
+      "name": "Water Work Filtration Facility",
+      "nameKo": "상수도 여과지",
+      "kind": "utility"
+    },
+    {
+      "subjectId": "yu-official-dd3ca952",
+      "officialCode": null,
+      "name": "Soccer Field",
+      "nameKo": "천연잔디축구장",
+      "kind": "outdoor"
+    },
+    {
+      "subjectId": "yu-official-dd73bbe1",
+      "officialCode": null,
+      "name": "천마아너스파크",
+      "nameKo": "천마아너스파크",
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-official-e45ac191",
+      "officialCode": null,
+      "name": "Lawschool Dormitory",
+      "nameKo": "법학전문대학원 생활관",
+      "kind": "building"
+    },
+    {
+      "subjectId": "yu-official-eed44f7f",
+      "officialCode": null,
+      "name": "Folklore",
+      "nameKo": "민속놀이마당",
+      "kind": "landmark"
+    },
+    {
+      "subjectId": "yu-official-fa01f701",
+      "officialCode": null,
+      "name": "1st Manufacturing Laboratory",
+      "nameKo": "제1실험생산공장",
       "kind": "building"
     }
   ],
+  "missingCount": 0,
+  "unmatchedOsmFootprints": 257,
+  "missingCatalogEntries": [],
   "unmatchedOsmNamedFootprints": [
     {
       "osmId": "way/153003630",

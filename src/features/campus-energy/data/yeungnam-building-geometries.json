@@ -1,9 +1,12 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "generatedAt": "2026-06-22T01:09:14.805Z",
+    "generatedAt": "2026-06-22T00:00:00.000Z",
     "schoolId": "yeungnam",
-    "campusId": "gyeongsan",
+    "campusIds": [
+      "daemyeong",
+      "gyeongsan"
+    ],
     "catalogSource": "src/features/campus-energy/data/yeungnam-building-catalog.json",
     "osmSource": "data/raw/yeungnam-osm-buildings.geojson",
     "matchSource": "data/raw/yeungnam-building-matches.json",
@@ -13,8 +16,30 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-a01",
+        "name": "CHUNMA Gate/YU Metro Square",
+        "shortName": "A01",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A01",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7532976281431,
+          35.83563976723486
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-a02",
-        "officialCode": "A02",
         "name": "International Center",
         "shortName": "A02",
         "schoolId": "yeungnam",
@@ -22,10 +47,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "A02",
+        "sourceUrl": "https://www.openstreetmap.org/way/134987915",
         "osmIds": [
           "way/134987915"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/134987915",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -60,7 +86,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-a04",
-        "officialCode": "A04",
         "name": "University Museum",
         "shortName": "A04",
         "schoolId": "yeungnam",
@@ -68,10 +93,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "A04",
+        "sourceUrl": "https://www.openstreetmap.org/way/134988381",
         "osmIds": [
           "way/134988381"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/134988381",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -126,7 +152,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-a05",
-        "officialCode": "A05",
         "name": "Student Support Center",
         "shortName": "A05",
         "schoolId": "yeungnam",
@@ -134,10 +159,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "A05",
+        "sourceUrl": "https://www.openstreetmap.org/way/404687358",
         "osmIds": [
           "way/404687358"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/404687358",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -179,19 +205,111 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-a06",
+        "name": "College of Arts-Design Building",
+        "shortName": "A06",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A06",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75724314289113,
+          35.83515409112729
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-a07",
+        "name": "College of Arts-Art Building",
+        "shortName": "A07",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A07",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7583346388585,
+          35.834719099407316
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-a08",
+        "name": "College of Education Building",
+        "shortName": "A08",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A08",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7590547299206,
+          35.83425349118948
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-a09",
+        "name": "Tennis Court",
+        "shortName": "A09",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "outdoor",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A09",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76013805097483,
+          35.83470170432628
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-a10",
-        "officialCode": "A10",
-        "name": "College of Music",
+        "name": "College of Arts-Music Building",
         "shortName": "A10",
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "A10",
+        "sourceUrl": "https://www.openstreetmap.org/way/471552484",
         "osmIds": [
           "way/471552484"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/471552484",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -281,19 +399,65 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-a11",
+        "name": "College of Arts-Symphony Hall",
+        "shortName": "A11",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A11",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76126921957854,
+          35.83531140831219
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-a12",
+        "name": "Facilities Maintenance Support Center",
+        "shortName": "A12",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A12",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76317779219394,
+          35.83604486357597
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-a13",
-        "officialCode": "A13",
         "name": "Multi-Purpose Gymnasium",
         "shortName": "A13",
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
-        "kind": "building",
+        "kind": "outdoor",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "A13",
+        "sourceUrl": "https://www.openstreetmap.org/way/471552486",
         "osmIds": [
           "way/471552486"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/471552486",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -328,18 +492,18 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-a14",
-        "officialCode": "A14",
-        "name": "씨름장",
+        "name": "Ssireum Arena",
         "shortName": "A14",
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "outdoor",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "A14",
+        "sourceUrl": "https://www.openstreetmap.org/way/471552489",
         "osmIds": [
           "way/471552489"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/471552489",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -373,19 +537,157 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-a16",
+        "name": "Venture Incubation Center",
+        "shortName": "A16",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A16",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.756122310121,
+          35.8380137959199
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-a17",
+        "name": "Y-STAR Workshops for Young Creators in Gyeongsan",
+        "shortName": "A17",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A17",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75551074063452,
+          35.83751558112576
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-a24",
+        "name": "College of Arts-Pottery Workshop",
+        "shortName": "A24",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A24",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7595137863297,
+          35.835247016798675
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-a25",
+        "name": "Taekwondo Arena",
+        "shortName": "A25",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A25",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75918908186847,
+          35.83632861446847
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-a27",
+        "name": "Table Tennis Arena",
+        "shortName": "A27",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "outdoor",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A27",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75935850672604,
+          35.83648383021495
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-a29",
+        "name": "Dokdo Ecological Greenhouse",
+        "shortName": "A29",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "A29",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76284615710034,
+          35.83631105572632
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-b01",
-        "officialCode": "B01",
         "name": "Amphitheater",
         "shortName": "B01",
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
-        "kind": "outdoor",
+        "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "B01",
+        "sourceUrl": "https://www.openstreetmap.org/way/211077852",
         "osmIds": [
           "way/211077852"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/211077852",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -444,7 +746,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-b02",
-        "officialCode": "B02",
         "name": "College of Business & Economics Building",
         "shortName": "B02",
         "schoolId": "yeungnam",
@@ -452,10 +753,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "B02",
+        "sourceUrl": "https://www.openstreetmap.org/way/153003637",
         "osmIds": [
           "way/153003637"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153003637",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -729,8 +1031,30 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-b03",
+        "name": "College of Liberal Arts",
+        "shortName": "B03",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "B03",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7585125688437,
+          35.8318757012974
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-b04",
-        "officialCode": "B04",
         "name": "Central Library",
         "shortName": "B04",
         "schoolId": "yeungnam",
@@ -738,10 +1062,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "B04",
+        "sourceUrl": "https://www.openstreetmap.org/way/153003627",
         "osmIds": [
           "way/153003627"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153003627",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -800,18 +1125,18 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-b05",
-        "officialCode": "B05",
-        "name": "College of Political Science and Public Administraiton",
+        "name": "Social Science Building",
         "shortName": "B05",
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "B05",
+        "sourceUrl": "https://www.openstreetmap.org/way/236381268",
         "osmIds": [
           "way/236381268"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/236381268",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -881,19 +1206,42 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-b06",
+        "name": "Student Center",
+        "shortName": "B06",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "B06",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75675192043371,
+          35.83420608297126
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-b07",
-        "officialCode": "B07",
         "name": "Memorial Gymnasium of Heekun Lee",
         "shortName": "B07",
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
-        "kind": "building",
+        "kind": "outdoor",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "B07",
+        "sourceUrl": "https://www.openstreetmap.org/way/936257478",
         "osmIds": [
           "way/936257478"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/936257478",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -927,8 +1275,30 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-c01",
+        "name": "Headquarters",
+        "shortName": "C01",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "C01",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7613728717339,
+          35.829988752548296
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-c02",
-        "officialCode": "C02",
         "name": "Foreign Language Institute",
         "shortName": "C02",
         "schoolId": "yeungnam",
@@ -936,10 +1306,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "C02",
+        "sourceUrl": "https://www.openstreetmap.org/way/153732600",
         "osmIds": [
           "way/153732600"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153732600",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -997,8 +1368,214 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-c03",
+        "name": "Chunma Hall",
+        "shortName": "C03",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "C03",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76002596186433,
+          35.8323829522826
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-c04",
+        "name": "AI Smart Education Center",
+        "shortName": "C04",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "C04",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76027767590867,
+          35.833257860637396
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-c06",
+        "name": "Baseball Field",
+        "shortName": "C06",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "outdoor",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "C06",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76189856397104,
+          35.83399555177211
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-c07",
+        "name": "Athletes' Dormitory",
+        "shortName": "C07",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "C07",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76180577741636,
+          35.83405323262593
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-c21",
+        "name": "University Registrar Office",
+        "shortName": "C21",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "C21",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.761776036763,
+          35.82995580798122
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-c24",
+        "name": "Meditation Room",
+        "shortName": "C24",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "C24",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76247656737792,
+          35.83186042250697
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-c25",
+        "name": "Head Quarters of University Reserve Forces",
+        "shortName": "C25",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "C25",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76207294224062,
+          35.832123162864264
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-c26",
+        "name": "University Press",
+        "shortName": "C26",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "C26",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7617210904386,
+          35.83222519328381
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-c27",
+        "name": "Liberal Arts Hall 2",
+        "shortName": "C27",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "C27",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76121142282784,
+          35.832446682230916
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-c28",
-        "officialCode": "C28",
         "name": "ROTC",
         "shortName": "C28",
         "schoolId": "yeungnam",
@@ -1006,10 +1583,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "C28",
+        "sourceUrl": "https://www.openstreetmap.org/way/153732584",
         "osmIds": [
           "way/153732584"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153732584",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1043,8 +1621,30 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-c31",
+        "name": "Facilities Maintenance Support Center",
+        "shortName": "C31",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "outdoor",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "C31",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76352814227755,
+          35.83362471132131
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-d01",
-        "officialCode": "D01",
         "name": "Dormitory(A)",
         "shortName": "D01",
         "schoolId": "yeungnam",
@@ -1052,10 +1652,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "D01",
+        "sourceUrl": "https://www.openstreetmap.org/way/469432799",
         "osmIds": [
           "way/469432799"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/469432799",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1122,7 +1723,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-d02",
-        "officialCode": "D02",
         "name": "Dormitory(B)",
         "shortName": "D02",
         "schoolId": "yeungnam",
@@ -1130,10 +1730,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "D02",
+        "sourceUrl": "https://www.openstreetmap.org/way/469432797",
         "osmIds": [
           "way/469432797"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/469432797",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1172,7 +1773,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-d03",
-        "officialCode": "D03",
         "name": "Dormitory(C)",
         "shortName": "D03",
         "schoolId": "yeungnam",
@@ -1180,10 +1780,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "D03",
+        "sourceUrl": "https://www.openstreetmap.org/way/469432796",
         "osmIds": [
           "way/469432796"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/469432796",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1218,7 +1819,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-d04",
-        "officialCode": "D04",
         "name": "Dormitory(D)",
         "shortName": "D04",
         "schoolId": "yeungnam",
@@ -1226,10 +1826,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "D04",
+        "sourceUrl": "https://www.openstreetmap.org/way/469432798",
         "osmIds": [
           "way/469432798"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/469432798",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1280,7 +1881,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-d05",
-        "officialCode": "D05",
         "name": "Dormitory(E)",
         "shortName": "D05",
         "schoolId": "yeungnam",
@@ -1288,10 +1888,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "D05",
+        "sourceUrl": "https://www.openstreetmap.org/way/469432795",
         "osmIds": [
           "way/469432795"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/469432795",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1342,7 +1943,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-d06",
-        "officialCode": "D06",
         "name": "Dormitory(F)",
         "shortName": "D06",
         "schoolId": "yeungnam",
@@ -1350,10 +1950,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "D06",
+        "sourceUrl": "https://www.openstreetmap.org/way/469432793",
         "osmIds": [
           "way/469432793"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/469432793",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1392,7 +1993,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-d07",
-        "officialCode": "D07",
         "name": "Dormitory(G)",
         "shortName": "D07",
         "schoolId": "yeungnam",
@@ -1400,10 +2000,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "D07",
+        "sourceUrl": "https://www.openstreetmap.org/way/469432790",
         "osmIds": [
           "way/469432790"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/469432790",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1454,7 +2055,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-d08",
-        "officialCode": "D08",
         "name": "Dormitory(H)",
         "shortName": "D08",
         "schoolId": "yeungnam",
@@ -1462,10 +2062,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "D08",
+        "sourceUrl": "https://www.openstreetmap.org/way/469432791",
         "osmIds": [
           "way/469432791"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/469432791",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1515,8 +2116,30 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-d09",
+        "name": "Dormitory Restarurant",
+        "shortName": "D09",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "D09",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.74886821973703,
+          35.829964153602255
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-d10",
-        "officialCode": "D10",
         "name": "Center for the Hig",
         "shortName": "D10",
         "schoolId": "yeungnam",
@@ -1524,10 +2147,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "D10",
+        "sourceUrl": "https://www.openstreetmap.org/way/469432794",
         "osmIds": [
           "way/469432794"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/469432794",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1585,8 +2209,30 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-d21",
+        "name": "Hyangto Hall",
+        "shortName": "D21",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "D21",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.74793356208158,
+          35.82846836752795
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-e02",
-        "officialCode": "E02",
         "name": "Chunma Arts Center Tower",
         "shortName": "E02",
         "schoolId": "yeungnam",
@@ -1594,10 +2240,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "E02",
+        "sourceUrl": "https://www.openstreetmap.org/way/153003650",
         "osmIds": [
           "way/153003650"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153003650",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1716,7 +2363,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-e04",
-        "officialCode": "E04",
         "name": "Gymnastics Arena",
         "shortName": "E04",
         "schoolId": "yeungnam",
@@ -1724,10 +2370,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "E04",
+        "sourceUrl": "https://www.openstreetmap.org/way/1053823163",
         "osmIds": [
           "way/1053823163"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/1053823163",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1766,18 +2413,18 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-e05",
-        "officialCode": "E05",
         "name": "Chunma Arena",
         "shortName": "E05",
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
-        "kind": "building",
+        "kind": "outdoor",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "E05",
+        "sourceUrl": "https://www.openstreetmap.org/way/1053823164",
         "osmIds": [
           "way/1053823164"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/1053823164",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1832,7 +2479,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-e21",
-        "officialCode": "E21",
         "name": "Information&Telecommunication Hall",
         "shortName": "E21",
         "schoolId": "yeungnam",
@@ -1840,10 +2486,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "E21",
+        "sourceUrl": "https://www.openstreetmap.org/way/153003640",
         "osmIds": [
           "way/153003640"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153003640",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1902,7 +2549,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-e22",
-        "officialCode": "E22",
         "name": "Electrical Engineering Building",
         "shortName": "E22",
         "schoolId": "yeungnam",
@@ -1910,10 +2556,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "E22",
+        "sourceUrl": "https://www.openstreetmap.org/way/153129434",
         "osmIds": [
           "way/153129434"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153129434",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -1968,7 +2615,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-e23",
-        "officialCode": "E23",
         "name": "Textiles Engineering Building",
         "shortName": "E23",
         "schoolId": "yeungnam",
@@ -1976,10 +2622,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "E23",
+        "sourceUrl": "https://www.openstreetmap.org/way/210935475",
         "osmIds": [
           "way/210935475"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/210935475",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2034,7 +2681,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-e24",
-        "officialCode": "E24",
         "name": "Chemical Engineering Building",
         "shortName": "E24",
         "schoolId": "yeungnam",
@@ -2042,10 +2688,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "E24",
+        "sourceUrl": "https://www.openstreetmap.org/way/153732588",
         "osmIds": [
           "way/153732588"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153732588",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2104,18 +2751,18 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-e26",
-        "officialCode": "E26",
         "name": "Water Research Laboratory Buliding",
         "shortName": "E26",
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
-        "kind": "building",
+        "kind": "utility",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "E26",
+        "sourceUrl": "https://www.openstreetmap.org/way/1053826026",
         "osmIds": [
           "way/1053826026"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/1053826026",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2150,7 +2797,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-e28",
-        "officialCode": "E28",
         "name": "Materials Engineering Buliding",
         "shortName": "E28",
         "schoolId": "yeungnam",
@@ -2158,10 +2804,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "E28",
+        "sourceUrl": "https://www.openstreetmap.org/way/210933807",
         "osmIds": [
           "way/210933807"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/210933807",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2211,8 +2858,30 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-e29",
+        "name": "Mechanical Engineering Buliding",
+        "shortName": "E29",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "E29",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75404226246766,
+          35.826610888319735
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-f03",
-        "officialCode": "F03",
         "name": "Architecture Building",
         "shortName": "F03",
         "schoolId": "yeungnam",
@@ -2220,10 +2889,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "F03",
+        "sourceUrl": "https://www.openstreetmap.org/way/153129443",
         "osmIds": [
           "way/153129443"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153129443",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2278,7 +2948,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-f04",
-        "officialCode": "F04",
         "name": "Computer & IT Center",
         "shortName": "F04",
         "schoolId": "yeungnam",
@@ -2286,10 +2955,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "F04",
+        "sourceUrl": "https://www.openstreetmap.org/way/153732585",
         "osmIds": [
           "way/153732585"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153732585",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2324,7 +2994,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-f05",
-        "officialCode": "F05",
         "name": "College of Engineering Auditorium",
         "shortName": "F05",
         "schoolId": "yeungnam",
@@ -2332,10 +3001,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "F05",
+        "sourceUrl": "https://www.openstreetmap.org/way/153732589",
         "osmIds": [
           "way/153732589"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153732589",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2369,8 +3039,30 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-f06",
+        "name": "Ins' of Information & Computing Systems",
+        "shortName": "F06",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "F06",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75527653469197,
+          35.82927145958731
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-f07",
-        "officialCode": "F07",
         "name": "Construction Engineering Building",
         "shortName": "F07",
         "schoolId": "yeungnam",
@@ -2378,10 +3070,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "F07",
+        "sourceUrl": "https://www.openstreetmap.org/way/153129436",
         "osmIds": [
           "way/153129436"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153129436",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2416,7 +3109,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-f21",
-        "officialCode": "F21",
         "name": "Sciences Building 1",
         "shortName": "F21",
         "schoolId": "yeungnam",
@@ -2424,10 +3116,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "F21",
+        "sourceUrl": "https://www.openstreetmap.org/way/153003643",
         "osmIds": [
           "way/153003643"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153003643",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2466,7 +3159,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-f22",
-        "officialCode": "F22",
         "name": "Sciences Building 2",
         "shortName": "F22",
         "schoolId": "yeungnam",
@@ -2474,10 +3166,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "F22",
+        "sourceUrl": "https://www.openstreetmap.org/way/153003632",
         "osmIds": [
           "way/153003632"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153003632",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2512,7 +3205,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-f23",
-        "officialCode": "F23",
         "name": "Sciences Building 3",
         "shortName": "F23",
         "schoolId": "yeungnam",
@@ -2520,10 +3212,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "F23",
+        "sourceUrl": "https://www.openstreetmap.org/way/153003634",
         "osmIds": [
           "way/153003634"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153003634",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2598,7 +3291,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-f24",
-        "officialCode": "F24",
         "name": "Science Library",
         "shortName": "F24",
         "schoolId": "yeungnam",
@@ -2606,10 +3298,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "F24",
+        "sourceUrl": "https://www.openstreetmap.org/way/153003635",
         "osmIds": [
           "way/153003635"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153003635",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2663,8 +3356,122 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-f25",
+        "name": "College of Science Cafeteria",
+        "shortName": "F25",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "F25",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75638658315623,
+          35.82842620317354
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-f26",
+        "name": "Lab Ⅰ, College of Life and Applied Sciences",
+        "shortName": "F26",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "F26",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75619582425037,
+          35.82805502449726
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-f27",
+        "name": "Main Building, College of Life and Applied Sciences",
+        "shortName": "F27",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "F27",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75677425241906,
+          35.827690624358354
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-f28",
+        "name": "Lab Ⅱ, College of Life and Applied Sciences",
+        "shortName": "F28",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "F28",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75697558622934,
+          35.827286679822166
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-f29",
+        "name": "Lab Ⅲ, College of Life and Applied Sciences",
+        "shortName": "F29",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "F29",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75539707034088,
+          35.827710751884105
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-g01",
-        "officialCode": "G01",
         "name": "College of Human Ecology & Kinesiology",
         "shortName": "G01",
         "schoolId": "yeungnam",
@@ -2672,10 +3479,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "G01",
+        "sourceUrl": "https://www.openstreetmap.org/way/210935477",
         "osmIds": [
           "way/210935477"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/210935477",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2758,7 +3566,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-g02",
-        "officialCode": "G02",
         "name": "College of Human Ecology & Kinesiology(annnex)",
         "shortName": "G02",
         "schoolId": "yeungnam",
@@ -2766,10 +3573,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "G02",
+        "sourceUrl": "https://www.openstreetmap.org/way/210935474",
         "osmIds": [
           "way/210935474"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/210935474",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2804,7 +3612,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-g03",
-        "officialCode": "G03",
         "name": "Law School Library",
         "shortName": "G03",
         "schoolId": "yeungnam",
@@ -2812,10 +3619,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "G03",
+        "sourceUrl": "https://www.openstreetmap.org/way/928755748",
         "osmIds": [
           "way/928755748"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/928755748",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2857,19 +3665,42 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-g04",
+        "name": "Law School",
+        "shortName": "G04",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G04",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75937326657277,
+          35.82838250779437
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-g07",
-        "officialCode": "G07",
-        "name": "약학관",
+        "name": "Pharmacy Building",
         "shortName": "G07",
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "G07",
+        "sourceUrl": "https://www.openstreetmap.org/way/927541904",
         "osmIds": [
           "way/927541904"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/927541904",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2920,7 +3751,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-g11",
-        "officialCode": "G11",
         "name": "CRC",
         "shortName": "G11",
         "schoolId": "yeungnam",
@@ -2928,10 +3758,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "G11",
+        "sourceUrl": "https://www.openstreetmap.org/way/468967516",
         "osmIds": [
           "way/468967516"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/468967516",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -2982,7 +3813,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-g12",
-        "officialCode": "G12",
         "name": "Business Incubation Center",
         "shortName": "G12",
         "schoolId": "yeungnam",
@@ -2990,10 +3820,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "G12",
+        "sourceUrl": "https://www.openstreetmap.org/way/468967476",
         "osmIds": [
           "way/468967476"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/468967476",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -3035,8 +3866,30 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-g13",
+        "name": "Robot Engineering Building",
+        "shortName": "G13",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G13",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75619919056396,
+          35.82544621717952
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-g14",
-        "officialCode": "G14",
         "name": "Annex : Center for Research Facilities",
         "shortName": "G14",
         "schoolId": "yeungnam",
@@ -3044,10 +3897,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "G14",
+        "sourceUrl": "https://www.openstreetmap.org/way/153003646",
         "osmIds": [
           "way/153003646"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/153003646",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -3114,7 +3968,6 @@
       "type": "Feature",
       "properties": {
         "subjectId": "yu-g15",
-        "officialCode": "G15",
         "name": "Production Technology Research Center",
         "shortName": "G15",
         "schoolId": "yeungnam",
@@ -3122,10 +3975,11 @@
         "kind": "building",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "G15",
+        "sourceUrl": "https://www.openstreetmap.org/way/236156801",
         "osmIds": [
           "way/236156801"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/236156801",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -3179,8 +4033,145 @@
     {
       "type": "Feature",
       "properties": {
+        "subjectId": "yu-g16",
+        "name": "Automotive Engineering Building",
+        "shortName": "G16",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G16",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7549556288866,
+          35.82500030631081
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g17",
+        "name": "Wind Tunnel Laboratory",
+        "shortName": "G17",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G17",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7543799435632,
+          35.82498618474983
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g18",
+        "name": "Ladoratory Plant II",
+        "shortName": "G18",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G18",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75378451449842,
+          35.82508048371851
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g19",
+        "name": "Security Education Practice Yard",
+        "shortName": "G19",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G19",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7538646789909,
+          35.824700840722166
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g41",
+        "name": "KUGAESEOWON",
+        "shortName": "G41",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G41",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76120630717392,
+          35.82833537821079
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g42",
+        "name": "KACHI-GUMEONGJIB",
+        "shortName": "G42",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G42",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76224677834338,
+          35.828975690617796
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "subjectId": "yu-g43",
-        "officialCode": "G43",
         "name": "WHNJEONGSA",
         "shortName": "G43",
         "schoolId": "yeungnam",
@@ -3188,10 +4179,11 @@
         "kind": "landmark",
         "geometrySource": "openstreetmap",
         "geometryConfidence": "estimated",
+        "officialCode": "G43",
+        "sourceUrl": "https://www.openstreetmap.org/way/928753188",
         "osmIds": [
           "way/928753188"
         ],
-        "sourceUrl": "https://www.openstreetmap.org/way/928753188",
         "matchMethod": "normalized-exact-name"
       },
       "geometry": {
@@ -3219,6 +4211,681 @@
               35.8282533
             ]
           ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g45",
+        "name": "Folklore Park / Toilet",
+        "shortName": "G45",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G45",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76222942542896,
+          35.82781574761226
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g46",
+        "name": "HWASANSEODANG",
+        "shortName": "G46",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G46",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76244460831873,
+          35.82741384397965
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g47",
+        "name": "Gable-foofed House",
+        "shortName": "G47",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G47",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76252772177966,
+          35.82716932126573
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g48",
+        "name": "ILHYUDANG",
+        "shortName": "G48",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G48",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76189464469732,
+          35.827187617175184
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g49",
+        "name": "SSANGSONG-JEONG",
+        "shortName": "G49",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "G49",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76129016121334,
+          35.827498356104925
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-h01",
+        "name": "Professional Graduate Schools / Global Institute of Lifelong Education",
+        "shortName": "H01",
+        "schoolId": "yeungnam",
+        "campusId": "daemyeong",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "H01",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.58777689561205,
+          35.84680847359152
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-h02",
+        "name": "College of Medicine",
+        "shortName": "H02",
+        "schoolId": "yeungnam",
+        "campusId": "daemyeong",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "H02",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.58619975965868,
+          35.847090640016084
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-h03",
+        "name": "College of Medicine Dormitory",
+        "shortName": "H03",
+        "schoolId": "yeungnam",
+        "campusId": "daemyeong",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "H03",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.58729540902502,
+          35.84708518030763
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-h04",
+        "name": "College of Medicine Lecture Center",
+        "shortName": "H04",
+        "schoolId": "yeungnam",
+        "campusId": "daemyeong",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "H04",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.5868592577419,
+          35.84741535513727
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-h05",
+        "name": "College of Medicine Experimental animal center",
+        "shortName": "H05",
+        "schoolId": "yeungnam",
+        "campusId": "daemyeong",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "H05",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.58684646205796,
+          35.84788412069163
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-h06",
+        "name": "Yeungnam University Medical Center",
+        "shortName": "H06",
+        "schoolId": "yeungnam",
+        "campusId": "daemyeong",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "H06",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.58504578678117,
+          35.84750237561197
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-h11",
+        "name": "Yeungnam University Medical Center West Building(Regional Emergency Center)",
+        "shortName": "H11",
+        "schoolId": "yeungnam",
+        "campusId": "daemyeong",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "H11",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.5842676226908,
+          35.84733241047633
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-h15",
+        "name": "Yeonguigwan(Yeungnam Academy Corporate Office)",
+        "shortName": "H15",
+        "schoolId": "yeungnam",
+        "campusId": "daemyeong",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "H15",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.58519785345766,
+          35.84568906258265
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-h16",
+        "name": "Yeungnam University Medical Center Funeral hall",
+        "shortName": "H16",
+        "schoolId": "yeungnam",
+        "campusId": "daemyeong",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "H16",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.58498459428282,
+          35.84776451571502
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-h19",
+        "name": "Yeungnam University Medical Center Respiratory Center",
+        "shortName": "H19",
+        "schoolId": "yeungnam",
+        "campusId": "daemyeong",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "officialCode": "H19",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.58527930845457,
+          35.846444951783404
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-1e7fd624",
+        "name": "Baseball Field",
+        "shortName": "야구장",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "outdoor",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.761694618588,
+          35.83302983440941
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-1ffc1f78",
+        "name": "Gyeongbuk Technopark",
+        "shortName": "경북테크노파크",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75612679865458,
+          35.82454614952862
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-8ed6b600",
+        "name": "2nd Manufacturing Laboratory",
+        "shortName": "제2실험생산공장",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75488021211532,
+          35.82433908021348
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-269e22c0",
+        "name": "Chunmaro Clock Tower",
+        "shortName": "천마로 시계탑",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7537528824254,
+          35.83445264947151
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-523a54d7",
+        "name": "Pond(College of Life and Applied Sciences)",
+        "shortName": "생명응용과학대연못",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75816580225754,
+          35.826566392589775
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-07635a23",
+        "name": "Pond(Samchonji)",
+        "shortName": "삼천지",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7516250590052,
+          35.827479539072456
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-aec72671",
+        "name": "Artificial turf Arena",
+        "shortName": "인조잔디축구장",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "outdoor",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75074107148052,
+          35.83009007050901
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-baceee38",
+        "name": "Basketball Court",
+        "shortName": "야외농구장",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "outdoor",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75216923488298,
+          35.82961868958403
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-d4a42b92",
+        "name": "Mirror Pond",
+        "shortName": "거울못",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75962937454418,
+          35.8297079162325
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-d215c1e8",
+        "name": "Water Work Filtration Facility",
+        "shortName": "상수도 여과지",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "utility",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76118835280883,
+          35.823016752186646
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-dd3ca952",
+        "name": "Soccer Field",
+        "shortName": "천연잔디축구장",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "outdoor",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75479448159237,
+          35.835771105303024
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-dd73bbe1",
+        "name": "천마아너스파크",
+        "shortName": "천마아너스파크",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.7601738129029,
+          35.8308105775303
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-e45ac191",
+        "name": "Lawschool Dormitory",
+        "shortName": "법학전문대학원 생활관",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.757662716216,
+          35.8227403648947
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-eed44f7f",
+        "name": "Folklore",
+        "shortName": "민속놀이마당",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "landmark",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.76176814778245,
+          35.82784729283406
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-official-fa01f701",
+        "name": "1st Manufacturing Laboratory",
+        "shortName": "제1실험생산공장",
+        "schoolId": "yeungnam",
+        "campusId": "gyeongsan",
+        "kind": "building",
+        "geometrySource": "official-campus-map",
+        "geometryConfidence": "verified",
+        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "matchMethod": "official-campus-map-point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          128.75617331816142,
+          35.825025319080645
         ]
       }
     }

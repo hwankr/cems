@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { demoSubjects, getDemoEnergyComparisons } from "../data/demo-campus";
 import { compareEnergy } from "../domain/energy";
 import {
   createEnergySubjectFeatureCollection,
@@ -191,5 +192,21 @@ describe("createEnergySubjectFeatureCollection", () => {
         },
       ],
     });
+  });
+
+  it("creates a map feature for every generated Yeungnam demo subject", () => {
+    const collection = createEnergySubjectFeatureCollection(
+      demoSubjects,
+      getDemoEnergyComparisons(),
+      demoSubjects[0]?.id ?? "",
+    );
+
+    expect(collection.features).toHaveLength(demoSubjects.length);
+    expect(
+      collection.features.some((feature) => feature.geometry.type === "Point"),
+    ).toBe(true);
+    expect(
+      collection.features.some((feature) => feature.geometry.type === "Polygon"),
+    ).toBe(true);
   });
 });

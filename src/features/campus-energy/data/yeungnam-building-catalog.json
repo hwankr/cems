@@ -1,14 +1,14 @@
 {
   "metadata": {
     "schoolId": "yeungnam",
-    "campusId": "gyeongsan",
-    "generatedAt": "2026-06-22T01:09:11.505Z",
+    "generatedAt": "2026-06-22T00:00:00.000Z",
     "sourceUrls": [
-      "https://www.yu.ac.kr/campus_vr-k/vr.php",
-      "https://www.yu.ac.kr/campus_vr-e/vr_eng.php"
+      "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "https://www.yu.ac.kr/english/about/campus-map.do"
     ],
-    "koreanEntryCount": 101,
-    "englishEntryCount": 92
+    "koreanEntryCount": 121,
+    "englishEntryCount": 120,
+    "officialGpsEntryCount": 121
   },
   "buildings": [
     {
@@ -16,17 +16,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A01",
+      "officialMapUuid": "f0f6625e-791d-4b11-a7f6-16bd56b1b0d5",
       "name": "CHUNMA Gate/YU Metro Square",
       "nameKo": "천마지문",
       "shortName": "A01",
       "kind": "landmark",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub225.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub225.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7532976281431,
+          35.83563976723486
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A01",
       "nameEn": "CHUNMA Gate/YU Metro Square"
     },
     {
@@ -34,17 +48,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A02",
+      "officialMapUuid": "8ee0aca6-6b5e-4ea7-a551-43a41fec2527",
       "name": "International Center",
       "nameKo": "국제교류센터",
       "shortName": "A02",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub117.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub117.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7546185648828,
+          35.83682799005663
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A02",
       "nameEn": "International Center"
     },
     {
@@ -52,17 +80,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A04",
+      "officialMapUuid": "ac5f7fe7-c57c-4ada-b9b9-08df9fa2be39",
       "name": "University Museum",
       "nameKo": "박물관",
       "shortName": "A04",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub017_all.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub017_all.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75633170708156,
+          35.83647855390543
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A04",
       "nameEn": "University Museum"
     },
     {
@@ -70,17 +112,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A05",
+      "officialMapUuid": "515fb2dd-793f-4206-8333-04bd3ad617a6",
       "name": "Student Support Center",
       "nameKo": "학생지원센터",
       "shortName": "A05",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub112_all.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub112_all.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75610003620042,
+          35.83525641145394
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A05",
       "nameEn": "Student Support Center"
     },
     {
@@ -88,53 +144,95 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A06",
-      "name": "College of Design & Art-Design Building",
-      "nameKo": "디자인미술대학 디자인관",
+      "officialMapUuid": "3bddd4ce-36e8-40c1-903e-cc5f4bc259a5",
+      "name": "College of Arts-Design Building",
+      "nameKo": "예술대학 디자인관",
       "shortName": "A06",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub106.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub106.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "College of Design & Art-Design Building"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75724314289113,
+          35.83515409112729
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A06",
+      "nameEn": "College of Arts-Design Building"
     },
     {
       "id": "yu-a07",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A07",
-      "name": "College of Design & Art-Art Building",
-      "nameKo": "디자인미술대학 미술관",
+      "officialMapUuid": "83ab5d6e-db6e-461c-a820-98f2f82af853",
+      "name": "College of Arts-Art Building",
+      "nameKo": "예술대학 미술관",
       "shortName": "A07",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub008.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub008.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "College of Design & Art-Art Building"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7583346388585,
+          35.834719099407316
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A07",
+      "nameEn": "College of Arts-Art Building"
     },
     {
       "id": "yu-a08",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A08",
+      "officialMapUuid": "614de8fa-01d5-44ac-9077-82d8f3e25b2a",
       "name": "College of Education Building",
       "nameKo": "사범대학",
       "shortName": "A08",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub007.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub007.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7590547299206,
+          35.83425349118948
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A08",
       "nameEn": "College of Education Building"
     },
     {
@@ -142,17 +240,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A09",
+      "officialMapUuid": "c3b4a2d8-aac4-4bea-8c57-82f920de2a94",
       "name": "Tennis Court",
       "nameKo": "중앙테니스장",
       "shortName": "A09",
       "kind": "outdoor",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub045.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub045.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76013805097483,
+          35.83470170432628
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A09",
       "nameEn": "Tennis Court"
     },
     {
@@ -160,53 +272,95 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A10",
-      "name": "College of Music",
-      "nameKo": "음악대학",
+      "officialMapUuid": "d8c714bb-0d1f-4803-9f20-0a01a0716434",
+      "name": "College of Arts-Music Building",
+      "nameKo": "예술대학 음악관",
       "shortName": "A10",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub042.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub042.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "College of Music"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7614090060983,
+          35.83487681975927
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A10",
+      "nameEn": "College of Arts-Music Building"
     },
     {
       "id": "yu-a11",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A11",
-      "name": "Symphony Hall of College of Music",
-      "nameKo": "음악대학 심포니홀",
+      "officialMapUuid": "d2d1da6c-db0b-424b-aa31-7920772abc22",
+      "name": "College of Arts-Symphony Hall",
+      "nameKo": "예술대학 심포니홀",
       "shortName": "A11",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub122.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub122.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "Symphony Hall of College of Music"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76126921957854,
+          35.83531140831219
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A11",
+      "nameEn": "College of Arts-Symphony Hall"
     },
     {
       "id": "yu-a12",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A12",
+      "officialMapUuid": "a84caa93-820f-4fd0-a397-75f01c66a49f",
       "name": "Facilities Maintenance Support Center",
       "nameKo": "시설관리지원센터",
       "shortName": "A12",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub219.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub219.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76317779219394,
+          35.83604486357597
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A12",
       "nameEn": "Facilities Maintenance Support Center"
     },
     {
@@ -214,17 +368,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A13",
+      "officialMapUuid": "d1dbe937-555b-448c-af43-a31c20b8bb70",
       "name": "Multi-Purpose Gymnasium",
       "nameKo": "필승관",
       "shortName": "A13",
-      "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub043.htm",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub043.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.760832695813,
+          35.83508802020847
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A13",
       "nameEn": "Multi-Purpose Gymnasium"
     },
     {
@@ -232,102 +400,255 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A14",
-      "name": "씨름장",
+      "officialMapUuid": "190c690a-cc3c-401b-b8d8-f20f2039f689",
+      "name": "Ssireum Arena",
       "nameKo": "씨름장",
       "shortName": "A14",
       "kind": "outdoor",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub100.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub100.htm"
-      ]
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76067031274948,
+          35.83625284930233
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A14",
+      "nameEn": "Ssireum Arena"
     },
     {
       "id": "yu-a16",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A16",
-      "name": "벤처창업관",
+      "officialMapUuid": "36f0c815-b9bc-4a88-a6ca-a3f5175ab876",
+      "name": "Venture Incubation Center",
       "nameKo": "벤처창업관",
       "shortName": "A16",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub286.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub286.htm"
-      ]
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.756122310121,
+          35.8380137959199
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A16",
+      "nameEn": "Venture Incubation Center"
+    },
+    {
+      "id": "yu-a17",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialMapUuid": "7ec4ff24-9941-487a-a819-243752a336ed",
+      "name": "Y-STAR Workshops for Young Creators in Gyeongsan",
+      "nameKo": "Y-STAR 경산 청년창의창작소",
+      "shortName": "A17",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75551074063452,
+          35.83751558112576
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A17",
+      "nameEn": "Y-STAR Workshops for Young Creators in Gyeongsan"
     },
     {
       "id": "yu-a24",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A24",
-      "name": "디자인미술대학 세라믹실기동",
-      "nameKo": "디자인미술대학 세라믹실기동",
+      "officialMapUuid": "41cb7ffa-006e-4a86-b45d-b902ec4d3fbd",
+      "name": "College of Arts-Pottery Workshop",
+      "nameKo": "예술대학 세라믹 실기동",
       "shortName": "A24",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub049.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub049.htm"
-      ]
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7595137863297,
+          35.835247016798675
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A24",
+      "nameEn": "College of Arts-Pottery Workshop"
     },
     {
       "id": "yu-a25",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A25",
-      "name": "태권도장",
+      "officialMapUuid": "0a55859d-b8ea-49d7-adb1-113e1820503a",
+      "name": "Taekwondo Arena",
       "nameKo": "태권도장",
       "shortName": "A25",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub053.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub053.htm"
-      ]
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75918908186847,
+          35.83632861446847
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A25",
+      "nameEn": "Taekwondo Arena"
     },
     {
       "id": "yu-a27",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "A",
-      "officialCode": "A27",
-      "name": "탁구장",
+      "officialMapUuid": "81d9adaf-ad53-498a-81a4-23b50a2d0d0c",
+      "name": "Table Tennis Arena",
       "nameKo": "탁구장",
       "shortName": "A27",
-      "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub093.htm",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub093.htm"
-      ]
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75935850672604,
+          35.83648383021495
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A27",
+      "nameEn": "Table Tennis Arena"
+    },
+    {
+      "id": "yu-a29",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialMapUuid": "9f1a7046-fa92-47f4-9007-9301bd086e62",
+      "name": "Dokdo Ecological Greenhouse",
+      "nameKo": "독도자연생태온실",
+      "shortName": "A29",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76284615710034,
+          35.83631105572632
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "A29",
+      "nameEn": "Dokdo Ecological Greenhouse"
     },
     {
       "id": "yu-b01",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "B",
-      "officialCode": "B01",
+      "officialMapUuid": "cc2c1196-59bc-4918-aae1-4d3c51d8eb6b",
       "name": "Amphitheater",
       "nameKo": "노천강당",
       "shortName": "B01",
-      "kind": "outdoor",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub056.htm",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub056.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75509587741593,
+          35.83413116192374
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "B01",
       "nameEn": "Amphitheater"
     },
     {
@@ -335,17 +656,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "B",
-      "officialCode": "B02",
+      "officialMapUuid": "254f11c6-1b2b-41df-b329-adb085563367",
       "name": "College of Business & Economics Building",
       "nameKo": "상경관",
       "shortName": "B02",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub011.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub011.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75601224453618,
+          35.832779602333574
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "B02",
       "nameEn": "College of Business & Economics Building"
     },
     {
@@ -353,17 +688,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "B",
-      "officialCode": "B03",
+      "officialMapUuid": "b174a1a4-8c74-4ca6-833c-d2ecdc30561c",
       "name": "College of Liberal Arts",
       "nameKo": "인문관",
       "shortName": "B03",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub004.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub004.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7585125688437,
+          35.8318757012974
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "B03",
       "nameEn": "College of Liberal Arts"
     },
     {
@@ -371,17 +720,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "B",
-      "officialCode": "B04",
+      "officialMapUuid": "bc7eaa6e-c4cc-4159-9f65-074c58bf61b2",
       "name": "Central Library",
       "nameKo": "중앙도서관",
       "shortName": "B04",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub006_all.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub006_all.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75796519012056,
+          35.83302138097258
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "B04",
       "nameEn": "Central Library"
     },
     {
@@ -389,35 +752,63 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "B",
-      "officialCode": "B05",
-      "name": "College of Political Science and Public Administraiton",
-      "nameKo": "법정관",
+      "officialMapUuid": "7d66302f-0039-4aca-9fc7-fd5959afb0ba",
+      "name": "Social Science Building",
+      "nameKo": "사회과학관",
       "shortName": "B05",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub131.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub131.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "College of Political Science and Public Administraiton"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7564510855543,
+          35.83361123355937
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "B05",
+      "nameEn": "Social Science Building"
     },
     {
       "id": "yu-b06",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "B",
-      "officialCode": "B06",
+      "officialMapUuid": "81f85ecd-c509-4540-ae88-fda9dc4d3e8a",
       "name": "Student Center",
       "nameKo": "학생회관",
       "shortName": "B06",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub009.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub009.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75675192043371,
+          35.83420608297126
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "B06",
       "nameEn": "Student Center"
     },
     {
@@ -425,17 +816,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "B",
-      "officialCode": "B07",
+      "officialMapUuid": "10c770b3-b7be-4a28-9a47-55a24f8c6dd6",
       "name": "Memorial Gymnasium of Heekun Lee",
       "nameKo": "이희건기념관",
       "shortName": "B07",
-      "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub010.htm",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub010.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7559584903663,
+          35.83435735589169
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "B07",
       "nameEn": "Memorial Gymnasium of Heekun Lee"
     },
     {
@@ -443,17 +848,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C01",
+      "officialMapUuid": "f3e8de60-ace8-451a-93e3-1094c9d74a0e",
       "name": "Headquarters",
       "nameKo": "본부본관",
       "shortName": "C01",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub001.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub001.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7613728717339,
+          35.829988752548296
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C01",
       "nameEn": "Headquarters"
     },
     {
@@ -461,17 +880,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C02",
+      "officialMapUuid": "7e472967-9614-4b38-9144-dd7e879bed92",
       "name": "Foreign Language Institute",
       "nameKo": "외국어교육원",
       "shortName": "C02",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub003.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub003.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75998586912547,
+          35.83182033700347
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C02",
       "nameEn": "Foreign Language Institute"
     },
     {
@@ -479,53 +912,95 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C03",
-      "name": "General Lecture Hall",
-      "nameKo": "종합강의동",
+      "officialMapUuid": "f103d795-0861-4491-8761-dbbf2b056b9d",
+      "name": "Chunma Hall",
+      "nameKo": "천마관",
       "shortName": "C03",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub005.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub005.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "General Lecture Hall"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76002596186433,
+          35.8323829522826
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C03",
+      "nameEn": "Chunma Hall"
     },
     {
       "id": "yu-c04",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C04",
-      "name": "Cafeteria of Liberal Arts",
-      "nameKo": "인문계식당",
+      "officialMapUuid": "801f265d-1cb2-4607-aeaa-3c5d79324dc0",
+      "name": "AI Smart Education Center",
+      "nameKo": "AI스마트교육센터",
       "shortName": "C04",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub170.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub170.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "Cafeteria of Liberal Arts"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76027767590867,
+          35.833257860637396
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C04",
+      "nameEn": "AI Smart Education Center"
     },
     {
       "id": "yu-c06",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C06",
+      "officialMapUuid": "9f672512-e4f8-4bb2-ac34-f23b66cace36",
       "name": "Baseball Field",
       "nameKo": "야구부실내연습장",
       "shortName": "C06",
       "kind": "outdoor",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub039.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub039.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76189856397104,
+          35.83399555177211
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C06",
       "nameEn": "Baseball Field"
     },
     {
@@ -533,17 +1008,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C07",
+      "officialMapUuid": "378753ba-2118-4e5e-bf40-6344826d7048",
       "name": "Athletes' Dormitory",
       "nameKo": "승리관",
       "shortName": "C07",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub223.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub223.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76180577741636,
+          35.83405323262593
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C07",
       "nameEn": "Athletes' Dormitory"
     },
     {
@@ -551,17 +1040,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C21",
+      "officialMapUuid": "1d1e556d-334e-4eb6-9ed3-2676c199e4eb",
       "name": "University Registrar Office",
       "nameKo": "학사민원실",
       "shortName": "C21",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub002.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub002.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.761776036763,
+          35.82995580798122
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C21",
       "nameEn": "University Registrar Office"
     },
     {
@@ -569,34 +1072,63 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C24",
-      "name": "명상실",
+      "officialMapUuid": "4fae6dbd-7775-4122-a5a3-d185e1461bd1",
+      "name": "Meditation Room",
       "nameKo": "명상실",
       "shortName": "C24",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub035.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub035.htm"
-      ]
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76247656737792,
+          35.83186042250697
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C24",
+      "nameEn": "Meditation Room"
     },
     {
       "id": "yu-c25",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C25",
+      "officialMapUuid": "33a32fea-05b7-4197-8f2a-0b45a23e8a82",
       "name": "Head Quarters of University Reserve Forces",
-      "nameKo": "연대본부/노동조합",
+      "nameKo": "연대본부 및 노동조합",
       "shortName": "C25",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub032.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub032.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76207294224062,
+          35.832123162864264
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C25",
       "nameEn": "Head Quarters of University Reserve Forces"
     },
     {
@@ -604,17 +1136,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C26",
+      "officialMapUuid": "d6723777-40c1-402f-b54e-e3724cb50950",
       "name": "University Press",
       "nameKo": "출판부",
       "shortName": "C26",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub033.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub033.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7617210904386,
+          35.83222519328381
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C26",
       "nameEn": "University Press"
     },
     {
@@ -622,17 +1168,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C27",
+      "officialMapUuid": "9665f391-e628-4929-8a75-484eb9afe931",
       "name": "Liberal Arts Hall 2",
       "nameKo": "제2인문관",
       "shortName": "C27",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub198.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub198.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76121142282784,
+          35.832446682230916
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C27",
       "nameEn": "Liberal Arts Hall 2"
     },
     {
@@ -640,17 +1200,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C28",
+      "officialMapUuid": "ceb796d6-9a7c-48e9-8f54-0c9885a8dec6",
       "name": "ROTC",
       "nameKo": "학군단",
       "shortName": "C28",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub034.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub034.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76243510238308,
+          35.832987435373
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C28",
       "nameEn": "ROTC"
     },
     {
@@ -658,17 +1232,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "C",
-      "officialCode": "C31",
+      "officialMapUuid": "08d6b78d-c3a8-4f18-ac0e-39f697acaf25",
       "name": "Facilities Maintenance Support Center",
       "nameKo": "교직원테니스장",
       "shortName": "C31",
       "kind": "outdoor",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub096.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub096.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76352814227755,
+          35.83362471132131
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "C31",
       "nameEn": "Facilities Maintenance Support Center"
     },
     {
@@ -676,17 +1264,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "D",
-      "officialCode": "D01",
+      "officialMapUuid": "e651bb9b-1ee0-430c-92b5-ddf79b839ce8",
       "name": "Dormitory(A)",
       "nameKo": "생활관A동",
       "shortName": "D01",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub068.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub068.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.74892261452865,
+          35.828661234513454
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "D01",
       "nameEn": "Dormitory(A)"
     },
     {
@@ -694,17 +1296,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "D",
-      "officialCode": "D02",
+      "officialMapUuid": "2f17de80-3aff-41dd-ab92-26be56f17c8a",
       "name": "Dormitory(B)",
       "nameKo": "생활관B동",
       "shortName": "D02",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub107.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub107.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.74806384124335,
+          35.82911077762486
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "D02",
       "nameEn": "Dormitory(B)"
     },
     {
@@ -712,17 +1328,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "D",
-      "officialCode": "D03",
+      "officialMapUuid": "2815af2a-a043-4d38-90d9-d8de82d1f552",
       "name": "Dormitory(C)",
       "nameKo": "생활관C동",
       "shortName": "D03",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub108.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub108.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.74795490353364,
+          35.82944127356407
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "D03",
       "nameEn": "Dormitory(C)"
     },
     {
@@ -730,17 +1360,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "D",
-      "officialCode": "D04",
+      "officialMapUuid": "502f54d4-5115-4526-ba7c-59b1208f07bd",
       "name": "Dormitory(D)",
       "nameKo": "생활관D동",
       "shortName": "D04",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub067.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub067.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.748877932076,
+          35.82914624024215
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "D04",
       "nameEn": "Dormitory(D)"
     },
     {
@@ -748,17 +1392,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "D",
-      "officialCode": "D05",
+      "officialMapUuid": "8a2d5704-213a-4e11-8210-19280bb7a54e",
       "name": "Dormitory(E)",
       "nameKo": "생활관E동",
       "shortName": "D05",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub057.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub057.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7475906489647,
+          35.82973493247034
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "D05",
       "nameEn": "Dormitory(E)"
     },
     {
@@ -766,17 +1424,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "D",
-      "officialCode": "D06",
+      "officialMapUuid": "70f23596-916e-48c3-bbd2-3d6a4332aa50",
       "name": "Dormitory(F)",
       "nameKo": "생활관F동",
       "shortName": "D06",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub189.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub189.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.74831106469554,
+          35.82978753098533
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "D06",
       "nameEn": "Dormitory(F)"
     },
     {
@@ -784,17 +1456,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "D",
-      "officialCode": "D07",
+      "officialMapUuid": "bfd244f7-af33-41f7-866f-19f60d6bd87f",
       "name": "Dormitory(G)",
       "nameKo": "생활관G동",
       "shortName": "D07",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub218.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub218.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.74891800952622,
+          35.83046805948568
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "D07",
       "nameEn": "Dormitory(G)"
     },
     {
@@ -802,17 +1488,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "D",
-      "officialCode": "D08",
+      "officialMapUuid": "de8f372f-0f33-41f3-9c89-1a5fcb7eab52",
       "name": "Dormitory(H)",
       "nameKo": "생활관H동",
       "shortName": "D08",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub217.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub217.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.74782601805765,
+          35.830375814163155
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "D08",
       "nameEn": "Dormitory(H)"
     },
     {
@@ -820,17 +1520,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "D",
-      "officialCode": "D09",
+      "officialMapUuid": "e5ba536b-e1d2-4f96-90b3-46328e28ab2e",
       "name": "Dormitory Restarurant",
       "nameKo": "생활관식당",
       "shortName": "D09",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub130.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub130.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.74886821973703,
+          35.829964153602255
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "D09",
       "nameEn": "Dormitory Restarurant"
     },
     {
@@ -838,17 +1552,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "D",
-      "officialCode": "D10",
+      "officialMapUuid": "61fa6042-246c-4a69-bc7b-45375bbe5834",
       "name": "Center for the Hig",
       "nameKo": "고시원",
       "shortName": "D10",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub124.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub124.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7473981502507,
+          35.830039609458495
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "D10",
       "nameEn": "Center for the Hig"
     },
     {
@@ -856,17 +1584,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "D",
-      "officialCode": "D21",
+      "officialMapUuid": "c8ad9ecd-5826-4b88-8562-f82a4a10e9e3",
       "name": "Hyangto Hall",
       "nameKo": "생활관(향토관,기독생활관)",
       "shortName": "D21",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub231.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub231.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.74793356208158,
+          35.82846836752795
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "D21",
       "nameEn": "Hyangto Hall"
     },
     {
@@ -874,17 +1616,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "E",
-      "officialCode": "E02",
+      "officialMapUuid": "44c82798-6cad-4c6c-936e-217a4a4f13bb",
       "name": "Chunma Arts Center Tower",
       "nameKo": "천마아트센터",
       "shortName": "E02",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub230.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub230.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75315255201326,
+          35.83206441830065
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "E02",
       "nameEn": "Chunma Arts Center Tower"
     },
     {
@@ -892,17 +1648,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "E",
-      "officialCode": "E04",
+      "officialMapUuid": "1a277109-9930-482f-95ff-7e21bcf6b24e",
       "name": "Gymnastics Arena",
       "nameKo": "체조장",
       "shortName": "E04",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub059.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub059.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7529156124662,
+          35.830851356185285
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "E04",
       "nameEn": "Gymnastics Arena"
     },
     {
@@ -910,17 +1680,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "E",
-      "officialCode": "E05",
+      "officialMapUuid": "f62433fc-015b-4f6d-8fed-fb238e06d3ff",
       "name": "Chunma Arena",
       "nameKo": "천마체육관",
       "shortName": "E05",
-      "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub136.htm",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub136.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7529031271948,
+          35.83028382932409
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "E05",
       "nameEn": "Chunma Arena"
     },
     {
@@ -928,17 +1712,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "E",
-      "officialCode": "E21",
+      "officialMapUuid": "63f8d179-7b01-4400-b1da-e36323bde49f",
       "name": "Information&Telecommunication Hall",
       "nameKo": "IT관",
       "shortName": "E21",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub012.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub012.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75447081387387,
+          35.830621398289566
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "E21",
       "nameEn": "Information&Telecommunication Hall"
     },
     {
@@ -946,17 +1744,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "E",
-      "officialCode": "E22",
+      "officialMapUuid": "ea64d03a-8dd8-45ff-8c83-69220e925a9b",
       "name": "Electrical Engineering Building",
       "nameKo": "전기관",
       "shortName": "E22",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub013.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub013.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75445474734437,
+          35.82989172146628
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "E22",
       "nameEn": "Electrical Engineering Building"
     },
     {
@@ -964,17 +1776,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "E",
-      "officialCode": "E23",
+      "officialMapUuid": "d02451a9-7189-4dae-8a91-dc33fc646b85",
       "name": "Textiles Engineering Building",
       "nameKo": "섬유관",
       "shortName": "E23",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub014.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub014.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75442230942892,
+          35.82942360995531
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "E23",
       "nameEn": "Textiles Engineering Building"
     },
     {
@@ -982,17 +1808,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "E",
-      "officialCode": "E24",
+      "officialMapUuid": "657147b7-22eb-4504-8835-2ee8141cdb35",
       "name": "Chemical Engineering Building",
       "nameKo": "화공관",
       "shortName": "E24",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub118.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub118.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7541348536551,
+          35.828932187903234
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "E24",
       "nameEn": "Chemical Engineering Building"
     },
     {
@@ -1000,17 +1840,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "E",
-      "officialCode": "E26",
+      "officialMapUuid": "f506ec98-22ce-4d34-9541-74d83088ab7c",
       "name": "Water Research Laboratory Buliding",
       "nameKo": "수리실험동",
       "shortName": "E26",
-      "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub064.htm",
+      "kind": "utility",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub064.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75459060296043,
+          35.82827221763786
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "E26",
       "nameEn": "Water Research Laboratory Buliding"
     },
     {
@@ -1018,17 +1872,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "E",
-      "officialCode": "E28",
+      "officialMapUuid": "74265796-c495-4a0e-8fc9-49728bf0d42f",
       "name": "Materials Engineering Buliding",
       "nameKo": "소재관",
       "shortName": "E28",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub201.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub201.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75409499602543,
+          35.82712150736821
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "E28",
       "nameEn": "Materials Engineering Buliding"
     },
     {
@@ -1036,53 +1904,527 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "E",
-      "officialCode": "E29",
+      "officialMapUuid": "87bb9949-8d64-4232-b1d0-b91565d6d87a",
       "name": "Mechanical Engineering Buliding",
       "nameKo": "기계관",
       "shortName": "E29",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub137.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub137.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75404226246766,
+          35.826610888319735
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "E29",
       "nameEn": "Mechanical Engineering Buliding"
     },
     {
-      "id": "yu-f01",
+      "id": "yu-official-d4a42b92",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
-      "area": "F",
-      "officialCode": "F01",
-      "name": "College of Pharmacy",
-      "nameKo": "약대본관",
-      "shortName": "F01",
-      "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub015.htm",
+      "area": "ETC",
+      "officialMapUuid": "d4a42b92-f2e0-4315-8ce0-4076ca0f2571",
+      "name": "Mirror Pond",
+      "nameKo": "거울못",
+      "shortName": "거울못",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub015.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "College of Pharmacy"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75962937454418,
+          35.8297079162325
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Mirror Pond"
+    },
+    {
+      "id": "yu-official-1ffc1f78",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "1ffc1f78-fc37-4f60-832e-3b40ae60ace8",
+      "name": "Gyeongbuk Technopark",
+      "nameKo": "경북테크노파크",
+      "shortName": "경북테크노파크",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75612679865458,
+          35.82454614952862
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Gyeongbuk Technopark"
+    },
+    {
+      "id": "yu-official-eed44f7f",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "eed44f7f-f236-4378-baaf-798a7fef780b",
+      "name": "Folklore",
+      "nameKo": "민속놀이마당",
+      "shortName": "민속놀이마당",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76176814778245,
+          35.82784729283406
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Folklore"
+    },
+    {
+      "id": "yu-official-e45ac191",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "e45ac191-f67b-4fb0-be96-18d2fd076ccf",
+      "name": "Lawschool Dormitory",
+      "nameKo": "법학전문대학원 생활관",
+      "shortName": "법학전문대학원 생활관",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.757662716216,
+          35.8227403648947
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Lawschool Dormitory"
+    },
+    {
+      "id": "yu-official-07635a23",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "07635a23-03a4-43e7-b55a-0845f311a1a5",
+      "name": "Pond(Samchonji)",
+      "nameKo": "삼천지",
+      "shortName": "삼천지",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7516250590052,
+          35.827479539072456
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Pond(Samchonji)"
+    },
+    {
+      "id": "yu-official-d215c1e8",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "d215c1e8-00fa-4bb3-8da5-a8f3cb7a5fc0",
+      "name": "Water Work Filtration Facility",
+      "nameKo": "상수도 여과지",
+      "shortName": "상수도 여과지",
+      "kind": "utility",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76118835280883,
+          35.823016752186646
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Water Work Filtration Facility"
+    },
+    {
+      "id": "yu-official-523a54d7",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "523a54d7-a198-4b13-81c7-014091643aa3",
+      "name": "Pond(College of Life and Applied Sciences)",
+      "nameKo": "생명응용과학대연못",
+      "shortName": "생명응용과학대연못",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75816580225754,
+          35.826566392589775
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Pond(College of Life and Applied Sciences)"
+    },
+    {
+      "id": "yu-official-1e7fd624",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "1e7fd624-3a4e-4040-842f-c43fc4ec72d3",
+      "name": "Baseball Field",
+      "nameKo": "야구장",
+      "shortName": "야구장",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.761694618588,
+          35.83302983440941
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Baseball Field"
+    },
+    {
+      "id": "yu-official-baceee38",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "baceee38-17d2-447b-ad7b-29bff13a3347",
+      "name": "Basketball Court",
+      "nameKo": "야외농구장",
+      "shortName": "야외농구장",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75216923488298,
+          35.82961868958403
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Basketball Court"
+    },
+    {
+      "id": "yu-official-aec72671",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "aec72671-557f-47c0-9eb0-9b65ba789ce2",
+      "name": "Artificial turf Arena",
+      "nameKo": "인조잔디축구장",
+      "shortName": "인조잔디축구장",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75074107148052,
+          35.83009007050901
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Artificial turf Arena"
+    },
+    {
+      "id": "yu-official-fa01f701",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "fa01f701-4b40-4cea-b7ae-85e1b368ff24",
+      "name": "1st Manufacturing Laboratory",
+      "nameKo": "제1실험생산공장",
+      "shortName": "제1실험생산공장",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75617331816142,
+          35.825025319080645
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "1st Manufacturing Laboratory"
+    },
+    {
+      "id": "yu-official-8ed6b600",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "8ed6b600-9609-4e3b-a31c-3e9bfe54babb",
+      "name": "2nd Manufacturing Laboratory",
+      "nameKo": "제2실험생산공장",
+      "shortName": "제2실험생산공장",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75488021211532,
+          35.82433908021348
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "2nd Manufacturing Laboratory"
+    },
+    {
+      "id": "yu-official-269e22c0",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "269e22c0-f0b5-459b-8995-8eb7dfc19d03",
+      "name": "Chunmaro Clock Tower",
+      "nameKo": "천마로 시계탑",
+      "shortName": "천마로 시계탑",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7537528824254,
+          35.83445264947151
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Chunmaro Clock Tower"
+    },
+    {
+      "id": "yu-official-dd73bbe1",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "dd73bbe1-4438-4641-8a35-b5f03d701f4a",
+      "name": "천마아너스파크",
+      "nameKo": "천마아너스파크",
+      "shortName": "천마아너스파크",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7601738129029,
+          35.8308105775303
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      }
+    },
+    {
+      "id": "yu-official-dd3ca952",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "ETC",
+      "officialMapUuid": "dd3ca952-7d20-4ba8-b218-522bc15f6055",
+      "name": "Soccer Field",
+      "nameKo": "천연잔디축구장",
+      "shortName": "천연잔디축구장",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75479448159237,
+          35.835771105303024
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "nameEn": "Soccer Field"
     },
     {
       "id": "yu-f03",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F03",
+      "officialMapUuid": "76d53f8b-1f88-4508-86ed-15cdc2b2677f",
       "name": "Architecture Building",
       "nameKo": "건축관",
       "shortName": "F03",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub018.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub018.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75542138353603,
+          35.829819029823
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F03",
       "nameEn": "Architecture Building"
     },
     {
@@ -1090,17 +2432,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F04",
+      "officialMapUuid": "1d5d4a4a-13ba-41ad-83d6-acccf891506e",
       "name": "Computer & IT Center",
       "nameKo": "정보전산원",
       "shortName": "F04",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub094.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub094.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75573156225732,
+          35.82933239582726
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F04",
       "nameEn": "Computer & IT Center"
     },
     {
@@ -1108,17 +2464,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F05",
+      "officialMapUuid": "1aeb1fad-77d1-479b-984e-1ab80fcffaad",
       "name": "College of Engineering Auditorium",
       "nameKo": "공과대학강당",
       "shortName": "F05",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub019.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub019.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75528712584338,
+          35.82950109179401
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F05",
       "nameEn": "College of Engineering Auditorium"
     },
     {
@@ -1126,17 +2496,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F06",
+      "officialMapUuid": "55601449-f5ef-41ba-97cb-29c917d43d07",
       "name": "Ins' of Information & Computing Systems",
       "nameKo": "정보통신연구소",
       "shortName": "F06",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub020.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub020.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75527653469197,
+          35.82927145958731
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F06",
       "nameEn": "Ins' of Information & Computing Systems"
     },
     {
@@ -1144,17 +2528,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F07",
+      "officialMapUuid": "20777d9c-6b0c-4183-b0df-80b7309b0897",
       "name": "Construction Engineering Building",
       "nameKo": "건설관",
       "shortName": "F07",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub022.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub022.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.755671065595,
+          35.828846672206254
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F07",
       "nameEn": "Construction Engineering Building"
     },
     {
@@ -1162,17 +2560,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F21",
+      "officialMapUuid": "58a9cb87-5b08-47f1-9519-eb5ccfc6a8c6",
       "name": "Sciences Building 1",
       "nameKo": "제1과학관",
       "shortName": "F21",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub023.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub023.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75757052264186,
+          35.8301796013182
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F21",
       "nameEn": "Sciences Building 1"
     },
     {
@@ -1180,17 +2592,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F22",
+      "officialMapUuid": "6bb4503e-79f8-4a8a-9010-4760f1999dd1",
       "name": "Sciences Building 2",
       "nameKo": "제2과학관",
       "shortName": "F22",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub024.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub024.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75760943963016,
+          35.829435604085205
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F22",
       "nameEn": "Sciences Building 2"
     },
     {
@@ -1198,17 +2624,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F23",
+      "officialMapUuid": "cce2fa5d-f0ad-4d66-8397-1cd0a672a995",
       "name": "Sciences Building 3",
       "nameKo": "제3과학관",
       "shortName": "F23",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub190.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub190.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7568510320053,
+          35.82966747128012
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F23",
       "nameEn": "Sciences Building 3"
     },
     {
@@ -1216,17 +2656,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F24",
+      "officialMapUuid": "83663f43-2fdf-4acc-b758-a0c0c39042aa",
       "name": "Science Library",
       "nameKo": "과학도서관",
       "shortName": "F24",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub025_all.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub025_all.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75663910728065,
+          35.82908934416802
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F24",
       "nameEn": "Science Library"
     },
     {
@@ -1234,17 +2688,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F25",
+      "officialMapUuid": "0a2d3286-831e-4b7c-9f89-9ec98a0f4768",
       "name": "College of Science Cafeteria",
       "nameKo": "자연계식당",
       "shortName": "F25",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub123.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub123.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75638658315623,
+          35.82842620317354
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F25",
       "nameEn": "College of Science Cafeteria"
     },
     {
@@ -1252,53 +2720,95 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F26",
-      "name": "Biotechnology Hall",
-      "nameKo": "생명응용과학대학제1실험동",
+      "officialMapUuid": "742ff479-d9e5-4308-b1c1-1d7bbef39306",
+      "name": "Lab Ⅰ, College of Life and Applied Sciences",
+      "nameKo": "생명응용과학대 제1실험동",
       "shortName": "F26",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub027.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub027.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "Biotechnology Hall"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75619582425037,
+          35.82805502449726
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F26",
+      "nameEn": "Lab Ⅰ, College of Life and Applied Sciences"
     },
     {
       "id": "yu-f27",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F27",
-      "name": "HQ : College of Life and Applied Sciences",
+      "officialMapUuid": "570a2893-9b7b-49fb-969f-a6ad364fc2eb",
+      "name": "Main Building, College of Life and Applied Sciences",
       "nameKo": "생명응용과학대본관",
       "shortName": "F27",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub026.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub026.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "HQ : College of Life and Applied Sciences"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75677425241906,
+          35.827690624358354
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F27",
+      "nameEn": "Main Building, College of Life and Applied Sciences"
     },
     {
       "id": "yu-f28",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F28",
+      "officialMapUuid": "db5e9240-abb5-4aa2-a80d-220f7ea9dd98",
       "name": "Lab Ⅱ, College of Life and Applied Sciences",
       "nameKo": "생명응용과학대제2실험동",
       "shortName": "F28",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub029.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub029.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75697558622934,
+          35.827286679822166
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F28",
       "nameEn": "Lab Ⅱ, College of Life and Applied Sciences"
     },
     {
@@ -1306,17 +2816,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "F",
-      "officialCode": "F29",
+      "officialMapUuid": "6e35c1e0-cdcd-464f-a547-50b2489b6dac",
       "name": "Lab Ⅲ, College of Life and Applied Sciences",
       "nameKo": "생명응용과학대제3실험동",
       "shortName": "F29",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub028.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub028.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75539707034088,
+          35.827710751884105
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "F29",
       "nameEn": "Lab Ⅲ, College of Life and Applied Sciences"
     },
     {
@@ -1324,17 +2848,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G01",
+      "officialMapUuid": "fddfed00-5da8-40c7-bce6-16d31e8cca29",
       "name": "College of Human Ecology & Kinesiology",
       "nameKo": "생활과학대학본관",
       "shortName": "G01",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub030.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub030.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75877971767275,
+          35.829314850233565
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G01",
       "nameEn": "College of Human Ecology & Kinesiology"
     },
     {
@@ -1342,17 +2880,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G02",
+      "officialMapUuid": "29e9e2a8-da80-4f55-b8a4-48937bc6aad9",
       "name": "College of Human Ecology & Kinesiology(annnex)",
       "nameKo": "생활과학대학별관",
       "shortName": "G02",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub114.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub114.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75964923192032,
+          35.829103871981424
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G02",
       "nameEn": "College of Human Ecology & Kinesiology(annnex)"
     },
     {
@@ -1360,17 +2912,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G03",
+      "officialMapUuid": "e52cfbd7-8fda-4fab-af29-cd2432ce6d4a",
       "name": "Law School Library",
       "nameKo": "법학전문도서관",
       "shortName": "G03",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub135.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub135.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7598483859868,
+          35.828100706895235
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G03",
       "nameEn": "Law School Library"
     },
     {
@@ -1378,17 +2944,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G04",
+      "officialMapUuid": "d73c6d00-ddb1-43c0-ac51-73496e9b2e74",
       "name": "Law School",
       "nameKo": "대학원/법학전문대학원",
       "shortName": "G04",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub228.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub228.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75937326657277,
+          35.82838250779437
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G04",
       "nameEn": "Law School"
     },
     {
@@ -1396,34 +2976,63 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G07",
-      "name": "약학관",
+      "officialMapUuid": "7103d5a4-334c-4237-9140-7f939edc6fba",
+      "name": "Pharmacy Building",
       "nameKo": "약학관",
       "shortName": "G07",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub285.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub285.htm"
-      ]
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75798087126228,
+          35.82771352726397
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G07",
+      "nameEn": "Pharmacy Building"
     },
     {
       "id": "yu-g11",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G11",
+      "officialMapUuid": "1a7db4b5-5c61-41db-81db-c7a7b0939a8d",
       "name": "CRC",
       "nameKo": "CRC",
       "shortName": "G11",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub250.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub250.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75676016283987,
+          35.82629859175444
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G11",
       "nameEn": "CRC"
     },
     {
@@ -1431,17 +3040,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G12",
+      "officialMapUuid": "6eff6d6a-5344-4f19-946f-84ea9c9c4748",
       "name": "Business Incubation Center",
       "nameKo": "창업보육센터",
       "shortName": "G12",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub275.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub275.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75598997145855,
+          35.825994455843166
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G12",
       "nameEn": "Business Incubation Center"
     },
     {
@@ -1449,35 +3072,63 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G13",
-      "name": "I-A Co-operation Technology Center",
+      "officialMapUuid": "0670f61f-475d-40f3-83a0-5150e7ea32d8",
+      "name": "Robot Engineering Building",
       "nameKo": "로봇관",
       "shortName": "G13",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub173.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub173.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "I-A Co-operation Technology Center"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75619919056396,
+          35.82544621717952
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G13",
+      "nameEn": "Robot Engineering Building"
     },
     {
       "id": "yu-g14",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G14",
+      "officialMapUuid": "2af88847-866e-4c4e-82f3-c93574d1cbf4",
       "name": "Annex : Center for Research Facilities",
       "nameKo": "중앙기기센터",
       "shortName": "G14",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub171.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub171.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.755393494668,
+          35.825539091500985
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G14",
       "nameEn": "Annex : Center for Research Facilities"
     },
     {
@@ -1485,17 +3136,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G15",
+      "officialMapUuid": "69a5de08-fbc2-4633-9b95-34d770bd30cc",
       "name": "Production Technology Research Center",
       "nameKo": "생산기술연구원",
       "shortName": "G15",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub126.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub126.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75380045281767,
+          35.82555334223627
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G15",
       "nameEn": "Production Technology Research Center"
     },
     {
@@ -1503,35 +3168,63 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G16",
-      "name": "Laboratory Plant",
+      "officialMapUuid": "708b6f89-db62-4688-bed8-b40353eb4a1c",
+      "name": "Automotive Engineering Building",
       "nameKo": "자동차관",
       "shortName": "G16",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub172.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub172.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "Laboratory Plant"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7549556288866,
+          35.82500030631081
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G16",
+      "nameEn": "Automotive Engineering Building"
     },
     {
       "id": "yu-g17",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G17",
+      "officialMapUuid": "51fcee97-d8df-4b66-a83e-02f9f03718c0",
       "name": "Wind Tunnel Laboratory",
       "nameKo": "풍동실험실",
       "shortName": "G17",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub134.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub134.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7543799435632,
+          35.82498618474983
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G17",
       "nameEn": "Wind Tunnel Laboratory"
     },
     {
@@ -1539,68 +3232,95 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G18",
-      "name": "제2공장형실습장",
+      "officialMapUuid": "4b1560f6-861f-4733-b19d-5f4e508faf14",
+      "name": "Ladoratory Plant II",
       "nameKo": "제2공장형실습장",
       "shortName": "G18",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr.php",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php"
-      ]
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.75378451449842,
+          35.82508048371851
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G18",
+      "nameEn": "Ladoratory Plant II"
     },
     {
       "id": "yu-g19",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G19",
-      "name": "안전체험교육장",
-      "nameKo": "안전체험교육장",
+      "officialMapUuid": "9ce041d7-6500-4d6d-980d-b00ad6af9e72",
+      "name": "Security Education Practice Yard",
+      "nameKo": "안전교육체험장",
       "shortName": "G19",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub312.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub312.htm"
-      ]
-    },
-    {
-      "id": "yu-g20",
-      "schoolId": "yeungnam",
-      "campusId": "gyeongsan",
-      "area": "G",
-      "officialCode": "G20",
-      "name": "Gyeongbuk Technopark",
-      "nameKo": "경북테크노파크",
-      "shortName": "G20",
-      "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub313.htm",
-      "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub313.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "Gyeongbuk Technopark"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.7538646789909,
+          35.824700840722166
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G19",
+      "nameEn": "Security Education Practice Yard"
     },
     {
       "id": "yu-g41",
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G41",
+      "officialMapUuid": "bd99efbb-1edd-484d-be68-3ab4b0b803ac",
       "name": "KUGAESEOWON",
       "nameKo": "구계서원",
       "shortName": "G41",
       "kind": "landmark",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub088.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub088.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76120630717392,
+          35.82833537821079
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G41",
       "nameEn": "KUGAESEOWON"
     },
     {
@@ -1608,17 +3328,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G42",
+      "officialMapUuid": "d417dda7-68dd-4632-b701-c69313d6dcc9",
       "name": "KACHI-GUMEONGJIB",
       "nameKo": "까치구멍집",
       "shortName": "G42",
       "kind": "landmark",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub090.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub090.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76224677834338,
+          35.828975690617796
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G42",
       "nameEn": "KACHI-GUMEONGJIB"
     },
     {
@@ -1626,17 +3360,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G43",
+      "officialMapUuid": "ee7b0fc2-7e30-4575-82ee-3fa9b62ee98e",
       "name": "WHNJEONGSA",
       "nameKo": "의인정사",
       "shortName": "G43",
       "kind": "landmark",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub089.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub089.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76197594934482,
+          35.82811233029618
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G43",
       "nameEn": "WHNJEONGSA"
     },
     {
@@ -1644,17 +3392,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G45",
+      "officialMapUuid": "b76bb0dc-c545-45f7-822c-246a5760e742",
       "name": "Folklore Park / Toilet",
       "nameKo": "민속촌해우소",
       "shortName": "G45",
       "kind": "landmark",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub232.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub232.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76222942542896,
+          35.82781574761226
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G45",
       "nameEn": "Folklore Park / Toilet"
     },
     {
@@ -1662,17 +3424,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G46",
+      "officialMapUuid": "8be8a8ba-04da-4a8b-bbe2-0a0a1c273cfe",
       "name": "HWASANSEODANG",
       "nameKo": "화산서당",
       "shortName": "G46",
       "kind": "landmark",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub248.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub248.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76244460831873,
+          35.82741384397965
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G46",
       "nameEn": "HWASANSEODANG"
     },
     {
@@ -1680,17 +3456,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G47",
+      "officialMapUuid": "1274a51f-a729-4301-8166-fbcd0d3d014f",
       "name": "Gable-foofed House",
       "nameKo": "경주맞배집",
       "shortName": "G47",
       "kind": "landmark",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub091.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub091.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76252772177966,
+          35.82716932126573
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G47",
       "nameEn": "Gable-foofed House"
     },
     {
@@ -1698,17 +3488,31 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G48",
+      "officialMapUuid": "18d861b6-3971-40f0-a7cd-e463f48ec7bc",
       "name": "ILHYUDANG",
       "nameKo": "일휴당",
       "shortName": "G48",
       "kind": "landmark",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub092.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub092.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76189464469732,
+          35.827187617175184
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G48",
       "nameEn": "ILHYUDANG"
     },
     {
@@ -1716,108 +3520,352 @@
       "schoolId": "yeungnam",
       "campusId": "gyeongsan",
       "area": "G",
-      "officialCode": "G49",
+      "officialMapUuid": "ff14e0de-e72a-4eb0-ab32-cff204b74a9d",
       "name": "SSANGSONG-JEONG",
       "nameKo": "쌍송정",
       "shortName": "G49",
       "kind": "landmark",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub087.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub087.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.76129016121334,
+          35.827498356104925
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "G49",
       "nameEn": "SSANGSONG-JEONG"
-    },
-    {
-      "id": "yu-g65",
-      "schoolId": "yeungnam",
-      "campusId": "gyeongsan",
-      "area": "G",
-      "officialCode": "G65",
-      "name": "Water Work Filtration Facility",
-      "nameKo": "상수도여과지",
-      "shortName": "G65",
-      "kind": "utility",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub103.htm",
-      "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub103.htm"
-      ],
-      "nameEn": "Water Work Filtration Facility"
     },
     {
       "id": "yu-h01",
       "schoolId": "yeungnam",
-      "campusId": "gyeongsan",
+      "campusId": "daemyeong",
       "area": "H",
-      "officialCode": "H01",
-      "name": "Professional Graduate Schools / Center for Continuing Education",
-      "nameKo": "특수대학원/사회교육원(경영관)",
+      "officialMapUuid": "9e90beed-8f94-4660-aba4-63ca5913d0de",
+      "name": "Professional Graduate Schools / Global Institute of Lifelong Education",
+      "nameKo": "경영관(특수대학원/글로벌평생교육원)",
       "shortName": "H01",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub149.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub149.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "Professional Graduate Schools / Center for Continuing Education"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.58777689561205,
+          35.84680847359152
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "H01",
+      "nameEn": "Professional Graduate Schools / Global Institute of Lifelong Education"
     },
     {
       "id": "yu-h02",
       "schoolId": "yeungnam",
-      "campusId": "gyeongsan",
+      "campusId": "daemyeong",
       "area": "H",
-      "officialCode": "H02",
+      "officialMapUuid": "3fb6dc54-44a1-46bd-81b2-ce52df12f113",
       "name": "College of Medicine",
-      "nameKo": "의대본관",
+      "nameKo": "의과대학 본관",
       "shortName": "H02",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub144.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub144.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.58619975965868,
+          35.847090640016084
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "H02",
       "nameEn": "College of Medicine"
+    },
+    {
+      "id": "yu-h03",
+      "schoolId": "yeungnam",
+      "campusId": "daemyeong",
+      "area": "H",
+      "officialMapUuid": "c95d29a2-097e-42a8-b27e-c7d84e7b5a90",
+      "name": "College of Medicine Dormitory",
+      "nameKo": "의과대학 생활관",
+      "shortName": "H03",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.58729540902502,
+          35.84708518030763
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "H03",
+      "nameEn": "College of Medicine Dormitory"
+    },
+    {
+      "id": "yu-h04",
+      "schoolId": "yeungnam",
+      "campusId": "daemyeong",
+      "area": "H",
+      "officialMapUuid": "4e87c1f7-fdfc-4635-858a-40ddfce8a3cc",
+      "name": "College of Medicine Lecture Center",
+      "nameKo": "의과대학 강의동",
+      "shortName": "H04",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.5868592577419,
+          35.84741535513727
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "H04",
+      "nameEn": "College of Medicine Lecture Center"
+    },
+    {
+      "id": "yu-h05",
+      "schoolId": "yeungnam",
+      "campusId": "daemyeong",
+      "area": "H",
+      "officialMapUuid": "27eb8751-bbdc-4d8b-8d4f-b82b60dc407b",
+      "name": "College of Medicine Experimental animal center",
+      "nameKo": "의과대학 동물사",
+      "shortName": "H05",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.58684646205796,
+          35.84788412069163
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "H05",
+      "nameEn": "College of Medicine Experimental animal center"
     },
     {
       "id": "yu-h06",
       "schoolId": "yeungnam",
-      "campusId": "gyeongsan",
+      "campusId": "daemyeong",
       "area": "H",
-      "officialCode": "H06",
+      "officialMapUuid": "53f6db73-55f9-4f7b-860d-d82ebc042eff",
       "name": "Yeungnam University Medical Center",
-      "nameKo": "영대의료원(병원본관(A동))",
+      "nameKo": "영남대학교병원 본관",
       "shortName": "H06",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub150.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub150.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.58504578678117,
+          35.84750237561197
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "H06",
       "nameEn": "Yeungnam University Medical Center"
+    },
+    {
+      "id": "yu-h11",
+      "schoolId": "yeungnam",
+      "campusId": "daemyeong",
+      "area": "H",
+      "officialMapUuid": "8d6c1b48-480b-4bb0-8979-f841b63ee37d",
+      "name": "Yeungnam University Medical Center West Building(Regional Emergency Center)",
+      "nameKo": "영남대학교병원 서관(권역응급의료센터)",
+      "shortName": "H11",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.5842676226908,
+          35.84733241047633
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "H11",
+      "nameEn": "Yeungnam University Medical Center West Building(Regional Emergency Center)"
     },
     {
       "id": "yu-h15",
       "schoolId": "yeungnam",
-      "campusId": "gyeongsan",
+      "campusId": "daemyeong",
       "area": "H",
-      "officialCode": "H15",
-      "name": "Yeungnam Academy Corporate Office",
-      "nameKo": "법인사무국(영의관)",
+      "officialMapUuid": "1158104b-15b2-47ac-a2d3-10349cb1a160",
+      "name": "Yeonguigwan(Yeungnam Academy Corporate Office)",
+      "nameKo": "영의관(법인사무국)",
       "shortName": "H15",
       "kind": "building",
-      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub187.htm",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
       "sourceUrls": [
-        "https://www.yu.ac.kr/campus_vr-k/vr.php",
-        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
-        "https://www.yu.ac.kr/campus_vr-k/vr_sub187.htm"
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
-      "nameEn": "Yeungnam Academy Corporate Office"
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.58519785345766,
+          35.84568906258265
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "H15",
+      "nameEn": "Yeonguigwan(Yeungnam Academy Corporate Office)"
+    },
+    {
+      "id": "yu-h16",
+      "schoolId": "yeungnam",
+      "campusId": "daemyeong",
+      "area": "H",
+      "officialMapUuid": "39acffd8-a30f-4fc1-a571-684a9f22703c",
+      "name": "Yeungnam University Medical Center Funeral hall",
+      "nameKo": "장례식장",
+      "shortName": "H16",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.58498459428282,
+          35.84776451571502
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "H16",
+      "nameEn": "Yeungnam University Medical Center Funeral hall"
+    },
+    {
+      "id": "yu-h19",
+      "schoolId": "yeungnam",
+      "campusId": "daemyeong",
+      "area": "H",
+      "officialMapUuid": "d53a8997-65af-4cd6-bbb9-8d12aa66facd",
+      "name": "Yeungnam University Medical Center Respiratory Center",
+      "nameKo": "권역호흡기전문질환센터",
+      "shortName": "H19",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/main/intro/campus-map.do",
+        "https://www.yu.ac.kr/english/about/campus-map.do"
+      ],
+      "officialPoint": {
+        "type": "Point",
+        "coordinates": [
+          128.58527930845457,
+          35.846444951783404
+        ],
+        "geometrySource": {
+          "kind": "official-campus-map",
+          "name": "Yeungnam University campus map",
+          "url": "https://www.yu.ac.kr/main/intro/campus-map.do",
+          "capturedAt": "2026-06-22T00:00:00.000Z"
+        },
+        "geometryConfidence": "verified"
+      },
+      "officialCode": "H19",
+      "nameEn": "Yeungnam University Medical Center Respiratory Center"
     }
   ]
 }

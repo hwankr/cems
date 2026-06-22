@@ -64,6 +64,11 @@ async function writeJson(url, value) {
   await writeFile(url, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
+async function writeText(url, value) {
+  await mkdir(dirname(fileURLToPath(url)), { recursive: true });
+  await writeFile(url, value, "utf8");
+}
+
 function stripParentheticalSegments(value) {
   return value.replace(
     /\([^)]*\)|\[[^\]]*\]|\{[^}]*\}|\uFF08[^\uFF09]*\uFF09/g,
@@ -85,7 +90,11 @@ export function normalizeBuildingName(value) {
 
 function getCatalogBuildings(catalog) {
   return asArray(catalog.buildings).sort((left, right) =>
-    left.officialCode.localeCompare(right.officialCode, "en", { numeric: true }),
+    (left.officialCode ?? left.id).localeCompare(
+      right.officialCode ?? right.id,
+      "en",
+      { numeric: true },
+    ),
   );
 }
 
@@ -312,7 +321,9 @@ function buildMatchIndex(matches) {
 
 function findMatchForBuilding(building, matchIndex) {
   return (
-    matchIndex.byOfficialCode.get(building.officialCode) ??
+    (building.officialCode
+      ? matchIndex.byOfficialCode.get(building.officialCode)
+      : undefined) ??
     matchIndex.byCatalogId.get(building.id) ??
     matchIndex.bySubjectId.get(building.id)
   );
@@ -339,7 +350,9 @@ function buildManualIndex(manualFeatures) {
 
 function findManualFeatureForBuilding(building, manualIndex) {
   return (
-    manualIndex.byOfficialCode.get(building.officialCode) ??
+    (building.officialCode
+      ? manualIndex.byOfficialCode.get(building.officialCode)
+      : undefined) ??
     manualIndex.bySubjectId.get(building.id)
   );
 }
@@ -347,7 +360,6 @@ function findManualFeatureForBuilding(building, manualIndex) {
 function commonProperties(building, source, confidence) {
   return {
     subjectId: building.id,
-    officialCode: building.officialCode,
     name: building.name,
     shortName: building.shortName,
     schoolId: building.schoolId,
@@ -355,6 +367,7 @@ function commonProperties(building, source, confidence) {
     kind: building.kind,
     geometrySource: source,
     geometryConfidence: confidence,
+    ...(building.officialCode ? { officialCode: building.officialCode } : {}),
   };
 }
 
@@ -383,14 +396,15 @@ function featureFromManual(building, manualFeature) {
   const properties = manualFeature.properties ?? {};
   const confidence = normalizeConfidence(properties.geometryConfidence, "verified");
 
-  return {
+  return buildGeometryFeatureForCatalogEntry(building, {
     type: "Feature",
     properties: {
-      ...commonProperties(building, "manual", confidence),
+      geometrySource: "manual",
+      geometryConfidence: confidence,
       sourceUrl: properties.sourceUrl ?? null,
     },
     geometry: manualFeature.geometry,
-  };
+  });
 }
 
 function featureFromOsmMatch(building, match, osmFeaturesById) {
@@ -408,16 +422,59 @@ function featureFromOsmMatch(building, match, osmFeaturesById) {
     "estimated",
   );
 
-  return {
+  return buildGeometryFeatureForCatalogEntry(building, {
     type: "Feature",
     properties: {
-      ...commonProperties(building, "openstreetmap", confidence),
+      geometrySource: "openstreetmap",
+      geometryConfidence: confidence,
       osmIds: osmFeatures.map((feature) => feature.properties.osmId),
       sourceUrl:
         osmFeatures.length === 1 ? osmFeatures[0].properties.sourceUrl : null,
       matchMethod: match.matchMethod ?? null,
     },
     geometry: combineOsmGeometries(osmFeatures),
+  });
+}
+
+export function buildGeometryFeatureForCatalogEntry(building, reviewedFeature) {
+  if (reviewedFeature) {
+    const properties = reviewedFeature.properties ?? {};
+
+    return {
+      type: "Feature",
+      properties: {
+        ...commonProperties(
+          building,
+          properties.geometrySource,
+          properties.geometryConfidence,
+        ),
+        sourceUrl: properties.sourceUrl ?? null,
+        osmIds: properties.osmIds ?? undefined,
+        matchMethod: properties.matchMethod ?? null,
+      },
+      geometry: reviewedFeature.geometry,
+    };
+  }
+
+  if (!building.officialPoint) {
+    return undefined;
+  }
+
+  return {
+    type: "Feature",
+    properties: {
+      ...commonProperties(
+        building,
+        "official-campus-map",
+        building.officialPoint.geometryConfidence,
+      ),
+      sourceUrl: building.officialPoint.geometrySource?.url ?? null,
+      matchMethod: "official-campus-map-point",
+    },
+    geometry: {
+      type: "Point",
+      coordinates: building.officialPoint.coordinates,
+    },
   };
 }
 
@@ -429,6 +486,7 @@ function buildGeometryCollection(catalogBuildings, osmFeatures, manualFeatures, 
   const matchIndex = buildMatchIndex(matches);
   const features = [];
   const missing = [];
+  const officialPointFallbacks = [];
   const usedOsmIds = new Set();
 
   for (const building of catalogBuildings) {
@@ -452,9 +510,23 @@ function buildGeometryCollection(catalogBuildings, osmFeatures, manualFeatures, 
       continue;
     }
 
+    const officialPointFeature = buildGeometryFeatureForCatalogEntry(building, undefined);
+
+    if (officialPointFeature) {
+      features.push(officialPointFeature);
+      officialPointFallbacks.push({
+        subjectId: building.id,
+        officialCode: building.officialCode ?? null,
+        name: building.name,
+        nameKo: building.nameKo,
+        kind: building.kind,
+      });
+      continue;
+    }
+
     missing.push({
       subjectId: building.id,
-      officialCode: building.officialCode,
+      officialCode: building.officialCode ?? null,
       name: building.name,
       nameKo: building.nameKo,
       nameEn: building.nameEn ?? null,
@@ -462,7 +534,7 @@ function buildGeometryCollection(catalogBuildings, osmFeatures, manualFeatures, 
     });
   }
 
-  return { features, missing, usedOsmIds };
+  return { features, missing, usedOsmIds, officialPointFallbacks };
 }
 
 function csvEscape(value) {
@@ -526,7 +598,32 @@ function buildEnrichedReviewCsv(osmFeatures, matches, catalogBuildings) {
     .join("\n");
 }
 
-export async function buildYeungnamBuildingGeometries({ strict = false } = {}) {
+export function getStrictMappingFailureMessage(report) {
+  if (!report.strict) {
+    return null;
+  }
+
+  if (report.missingCount > 0) {
+    return `Strict mapping failed: ${report.missingCount} catalog entries need reviewed geometries.`;
+  }
+
+  if (
+    report.officialPointFallbackCount > 0 &&
+    !report.officialPointFallbackAcceptanceAllowed
+  ) {
+    return `Strict mapping failed: ${report.officialPointFallbackCount} official campus-map point fallbacks require --allow-official-point-fallbacks.`;
+  }
+
+  return null;
+}
+
+export async function buildYeungnamBuildingGeometries({
+  strict = false,
+  allowOfficialPointFallbacks = false,
+  outputGeoJsonUrl = OUTPUT_GEOJSON_URL,
+  reportUrl = REPORT_URL,
+  reviewCsvUrl = REVIEW_CSV_URL,
+} = {}) {
   const [catalog, osmGeoJson] = await Promise.all([
     readJson(CATALOG_URL),
     readJson(OSM_GEOJSON_URL),
@@ -539,22 +636,29 @@ export async function buildYeungnamBuildingGeometries({ strict = false } = {}) {
   );
   const matches = getMatches(matchesJson);
   const manualFeatures = asArray(manualGeoJson.features);
-  const { features, missing, usedOsmIds } = buildGeometryCollection(
+  const { features, missing, usedOsmIds, officialPointFallbacks } =
+    buildGeometryCollection(
     catalogBuildings,
     osmFeatures,
     manualFeatures,
     matches,
-  );
+    );
   const unmatchedOsmFeatures = osmFeatures.filter(
     (feature) => !usedOsmIds.has(feature.properties?.osmId),
   );
-  const generatedAt = new Date().toISOString();
+  const generatedAt =
+    typeof catalog.metadata?.generatedAt === "string"
+      ? catalog.metadata.generatedAt
+      : new Date().toISOString();
+  const campusIds = Array.from(
+    new Set(catalogBuildings.map((building) => building.campusId).filter(Boolean)),
+  ).sort();
   const featureCollection = {
     type: "FeatureCollection",
     metadata: {
       generatedAt,
       schoolId: "yeungnam",
-      campusId: "gyeongsan",
+      campusIds,
       catalogSource: CATALOG_PATH,
       osmSource: OSM_GEOJSON_PATH,
       matchSource: MATCHES_PATH,
@@ -578,6 +682,9 @@ export async function buildYeungnamBuildingGeometries({ strict = false } = {}) {
     manualFeatures: manualFeatures.length,
     matchEntries: matches.length,
     mappedGeometries: features.length,
+    officialPointFallbackCount: officialPointFallbacks.length,
+    officialPointFallbackAcceptanceAllowed: allowOfficialPointFallbacks,
+    officialPointFallbacks,
     missingCount: missing.length,
     unmatchedOsmFootprints: unmatchedOsmFeatures.length,
     missingCatalogEntries: missing,
@@ -596,22 +703,20 @@ export async function buildYeungnamBuildingGeometries({ strict = false } = {}) {
   };
 
   const reviewCsv = `${buildEnrichedReviewCsv(osmFeatures, matches, catalogBuildings)}\n`;
+  const strictFailureMessage = getStrictMappingFailureMessage(report);
 
-  if (strict && missing.length > 0) {
+  if (strictFailureMessage) {
     await Promise.all([
-      writeJson(REPORT_URL, report),
-      writeFile(REVIEW_CSV_URL, reviewCsv, "utf8"),
+      writeJson(reportUrl, report),
+      writeText(reviewCsvUrl, reviewCsv),
     ]);
-
-    throw new Error(
-      `Strict mapping failed: ${missing.length} catalog entries need reviewed geometries`,
-    );
+    throw new Error(strictFailureMessage);
   }
 
   await Promise.all([
-    writeJson(OUTPUT_GEOJSON_URL, featureCollection),
-    writeJson(REPORT_URL, report),
-    writeFile(REVIEW_CSV_URL, reviewCsv, "utf8"),
+    writeJson(outputGeoJsonUrl, featureCollection),
+    writeJson(reportUrl, report),
+    writeText(reviewCsvUrl, reviewCsv),
   ]);
 
   return { featureCollection, report };
@@ -619,7 +724,13 @@ export async function buildYeungnamBuildingGeometries({ strict = false } = {}) {
 
 async function main() {
   const strict = process.argv.includes("--strict");
-  const { report } = await buildYeungnamBuildingGeometries({ strict });
+  const allowOfficialPointFallbacks = process.argv.includes(
+    "--allow-official-point-fallbacks",
+  );
+  const { report } = await buildYeungnamBuildingGeometries({
+    strict,
+    allowOfficialPointFallbacks,
+  });
 
   console.log(
     `Wrote ${report.mappedGeometries} mapped geometries to ${fileURLToPath(
@@ -627,7 +738,7 @@ async function main() {
     )}`,
   );
   console.log(
-    `Catalog entries: ${report.catalogEntries}; missing: ${report.missingCount}; unmatched OSM footprints: ${report.unmatchedOsmFootprints}`,
+    `Catalog entries: ${report.catalogEntries}; missing: ${report.missingCount}; official point fallbacks: ${report.officialPointFallbackCount}; unmatched OSM footprints: ${report.unmatchedOsmFootprints}`,
   );
 }
 

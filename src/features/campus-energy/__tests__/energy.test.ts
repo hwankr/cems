@@ -36,6 +36,15 @@ const validGeneratedCatalog = {
       shortName: "A09",
       kind: "outdoor",
     },
+    {
+      id: "yu-official-dd73bbe1",
+      schoolId: "yeungnam",
+      campusId: "gyeongsan",
+      name: "Cheonma Honors Park",
+      nameKo: "Cheonma Honors Park",
+      shortName: "Cheonma Honors Park",
+      kind: "building",
+    },
   ],
 };
 
@@ -50,6 +59,17 @@ const validGeneratedGeometries = {
       geometry: {
         type: "Point",
         coordinates: [128.1, 35.1],
+      },
+    },
+    {
+      properties: {
+        subjectId: "yu-official-dd73bbe1",
+        geometrySource: "official-campus-map",
+        geometryConfidence: "verified",
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [128.7601738129029, 35.8308105775303],
       },
     },
   ],
@@ -249,36 +269,90 @@ describe("demo campus data", () => {
   it("loads every generated Yeungnam catalog entry as a subject with optional geometry", () => {
     const catalogEntries = (
       buildingCatalog as {
-        buildings: Array<{ officialCode: string; kind: string }>;
+        buildings: Array<{ id: string; officialCode?: string; kind: string }>;
       }
     ).buildings;
     const geometryFeatures = (
       buildingGeometries as {
-        features: Array<{ properties: { officialCode: string } }>;
+        features: Array<{ properties: { subjectId: string; officialCode?: string } }>;
       }
     ).features;
-    const subjectsByOfficialCode = new Map(
-      yeungnamBuildingSubjects.map((subject) => [
-        subject.officialCode,
-        subject,
-      ]),
+    const subjectsById = new Map(
+      yeungnamBuildingSubjects.map((subject) => [subject.id, subject]),
     );
     const mappedSubjects = yeungnamBuildingSubjects.filter(
       (subject) => subject.geometry,
     );
-    const officialCodes = yeungnamBuildingSubjects.map(
-      (subject) => subject.officialCode,
-    );
+    const subjectIds = yeungnamBuildingSubjects.map((subject) => subject.id);
 
     expect(yeungnamBuildingSubjects).toHaveLength(catalogEntries.length);
     catalogEntries.forEach((entry) => {
       expect(
-        subjectsByOfficialCode.get(entry.officialCode),
-        `Expected catalog entry ${entry.officialCode} to be loaded as a subject.`,
+        subjectsById.get(entry.id),
+        `Expected catalog entry ${entry.id} to be loaded as a subject.`,
       ).toBeDefined();
     });
     expect(mappedSubjects).toHaveLength(geometryFeatures.length);
-    expect(new Set(officialCodes).size).toBe(officialCodes.length);
+    expect(new Set(subjectIds).size).toBe(subjectIds.length);
+  });
+
+  it("loads generated catalog entries without official codes by subject id", async () => {
+    const { yeungnamBuildingSubjects } =
+      await importYeungnamBuildingsWithGeneratedData();
+    const codeLessSubject = yeungnamBuildingSubjects.find(
+      (subject) => subject.id === "yu-official-dd73bbe1",
+    );
+
+    expect(codeLessSubject).toMatchObject({
+      id: "yu-official-dd73bbe1",
+      geometry: {
+        type: "Point",
+        coordinates: [128.7601738129029, 35.8308105775303],
+      },
+      lng: 128.7601738129029,
+      lat: 35.8308105775303,
+    });
+    expect(codeLessSubject?.officialCode).toBeUndefined();
+  });
+
+  it("prefers subjectId geometry over officialCode geometry", async () => {
+    const { yeungnamBuildingSubjects } = await importYeungnamBuildingsWithGeneratedData({
+      geometries: {
+        features: [
+          {
+            properties: {
+              subjectId: "yu-e21",
+              officialCode: "E21",
+              geometrySource: "manual",
+              geometryConfidence: "verified",
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [128.2, 35.2],
+            },
+          },
+          {
+            properties: {
+              officialCode: "E21",
+              geometrySource: "openstreetmap",
+              geometryConfidence: "estimated",
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [128.1, 35.1],
+            },
+          },
+        ],
+      },
+    });
+    const subject = yeungnamBuildingSubjects.find(
+      (candidate) => candidate.id === "yu-e21",
+    );
+
+    expect(subject?.geometry).toMatchObject({
+      type: "Point",
+      coordinates: [128.2, 35.2],
+    });
   });
 
   it("preserves non-building campus place kinds instead of labeling them as buildings", () => {

@@ -19,7 +19,7 @@ The MVP uses mock data only:
 
 - Yeungnam University is the first demo school.
 - Official Yeungnam campus catalog entries are represented as spatial subjects.
-- Subjects with reviewed geometry render on the map; subjects without geometry remain stable identity records until their geometry is reviewed.
+- Subjects with reviewed geometry render as reviewed polygons. Official campus-map GPS points are emitted as fallback Point geometry for entries without reviewed geometry.
 - Groups are represented as affiliations for participant rankings.
 - Actual and forecast electricity usage are hard-coded mock readings.
 
@@ -41,8 +41,8 @@ When the token is missing, the app still builds and the map area renders a confi
 
 The Yeungnam building map uses these data layers:
 
-- official Korean campus catalog from `https://www.yu.ac.kr/campus_vr-k/vr.php`
-- official English campus catalog from `https://www.yu.ac.kr/campus_vr-e/vr_eng.php`
+- official Korean campus map from `https://www.yu.ac.kr/main/intro/campus-map.do`
+- official English campus map from `https://www.yu.ac.kr/english/about/campus-map.do`
 - OSM building footprints fetched into `data/raw/yeungnam-osm-buildings.geojson`
 - reviewed or auto-estimated matches in `data/raw/yeungnam-building-matches.json`
 
@@ -54,30 +54,29 @@ Generated app data lives in:
 
 Current generated counts:
 
-- 101 official catalog entries
-- 86 building entries
-- 15 non-building official place entries: 9 landmarks, 5 outdoor facilities, and 1 utility
+- 121 official campus-map entries with GPS points
+- generated geometry metadata covers `gyeongsan` and `daemyeong`
 - 305 OSM building footprints in the Yeungnam bbox
-- 48 mapped campus geometries
-- 53 catalog entries still needing reviewed geometry matches
+- 121 mapped campus geometries after official point fallback: 48 polygons, 73 points
+- 73 official campus-map point fallbacks
 
-The runtime adapter loads all 101 catalog entries as subjects. The generated geometry file currently attaches reviewed or estimated geometry to 48 of them, and Mapbox omits the remaining geometry-less subjects until they receive a reviewed footprint or point.
+The runtime adapter loads all 121 catalog entries as subjects. It matches geometry by subject id first, then by official building code for legacy/reviewed features.
 
 Regenerate the map data with:
 
 ```powershell
 node scripts/fetch-yeungnam-campus-catalog.mjs
 node scripts/fetch-yeungnam-osm-buildings.mjs
-node scripts/build-yeungnam-building-geometries.mjs
+node scripts/build-yeungnam-building-geometries.mjs --strict --allow-official-point-fallbacks
 ```
 
-Use strict mode when the reviewed match set is expected to be complete:
+Strict mode without fallback acceptance is reserved for a fully reviewed polygon/manual mapping set:
 
 ```powershell
 node scripts/build-yeungnam-building-geometries.mjs --strict
 ```
 
-Strict mode fails while catalog entries are missing reviewed geometry and does not promote incomplete app geometry output.
+That command fails if any official point fallback remains. Use `--strict --allow-official-point-fallbacks` when official campus-map points are acceptable for mapping completeness.
 
 ## Verification
 
