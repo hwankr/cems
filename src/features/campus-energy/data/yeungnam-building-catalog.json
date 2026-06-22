@@ -1,0 +1,1823 @@
+{
+  "metadata": {
+    "schoolId": "yeungnam",
+    "campusId": "gyeongsan",
+    "generatedAt": "2026-06-22T01:09:11.505Z",
+    "sourceUrls": [
+      "https://www.yu.ac.kr/campus_vr-k/vr.php",
+      "https://www.yu.ac.kr/campus_vr-e/vr_eng.php"
+    ],
+    "koreanEntryCount": 101,
+    "englishEntryCount": 92
+  },
+  "buildings": [
+    {
+      "id": "yu-a01",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A01",
+      "name": "CHUNMA Gate/YU Metro Square",
+      "nameKo": "천마지문",
+      "shortName": "A01",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub225.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub225.htm"
+      ],
+      "nameEn": "CHUNMA Gate/YU Metro Square"
+    },
+    {
+      "id": "yu-a02",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A02",
+      "name": "International Center",
+      "nameKo": "국제교류센터",
+      "shortName": "A02",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub117.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub117.htm"
+      ],
+      "nameEn": "International Center"
+    },
+    {
+      "id": "yu-a04",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A04",
+      "name": "University Museum",
+      "nameKo": "박물관",
+      "shortName": "A04",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub017_all.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub017_all.htm"
+      ],
+      "nameEn": "University Museum"
+    },
+    {
+      "id": "yu-a05",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A05",
+      "name": "Student Support Center",
+      "nameKo": "학생지원센터",
+      "shortName": "A05",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub112_all.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub112_all.htm"
+      ],
+      "nameEn": "Student Support Center"
+    },
+    {
+      "id": "yu-a06",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A06",
+      "name": "College of Design & Art-Design Building",
+      "nameKo": "디자인미술대학 디자인관",
+      "shortName": "A06",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub106.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub106.htm"
+      ],
+      "nameEn": "College of Design & Art-Design Building"
+    },
+    {
+      "id": "yu-a07",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A07",
+      "name": "College of Design & Art-Art Building",
+      "nameKo": "디자인미술대학 미술관",
+      "shortName": "A07",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub008.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub008.htm"
+      ],
+      "nameEn": "College of Design & Art-Art Building"
+    },
+    {
+      "id": "yu-a08",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A08",
+      "name": "College of Education Building",
+      "nameKo": "사범대학",
+      "shortName": "A08",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub007.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub007.htm"
+      ],
+      "nameEn": "College of Education Building"
+    },
+    {
+      "id": "yu-a09",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A09",
+      "name": "Tennis Court",
+      "nameKo": "중앙테니스장",
+      "shortName": "A09",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub045.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub045.htm"
+      ],
+      "nameEn": "Tennis Court"
+    },
+    {
+      "id": "yu-a10",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A10",
+      "name": "College of Music",
+      "nameKo": "음악대학",
+      "shortName": "A10",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub042.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub042.htm"
+      ],
+      "nameEn": "College of Music"
+    },
+    {
+      "id": "yu-a11",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A11",
+      "name": "Symphony Hall of College of Music",
+      "nameKo": "음악대학 심포니홀",
+      "shortName": "A11",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub122.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub122.htm"
+      ],
+      "nameEn": "Symphony Hall of College of Music"
+    },
+    {
+      "id": "yu-a12",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A12",
+      "name": "Facilities Maintenance Support Center",
+      "nameKo": "시설관리지원센터",
+      "shortName": "A12",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub219.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub219.htm"
+      ],
+      "nameEn": "Facilities Maintenance Support Center"
+    },
+    {
+      "id": "yu-a13",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A13",
+      "name": "Multi-Purpose Gymnasium",
+      "nameKo": "필승관",
+      "shortName": "A13",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub043.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub043.htm"
+      ],
+      "nameEn": "Multi-Purpose Gymnasium"
+    },
+    {
+      "id": "yu-a14",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A14",
+      "name": "씨름장",
+      "nameKo": "씨름장",
+      "shortName": "A14",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub100.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub100.htm"
+      ]
+    },
+    {
+      "id": "yu-a16",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A16",
+      "name": "벤처창업관",
+      "nameKo": "벤처창업관",
+      "shortName": "A16",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub286.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub286.htm"
+      ]
+    },
+    {
+      "id": "yu-a24",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A24",
+      "name": "디자인미술대학 세라믹실기동",
+      "nameKo": "디자인미술대학 세라믹실기동",
+      "shortName": "A24",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub049.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub049.htm"
+      ]
+    },
+    {
+      "id": "yu-a25",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A25",
+      "name": "태권도장",
+      "nameKo": "태권도장",
+      "shortName": "A25",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub053.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub053.htm"
+      ]
+    },
+    {
+      "id": "yu-a27",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "A",
+      "officialCode": "A27",
+      "name": "탁구장",
+      "nameKo": "탁구장",
+      "shortName": "A27",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub093.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub093.htm"
+      ]
+    },
+    {
+      "id": "yu-b01",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "B",
+      "officialCode": "B01",
+      "name": "Amphitheater",
+      "nameKo": "노천강당",
+      "shortName": "B01",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub056.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub056.htm"
+      ],
+      "nameEn": "Amphitheater"
+    },
+    {
+      "id": "yu-b02",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "B",
+      "officialCode": "B02",
+      "name": "College of Business & Economics Building",
+      "nameKo": "상경관",
+      "shortName": "B02",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub011.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub011.htm"
+      ],
+      "nameEn": "College of Business & Economics Building"
+    },
+    {
+      "id": "yu-b03",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "B",
+      "officialCode": "B03",
+      "name": "College of Liberal Arts",
+      "nameKo": "인문관",
+      "shortName": "B03",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub004.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub004.htm"
+      ],
+      "nameEn": "College of Liberal Arts"
+    },
+    {
+      "id": "yu-b04",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "B",
+      "officialCode": "B04",
+      "name": "Central Library",
+      "nameKo": "중앙도서관",
+      "shortName": "B04",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub006_all.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub006_all.htm"
+      ],
+      "nameEn": "Central Library"
+    },
+    {
+      "id": "yu-b05",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "B",
+      "officialCode": "B05",
+      "name": "College of Political Science and Public Administraiton",
+      "nameKo": "법정관",
+      "shortName": "B05",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub131.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub131.htm"
+      ],
+      "nameEn": "College of Political Science and Public Administraiton"
+    },
+    {
+      "id": "yu-b06",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "B",
+      "officialCode": "B06",
+      "name": "Student Center",
+      "nameKo": "학생회관",
+      "shortName": "B06",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub009.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub009.htm"
+      ],
+      "nameEn": "Student Center"
+    },
+    {
+      "id": "yu-b07",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "B",
+      "officialCode": "B07",
+      "name": "Memorial Gymnasium of Heekun Lee",
+      "nameKo": "이희건기념관",
+      "shortName": "B07",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub010.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub010.htm"
+      ],
+      "nameEn": "Memorial Gymnasium of Heekun Lee"
+    },
+    {
+      "id": "yu-c01",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C01",
+      "name": "Headquarters",
+      "nameKo": "본부본관",
+      "shortName": "C01",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub001.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub001.htm"
+      ],
+      "nameEn": "Headquarters"
+    },
+    {
+      "id": "yu-c02",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C02",
+      "name": "Foreign Language Institute",
+      "nameKo": "외국어교육원",
+      "shortName": "C02",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub003.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub003.htm"
+      ],
+      "nameEn": "Foreign Language Institute"
+    },
+    {
+      "id": "yu-c03",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C03",
+      "name": "General Lecture Hall",
+      "nameKo": "종합강의동",
+      "shortName": "C03",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub005.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub005.htm"
+      ],
+      "nameEn": "General Lecture Hall"
+    },
+    {
+      "id": "yu-c04",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C04",
+      "name": "Cafeteria of Liberal Arts",
+      "nameKo": "인문계식당",
+      "shortName": "C04",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub170.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub170.htm"
+      ],
+      "nameEn": "Cafeteria of Liberal Arts"
+    },
+    {
+      "id": "yu-c06",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C06",
+      "name": "Baseball Field",
+      "nameKo": "야구부실내연습장",
+      "shortName": "C06",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub039.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub039.htm"
+      ],
+      "nameEn": "Baseball Field"
+    },
+    {
+      "id": "yu-c07",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C07",
+      "name": "Athletes' Dormitory",
+      "nameKo": "승리관",
+      "shortName": "C07",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub223.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub223.htm"
+      ],
+      "nameEn": "Athletes' Dormitory"
+    },
+    {
+      "id": "yu-c21",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C21",
+      "name": "University Registrar Office",
+      "nameKo": "학사민원실",
+      "shortName": "C21",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub002.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub002.htm"
+      ],
+      "nameEn": "University Registrar Office"
+    },
+    {
+      "id": "yu-c24",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C24",
+      "name": "명상실",
+      "nameKo": "명상실",
+      "shortName": "C24",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub035.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub035.htm"
+      ]
+    },
+    {
+      "id": "yu-c25",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C25",
+      "name": "Head Quarters of University Reserve Forces",
+      "nameKo": "연대본부/노동조합",
+      "shortName": "C25",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub032.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub032.htm"
+      ],
+      "nameEn": "Head Quarters of University Reserve Forces"
+    },
+    {
+      "id": "yu-c26",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C26",
+      "name": "University Press",
+      "nameKo": "출판부",
+      "shortName": "C26",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub033.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub033.htm"
+      ],
+      "nameEn": "University Press"
+    },
+    {
+      "id": "yu-c27",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C27",
+      "name": "Liberal Arts Hall 2",
+      "nameKo": "제2인문관",
+      "shortName": "C27",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub198.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub198.htm"
+      ],
+      "nameEn": "Liberal Arts Hall 2"
+    },
+    {
+      "id": "yu-c28",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C28",
+      "name": "ROTC",
+      "nameKo": "학군단",
+      "shortName": "C28",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub034.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub034.htm"
+      ],
+      "nameEn": "ROTC"
+    },
+    {
+      "id": "yu-c31",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "C",
+      "officialCode": "C31",
+      "name": "Facilities Maintenance Support Center",
+      "nameKo": "교직원테니스장",
+      "shortName": "C31",
+      "kind": "outdoor",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub096.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub096.htm"
+      ],
+      "nameEn": "Facilities Maintenance Support Center"
+    },
+    {
+      "id": "yu-d01",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "D",
+      "officialCode": "D01",
+      "name": "Dormitory(A)",
+      "nameKo": "생활관A동",
+      "shortName": "D01",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub068.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub068.htm"
+      ],
+      "nameEn": "Dormitory(A)"
+    },
+    {
+      "id": "yu-d02",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "D",
+      "officialCode": "D02",
+      "name": "Dormitory(B)",
+      "nameKo": "생활관B동",
+      "shortName": "D02",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub107.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub107.htm"
+      ],
+      "nameEn": "Dormitory(B)"
+    },
+    {
+      "id": "yu-d03",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "D",
+      "officialCode": "D03",
+      "name": "Dormitory(C)",
+      "nameKo": "생활관C동",
+      "shortName": "D03",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub108.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub108.htm"
+      ],
+      "nameEn": "Dormitory(C)"
+    },
+    {
+      "id": "yu-d04",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "D",
+      "officialCode": "D04",
+      "name": "Dormitory(D)",
+      "nameKo": "생활관D동",
+      "shortName": "D04",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub067.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub067.htm"
+      ],
+      "nameEn": "Dormitory(D)"
+    },
+    {
+      "id": "yu-d05",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "D",
+      "officialCode": "D05",
+      "name": "Dormitory(E)",
+      "nameKo": "생활관E동",
+      "shortName": "D05",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub057.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub057.htm"
+      ],
+      "nameEn": "Dormitory(E)"
+    },
+    {
+      "id": "yu-d06",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "D",
+      "officialCode": "D06",
+      "name": "Dormitory(F)",
+      "nameKo": "생활관F동",
+      "shortName": "D06",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub189.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub189.htm"
+      ],
+      "nameEn": "Dormitory(F)"
+    },
+    {
+      "id": "yu-d07",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "D",
+      "officialCode": "D07",
+      "name": "Dormitory(G)",
+      "nameKo": "생활관G동",
+      "shortName": "D07",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub218.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub218.htm"
+      ],
+      "nameEn": "Dormitory(G)"
+    },
+    {
+      "id": "yu-d08",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "D",
+      "officialCode": "D08",
+      "name": "Dormitory(H)",
+      "nameKo": "생활관H동",
+      "shortName": "D08",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub217.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub217.htm"
+      ],
+      "nameEn": "Dormitory(H)"
+    },
+    {
+      "id": "yu-d09",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "D",
+      "officialCode": "D09",
+      "name": "Dormitory Restarurant",
+      "nameKo": "생활관식당",
+      "shortName": "D09",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub130.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub130.htm"
+      ],
+      "nameEn": "Dormitory Restarurant"
+    },
+    {
+      "id": "yu-d10",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "D",
+      "officialCode": "D10",
+      "name": "Center for the Hig",
+      "nameKo": "고시원",
+      "shortName": "D10",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub124.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub124.htm"
+      ],
+      "nameEn": "Center for the Hig"
+    },
+    {
+      "id": "yu-d21",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "D",
+      "officialCode": "D21",
+      "name": "Hyangto Hall",
+      "nameKo": "생활관(향토관,기독생활관)",
+      "shortName": "D21",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub231.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub231.htm"
+      ],
+      "nameEn": "Hyangto Hall"
+    },
+    {
+      "id": "yu-e02",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "E",
+      "officialCode": "E02",
+      "name": "Chunma Arts Center Tower",
+      "nameKo": "천마아트센터",
+      "shortName": "E02",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub230.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub230.htm"
+      ],
+      "nameEn": "Chunma Arts Center Tower"
+    },
+    {
+      "id": "yu-e04",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "E",
+      "officialCode": "E04",
+      "name": "Gymnastics Arena",
+      "nameKo": "체조장",
+      "shortName": "E04",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub059.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub059.htm"
+      ],
+      "nameEn": "Gymnastics Arena"
+    },
+    {
+      "id": "yu-e05",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "E",
+      "officialCode": "E05",
+      "name": "Chunma Arena",
+      "nameKo": "천마체육관",
+      "shortName": "E05",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub136.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub136.htm"
+      ],
+      "nameEn": "Chunma Arena"
+    },
+    {
+      "id": "yu-e21",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "E",
+      "officialCode": "E21",
+      "name": "Information&Telecommunication Hall",
+      "nameKo": "IT관",
+      "shortName": "E21",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub012.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub012.htm"
+      ],
+      "nameEn": "Information&Telecommunication Hall"
+    },
+    {
+      "id": "yu-e22",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "E",
+      "officialCode": "E22",
+      "name": "Electrical Engineering Building",
+      "nameKo": "전기관",
+      "shortName": "E22",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub013.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub013.htm"
+      ],
+      "nameEn": "Electrical Engineering Building"
+    },
+    {
+      "id": "yu-e23",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "E",
+      "officialCode": "E23",
+      "name": "Textiles Engineering Building",
+      "nameKo": "섬유관",
+      "shortName": "E23",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub014.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub014.htm"
+      ],
+      "nameEn": "Textiles Engineering Building"
+    },
+    {
+      "id": "yu-e24",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "E",
+      "officialCode": "E24",
+      "name": "Chemical Engineering Building",
+      "nameKo": "화공관",
+      "shortName": "E24",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub118.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub118.htm"
+      ],
+      "nameEn": "Chemical Engineering Building"
+    },
+    {
+      "id": "yu-e26",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "E",
+      "officialCode": "E26",
+      "name": "Water Research Laboratory Buliding",
+      "nameKo": "수리실험동",
+      "shortName": "E26",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub064.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub064.htm"
+      ],
+      "nameEn": "Water Research Laboratory Buliding"
+    },
+    {
+      "id": "yu-e28",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "E",
+      "officialCode": "E28",
+      "name": "Materials Engineering Buliding",
+      "nameKo": "소재관",
+      "shortName": "E28",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub201.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub201.htm"
+      ],
+      "nameEn": "Materials Engineering Buliding"
+    },
+    {
+      "id": "yu-e29",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "E",
+      "officialCode": "E29",
+      "name": "Mechanical Engineering Buliding",
+      "nameKo": "기계관",
+      "shortName": "E29",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub137.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub137.htm"
+      ],
+      "nameEn": "Mechanical Engineering Buliding"
+    },
+    {
+      "id": "yu-f01",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F01",
+      "name": "College of Pharmacy",
+      "nameKo": "약대본관",
+      "shortName": "F01",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub015.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub015.htm"
+      ],
+      "nameEn": "College of Pharmacy"
+    },
+    {
+      "id": "yu-f03",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F03",
+      "name": "Architecture Building",
+      "nameKo": "건축관",
+      "shortName": "F03",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub018.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub018.htm"
+      ],
+      "nameEn": "Architecture Building"
+    },
+    {
+      "id": "yu-f04",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F04",
+      "name": "Computer & IT Center",
+      "nameKo": "정보전산원",
+      "shortName": "F04",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub094.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub094.htm"
+      ],
+      "nameEn": "Computer & IT Center"
+    },
+    {
+      "id": "yu-f05",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F05",
+      "name": "College of Engineering Auditorium",
+      "nameKo": "공과대학강당",
+      "shortName": "F05",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub019.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub019.htm"
+      ],
+      "nameEn": "College of Engineering Auditorium"
+    },
+    {
+      "id": "yu-f06",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F06",
+      "name": "Ins' of Information & Computing Systems",
+      "nameKo": "정보통신연구소",
+      "shortName": "F06",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub020.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub020.htm"
+      ],
+      "nameEn": "Ins' of Information & Computing Systems"
+    },
+    {
+      "id": "yu-f07",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F07",
+      "name": "Construction Engineering Building",
+      "nameKo": "건설관",
+      "shortName": "F07",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub022.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub022.htm"
+      ],
+      "nameEn": "Construction Engineering Building"
+    },
+    {
+      "id": "yu-f21",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F21",
+      "name": "Sciences Building 1",
+      "nameKo": "제1과학관",
+      "shortName": "F21",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub023.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub023.htm"
+      ],
+      "nameEn": "Sciences Building 1"
+    },
+    {
+      "id": "yu-f22",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F22",
+      "name": "Sciences Building 2",
+      "nameKo": "제2과학관",
+      "shortName": "F22",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub024.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub024.htm"
+      ],
+      "nameEn": "Sciences Building 2"
+    },
+    {
+      "id": "yu-f23",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F23",
+      "name": "Sciences Building 3",
+      "nameKo": "제3과학관",
+      "shortName": "F23",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub190.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub190.htm"
+      ],
+      "nameEn": "Sciences Building 3"
+    },
+    {
+      "id": "yu-f24",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F24",
+      "name": "Science Library",
+      "nameKo": "과학도서관",
+      "shortName": "F24",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub025_all.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub025_all.htm"
+      ],
+      "nameEn": "Science Library"
+    },
+    {
+      "id": "yu-f25",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F25",
+      "name": "College of Science Cafeteria",
+      "nameKo": "자연계식당",
+      "shortName": "F25",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub123.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub123.htm"
+      ],
+      "nameEn": "College of Science Cafeteria"
+    },
+    {
+      "id": "yu-f26",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F26",
+      "name": "Biotechnology Hall",
+      "nameKo": "생명응용과학대학제1실험동",
+      "shortName": "F26",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub027.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub027.htm"
+      ],
+      "nameEn": "Biotechnology Hall"
+    },
+    {
+      "id": "yu-f27",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F27",
+      "name": "HQ : College of Life and Applied Sciences",
+      "nameKo": "생명응용과학대본관",
+      "shortName": "F27",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub026.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub026.htm"
+      ],
+      "nameEn": "HQ : College of Life and Applied Sciences"
+    },
+    {
+      "id": "yu-f28",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F28",
+      "name": "Lab Ⅱ, College of Life and Applied Sciences",
+      "nameKo": "생명응용과학대제2실험동",
+      "shortName": "F28",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub029.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub029.htm"
+      ],
+      "nameEn": "Lab Ⅱ, College of Life and Applied Sciences"
+    },
+    {
+      "id": "yu-f29",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "F",
+      "officialCode": "F29",
+      "name": "Lab Ⅲ, College of Life and Applied Sciences",
+      "nameKo": "생명응용과학대제3실험동",
+      "shortName": "F29",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub028.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub028.htm"
+      ],
+      "nameEn": "Lab Ⅲ, College of Life and Applied Sciences"
+    },
+    {
+      "id": "yu-g01",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G01",
+      "name": "College of Human Ecology & Kinesiology",
+      "nameKo": "생활과학대학본관",
+      "shortName": "G01",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub030.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub030.htm"
+      ],
+      "nameEn": "College of Human Ecology & Kinesiology"
+    },
+    {
+      "id": "yu-g02",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G02",
+      "name": "College of Human Ecology & Kinesiology(annnex)",
+      "nameKo": "생활과학대학별관",
+      "shortName": "G02",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub114.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub114.htm"
+      ],
+      "nameEn": "College of Human Ecology & Kinesiology(annnex)"
+    },
+    {
+      "id": "yu-g03",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G03",
+      "name": "Law School Library",
+      "nameKo": "법학전문도서관",
+      "shortName": "G03",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub135.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub135.htm"
+      ],
+      "nameEn": "Law School Library"
+    },
+    {
+      "id": "yu-g04",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G04",
+      "name": "Law School",
+      "nameKo": "대학원/법학전문대학원",
+      "shortName": "G04",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub228.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub228.htm"
+      ],
+      "nameEn": "Law School"
+    },
+    {
+      "id": "yu-g07",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G07",
+      "name": "약학관",
+      "nameKo": "약학관",
+      "shortName": "G07",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub285.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub285.htm"
+      ]
+    },
+    {
+      "id": "yu-g11",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G11",
+      "name": "CRC",
+      "nameKo": "CRC",
+      "shortName": "G11",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub250.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub250.htm"
+      ],
+      "nameEn": "CRC"
+    },
+    {
+      "id": "yu-g12",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G12",
+      "name": "Business Incubation Center",
+      "nameKo": "창업보육센터",
+      "shortName": "G12",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub275.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub275.htm"
+      ],
+      "nameEn": "Business Incubation Center"
+    },
+    {
+      "id": "yu-g13",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G13",
+      "name": "I-A Co-operation Technology Center",
+      "nameKo": "로봇관",
+      "shortName": "G13",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub173.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub173.htm"
+      ],
+      "nameEn": "I-A Co-operation Technology Center"
+    },
+    {
+      "id": "yu-g14",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G14",
+      "name": "Annex : Center for Research Facilities",
+      "nameKo": "중앙기기센터",
+      "shortName": "G14",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub171.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub171.htm"
+      ],
+      "nameEn": "Annex : Center for Research Facilities"
+    },
+    {
+      "id": "yu-g15",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G15",
+      "name": "Production Technology Research Center",
+      "nameKo": "생산기술연구원",
+      "shortName": "G15",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub126.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub126.htm"
+      ],
+      "nameEn": "Production Technology Research Center"
+    },
+    {
+      "id": "yu-g16",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G16",
+      "name": "Laboratory Plant",
+      "nameKo": "자동차관",
+      "shortName": "G16",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub172.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub172.htm"
+      ],
+      "nameEn": "Laboratory Plant"
+    },
+    {
+      "id": "yu-g17",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G17",
+      "name": "Wind Tunnel Laboratory",
+      "nameKo": "풍동실험실",
+      "shortName": "G17",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub134.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub134.htm"
+      ],
+      "nameEn": "Wind Tunnel Laboratory"
+    },
+    {
+      "id": "yu-g18",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G18",
+      "name": "제2공장형실습장",
+      "nameKo": "제2공장형실습장",
+      "shortName": "G18",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr.php",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php"
+      ]
+    },
+    {
+      "id": "yu-g19",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G19",
+      "name": "안전체험교육장",
+      "nameKo": "안전체험교육장",
+      "shortName": "G19",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub312.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub312.htm"
+      ]
+    },
+    {
+      "id": "yu-g20",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G20",
+      "name": "Gyeongbuk Technopark",
+      "nameKo": "경북테크노파크",
+      "shortName": "G20",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub313.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub313.htm"
+      ],
+      "nameEn": "Gyeongbuk Technopark"
+    },
+    {
+      "id": "yu-g41",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G41",
+      "name": "KUGAESEOWON",
+      "nameKo": "구계서원",
+      "shortName": "G41",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub088.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub088.htm"
+      ],
+      "nameEn": "KUGAESEOWON"
+    },
+    {
+      "id": "yu-g42",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G42",
+      "name": "KACHI-GUMEONGJIB",
+      "nameKo": "까치구멍집",
+      "shortName": "G42",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub090.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub090.htm"
+      ],
+      "nameEn": "KACHI-GUMEONGJIB"
+    },
+    {
+      "id": "yu-g43",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G43",
+      "name": "WHNJEONGSA",
+      "nameKo": "의인정사",
+      "shortName": "G43",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub089.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub089.htm"
+      ],
+      "nameEn": "WHNJEONGSA"
+    },
+    {
+      "id": "yu-g45",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G45",
+      "name": "Folklore Park / Toilet",
+      "nameKo": "민속촌해우소",
+      "shortName": "G45",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub232.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub232.htm"
+      ],
+      "nameEn": "Folklore Park / Toilet"
+    },
+    {
+      "id": "yu-g46",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G46",
+      "name": "HWASANSEODANG",
+      "nameKo": "화산서당",
+      "shortName": "G46",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub248.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub248.htm"
+      ],
+      "nameEn": "HWASANSEODANG"
+    },
+    {
+      "id": "yu-g47",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G47",
+      "name": "Gable-foofed House",
+      "nameKo": "경주맞배집",
+      "shortName": "G47",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub091.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub091.htm"
+      ],
+      "nameEn": "Gable-foofed House"
+    },
+    {
+      "id": "yu-g48",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G48",
+      "name": "ILHYUDANG",
+      "nameKo": "일휴당",
+      "shortName": "G48",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub092.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub092.htm"
+      ],
+      "nameEn": "ILHYUDANG"
+    },
+    {
+      "id": "yu-g49",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G49",
+      "name": "SSANGSONG-JEONG",
+      "nameKo": "쌍송정",
+      "shortName": "G49",
+      "kind": "landmark",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub087.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub087.htm"
+      ],
+      "nameEn": "SSANGSONG-JEONG"
+    },
+    {
+      "id": "yu-g65",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "G",
+      "officialCode": "G65",
+      "name": "Water Work Filtration Facility",
+      "nameKo": "상수도여과지",
+      "shortName": "G65",
+      "kind": "utility",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub103.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub103.htm"
+      ],
+      "nameEn": "Water Work Filtration Facility"
+    },
+    {
+      "id": "yu-h01",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "H",
+      "officialCode": "H01",
+      "name": "Professional Graduate Schools / Center for Continuing Education",
+      "nameKo": "특수대학원/사회교육원(경영관)",
+      "shortName": "H01",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub149.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub149.htm"
+      ],
+      "nameEn": "Professional Graduate Schools / Center for Continuing Education"
+    },
+    {
+      "id": "yu-h02",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "H",
+      "officialCode": "H02",
+      "name": "College of Medicine",
+      "nameKo": "의대본관",
+      "shortName": "H02",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub144.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub144.htm"
+      ],
+      "nameEn": "College of Medicine"
+    },
+    {
+      "id": "yu-h06",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "H",
+      "officialCode": "H06",
+      "name": "Yeungnam University Medical Center",
+      "nameKo": "영대의료원(병원본관(A동))",
+      "shortName": "H06",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub150.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub150.htm"
+      ],
+      "nameEn": "Yeungnam University Medical Center"
+    },
+    {
+      "id": "yu-h15",
+      "schoolId": "yeungnam",
+      "campusId": "gyeongsan",
+      "area": "H",
+      "officialCode": "H15",
+      "name": "Yeungnam Academy Corporate Office",
+      "nameKo": "법인사무국(영의관)",
+      "shortName": "H15",
+      "kind": "building",
+      "sourceUrl": "https://www.yu.ac.kr/campus_vr-k/vr_sub187.htm",
+      "sourceUrls": [
+        "https://www.yu.ac.kr/campus_vr-k/vr.php",
+        "https://www.yu.ac.kr/campus_vr-e/vr_eng.php",
+        "https://www.yu.ac.kr/campus_vr-k/vr_sub187.htm"
+      ],
+      "nameEn": "Yeungnam Academy Corporate Office"
+    }
+  ]
+}

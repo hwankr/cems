@@ -5,7 +5,7 @@ import { I18nProvider, useI18n } from "@/i18n/client";
 import type { Locale } from "@/i18n/config";
 import type { Messages } from "@/i18n/messages/types";
 import {
-  demoSubjects,
+  demoDefaultSubjectId,
   getDemoEnergyComparisons,
 } from "../data/demo-campus";
 import { localizeDemoCampus } from "../data/localized-demo-campus";
@@ -35,15 +35,14 @@ export function CampusEnergyApp({
 }
 
 function CampusEnergyShell({ mapboxToken }: { mapboxToken: string }) {
-  const { messages } = useI18n();
+  const { locale, messages } = useI18n();
   const [mode, setMode] = useState<Mode>("admin");
-  const [selectedSubjectId, setSelectedSubjectId] = useState(
-    demoSubjects[0].id,
-  );
+  const [selectedSubjectId, setSelectedSubjectId] =
+    useState(demoDefaultSubjectId);
   const comparisons = useMemo(() => getDemoEnergyComparisons(), []);
   const localizedDemo = useMemo(
-    () => localizeDemoCampus(messages),
-    [messages],
+    () => localizeDemoCampus(locale, messages),
+    [locale, messages],
   );
 
   return (

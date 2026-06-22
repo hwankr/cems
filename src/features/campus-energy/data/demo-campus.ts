@@ -3,10 +3,15 @@ import { rankSubjects } from "../domain/scoring";
 import type {
   AffiliationGroup,
   EnergyReading,
-  EnergySubject,
   ParticipantProfile,
   School,
 } from "../domain/types";
+import {
+  yeungnamBuildingSubjects,
+  type YeungnamBuildingSubject,
+} from "./yeungnam-buildings";
+
+export type DemoEnergySubject = YeungnamBuildingSubject;
 
 export const demoSchool: School = {
   id: "yeungnam",
@@ -45,79 +50,61 @@ export const demoParticipant: ParticipantProfile = {
   groupId: "engineering",
 };
 
-export const demoSubjects: EnergySubject[] = [
-  {
-    id: "yu-it",
-    schoolId: "yeungnam",
-    campusId: "gyeongsan",
-    type: "building",
-    name: "IT Building",
-    shortName: "IT",
-    lng: 128.75859,
-    lat: 35.83393,
-    groupId: "engineering",
+export const demoGroupIdsByOfficialCode: ReadonlyMap<string, string> = new Map([
+  ["E21", "engineering"],
+  ["E22", "engineering"],
+  ["E23", "engineering"],
+  ["E24", "engineering"],
+  ["C02", "humanities"],
+  ["B04", "student-services"],
+]);
+
+export const demoSubjects: DemoEnergySubject[] = yeungnamBuildingSubjects.map(
+  (subject) => {
+    const groupId = subject.officialCode
+      ? demoGroupIdsByOfficialCode.get(subject.officialCode)
+      : undefined;
+
+    return groupId ? { ...subject, groupId } : subject;
   },
-  {
-    id: "yu-mechanical",
-    schoolId: "yeungnam",
-    campusId: "gyeongsan",
-    type: "building",
-    name: "Mechanical Engineering Building",
-    shortName: "ME",
-    lng: 128.75663,
-    lat: 35.83437,
-    groupId: "engineering",
-  },
-  {
-    id: "yu-humanities",
-    schoolId: "yeungnam",
-    campusId: "gyeongsan",
-    type: "building",
-    name: "Humanities Building",
-    shortName: "HM",
-    lng: 128.75921,
-    lat: 35.83172,
-    groupId: "humanities",
-  },
-  {
-    id: "yu-library",
-    schoolId: "yeungnam",
-    campusId: "gyeongsan",
-    type: "building",
-    name: "University Library",
-    shortName: "LIB",
-    lng: 128.757416,
-    lat: 35.83287,
-    groupId: "student-services",
-  },
-];
+);
 
 export const demoEnergyReadings: EnergyReading[] = [
   {
-    subjectId: "yu-it",
+    subjectId: "yu-e21",
     actualKwh: 1360,
     forecastKwh: 1500,
     periodLabel: "2026-W25",
   },
   {
-    subjectId: "yu-mechanical",
+    subjectId: "yu-e22",
     actualKwh: 1710,
     forecastKwh: 1600,
     periodLabel: "2026-W25",
   },
   {
-    subjectId: "yu-humanities",
+    subjectId: "yu-c02",
     actualKwh: 980,
     forecastKwh: 1120,
     periodLabel: "2026-W25",
   },
   {
-    subjectId: "yu-library",
+    subjectId: "yu-b04",
     actualKwh: 2140,
     forecastKwh: 2050,
     periodLabel: "2026-W25",
   },
 ];
+
+export const demoDefaultSubjectId =
+  demoEnergyReadings[0]?.subjectId ??
+  demoSubjects.find(
+    (subject) =>
+      Boolean(subject.geometry) ||
+      (typeof subject.lng === "number" && typeof subject.lat === "number"),
+  )?.id ??
+  demoSubjects[0]?.id ??
+  "";
 
 export function getDemoEnergyComparisons() {
   return demoEnergyReadings.map(compareEnergy);
@@ -129,11 +116,12 @@ export function getDemoGroupRankings() {
     const subjectIds = demoSubjects
       .filter((subject) => subject.groupId === group.id)
       .map((subject) => subject.id);
+    const subjectIdSet = new Set(subjectIds);
     const actualKwh = comparisons
-      .filter((comparison) => subjectIds.includes(comparison.subjectId))
+      .filter((comparison) => subjectIdSet.has(comparison.subjectId))
       .reduce((sum, comparison) => sum + comparison.actualKwh, 0);
     const forecastKwh = comparisons
-      .filter((comparison) => subjectIds.includes(comparison.subjectId))
+      .filter((comparison) => subjectIdSet.has(comparison.subjectId))
       .reduce((sum, comparison) => sum + comparison.forecastKwh, 0);
 
     return compareEnergy({

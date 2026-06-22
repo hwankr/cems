@@ -96,3 +96,18 @@ Later versions should add:
 The project uses Korean as the default product language.
 
 The UI should keep language switching available through a shared i18n layer so a future settings screen can change the user's language without rewriting feature components. The first supported locales are Korean (`ko`) and English (`en`).
+
+## Spatial Subject Hierarchy
+
+The map model supports multiple geographic scales:
+
+- region
+- school
+- campus
+- building
+
+Yeungnam University starts at building scale because it is the first concrete demo school. Regional elementary and middle school maps can start at school-point scale using public location datasets, then add building polygons only for schools that need detailed energy analysis.
+
+All spatial targets should keep a stable `subjectId`. Geometry and energy readings are separate data sources connected through that ID, so an official campus entry can exist before its map geometry or electricity readings are available.
+
+Campus maps may also contain non-building official places such as landmarks, outdoor facilities, and utilities. These should keep their real place kind instead of being labeled as buildings; only subjects with energy readings participate in energy comparison and ranking.

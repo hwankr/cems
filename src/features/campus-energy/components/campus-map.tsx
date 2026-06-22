@@ -5,11 +5,40 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import { useEffect, useMemo, useRef } from "react";
 import { useI18n } from "@/i18n/client";
+import {
+  createEnergySubjectFeatureCollection,
+  getEnergySubjectCenter,
+} from "../domain/geojson";
 import type { EnergyComparison, EnergySubject, School } from "../domain/types";
+import { ENERGY_SUBJECT_CIRCLE_PAINT } from "./mapbox-style";
 
 type FeatureProperties = {
   properties?: Record<string, unknown> | null;
 };
+
+function getFeatureStringProperty(
+  feature: mapboxgl.GeoJSONFeature | undefined,
+  key: string,
+) {
+  const value = (feature as FeatureProperties | undefined)?.properties?.[key];
+  return typeof value === "string" ? value : null;
+}
+
+const ENERGY_SUBJECT_SOURCE_ID = "energy-subjects";
+const ENERGY_SUBJECT_FILL_LAYER_ID = "energy-subject-fills";
+const ENERGY_SUBJECT_OUTLINE_LAYER_ID = "energy-subject-outlines";
+const ENERGY_SUBJECT_CIRCLE_LAYER_ID = "energy-subject-circles";
+const ENERGY_SUBJECT_LABEL_LAYER_ID = "energy-subject-labels";
+const POLYGON_FILTER: mapboxgl.FilterSpecification = [
+  "any",
+  ["==", ["geometry-type"], "Polygon"],
+  ["==", ["geometry-type"], "MultiPolygon"],
+];
+const POINT_FILTER: mapboxgl.FilterSpecification = [
+  "==",
+  ["geometry-type"],
+  "Point",
+];
 
 type CampusMapProps = {
   mapboxToken: string;
@@ -31,42 +60,28 @@ export function CampusMap({
   const { messages } = useI18n();
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
+  const featureCollection = useMemo(
+    () =>
+      createEnergySubjectFeatureCollection(
+        subjects,
+        comparisons,
+        selectedSubjectId,
+    ),
+    [comparisons, selectedSubjectId, subjects],
+  );
+  const featureCollectionRef = useRef(featureCollection);
+  const onSelectSubjectRef = useRef(onSelectSubject);
   const selectedSubject = subjects.find(
     (subject) => subject.id === selectedSubjectId,
   );
 
-  const featureCollection = useMemo(
-    () => ({
-      type: "FeatureCollection" as const,
-      features: subjects.map((subject) => {
-        const comparison = comparisons.find(
-          (item) => item.subjectId === subject.id,
-        );
-        return {
-          type: "Feature" as const,
-          geometry: {
-            type: "Point" as const,
-            coordinates: [subject.lng, subject.lat],
-          },
-          properties: {
-            id: subject.id,
-            name: subject.name,
-            status: comparison?.status ?? "neutral",
-            deltaKwh: comparison?.deltaKwh ?? 0,
-          },
-        };
-      }),
-    }),
-    [comparisons, subjects],
-  );
+  useEffect(() => {
+    featureCollectionRef.current = featureCollection;
+  }, [featureCollection]);
 
-  function getFeatureStringProperty(
-    feature: mapboxgl.GeoJSONFeature | undefined,
-    key: string,
-  ) {
-    const value = (feature as FeatureProperties | undefined)?.properties?.[key];
-    return typeof value === "string" ? value : null;
-  }
+  useEffect(() => {
+    onSelectSubjectRef.current = onSelectSubject;
+  }, [onSelectSubject]);
 
   useEffect(() => {
     if (!mapboxToken || !containerRef.current || mapRef.current) return;
@@ -90,17 +105,17 @@ export function CampusMap({
     );
 
     map.on("load", () => {
-      map.addSource("energy-subjects", {
+      map.addSource(ENERGY_SUBJECT_SOURCE_ID, {
         type: "geojson",
-        data: featureCollection,
+        data: featureCollectionRef.current,
       });
       map.addLayer({
-        id: "energy-subject-circles",
-        type: "circle",
-        source: "energy-subjects",
+        id: ENERGY_SUBJECT_FILL_LAYER_ID,
+        type: "fill",
+        source: ENERGY_SUBJECT_SOURCE_ID,
+        filter: POLYGON_FILTER,
         paint: {
-          "circle-radius": ["interpolate", ["linear"], ["zoom"], 14, 7, 17, 14],
-          "circle-color": [
+          "fill-color": [
             "match",
             ["get", "status"],
             "saving",
@@ -109,18 +124,38 @@ export function CampusMap({
             "#e11d48",
             "#64748b",
           ],
-          "circle-opacity": 0.78,
-          "circle-stroke-color": "#ffffff",
-          "circle-stroke-width": 2,
+          "fill-opacity": ["case", ["get", "selected"], 0.62, 0.38],
         },
       });
       map.addLayer({
-        id: "energy-subject-labels",
+        id: ENERGY_SUBJECT_OUTLINE_LAYER_ID,
+        type: "line",
+        source: ENERGY_SUBJECT_SOURCE_ID,
+        filter: POLYGON_FILTER,
+        paint: {
+          "line-color": ["case", ["get", "selected"], "#111827", "#ffffff"],
+          "line-opacity": 0.88,
+          "line-width": ["case", ["get", "selected"], 3, 1.4],
+        },
+      });
+      map.addLayer({
+        id: ENERGY_SUBJECT_CIRCLE_LAYER_ID,
+        type: "circle",
+        source: ENERGY_SUBJECT_SOURCE_ID,
+        filter: POINT_FILTER,
+        paint: ENERGY_SUBJECT_CIRCLE_PAINT,
+      });
+      map.addLayer({
+        id: ENERGY_SUBJECT_LABEL_LAYER_ID,
         type: "symbol",
-        source: "energy-subjects",
+        source: ENERGY_SUBJECT_SOURCE_ID,
         minzoom: 15,
         layout: {
-          "text-field": ["get", "name"],
+          "text-field": [
+            "coalesce",
+            ["get", "officialCode"],
+            ["get", "shortName"],
+          ],
           "text-size": 12,
           "text-offset": [0, 1.3],
           "text-anchor": "top",
@@ -131,33 +166,31 @@ export function CampusMap({
           "text-halo-width": 1.25,
         },
       });
-      map.on("click", "energy-subject-circles", (event) => {
-        const id = getFeatureStringProperty(event.features?.[0], "id");
-        if (id) onSelectSubject(id);
-      });
-      map.on("mouseenter", "energy-subject-circles", () => {
-        map.getCanvas().style.cursor = "pointer";
-      });
-      map.on("mouseleave", "energy-subject-circles", () => {
-        map.getCanvas().style.cursor = "";
-      });
+
+      [ENERGY_SUBJECT_FILL_LAYER_ID, ENERGY_SUBJECT_CIRCLE_LAYER_ID].forEach(
+        (layerId) => {
+          map.on("click", layerId, (event) => {
+            const id = getFeatureStringProperty(event.features?.[0], "id");
+            if (id) onSelectSubjectRef.current(id);
+          });
+          map.on("mouseenter", layerId, () => {
+            map.getCanvas().style.cursor = "pointer";
+          });
+          map.on("mouseleave", layerId, () => {
+            map.getCanvas().style.cursor = "";
+          });
+        },
+      );
     });
 
     return () => {
       map.remove();
       mapRef.current = null;
     };
-  }, [
-    featureCollection,
-    mapboxToken,
-    onSelectSubject,
-    school.center,
-    school.pitch,
-    school.zoom,
-  ]);
+  }, [mapboxToken, school.center, school.pitch, school.zoom]);
 
   useEffect(() => {
-    const source = mapRef.current?.getSource("energy-subjects");
+    const source = mapRef.current?.getSource(ENERGY_SUBJECT_SOURCE_ID);
     if (source && "setData" in source) {
       (source as mapboxgl.GeoJSONSource).setData(featureCollection);
     }
@@ -165,10 +198,22 @@ export function CampusMap({
 
   useEffect(() => {
     if (!selectedSubject || !mapRef.current) return;
+    const selectedSubjectCenter = getEnergySubjectCenter(selectedSubject);
+
+    if (!selectedSubjectCenter) return;
+
+    const zoom =
+      selectedSubject.geometry?.type === "Polygon" ||
+      selectedSubject.geometry?.type === "MultiPolygon"
+        ? 17.1
+        : 16.4;
+
     mapRef.current.flyTo({
-      center: [selectedSubject.lng, selectedSubject.lat],
-      zoom: 16.4,
+      center: selectedSubjectCenter,
+      zoom,
       pitch: school.pitch,
+      curve: 1.25,
+      duration: 900,
       essential: true,
     });
   }, [school.pitch, selectedSubject]);

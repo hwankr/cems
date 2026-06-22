@@ -1,11 +1,54 @@
-export type EnergySubjectType =
+export type CampusPlaceKind =
   | "building"
+  | "landmark"
+  | "outdoor"
+  | "utility";
+
+export type EnergySubjectType =
+  | CampusPlaceKind
   | "department"
   | "college"
   | "school"
   | "region";
 
 export type EnergyStatus = "saving" | "neutral" | "overuse";
+
+export type Coordinate = [number, number];
+
+export type GeometrySourceKind =
+  | "official-campus-map"
+  | "openstreetmap"
+  | "public-data"
+  | "manual";
+
+export type GeometryConfidence = "verified" | "estimated" | "needs-review";
+
+export type GeometrySource = {
+  kind: GeometrySourceKind;
+  name: string;
+  url?: string;
+  capturedAt?: string;
+};
+
+export type SubjectGeometry =
+  | {
+      type: "Point";
+      coordinates: Coordinate;
+      geometrySource: GeometrySource;
+      geometryConfidence: GeometryConfidence;
+    }
+  | {
+      type: "Polygon";
+      coordinates: Coordinate[][];
+      geometrySource: GeometrySource;
+      geometryConfidence: GeometryConfidence;
+    }
+  | {
+      type: "MultiPolygon";
+      coordinates: Coordinate[][][];
+      geometrySource: GeometrySource;
+      geometryConfidence: GeometryConfidence;
+    };
 
 export type CharacterTitleKey =
   | "campusSaver"
@@ -19,9 +62,11 @@ export type EnergySubject = {
   type: EnergySubjectType;
   name: string;
   shortName: string;
-  lng: number;
-  lat: number;
+  lng?: number;
+  lat?: number;
+  geometry?: SubjectGeometry;
   groupId?: string;
+  officialCode?: string;
 };
 
 export type EnergyReading = {

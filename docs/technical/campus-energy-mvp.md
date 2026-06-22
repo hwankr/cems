@@ -18,7 +18,8 @@ This document records the current implemented MVP. It is not a future architectu
 The MVP uses mock data only:
 
 - Yeungnam University is the first demo school.
-- Buildings are represented as energy saving subjects with latitude and longitude.
+- Official Yeungnam campus catalog entries are represented as spatial subjects.
+- Subjects with reviewed geometry render on the map; subjects without geometry remain stable identity records until their geometry is reviewed.
 - Groups are represented as affiliations for participant rankings.
 - Actual and forecast electricity usage are hard-coded mock readings.
 
@@ -34,7 +35,49 @@ NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
 `.env.example` intentionally leaves this value blank. Do not commit `.env.local`.
 
-When the token is missing, the app still builds and the map area renders a configuration state. When a valid token is provided, Mapbox renders the Yeungnam campus view and building markers.
+When the token is missing, the app still builds and the map area renders a configuration state. When a valid token is provided, Mapbox renders the Yeungnam campus view with reviewed polygon fills, outlines, point fallback support, and labels based on official campus codes.
+
+## Yeungnam Building Mapping
+
+The Yeungnam building map uses these data layers:
+
+- official Korean campus catalog from `https://www.yu.ac.kr/campus_vr-k/vr.php`
+- official English campus catalog from `https://www.yu.ac.kr/campus_vr-e/vr_eng.php`
+- OSM building footprints fetched into `data/raw/yeungnam-osm-buildings.geojson`
+- reviewed or auto-estimated matches in `data/raw/yeungnam-building-matches.json`
+
+Generated app data lives in:
+
+- `src/features/campus-energy/data/yeungnam-building-catalog.json`
+- `src/features/campus-energy/data/yeungnam-building-geometries.json`
+- `src/features/campus-energy/data/yeungnam-buildings.ts`
+
+Current generated counts:
+
+- 101 official catalog entries
+- 86 building entries
+- 15 non-building official place entries: 9 landmarks, 5 outdoor facilities, and 1 utility
+- 305 OSM building footprints in the Yeungnam bbox
+- 48 mapped campus geometries
+- 53 catalog entries still needing reviewed geometry matches
+
+The runtime adapter loads all 101 catalog entries as subjects. The generated geometry file currently attaches reviewed or estimated geometry to 48 of them, and Mapbox omits the remaining geometry-less subjects until they receive a reviewed footprint or point.
+
+Regenerate the map data with:
+
+```powershell
+node scripts/fetch-yeungnam-campus-catalog.mjs
+node scripts/fetch-yeungnam-osm-buildings.mjs
+node scripts/build-yeungnam-building-geometries.mjs
+```
+
+Use strict mode when the reviewed match set is expected to be complete:
+
+```powershell
+node scripts/build-yeungnam-building-geometries.mjs --strict
+```
+
+Strict mode fails while catalog entries are missing reviewed geometry and does not promote incomplete app geometry output.
 
 ## Verification
 
@@ -47,9 +90,11 @@ npm run build
 git diff --check
 ```
 
-Current test coverage is focused on pure domain logic:
+Current test coverage includes domain logic, generated Yeungnam data validation, GeoJSON conversion, and localization fallback behavior:
 
 - `src/features/campus-energy/__tests__/energy.test.ts`
+- `src/features/campus-energy/__tests__/geojson.test.ts`
+- `src/features/campus-energy/__tests__/localized-demo-campus.test.ts`
 - `src/features/campus-energy/__tests__/scoring.test.ts`
 
 ## Not Implemented Yet
