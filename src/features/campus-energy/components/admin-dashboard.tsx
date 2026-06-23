@@ -11,10 +11,9 @@ import { BuildingRankTable } from "./building-rank-table";
 import { CampusMap } from "./campus-map";
 import { MetricCard } from "./metric-card";
 
-const MAP_STYLES = {
-  light: "mapbox://styles/mapbox/light-v11",
-  dark: "mapbox://styles/mapbox/dark-v11",
-} as const;
+// Mapbox Standard gives the 3D buildings/trees + atmospheric sky; the light
+// preset is driven by the active theme (day vs night).
+const STANDARD_MAP_STYLE = "mapbox://styles/mapbox/standard";
 
 type AdminDashboardProps = {
   mapboxToken: string;
@@ -49,7 +48,11 @@ export function AdminDashboard(props: AdminDashboardProps) {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-6">
       <div className="min-w-0">
-        <CampusMap {...props} mapStyleUrl={MAP_STYLES[resolvedTheme]} />
+        <CampusMap
+          {...props}
+          mapStyleUrl={STANDARD_MAP_STYLE}
+          mapTheme={resolvedTheme}
+        />
       </div>
       <aside className="flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-3">

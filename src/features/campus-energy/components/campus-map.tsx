@@ -59,6 +59,7 @@ type CampusMapProps = {
   selectedSubjectId: string;
   onSelectSubject: (subjectId: string) => void;
   mapStyleUrl?: string;
+  mapTheme?: "light" | "dark";
 };
 
 export function CampusMap({
@@ -69,6 +70,7 @@ export function CampusMap({
   selectedSubjectId,
   onSelectSubject,
   mapStyleUrl = DEFAULT_MAP_STYLE,
+  mapTheme = "dark",
 }: CampusMapProps) {
   const { messages } = useI18n();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -99,7 +101,8 @@ export function CampusMap({
   useEffect(() => {
     if (!mapboxToken || !containerRef.current || mapRef.current) return;
 
-    const lightBasemap = mapStyleUrl.includes("light");
+    const isStandard = mapStyleUrl.includes("standard");
+    const isLightTheme = mapTheme === "light";
 
     const map = new mapboxgl.Map({
       accessToken: mapboxToken,
@@ -113,6 +116,13 @@ export function CampusMap({
       pitch: school.pitch,
       style: mapStyleUrl,
       zoom: school.zoom,
+      ...(isStandard
+        ? {
+            config: {
+              basemap: { lightPreset: isLightTheme ? "day" : "night" },
+            },
+          }
+        : {}),
     });
 
     mapRef.current = map;
@@ -125,17 +135,22 @@ export function CampusMap({
     );
 
     map.on("load", () => {
-      ["building", "building-outline", "building-extrusion"].forEach((id) => {
-        if (map.getLayer(id)) {
-          map.setLayoutProperty(id, "visibility", "none");
-        }
-      });
-      map.setLight({
-        anchor: "viewport",
-        color: "#ffffff",
-        intensity: 0.35,
-        position: [1.5, 210, 30],
-      });
+      if (!isStandard) {
+        ["building", "building-outline", "building-extrusion"].forEach((id) => {
+          if (map.getLayer(id)) {
+            map.setLayoutProperty(id, "visibility", "none");
+          }
+        });
+        map.setLight({
+          anchor: "viewport",
+          color: "#ffffff",
+          intensity: 0.35,
+          position: [1.5, 210, 30],
+        });
+      }
+
+      // On Mapbox Standard, render our energy layers above the 3D basemap.
+      const slotProps = isStandard ? ({ slot: "top" } as const) : {};
 
       map.addSource(ENERGY_SUBJECT_SOURCE_ID, {
         type: "geojson",
@@ -146,9 +161,10 @@ export function CampusMap({
         type: "fill-extrusion",
         source: ENERGY_SUBJECT_SOURCE_ID,
         filter: EXTRUDABLE_POLYGON_FILTER,
-        paint: lightBasemap
+        paint: isLightTheme
           ? ENERGY_SUBJECT_EXTRUSION_PAINT_LIGHT
           : ENERGY_SUBJECT_EXTRUSION_PAINT,
+        ...slotProps,
       });
       map.addLayer({
         id: ENERGY_SUBJECT_POLYGON_HIT_LAYER_ID,
@@ -156,6 +172,7 @@ export function CampusMap({
         source: ENERGY_SUBJECT_SOURCE_ID,
         filter: EXTRUDABLE_POLYGON_FILTER,
         paint: ENERGY_SUBJECT_POLYGON_HIT_PAINT,
+        ...slotProps,
       });
       map.addLayer({
         id: ENERGY_SUBJECT_OUTLINE_LAYER_ID,
@@ -163,6 +180,7 @@ export function CampusMap({
         source: ENERGY_SUBJECT_SOURCE_ID,
         filter: EXTRUDABLE_POLYGON_FILTER,
         paint: ENERGY_SUBJECT_OUTLINE_PAINT,
+        ...slotProps,
       });
       map.addLayer({
         id: ENERGY_SUBJECT_LABEL_LAYER_ID,
@@ -194,9 +212,10 @@ export function CampusMap({
           "text-allow-overlap": false,
           "text-ignore-placement": false,
         },
-        paint: lightBasemap
+        paint: isLightTheme
           ? ENERGY_SUBJECT_LABEL_PAINT_LIGHT
           : ENERGY_SUBJECT_LABEL_PAINT_DARK,
+        ...slotProps,
       });
 
       [
@@ -227,7 +246,14 @@ export function CampusMap({
       }
       mapRef.current = null;
     };
-  }, [mapStyleUrl, mapboxToken, school.center, school.pitch, school.zoom]);
+  }, [
+    mapStyleUrl,
+    mapTheme,
+    mapboxToken,
+    school.center,
+    school.pitch,
+    school.zoom,
+  ]);
 
   useEffect(() => {
     const source = mapRef.current?.getSource(ENERGY_SUBJECT_SOURCE_ID);
