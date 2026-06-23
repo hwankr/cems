@@ -12,6 +12,9 @@ import {
 import type { EnergyComparison, EnergySubject, School } from "../domain/types";
 import {
   ENERGY_SUBJECT_EXTRUSION_PAINT,
+  ENERGY_SUBJECT_EXTRUSION_PAINT_LIGHT,
+  ENERGY_SUBJECT_LABEL_PAINT_DARK,
+  ENERGY_SUBJECT_LABEL_PAINT_LIGHT,
   ENERGY_SUBJECT_OUTLINE_PAINT,
   ENERGY_SUBJECT_POLYGON_HIT_PAINT,
 } from "./mapbox-style";
@@ -96,6 +99,8 @@ export function CampusMap({
   useEffect(() => {
     if (!mapboxToken || !containerRef.current || mapRef.current) return;
 
+    const lightBasemap = mapStyleUrl.includes("light");
+
     const map = new mapboxgl.Map({
       accessToken: mapboxToken,
       antialias: true,
@@ -141,7 +146,9 @@ export function CampusMap({
         type: "fill-extrusion",
         source: ENERGY_SUBJECT_SOURCE_ID,
         filter: EXTRUDABLE_POLYGON_FILTER,
-        paint: ENERGY_SUBJECT_EXTRUSION_PAINT,
+        paint: lightBasemap
+          ? ENERGY_SUBJECT_EXTRUSION_PAINT_LIGHT
+          : ENERGY_SUBJECT_EXTRUSION_PAINT,
       });
       map.addLayer({
         id: ENERGY_SUBJECT_POLYGON_HIT_LAYER_ID,
@@ -187,12 +194,9 @@ export function CampusMap({
           "text-allow-overlap": false,
           "text-ignore-placement": false,
         },
-        paint: {
-          "text-color": "#f8fafc",
-          "text-halo-color": "rgba(2, 6, 23, 0.85)",
-          "text-halo-width": 1.4,
-          "text-halo-blur": 0.4,
-        },
+        paint: lightBasemap
+          ? ENERGY_SUBJECT_LABEL_PAINT_LIGHT
+          : ENERGY_SUBJECT_LABEL_PAINT_DARK,
       });
 
       [

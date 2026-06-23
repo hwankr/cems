@@ -2,6 +2,7 @@ import type {
   FillExtrusionLayerSpecification,
   FillLayerSpecification,
   LineLayerSpecification,
+  SymbolLayerSpecification,
 } from "mapbox-gl";
 
 export const ENERGY_SUBJECT_POLYGON_HIT_PAINT: FillLayerSpecification["paint"] =
@@ -33,6 +34,30 @@ export const ENERGY_SUBJECT_EXTRUSION_PAINT: FillExtrusionLayerSpecification["pa
     "fill-extrusion-cast-shadows": false,
   };
 
+// Darker, more opaque fills so buildings keep contrast on the light basemap.
+export const ENERGY_SUBJECT_EXTRUSION_PAINT_LIGHT: FillExtrusionLayerSpecification["paint"] =
+  {
+    "fill-extrusion-color": [
+      "match",
+      ["get", "status"],
+      "saving",
+      "#047857",
+      "overuse",
+      "#be123c",
+      "#475569",
+    ],
+    "fill-extrusion-height": [
+      "+",
+      3,
+      ["coalesce", ["to-number", ["get", "displayHeightMeters"]], 0],
+    ],
+    "fill-extrusion-base": 0,
+    "fill-extrusion-opacity": 0.92,
+    "fill-extrusion-vertical-gradient": true,
+    "fill-extrusion-ambient-occlusion-intensity": 0.3,
+    "fill-extrusion-cast-shadows": false,
+  };
+
 export const ENERGY_SUBJECT_OUTLINE_PAINT: LineLayerSpecification["paint"] = {
   "line-color": [
     "match",
@@ -46,3 +71,20 @@ export const ENERGY_SUBJECT_OUTLINE_PAINT: LineLayerSpecification["paint"] = {
   "line-opacity": ["case", ["get", "selected"], 0.95, 0.5],
   "line-width": ["case", ["get", "selected"], 3, 1.2],
 };
+
+// Light text + dark halo reads on the dark basemap; flipped for the light one.
+export const ENERGY_SUBJECT_LABEL_PAINT_DARK: SymbolLayerSpecification["paint"] =
+  {
+    "text-color": "#f8fafc",
+    "text-halo-color": "rgba(2, 6, 23, 0.85)",
+    "text-halo-width": 1.4,
+    "text-halo-blur": 0.4,
+  };
+
+export const ENERGY_SUBJECT_LABEL_PAINT_LIGHT: SymbolLayerSpecification["paint"] =
+  {
+    "text-color": "#1e293b",
+    "text-halo-color": "rgba(255, 255, 255, 0.9)",
+    "text-halo-width": 1.4,
+    "text-halo-blur": 0.4,
+  };

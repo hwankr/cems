@@ -13,18 +13,18 @@
 
   --color-ink: #0f1729;
   --color-ink-muted: #475569;
-  --color-ink-subtle: #64748b;
+  --color-ink-subtle: #54637a;
 
-  --color-accent: #0284c7;
-  --color-accent-strong: #0369a1;
-  --color-accent-soft: rgb(2 132 199 / 0.1);
+  --color-accent: #0369a1;
+  --color-accent-strong: #075985;
+  --color-accent-soft: rgb(3 105 161 / 0.1);
   --color-on-accent: #ffffff;
 
-  --color-saving: #059669;
-  --color-saving-soft: rgb(5 150 105 / 0.1);
-  --color-overuse: #e11d48;
-  --color-overuse-soft: rgb(225 29 72 / 0.1);
-  --color-warn: #d97706;
+  --color-saving: #047857;
+  --color-saving-soft: rgb(4 120 87 / 0.1);
+  --color-overuse: #be123c;
+  --color-overuse-soft: rgb(190 18 60 / 0.1);
+  --color-warn: #b45309;
 
   --shadow-card:
     0 1px 2px rgb(15 23 42 / 0.06),
