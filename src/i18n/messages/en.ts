@@ -15,6 +15,7 @@ export const enMessages = {
     selectedSubject: "Selected subject",
   },
   app: {
+    brandName: "CEMS",
     description: "Actual electricity usage compared with forecast baseline.",
     eyebrow: "Campus Energy Management System",
     language: {
@@ -68,6 +69,7 @@ export const enMessages = {
     },
   },
   map: {
+    live: "Live campus",
     missingTokenDescription: "Set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in .env.local.",
     missingTokenTitle: "Mapbox token required",
   },

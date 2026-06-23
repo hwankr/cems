@@ -13,6 +13,7 @@ export const koMessages = {
     selectedSubject: "선택된 대상",
   },
   app: {
+    brandName: "CEMS",
     description: "예측 기준선과 실제 전력 사용량을 비교합니다.",
     eyebrow: "캠퍼스 에너지 관리 시스템",
     language: {
@@ -66,6 +67,7 @@ export const koMessages = {
     },
   },
   map: {
+    live: "실시간 캠퍼스",
     missingTokenDescription:
       ".env.local에 NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN을 설정하세요.",
     missingTokenTitle: "Mapbox 토큰이 필요합니다",
