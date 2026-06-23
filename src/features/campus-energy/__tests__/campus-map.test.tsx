@@ -531,7 +531,7 @@ describe("CampusMap", () => {
     expect(extrusionLayer?.slot).toBe("top");
     expect(labelLayer?.slot).toBe("top");
     expect(extrusionLayer?.paint).toMatchObject({
-      "fill-extrusion-opacity": 0.92,
+      "fill-extrusion-opacity": 1,
     });
     expect(labelLayer?.paint).toMatchObject({ "text-color": "#1e293b" });
 

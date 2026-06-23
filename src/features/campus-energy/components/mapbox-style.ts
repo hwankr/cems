@@ -34,17 +34,18 @@ export const ENERGY_SUBJECT_EXTRUSION_PAINT: FillExtrusionLayerSpecification["pa
     "fill-extrusion-cast-shadows": false,
   };
 
-// Darker, more opaque fills so buildings keep contrast on the light basemap.
+// Soft, harmonious fills that stay distinct on the light Standard basemap.
+// Opaque so the beige Standard buildings underneath don't bleed through.
 export const ENERGY_SUBJECT_EXTRUSION_PAINT_LIGHT: FillExtrusionLayerSpecification["paint"] =
   {
     "fill-extrusion-color": [
       "match",
       ["get", "status"],
       "saving",
-      "#047857",
+      "#34d399",
       "overuse",
-      "#be123c",
-      "#475569",
+      "#fb7185",
+      "#a8b3c4",
     ],
     "fill-extrusion-height": [
       "+",
@@ -52,9 +53,9 @@ export const ENERGY_SUBJECT_EXTRUSION_PAINT_LIGHT: FillExtrusionLayerSpecificati
       ["coalesce", ["to-number", ["get", "displayHeightMeters"]], 0],
     ],
     "fill-extrusion-base": 0,
-    "fill-extrusion-opacity": 0.92,
+    "fill-extrusion-opacity": 1,
     "fill-extrusion-vertical-gradient": true,
-    "fill-extrusion-ambient-occlusion-intensity": 0.3,
+    "fill-extrusion-ambient-occlusion-intensity": 0.1,
     "fill-extrusion-cast-shadows": false,
   };
 
