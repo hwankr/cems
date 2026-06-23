@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ThemeProvider } from "@/features/theme/theme-provider";
 import { I18nProvider, useI18n } from "@/i18n/client";
 import type { Locale } from "@/i18n/config";
 import type { Messages } from "@/i18n/messages/types";
@@ -29,7 +30,9 @@ export function CampusEnergyApp({
 }: CampusEnergyAppProps) {
   return (
     <I18nProvider locale={locale} messages={messages}>
-      <CampusEnergyShell mapboxToken={mapboxToken} />
+      <ThemeProvider>
+        <CampusEnergyShell mapboxToken={mapboxToken} />
+      </ThemeProvider>
     </I18nProvider>
   );
 }

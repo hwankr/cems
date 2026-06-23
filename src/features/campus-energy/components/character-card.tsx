@@ -17,7 +17,7 @@ export function CharacterCard({ progress, points }: CharacterCardProps) {
   return (
     <section className="rounded-2xl border border-saving/20 bg-gradient-to-br from-saving-soft to-surface p-5 shadow-card">
       <div className="flex items-center gap-3">
-        <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-saving to-accent text-[#04121d] shadow-[0_0_28px_-6px_rgb(52_211_153_/_0.7)]">
+        <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-saving to-accent text-on-accent shadow-[0_0_28px_-6px_rgb(52_211_153_/_0.7)]">
           <Sparkles className="h-7 w-7" aria-hidden="true" />
         </div>
         <div>

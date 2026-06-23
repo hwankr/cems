@@ -38,7 +38,7 @@ export function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
             aria-pressed={active}
             className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
               active
-                ? "bg-accent text-[#04121d] shadow-sm"
+                ? "bg-accent text-on-accent shadow-sm"
                 : "text-ink-muted hover:text-ink"
             }`}
           >

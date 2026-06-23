@@ -25,6 +25,12 @@ export const enMessages = {
         ko: "한국어",
       },
     },
+    theme: {
+      dark: "Dark",
+      label: "Theme",
+      light: "Light",
+      system: "System",
+    },
   },
   character: {
     level: "Level {level}",

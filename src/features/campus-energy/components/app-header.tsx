@@ -1,5 +1,6 @@
 "use client";
 
+import { ThemeSwitcher } from "@/features/theme/theme-switcher";
 import { useI18n } from "@/i18n/client";
 import { BrandMark } from "./brand-mark";
 import { LanguageSwitcher } from "./language-switcher";
@@ -34,6 +35,7 @@ export function AppHeader({ mode, onModeChange, schoolName }: AppHeaderProps) {
           <div className="hidden lg:block">
             <ModeTabs mode={mode} onModeChange={onModeChange} />
           </div>
+          <ThemeSwitcher />
           <LanguageSwitcher />
         </div>
       </div>

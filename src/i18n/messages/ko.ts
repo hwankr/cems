@@ -23,6 +23,12 @@ export const koMessages = {
         ko: "한국어",
       },
     },
+    theme: {
+      dark: "다크",
+      label: "테마",
+      light: "라이트",
+      system: "시스템",
+    },
   },
   character: {
     level: "레벨 {level}",

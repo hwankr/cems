@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
+import { themeInitScript } from "@/features/theme/theme";
 import { isLocale, supportedLocales } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
 import "../globals.css";
@@ -21,8 +22,11 @@ type LocaleLayoutProps = Readonly<{
 }>;
 
 export const viewport: Viewport = {
-  themeColor: "#060910",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#eef1f7" },
+    { media: "(prefers-color-scheme: dark)", color: "#060910" },
+  ],
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -59,9 +63,14 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
+      data-theme="light"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-dvh">{children}</body>
+      <body className="min-h-dvh">
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {children}
+      </body>
     </html>
   );
 }
