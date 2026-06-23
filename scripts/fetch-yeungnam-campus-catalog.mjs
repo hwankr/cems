@@ -34,6 +34,9 @@ const LANDMARK_CODES = new Set([
   "G49",
 ]);
 
+const OFFICIAL_FLOOR_SOURCE_BFLOOR = "official-bFloor";
+const OFFICIAL_FLOOR_SOURCE_FLIST = "official-fList";
+
 function isMainModule() {
   return process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 }
@@ -158,6 +161,115 @@ function parseGps(value, context) {
   return [lng, lat];
 }
 
+function parseNonNegativeInteger(value) {
+  const number = Number(value);
+
+  return Number.isInteger(number) && number >= 0 ? number : undefined;
+}
+
+export function parseOfficialFloorText(value) {
+  if (typeof value !== "string" || value.trim() === "") {
+    return {};
+  }
+
+  const officialFloorText = value.trim();
+  const aboveGroundMatch = officialFloorText.match(/지상\s*:\s*(\d+)\s*층/i);
+  const basementMatch = officialFloorText.match(/지하\s*:\s*(\d+)\s*층/i);
+  const aboveGroundFloors = aboveGroundMatch
+    ? parseNonNegativeInteger(aboveGroundMatch[1])
+    : undefined;
+  const basementFloors = basementMatch
+    ? parseNonNegativeInteger(basementMatch[1])
+    : undefined;
+
+  return {
+    officialFloorText,
+    ...(aboveGroundFloors !== undefined ? { aboveGroundFloors } : {}),
+    ...(basementFloors !== undefined ? { basementFloors } : {}),
+    ...(aboveGroundFloors !== undefined
+      ? { floorCountSource: OFFICIAL_FLOOR_SOURCE_BFLOOR }
+      : {}),
+  };
+}
+
+function getOfficialFloorListLabel(value) {
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    return undefined;
+  }
+
+  return value.fName ?? value.floorName ?? value.name ?? value.label;
+}
+
+export function parseOfficialFloorList(value) {
+  if (!Array.isArray(value)) {
+    return {};
+  }
+
+  let aboveGroundFloors;
+  let basementFloors;
+
+  for (const floor of value) {
+    const label = getOfficialFloorListLabel(floor);
+
+    if (typeof label !== "string") {
+      continue;
+    }
+
+    const normalized = label.trim().toUpperCase();
+    const aboveGroundMatch =
+      normalized.match(/^(\d+)\s*F$/) ?? normalized.match(/^F\s*(\d+)$/);
+    const basementMatch =
+      normalized.match(/^B\s*(\d+)$/) ?? normalized.match(/^(\d+)\s*B$/);
+
+    if (aboveGroundMatch) {
+      const floorNumber = parseNonNegativeInteger(aboveGroundMatch[1]);
+
+      if (floorNumber && (aboveGroundFloors === undefined || floorNumber > aboveGroundFloors)) {
+        aboveGroundFloors = floorNumber;
+      }
+    }
+
+    if (basementMatch) {
+      const floorNumber = parseNonNegativeInteger(basementMatch[1]);
+
+      if (floorNumber && (basementFloors === undefined || floorNumber > basementFloors)) {
+        basementFloors = floorNumber;
+      }
+    }
+  }
+
+  if (aboveGroundFloors === undefined && basementFloors === undefined) {
+    return {};
+  }
+
+  return {
+    ...(aboveGroundFloors !== undefined ? { aboveGroundFloors } : {}),
+    ...(basementFloors !== undefined ? { basementFloors } : {}),
+    ...(aboveGroundFloors !== undefined
+      ? { floorCountSource: OFFICIAL_FLOOR_SOURCE_FLIST }
+      : {}),
+  };
+}
+
+function getOfficialFloorMetadata(building) {
+  const fromFloorText = parseOfficialFloorText(building.bFloor);
+
+  if (fromFloorText.aboveGroundFloors !== undefined) {
+    return fromFloorText;
+  }
+
+  const fromFloorList = parseOfficialFloorList(building.fList);
+
+  return {
+    ...fromFloorText,
+    ...fromFloorList,
+  };
+}
+
 function campusIdFromName(campusName, officialCode) {
   const normalized = String(campusName ?? "").toLowerCase();
 
@@ -241,6 +353,7 @@ export function parseOfficialCampusMapHtml(html, locale) {
           typeof building["@UUID@"] === "string" && building["@UUID@"].trim()
             ? building["@UUID@"].trim()
             : `${officialCode ?? nameKo}-${building.bGPS}`;
+        const floorMetadata = getOfficialFloorMetadata(building);
 
         return {
           ...(officialCode ? { officialCode } : {}),
@@ -252,6 +365,7 @@ export function parseOfficialCampusMapHtml(html, locale) {
           nameKo,
           ...(nameEn ? { nameEn } : {}),
           gps: parseGps(building.bGPS, officialCode ?? nameKo),
+          ...floorMetadata,
           sourceUse: building.bUse ?? "",
           locale,
         };
@@ -297,6 +411,18 @@ export function buildOfficialCampusCatalog({ koEntries, enEntries, capturedAt })
         kind: classifyOfficialEntry({ ...koEntry, nameEn }),
         sourceUrl: KOREAN_CAMPUS_MAP_URL,
         sourceUrls: [KOREAN_CAMPUS_MAP_URL, ENGLISH_CAMPUS_MAP_URL],
+        ...(koEntry.officialFloorText
+          ? { officialFloorText: koEntry.officialFloorText }
+          : {}),
+        ...(koEntry.aboveGroundFloors !== undefined
+          ? { aboveGroundFloors: koEntry.aboveGroundFloors }
+          : {}),
+        ...(koEntry.basementFloors !== undefined
+          ? { basementFloors: koEntry.basementFloors }
+          : {}),
+        ...(koEntry.floorCountSource
+          ? { floorCountSource: koEntry.floorCountSource }
+          : {}),
         officialPoint: {
           type: "Point",
           coordinates: koEntry.gps,

@@ -52,6 +52,30 @@ function closeRing(coordinates) {
   return [...coordinates, first];
 }
 
+function parsePositiveNumber(value) {
+  if (typeof value !== "string" && typeof value !== "number") {
+    return undefined;
+  }
+
+  const match = String(value)
+    .trim()
+    .match(/^(\d+(?:\.\d+)?)\s*(?:m|meter|meters)?$/i);
+
+  if (!match) {
+    return undefined;
+  }
+
+  const number = Number(match[1]);
+
+  return Number.isFinite(number) && number > 0 ? number : undefined;
+}
+
+function parsePositiveInteger(value) {
+  const number = parsePositiveNumber(value);
+
+  return Number.isInteger(number) ? number : undefined;
+}
+
 function wayToFeature(way, nodesById) {
   const coordinates = [];
 
@@ -73,6 +97,8 @@ function wayToFeature(way, nodesById) {
 
   const tags = way.tags ?? {};
   const osmId = `way/${way.id}`;
+  const osmHeightMeters = parsePositiveNumber(tags.height);
+  const osmBuildingLevels = parsePositiveInteger(tags["building:levels"]);
 
   return {
     type: "Feature",
@@ -82,6 +108,8 @@ function wayToFeature(way, nodesById) {
       osmNameEn: tags["name:en"] ?? null,
       osmNameKo: tags["name:ko"] ?? null,
       building: tags.building ?? null,
+      ...(osmHeightMeters !== undefined ? { osmHeightMeters } : {}),
+      ...(osmBuildingLevels !== undefined ? { osmBuildingLevels } : {}),
       sourceUrl: `https://www.openstreetmap.org/way/${way.id}`,
     },
     geometry: {
@@ -141,6 +169,8 @@ export function buildReviewCsv(features) {
     "osmNameKo",
     "osmNameEn",
     "building",
+    "osmHeightMeters",
+    "osmBuildingLevels",
     "sourceUrl",
     "reviewStatus",
     "matchedOfficialCode",
@@ -153,6 +183,8 @@ export function buildReviewCsv(features) {
     feature.properties.osmNameKo,
     feature.properties.osmNameEn,
     feature.properties.building,
+    feature.properties.osmHeightMeters,
+    feature.properties.osmBuildingLevels,
     feature.properties.sourceUrl,
     "unreviewed",
     "",

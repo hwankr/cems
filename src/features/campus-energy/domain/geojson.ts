@@ -1,8 +1,10 @@
 import type {
+  BuildingHeightSource,
   Coordinate,
   EnergyComparison,
   EnergyStatus,
   EnergySubject,
+  FloorCountSource,
   SubjectGeometry,
 } from "./types";
 
@@ -20,6 +22,11 @@ export type EnergySubjectFeatureProperties = {
   deltaKwh: number;
   selected: boolean;
   officialCode?: string;
+  displayHeightMeters?: number;
+  aboveGroundFloors?: number;
+  basementFloors?: number;
+  floorCountSource?: FloorCountSource;
+  heightSource?: BuildingHeightSource;
 };
 
 export type EnergySubjectFeature = {
@@ -88,6 +95,10 @@ export function createEnergySubjectFeatureCollection(
         properties.officialCode = subject.officialCode;
       }
 
+      if (subject.geometry && subject.geometry.type !== "Point") {
+        attachHeightProperties(properties, subject.geometry);
+      }
+
       return [{
         type: "Feature",
         geometry,
@@ -95,6 +106,31 @@ export function createEnergySubjectFeatureCollection(
       }];
     }),
   };
+}
+
+function attachHeightProperties(
+  properties: EnergySubjectFeatureProperties,
+  geometry: Exclude<SubjectGeometry, { type: "Point" }>,
+) {
+  if (geometry.displayHeightMeters !== undefined) {
+    properties.displayHeightMeters = geometry.displayHeightMeters;
+  }
+
+  if (geometry.aboveGroundFloors !== undefined) {
+    properties.aboveGroundFloors = geometry.aboveGroundFloors;
+  }
+
+  if (geometry.basementFloors !== undefined) {
+    properties.basementFloors = geometry.basementFloors;
+  }
+
+  if (geometry.floorCountSource !== undefined) {
+    properties.floorCountSource = geometry.floorCountSource;
+  }
+
+  if (geometry.heightSource !== undefined) {
+    properties.heightSource = geometry.heightSource;
+  }
 }
 
 function getFeatureGeometry(

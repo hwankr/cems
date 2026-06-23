@@ -35,7 +35,7 @@ NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
 `.env.example` intentionally leaves this value blank. Do not commit `.env.local`.
 
-When the token is missing, the app still builds and the map area renders a configuration state. When a valid token is provided, Mapbox renders the Yeungnam campus view with reviewed polygon fills, outlines, point fallback support, and labels based on official campus codes.
+When the token is missing, the app still builds and the map area renders a configuration state. When a valid token is provided, Mapbox renders the Yeungnam campus view with Mapbox Standard 3D objects disabled, floor-count-based building extrusions, transparent polygon click hit areas, lightweight status outlines, invisible point fallback hit areas, and labels based on official campus codes. The admin map intentionally avoids visible polygon floor fills and visible point circles so users can click campus subjects without extra marker clutter.
 
 ## Yeungnam Building Mapping
 
@@ -45,6 +45,8 @@ The Yeungnam building map uses these data layers:
 - official English campus map from `https://www.yu.ac.kr/english/about/campus-map.do`
 - OSM building footprints fetched into `data/raw/yeungnam-osm-buildings.geojson`
 - reviewed or auto-estimated matches in `data/raw/yeungnam-building-matches.json`
+
+The official campus catalog preserves `bFloor` as `officialFloorText` and parses it into `aboveGroundFloors` and `basementFloors`. If `bFloor` cannot be parsed, `fList` labels such as `1F` and `2F` are used as a fallback for the above-ground floor count. OSM `level` is not used as a building floor count. Generated polygon and multipolygon building features can carry `displayHeightMeters` and `heightSource`; the default official-floor display height is `aboveGroundFloors * 3.6`. Point fallback features do not receive height metadata and are not rendered as 3D buildings.
 
 Generated app data lives in:
 
@@ -58,9 +60,12 @@ Current generated counts:
 - generated geometry metadata covers `gyeongsan` and `daemyeong`
 - 305 OSM building footprints in the Yeungnam bbox
 - 121 mapped campus geometries after official point fallback: 48 polygons, 73 points
+- 42 polygon building geometries currently have floor-count-based extrusion height
 - 73 official campus-map point fallbacks
 
 The runtime adapter loads all 121 catalog entries as subjects. It matches geometry by subject id first, then by official building code for legacy/reviewed features.
+
+Official campus-map point fallbacks are still data fallbacks, not exact building footprints. The UI keeps them clickable through invisible hit areas, but exact building-footprint clicking for those entries requires adding reviewed polygon geometry in `data/raw/yeungnam-building-matches.json` or `data/raw/yeungnam-manual-building-geometries.geojson`.
 
 Regenerate the map data with:
 

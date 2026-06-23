@@ -25,6 +25,7 @@ const REPORT_URL = new URL(`../${REPORT_PATH}`, import.meta.url);
 
 const SCHOOL_PREFIX_KO = "\uC601\uB0A8\uB300\uD559\uAD50";
 const ALLOWED_CONFIDENCE = new Set(["verified", "estimated", "needs-review"]);
+const METERS_PER_OFFICIAL_FLOOR = 3.6;
 
 const FALLBACK_SEEDS = [
   {
@@ -371,6 +372,104 @@ function commonProperties(building, source, confidence) {
   };
 }
 
+function isPolygonalGeometry(geometry) {
+  return geometry?.type === "Polygon" || geometry?.type === "MultiPolygon";
+}
+
+function getPositiveFiniteNumber(value) {
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
+    return undefined;
+  }
+
+  return value;
+}
+
+function getNonNegativeInteger(value) {
+  if (typeof value !== "number" || !Number.isInteger(value) || value < 0) {
+    return undefined;
+  }
+
+  return value;
+}
+
+function getPositiveInteger(value) {
+  const integer = getNonNegativeInteger(value);
+
+  return integer && integer > 0 ? integer : undefined;
+}
+
+function getOfficialFloorMetadata(building) {
+  const aboveGroundFloors = getPositiveInteger(building.aboveGroundFloors);
+  const basementFloors = getNonNegativeInteger(building.basementFloors);
+
+  return {
+    ...(aboveGroundFloors !== undefined ? { aboveGroundFloors } : {}),
+    ...(basementFloors !== undefined ? { basementFloors } : {}),
+    ...(building.floorCountSource
+      ? { floorCountSource: building.floorCountSource }
+      : {}),
+  };
+}
+
+function getPreferredHeightMetadata(building, properties) {
+  const manualHeightMeters =
+    getPositiveFiniteNumber(properties.displayHeightMeters) ??
+    getPositiveFiniteNumber(properties.heightMeters);
+
+  if (manualHeightMeters !== undefined) {
+    return {
+      displayHeightMeters: manualHeightMeters,
+      heightSource: "manual-height",
+    };
+  }
+
+  const osmHeightMeters = getPositiveFiniteNumber(properties.osmHeightMeters);
+
+  if (osmHeightMeters !== undefined) {
+    return {
+      displayHeightMeters: osmHeightMeters,
+      heightSource: "osm-height",
+    };
+  }
+
+  const osmBuildingLevels = getPositiveInteger(properties.osmBuildingLevels);
+
+  if (osmBuildingLevels !== undefined) {
+    return {
+      displayHeightMeters: osmBuildingLevels * METERS_PER_OFFICIAL_FLOOR,
+      heightSource: "osm-building-levels",
+    };
+  }
+
+  const officialFloors = getPositiveInteger(building.aboveGroundFloors);
+
+  if (officialFloors !== undefined) {
+    return {
+      displayHeightMeters: officialFloors * METERS_PER_OFFICIAL_FLOOR,
+      heightSource: "official-floor-count",
+    };
+  }
+
+  return {};
+}
+
+function getHeightMetadata(building, reviewedFeature) {
+  if (
+    building.kind !== "building" ||
+    !reviewedFeature ||
+    !isPolygonalGeometry(reviewedFeature.geometry)
+  ) {
+    return {};
+  }
+
+  const properties = reviewedFeature.properties ?? {};
+
+  return {
+    ...getOfficialFloorMetadata(building),
+    ...getPreferredHeightMetadata(building, properties),
+  };
+}
+
 function combineOsmGeometries(osmFeatures) {
   if (osmFeatures.length === 1) {
     return osmFeatures[0].geometry;
@@ -392,6 +491,20 @@ function combineOsmGeometries(osmFeatures) {
   };
 }
 
+function getSharedPositiveFeatureNumber(osmFeatures, propertyName) {
+  const values = osmFeatures.map((feature) =>
+    getPositiveFiniteNumber(feature.properties?.[propertyName]),
+  );
+
+  if (values.some((value) => value === undefined)) {
+    return undefined;
+  }
+
+  const [firstValue] = values;
+
+  return values.every((value) => value === firstValue) ? firstValue : undefined;
+}
+
 function featureFromManual(building, manualFeature) {
   const properties = manualFeature.properties ?? {};
   const confidence = normalizeConfidence(properties.geometryConfidence, "verified");
@@ -402,6 +515,8 @@ function featureFromManual(building, manualFeature) {
       geometrySource: "manual",
       geometryConfidence: confidence,
       sourceUrl: properties.sourceUrl ?? null,
+      displayHeightMeters: properties.displayHeightMeters,
+      heightMeters: properties.heightMeters,
     },
     geometry: manualFeature.geometry,
   });
@@ -428,6 +543,8 @@ function featureFromOsmMatch(building, match, osmFeaturesById) {
       geometrySource: "openstreetmap",
       geometryConfidence: confidence,
       osmIds: osmFeatures.map((feature) => feature.properties.osmId),
+      osmHeightMeters: getSharedPositiveFeatureNumber(osmFeatures, "osmHeightMeters"),
+      osmBuildingLevels: getSharedPositiveFeatureNumber(osmFeatures, "osmBuildingLevels"),
       sourceUrl:
         osmFeatures.length === 1 ? osmFeatures[0].properties.sourceUrl : null,
       matchMethod: match.matchMethod ?? null,
@@ -451,6 +568,7 @@ export function buildGeometryFeatureForCatalogEntry(building, reviewedFeature) {
         sourceUrl: properties.sourceUrl ?? null,
         osmIds: properties.osmIds ?? undefined,
         matchMethod: properties.matchMethod ?? null,
+        ...getHeightMetadata(building, reviewedFeature),
       },
       geometry: reviewedFeature.geometry,
     };
@@ -569,6 +687,8 @@ function buildEnrichedReviewCsv(osmFeatures, matches, catalogBuildings) {
     "osmNameKo",
     "osmNameEn",
     "building",
+    "osmHeightMeters",
+    "osmBuildingLevels",
     "sourceUrl",
     "reviewStatus",
     "matchedOfficialCode",
@@ -585,6 +705,8 @@ function buildEnrichedReviewCsv(osmFeatures, matches, catalogBuildings) {
       feature.properties.osmNameKo,
       feature.properties.osmNameEn,
       feature.properties.building,
+      feature.properties.osmHeightMeters,
+      feature.properties.osmBuildingLevels,
       feature.properties.sourceUrl,
       match?.reviewStatus ?? "unreviewed",
       match?.officialCode ?? "",

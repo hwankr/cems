@@ -26,6 +26,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -58,6 +62,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -90,6 +98,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 1층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -122,6 +134,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -154,6 +170,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -186,6 +206,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 0층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -218,6 +242,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -250,6 +278,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -282,6 +314,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -314,6 +350,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 0층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -346,6 +386,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -378,6 +422,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 0층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -410,6 +458,9 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1층",
+      "aboveGroundFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -442,6 +493,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -474,6 +529,9 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상 2층",
+      "aboveGroundFloors": 2,
+      "floorCountSource": "official-fList",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -506,6 +564,9 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1층",
+      "aboveGroundFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -538,6 +599,7 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "1",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -570,6 +632,7 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "1",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -602,6 +665,9 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상 1층",
+      "aboveGroundFloors": 1,
+      "floorCountSource": "official-fList",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -634,6 +700,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 0층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -666,6 +736,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -698,6 +772,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -730,6 +808,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 20 층, 지하: 1층",
+      "aboveGroundFloors": 20,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -762,6 +844,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -794,6 +880,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 0층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -826,6 +916,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 0층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -858,6 +952,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -890,6 +988,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -922,6 +1024,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -954,6 +1060,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -986,6 +1096,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1018,6 +1132,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1050,6 +1168,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 1층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1082,6 +1204,9 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1층",
+      "aboveGroundFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1114,6 +1239,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 0층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1146,6 +1275,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 0층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1178,6 +1311,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1210,6 +1347,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1242,6 +1383,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1274,6 +1419,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 0층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1306,6 +1455,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1338,6 +1491,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1370,6 +1527,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 1층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1402,6 +1563,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1434,6 +1599,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1466,6 +1635,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 2층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 2,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1498,6 +1671,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1530,6 +1707,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 0층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1562,6 +1743,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 0층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1594,6 +1779,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 15층, 지하: 1층",
+      "aboveGroundFloors": 15,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1626,6 +1815,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3층, 지하: 2층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 2,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1658,6 +1851,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1690,6 +1887,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 0층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1722,6 +1923,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1754,6 +1959,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1786,6 +1995,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1818,6 +2031,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1850,6 +2067,9 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1층",
+      "aboveGroundFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1882,6 +2102,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -1914,6 +2138,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2039,6 +2267,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4층 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2101,6 +2333,8 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지하: 1층",
+      "basementFloors": 1,
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2410,6 +2644,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 0층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2442,6 +2680,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2474,6 +2716,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 1층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2506,6 +2752,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2538,6 +2788,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2570,6 +2824,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2602,6 +2860,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2634,6 +2896,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2666,6 +2932,9 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4층",
+      "aboveGroundFloors": 4,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2698,6 +2967,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 0층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2730,6 +3003,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 0층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2762,6 +3039,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 1층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2794,6 +3075,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2826,6 +3111,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 0층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2858,6 +3147,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 1층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2890,6 +3183,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 0층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2922,6 +3219,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2954,6 +3255,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5층, 지하: 0층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -2986,6 +3291,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3018,6 +3327,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3050,6 +3363,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2층, 지하: 1층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3082,6 +3399,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3114,6 +3435,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3146,6 +3471,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 1층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3178,6 +3507,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 3 층, 지하: 1층",
+      "aboveGroundFloors": 3,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3210,6 +3543,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 2 층, 지하: 0층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3274,6 +3611,8 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "aboveGroundFloors": 1,
+      "floorCountSource": "official-fList",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3306,6 +3645,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3338,6 +3681,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3370,6 +3717,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3402,6 +3753,9 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1층",
+      "aboveGroundFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3434,6 +3788,9 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1층",
+      "aboveGroundFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3466,6 +3823,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3498,6 +3859,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3530,6 +3895,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 1 층, 지하: 0층",
+      "aboveGroundFloors": 1,
+      "basementFloors": 0,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3562,6 +3931,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 5 층, 지하: 1층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3594,6 +3967,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1 층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3626,6 +4003,9 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지하 1층, 지상 5층",
+      "aboveGroundFloors": 4,
+      "floorCountSource": "official-fList",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3658,6 +4038,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지하 : 1층, 지상 : 5층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3690,6 +4074,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상 : 2층, 지하 : 1층",
+      "aboveGroundFloors": 2,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3722,6 +4110,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 13 층, 지하: 3층",
+      "aboveGroundFloors": 13,
+      "basementFloors": 3,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3754,6 +4146,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상 : 15층, 지하 : 1층",
+      "aboveGroundFloors": 15,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3786,6 +4182,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상: 4 층, 지하: 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3818,6 +4218,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상 : 4층, 지하 : 1층",
+      "aboveGroundFloors": 4,
+      "basementFloors": 1,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [
@@ -3850,6 +4254,10 @@
         "https://www.yu.ac.kr/main/intro/campus-map.do",
         "https://www.yu.ac.kr/english/about/campus-map.do"
       ],
+      "officialFloorText": "지상 : 5층, 지하 : 2층",
+      "aboveGroundFloors": 5,
+      "basementFloors": 2,
+      "floorCountSource": "official-bFloor",
       "officialPoint": {
         "type": "Point",
         "coordinates": [

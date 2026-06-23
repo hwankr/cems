@@ -10,7 +10,12 @@ import {
   getEnergySubjectCenter,
 } from "../domain/geojson";
 import type { EnergyComparison, EnergySubject, School } from "../domain/types";
-import { ENERGY_SUBJECT_CIRCLE_PAINT } from "./mapbox-style";
+import {
+  ENERGY_SUBJECT_EXTRUSION_PAINT,
+  ENERGY_SUBJECT_OUTLINE_PAINT,
+  ENERGY_SUBJECT_POINT_HIT_PAINT,
+  ENERGY_SUBJECT_POLYGON_HIT_PAINT,
+} from "./mapbox-style";
 
 type FeatureProperties = {
   properties?: Record<string, unknown> | null;
@@ -25,9 +30,12 @@ function getFeatureStringProperty(
 }
 
 const ENERGY_SUBJECT_SOURCE_ID = "energy-subjects";
-const ENERGY_SUBJECT_FILL_LAYER_ID = "energy-subject-fills";
+const ENERGY_SUBJECT_EXTRUSION_LAYER_ID =
+  "energy-subject-building-extrusions";
+const ENERGY_SUBJECT_POLYGON_HIT_LAYER_ID =
+  "energy-subject-polygon-hit-areas";
 const ENERGY_SUBJECT_OUTLINE_LAYER_ID = "energy-subject-outlines";
-const ENERGY_SUBJECT_CIRCLE_LAYER_ID = "energy-subject-circles";
+const ENERGY_SUBJECT_POINT_HIT_LAYER_ID = "energy-subject-point-hit-areas";
 const ENERGY_SUBJECT_LABEL_LAYER_ID = "energy-subject-labels";
 const POLYGON_FILTER: mapboxgl.FilterSpecification = [
   "any",
@@ -38,6 +46,11 @@ const POINT_FILTER: mapboxgl.FilterSpecification = [
   "==",
   ["geometry-type"],
   "Point",
+];
+const EXTRUSION_FILTER: mapboxgl.FilterSpecification = [
+  "all",
+  POLYGON_FILTER,
+  [">", ["coalesce", ["get", "displayHeightMeters"], 0], 0],
 ];
 
 type CampusMapProps = {
@@ -95,7 +108,13 @@ export function CampusMap({
       pitch: school.pitch,
       style: "mapbox://styles/mapbox/standard",
       zoom: school.zoom,
-      config: { basemap: { theme: "monochrome", lightPreset: "day" } },
+      config: {
+        basemap: {
+          theme: "monochrome",
+          lightPreset: "day",
+          show3dObjects: false,
+        },
+      },
     });
 
     mapRef.current = map;
@@ -110,40 +129,32 @@ export function CampusMap({
         data: featureCollectionRef.current,
       });
       map.addLayer({
-        id: ENERGY_SUBJECT_FILL_LAYER_ID,
+        id: ENERGY_SUBJECT_EXTRUSION_LAYER_ID,
+        type: "fill-extrusion",
+        source: ENERGY_SUBJECT_SOURCE_ID,
+        filter: EXTRUSION_FILTER,
+        paint: ENERGY_SUBJECT_EXTRUSION_PAINT,
+      });
+      map.addLayer({
+        id: ENERGY_SUBJECT_POLYGON_HIT_LAYER_ID,
         type: "fill",
         source: ENERGY_SUBJECT_SOURCE_ID,
         filter: POLYGON_FILTER,
-        paint: {
-          "fill-color": [
-            "match",
-            ["get", "status"],
-            "saving",
-            "#059669",
-            "overuse",
-            "#e11d48",
-            "#64748b",
-          ],
-          "fill-opacity": ["case", ["get", "selected"], 0.62, 0.38],
-        },
+        paint: ENERGY_SUBJECT_POLYGON_HIT_PAINT,
       });
       map.addLayer({
         id: ENERGY_SUBJECT_OUTLINE_LAYER_ID,
         type: "line",
         source: ENERGY_SUBJECT_SOURCE_ID,
         filter: POLYGON_FILTER,
-        paint: {
-          "line-color": ["case", ["get", "selected"], "#111827", "#ffffff"],
-          "line-opacity": 0.88,
-          "line-width": ["case", ["get", "selected"], 3, 1.4],
-        },
+        paint: ENERGY_SUBJECT_OUTLINE_PAINT,
       });
       map.addLayer({
-        id: ENERGY_SUBJECT_CIRCLE_LAYER_ID,
+        id: ENERGY_SUBJECT_POINT_HIT_LAYER_ID,
         type: "circle",
         source: ENERGY_SUBJECT_SOURCE_ID,
         filter: POINT_FILTER,
-        paint: ENERGY_SUBJECT_CIRCLE_PAINT,
+        paint: ENERGY_SUBJECT_POINT_HIT_PAINT,
       });
       map.addLayer({
         id: ENERGY_SUBJECT_LABEL_LAYER_ID,
@@ -156,8 +167,8 @@ export function CampusMap({
             ["get", "officialCode"],
             ["get", "shortName"],
           ],
-          "text-size": 12,
-          "text-offset": [0, 1.3],
+          "text-size": ["case", ["get", "selected"], 13, 11],
+          "text-offset": [0, 0.75],
           "text-anchor": "top",
         },
         paint: {
@@ -167,20 +178,23 @@ export function CampusMap({
         },
       });
 
-      [ENERGY_SUBJECT_FILL_LAYER_ID, ENERGY_SUBJECT_CIRCLE_LAYER_ID].forEach(
-        (layerId) => {
-          map.on("click", layerId, (event) => {
-            const id = getFeatureStringProperty(event.features?.[0], "id");
-            if (id) onSelectSubjectRef.current(id);
-          });
-          map.on("mouseenter", layerId, () => {
-            map.getCanvas().style.cursor = "pointer";
-          });
-          map.on("mouseleave", layerId, () => {
-            map.getCanvas().style.cursor = "";
-          });
-        },
-      );
+      [
+        ENERGY_SUBJECT_EXTRUSION_LAYER_ID,
+        ENERGY_SUBJECT_POLYGON_HIT_LAYER_ID,
+        ENERGY_SUBJECT_POINT_HIT_LAYER_ID,
+        ENERGY_SUBJECT_LABEL_LAYER_ID,
+      ].forEach((layerId) => {
+        map.on("click", layerId, (event) => {
+          const id = getFeatureStringProperty(event.features?.[0], "id");
+          if (id) onSelectSubjectRef.current(id);
+        });
+        map.on("mouseenter", layerId, () => {
+          map.getCanvas().style.cursor = "pointer";
+        });
+        map.on("mouseleave", layerId, () => {
+          map.getCanvas().style.cursor = "";
+        });
+      });
     });
 
     return () => {

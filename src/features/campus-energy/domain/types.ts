@@ -23,6 +23,14 @@ export type GeometrySourceKind =
 
 export type GeometryConfidence = "verified" | "estimated" | "needs-review";
 
+export type FloorCountSource = "official-bFloor" | "official-fList";
+
+export type BuildingHeightSource =
+  | "official-floor-count"
+  | "manual-height"
+  | "osm-height"
+  | "osm-building-levels";
+
 export type GeometrySource = {
   kind: GeometrySourceKind;
   name: string;
@@ -30,25 +38,39 @@ export type GeometrySource = {
   capturedAt?: string;
 };
 
+type BuildingHeightMetadata = {
+  displayHeightMeters?: number;
+  aboveGroundFloors?: number;
+  basementFloors?: number;
+  floorCountSource?: FloorCountSource;
+  heightSource?: BuildingHeightSource;
+};
+
+type PointSubjectGeometry = {
+  type: "Point";
+  coordinates: Coordinate;
+  geometrySource: GeometrySource;
+  geometryConfidence: GeometryConfidence;
+};
+
+type PolygonSubjectGeometry = {
+  type: "Polygon";
+  coordinates: Coordinate[][];
+  geometrySource: GeometrySource;
+  geometryConfidence: GeometryConfidence;
+} & BuildingHeightMetadata;
+
+type MultiPolygonSubjectGeometry = {
+  type: "MultiPolygon";
+  coordinates: Coordinate[][][];
+  geometrySource: GeometrySource;
+  geometryConfidence: GeometryConfidence;
+} & BuildingHeightMetadata;
+
 export type SubjectGeometry =
-  | {
-      type: "Point";
-      coordinates: Coordinate;
-      geometrySource: GeometrySource;
-      geometryConfidence: GeometryConfidence;
-    }
-  | {
-      type: "Polygon";
-      coordinates: Coordinate[][];
-      geometrySource: GeometrySource;
-      geometryConfidence: GeometryConfidence;
-    }
-  | {
-      type: "MultiPolygon";
-      coordinates: Coordinate[][][];
-      geometrySource: GeometrySource;
-      geometryConfidence: GeometryConfidence;
-    };
+  | PointSubjectGeometry
+  | PolygonSubjectGeometry
+  | MultiPolygonSubjectGeometry;
 
 export type CharacterTitleKey =
   | "campusSaver"

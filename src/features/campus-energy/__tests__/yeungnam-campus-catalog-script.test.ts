@@ -9,8 +9,11 @@ import {
   buildOfficialCampusCatalog,
   ENGLISH_CAMPUS_MAP_URL,
   KOREAN_CAMPUS_MAP_URL,
+  parseOfficialFloorList,
+  parseOfficialFloorText,
   parseOfficialCampusMapHtml,
 } from "../../../../scripts/fetch-yeungnam-campus-catalog.mjs";
+import { overpassJsonToGeoJson } from "../../../../scripts/fetch-yeungnam-osm-buildings.mjs";
 import buildingGeometries from "../data/yeungnam-building-geometries.json";
 
 const koHtml = `
@@ -24,6 +27,7 @@ const koHtml = `
         "bNo": "A06",
         "bName": "Arts Design Building",
         "bGPS": "128.75724314289113,35.83515409112729",
+        "bFloor": "지상: 3 층, 지하: 1층",
         "bUse": "Lecture hall",
         "@UUID@": "a06-ko"
       }]
@@ -82,6 +86,10 @@ describe("official Yeungnam campus-map parser", () => {
       nameKo: "Arts Design Building",
       gps: [128.75724314289113, 35.83515409112729],
       campusId: "gyeongsan",
+      officialFloorText: "지상: 3 층, 지하: 1층",
+      aboveGroundFloors: 3,
+      basementFloors: 1,
+      floorCountSource: "official-bFloor",
     });
     expect(entries[1]).toMatchObject({
       nameKo: "Cheonma Tennis Field",
@@ -89,6 +97,29 @@ describe("official Yeungnam campus-map parser", () => {
       campusId: "gyeongsan",
     });
     expect(entries[1].officialCode).toBeUndefined();
+  });
+
+  it("parses official bFloor text into above-ground and basement floors", () => {
+    expect(parseOfficialFloorText("지상: 3 층, 지하: 1층")).toEqual({
+      officialFloorText: "지상: 3 층, 지하: 1층",
+      aboveGroundFloors: 3,
+      basementFloors: 1,
+      floorCountSource: "official-bFloor",
+    });
+    expect(parseOfficialFloorText("지상: 1층, 지하: 0층")).toEqual({
+      officialFloorText: "지상: 1층, 지하: 0층",
+      aboveGroundFloors: 1,
+      basementFloors: 0,
+      floorCountSource: "official-bFloor",
+    });
+  });
+
+  it("falls back to fList floor labels when bFloor cannot be parsed", () => {
+    expect(parseOfficialFloorList(["B1", "1F", "2F"])).toEqual({
+      aboveGroundFloors: 2,
+      basementFloors: 1,
+      floorCountSource: "official-fList",
+    });
   });
 
   it("extracts campusList by array boundary when other variables appear before gateList", () => {
@@ -129,6 +160,10 @@ describe("official Yeungnam campus-map parser", () => {
       nameEn: "College of Arts-Design Building",
       shortName: "A06",
       kind: "building",
+      officialFloorText: "지상: 3 층, 지하: 1층",
+      aboveGroundFloors: 3,
+      basementFloors: 1,
+      floorCountSource: "official-bFloor",
       officialPoint: {
         type: "Point",
         coordinates: [128.75724314289113, 35.83515409112729],
@@ -250,6 +285,61 @@ describe("official Yeungnam campus-map parser", () => {
   });
 });
 
+describe("OSM Yeungnam building footprint parser", () => {
+  it("preserves OSM height and building:levels without treating level as building height", () => {
+    const geojson = overpassJsonToGeoJson({
+      elements: [
+        { type: "node", id: 1, lon: 128, lat: 35 },
+        { type: "node", id: 2, lon: 129, lat: 35 },
+        { type: "node", id: 3, lon: 129, lat: 36 },
+        { type: "node", id: 4, lon: 128, lat: 36 },
+        {
+          type: "way",
+          id: 153003650,
+          nodes: [1, 2, 3, 4, 1],
+          tags: {
+            building: "yes",
+            level: "1",
+            height: "12 m",
+            "building:levels": "4",
+            name: "천마아트센터",
+          },
+        },
+      ],
+    });
+
+    expect(geojson.features[0].properties).toMatchObject({
+      osmId: "way/153003650",
+      osmHeightMeters: 12,
+      osmBuildingLevels: 4,
+    });
+    expect(geojson.features[0].properties).not.toHaveProperty("level");
+  });
+
+  it("does not derive height metadata from OSM level alone", () => {
+    const geojson = overpassJsonToGeoJson({
+      elements: [
+        { type: "node", id: 1, lon: 128, lat: 35 },
+        { type: "node", id: 2, lon: 129, lat: 35 },
+        { type: "node", id: 3, lon: 129, lat: 36 },
+        { type: "node", id: 4, lon: 128, lat: 36 },
+        {
+          type: "way",
+          id: 2,
+          nodes: [1, 2, 3, 4, 1],
+          tags: {
+            building: "yes",
+            level: "1",
+          },
+        },
+      ],
+    });
+
+    expect(geojson.features[0].properties).not.toHaveProperty("osmHeightMeters");
+    expect(geojson.features[0].properties).not.toHaveProperty("osmBuildingLevels");
+  });
+});
+
 describe("official point fallback geometry", () => {
   it("uses reviewed geometry before official point geometry", () => {
     const result = runGeometryHelper(`const building = {
@@ -261,6 +351,9 @@ describe("official point fallback geometry", () => {
       nameKo: "Arts Design Building",
       shortName: "A06",
       kind: "building",
+      aboveGroundFloors: 3,
+      basementFloors: 1,
+      floorCountSource: "official-bFloor",
       officialPoint: {
         type: "Point",
         coordinates: [128.75724314289113, 35.83515409112729],
@@ -295,8 +388,72 @@ describe("official point fallback geometry", () => {
         officialCode: "A06",
         geometrySource: "openstreetmap",
         geometryConfidence: "estimated",
+        aboveGroundFloors: 3,
+        basementFloors: 1,
+        floorCountSource: "official-bFloor",
+        displayHeightMeters: 10.8,
+        heightSource: "official-floor-count",
       },
     });
+  });
+
+  it("prefers manual and OSM height sources before official floor count", () => {
+    const result = runGeometryHelper(`const building = {
+      id: "yu-a06",
+      schoolId: "yeungnam",
+      campusId: "gyeongsan",
+      officialCode: "A06",
+      name: "College of Arts-Design Building",
+      nameKo: "Arts Design Building",
+      shortName: "A06",
+      kind: "building",
+      aboveGroundFloors: 3,
+      floorCountSource: "official-bFloor",
+    };
+    const geometry = {
+      type: "Polygon",
+      coordinates: [[[128, 35], [129, 35], [129, 36], [128, 35]]],
+    };
+    const features = [
+      buildGeometryFeatureForCatalogEntry(building, {
+        type: "Feature",
+        properties: {
+          geometrySource: "manual",
+          geometryConfidence: "verified",
+          displayHeightMeters: 12,
+        },
+        geometry,
+      }),
+      buildGeometryFeatureForCatalogEntry(building, {
+        type: "Feature",
+        properties: {
+          geometrySource: "openstreetmap",
+          geometryConfidence: "estimated",
+          osmHeightMeters: 15,
+          osmBuildingLevels: 4,
+        },
+        geometry,
+      }),
+      buildGeometryFeatureForCatalogEntry(building, {
+        type: "Feature",
+        properties: {
+          geometrySource: "openstreetmap",
+          geometryConfidence: "estimated",
+          osmBuildingLevels: 4,
+        },
+        geometry,
+      }),
+    ];
+    console.log(JSON.stringify(features.map((feature) => ({
+      displayHeightMeters: feature.properties.displayHeightMeters,
+      heightSource: feature.properties.heightSource,
+    }))));`);
+
+    expect(result).toEqual([
+      { displayHeightMeters: 12, heightSource: "manual-height" },
+      { displayHeightMeters: 15, heightSource: "osm-height" },
+      { displayHeightMeters: 14.4, heightSource: "osm-building-levels" },
+    ]);
   });
 
   it("uses official point geometry when reviewed geometry is missing", () => {
@@ -308,6 +465,9 @@ describe("official point fallback geometry", () => {
       nameKo: "Cheonma Honors Park",
       shortName: "Cheonma Honors Park",
       kind: "building",
+      aboveGroundFloors: 2,
+      basementFloors: 1,
+      floorCountSource: "official-bFloor",
       officialPoint: {
         type: "Point",
         coordinates: [128.7601738129029, 35.8308105775303],
@@ -334,6 +494,40 @@ describe("official point fallback geometry", () => {
         matchMethod: "official-campus-map-point",
       },
     });
+
+    expect(result.properties).not.toHaveProperty("displayHeightMeters");
+    expect(result.properties).not.toHaveProperty("heightSource");
+    expect(result.properties).not.toHaveProperty("aboveGroundFloors");
+  });
+
+  it("does not add extrusion height to non-building polygons", () => {
+    const result = runGeometryHelper(`const building = {
+      id: "yu-a01",
+      schoolId: "yeungnam",
+      campusId: "gyeongsan",
+      officialCode: "A01",
+      name: "Main Gate",
+      nameKo: "Main Gate",
+      shortName: "A01",
+      kind: "landmark",
+      aboveGroundFloors: 3,
+      floorCountSource: "official-bFloor",
+    };
+    const reviewedFeature = {
+      type: "Feature",
+      properties: {
+        geometrySource: "manual",
+        geometryConfidence: "verified",
+      },
+      geometry: {
+        type: "Polygon",
+        coordinates: [[[128, 35], [129, 35], [129, 36], [128, 35]]],
+      },
+    };
+    console.log(JSON.stringify(buildGeometryFeatureForCatalogEntry(building, reviewedFeature)));`);
+
+    expect(result.properties).not.toHaveProperty("displayHeightMeters");
+    expect(result.properties).not.toHaveProperty("heightSource");
   });
 
   it("requires explicit acceptance for official point fallbacks in strict mode", () => {

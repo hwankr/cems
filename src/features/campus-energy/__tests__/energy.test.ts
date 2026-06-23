@@ -24,6 +24,10 @@ const validGeneratedCatalog = {
       nameEn: "Engineering Building 1",
       shortName: "E21",
       kind: "building",
+      officialFloorText: "지상: 3 층, 지하: 1층",
+      aboveGroundFloors: 3,
+      basementFloors: 1,
+      floorCountSource: "official-bFloor",
     },
     {
       id: "yu-a09",
@@ -55,10 +59,23 @@ const validGeneratedGeometries = {
         officialCode: "E21",
         geometrySource: "manual",
         geometryConfidence: "verified",
+        displayHeightMeters: 10.8,
+        aboveGroundFloors: 3,
+        basementFloors: 1,
+        floorCountSource: "official-bFloor",
+        heightSource: "official-floor-count",
       },
       geometry: {
-        type: "Point",
-        coordinates: [128.1, 35.1],
+        type: "Polygon",
+        coordinates: [
+          [
+            [128.1, 35.1],
+            [128.2, 35.1],
+            [128.2, 35.2],
+            [128.1, 35.2],
+            [128.1, 35.1],
+          ],
+        ],
       },
     },
     {
@@ -266,6 +283,72 @@ describe("demo campus data", () => {
     );
   });
 
+  it("rejects generated polygon features with invalid display height values", async () => {
+    await expect(
+      importYeungnamBuildingsWithGeneratedData({
+        geometries: {
+          features: [
+            {
+              ...validGeneratedGeometries.features[0],
+              properties: {
+                ...validGeneratedGeometries.features[0].properties,
+                displayHeightMeters: 0,
+              },
+            },
+          ],
+        },
+      }),
+    ).rejects.toThrow(
+      "E21 properties: expected positive finite displayHeightMeters.",
+    );
+  });
+
+  it("rejects generated polygon features with invalid floor values", async () => {
+    await expect(
+      importYeungnamBuildingsWithGeneratedData({
+        geometries: {
+          features: [
+            {
+              ...validGeneratedGeometries.features[0],
+              properties: {
+                ...validGeneratedGeometries.features[0].properties,
+                aboveGroundFloors: 1.5,
+              },
+            },
+          ],
+        },
+      }),
+    ).rejects.toThrow(
+      "E21 properties: expected positive integer aboveGroundFloors.",
+    );
+  });
+
+  it("rejects generated point fallback features with building height metadata", async () => {
+    await expect(
+      importYeungnamBuildingsWithGeneratedData({
+        geometries: {
+          features: [
+            {
+              properties: {
+                subjectId: "yu-official-dd73bbe1",
+                geometrySource: "official-campus-map",
+                geometryConfidence: "verified",
+                displayHeightMeters: 7.2,
+                heightSource: "official-floor-count",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [128.7601738129029, 35.8308105775303],
+              },
+            },
+          ],
+        },
+      }),
+    ).rejects.toThrow(
+      "yu-official-dd73bbe1 properties: point geometry cannot include building height metadata.",
+    );
+  });
+
   it("loads every generated Yeungnam catalog entry as a subject with optional geometry", () => {
     const catalogEntries = (
       buildingCatalog as {
@@ -313,6 +396,23 @@ describe("demo campus data", () => {
       lat: 35.8308105775303,
     });
     expect(codeLessSubject?.officialCode).toBeUndefined();
+  });
+
+  it("preserves positive generated polygon building height metadata", async () => {
+    const { yeungnamBuildingSubjects } =
+      await importYeungnamBuildingsWithGeneratedData();
+    const subject = yeungnamBuildingSubjects.find(
+      (candidate) => candidate.id === "yu-e21",
+    );
+
+    expect(subject?.geometry).toMatchObject({
+      type: "Polygon",
+      displayHeightMeters: 10.8,
+      aboveGroundFloors: 3,
+      basementFloors: 1,
+      floorCountSource: "official-bFloor",
+      heightSource: "official-floor-count",
+    });
   });
 
   it("prefers subjectId geometry over officialCode geometry", async () => {

@@ -2,6 +2,19 @@
 
 User-stated decisions and verified working facts are recorded here by date. Do not treat unstated product, architecture, ML, or deployment ideas as confirmed.
 
+## 2026-06-23
+
+- The user wanted the uncomfortable black floor-only Mapbox building appearance removed.
+- The user wanted visible circular building markers removed so clicking a building focuses that building instead.
+- A markerless Mapbox interaction implementation plan was created at `docs/superpowers/plans/2026-06-23-mapbox-building-click-focus.md`.
+- The admin campus map now disables Mapbox Standard 3D objects, removes visible app-level polygon fills and point circles, and uses transparent polygon and point hit layers for selection.
+- Reviewed polygon subjects can be selected by clicking their building area, point fallback subjects remain selectable through invisible hit areas or labels, and selected subjects still focus the map with `flyTo()`.
+- Verified checks were targeted map tests, all Vitest tests, ESLint, production build, `git diff --check`, and an HTTP check for `/ko` on the existing local dev server.
+- The user wanted official Yeungnam campus-map floor data parsed so building shapes can show height instead of floor-only footprints.
+- The implementation now parses official `bFloor` first and falls back to `fList` floor labels, stores `displayHeightMeters` separately from `heightSource`, and uses `1 floor = 3.6m` for official-floor display height.
+- Generated Yeungnam geometries now give 42 polygon building features floor-count-based extrusion height; point fallback features keep no height metadata and are not rendered as arbitrary 3D buildings.
+- Verified checks for the floor-height implementation were official catalog regeneration, generated geometry regeneration with strict point-fallback acceptance, all Vitest tests, ESLint, production build, and `git diff --check`.
+
 ## 2026-06-21
 
 - The user wanted the project's default language to be Korean.

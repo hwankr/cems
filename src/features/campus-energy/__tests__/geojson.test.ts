@@ -147,6 +147,11 @@ describe("createEnergySubjectFeatureCollection", () => {
           url: "https://www.openstreetmap.org/",
         },
         geometryConfidence: "estimated",
+        displayHeightMeters: 10.8,
+        aboveGroundFloors: 3,
+        basementFloors: 1,
+        floorCountSource: "official-bFloor",
+        heightSource: "official-floor-count",
       },
     };
     const comparison = compareEnergy({
@@ -188,6 +193,11 @@ describe("createEnergySubjectFeatureCollection", () => {
             deltaKwh: 120,
             selected: true,
             officialCode: "BLDG-001",
+            displayHeightMeters: 10.8,
+            aboveGroundFloors: 3,
+            basementFloors: 1,
+            floorCountSource: "official-bFloor",
+            heightSource: "official-floor-count",
           },
         },
       ],

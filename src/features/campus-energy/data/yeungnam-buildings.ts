@@ -2,9 +2,11 @@ import buildingCatalog from "./yeungnam-building-catalog.json";
 import buildingGeometries from "./yeungnam-building-geometries.json";
 import { getGeometryCenter } from "../domain/geojson";
 import type {
+  BuildingHeightSource,
   CampusPlaceKind,
   Coordinate,
   EnergySubject,
+  FloorCountSource,
   GeometryConfidence,
   GeometrySource,
   GeometrySourceKind,
@@ -37,6 +39,11 @@ type GeneratedGeometryFeature = {
     geometrySource: string;
     geometryConfidence: string;
     sourceUrl?: string;
+    displayHeightMeters?: number;
+    aboveGroundFloors?: number;
+    basementFloors?: number;
+    floorCountSource?: string;
+    heightSource?: string;
   };
   geometry: {
     type: string;
@@ -151,6 +158,8 @@ function createSubjectGeometry(feature: GeneratedGeometryFeature): SubjectGeomet
 
   switch (feature.geometry.type) {
     case "Point":
+      rejectPointHeightMetadata(feature, context);
+
       return {
         type: "Point",
         coordinates: toCoordinate(
@@ -169,6 +178,7 @@ function createSubjectGeometry(feature: GeneratedGeometryFeature): SubjectGeomet
         ),
         geometrySource,
         geometryConfidence,
+        ...createBuildingHeightMetadata(feature, context),
       };
     case "MultiPolygon":
       return {
@@ -179,6 +189,7 @@ function createSubjectGeometry(feature: GeneratedGeometryFeature): SubjectGeomet
         ),
         geometrySource,
         geometryConfidence,
+        ...createBuildingHeightMetadata(feature, context),
       };
     default:
       throw new Error(
@@ -313,12 +324,55 @@ function readGeneratedGeometryFeature(
         "sourceUrl",
         `${context} properties`,
       ),
+      displayHeightMeters: readOptionalFiniteNumber(
+        properties,
+        "displayHeightMeters",
+        `${context} properties`,
+      ),
+      aboveGroundFloors: readOptionalFiniteNumber(
+        properties,
+        "aboveGroundFloors",
+        `${context} properties`,
+      ),
+      basementFloors: readOptionalFiniteNumber(
+        properties,
+        "basementFloors",
+        `${context} properties`,
+      ),
+      floorCountSource: readOptionalString(
+        properties,
+        "floorCountSource",
+        `${context} properties`,
+      ),
+      heightSource: readOptionalString(
+        properties,
+        "heightSource",
+        `${context} properties`,
+      ),
     },
     geometry: {
       type: readRequiredString(geometry, "type", `${context} geometry`),
       coordinates: geometry.coordinates,
     },
   };
+}
+
+function readOptionalFiniteNumber(
+  record: Record<string, unknown>,
+  field: string,
+  context: string,
+): number | undefined {
+  const value = record[field];
+
+  if (value === undefined) {
+    return undefined;
+  }
+
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    throw new Error(`${context}: expected finite number ${field}.`);
+  }
+
+  return value;
 }
 
 function toRecord(
@@ -425,6 +479,149 @@ function toGeometryConfidence(
     default:
       throw new Error(
         `Unsupported Yeungnam geometry confidence for ${context}: ${value}`,
+      );
+  }
+}
+
+function createBuildingHeightMetadata(
+  feature: GeneratedGeometryFeature,
+  context: string,
+): Pick<
+  Exclude<SubjectGeometry, { type: "Point" }>,
+  | "displayHeightMeters"
+  | "aboveGroundFloors"
+  | "basementFloors"
+  | "floorCountSource"
+  | "heightSource"
+> {
+  const {
+    displayHeightMeters,
+    aboveGroundFloors,
+    basementFloors,
+    floorCountSource,
+    heightSource,
+  } = feature.properties;
+  const metadata: Pick<
+    Exclude<SubjectGeometry, { type: "Point" }>,
+    | "displayHeightMeters"
+    | "aboveGroundFloors"
+    | "basementFloors"
+    | "floorCountSource"
+    | "heightSource"
+  > = {};
+
+  if (displayHeightMeters !== undefined) {
+    if (displayHeightMeters <= 0) {
+      throw new Error(
+        `${context} properties: expected positive finite displayHeightMeters.`,
+      );
+    }
+
+    metadata.displayHeightMeters = displayHeightMeters;
+  }
+
+  if (aboveGroundFloors !== undefined) {
+    if (!Number.isInteger(aboveGroundFloors) || aboveGroundFloors <= 0) {
+      throw new Error(
+        `${context} properties: expected positive integer aboveGroundFloors.`,
+      );
+    }
+
+    metadata.aboveGroundFloors = aboveGroundFloors;
+  }
+
+  if (basementFloors !== undefined) {
+    if (!Number.isInteger(basementFloors) || basementFloors < 0) {
+      throw new Error(
+        `${context} properties: expected non-negative integer basementFloors.`,
+      );
+    }
+
+    metadata.basementFloors = basementFloors;
+  }
+
+  if (floorCountSource !== undefined) {
+    if (aboveGroundFloors === undefined) {
+      throw new Error(
+        `${context} properties: expected aboveGroundFloors with floorCountSource.`,
+      );
+    }
+
+    metadata.floorCountSource = toFloorCountSource(floorCountSource, context);
+  }
+
+  if (heightSource !== undefined) {
+    if (displayHeightMeters === undefined) {
+      throw new Error(
+        `${context} properties: expected displayHeightMeters with heightSource.`,
+      );
+    }
+
+    metadata.heightSource = toBuildingHeightSource(heightSource, context);
+  }
+
+  if (displayHeightMeters !== undefined && heightSource === undefined) {
+    throw new Error(
+      `${context} properties: expected heightSource with displayHeightMeters.`,
+    );
+  }
+
+  return metadata;
+}
+
+function rejectPointHeightMetadata(
+  feature: GeneratedGeometryFeature,
+  context: string,
+) {
+  const {
+    displayHeightMeters,
+    aboveGroundFloors,
+    basementFloors,
+    floorCountSource,
+    heightSource,
+  } = feature.properties;
+
+  if (
+    displayHeightMeters !== undefined ||
+    aboveGroundFloors !== undefined ||
+    basementFloors !== undefined ||
+    floorCountSource !== undefined ||
+    heightSource !== undefined
+  ) {
+    throw new Error(
+      `${context} properties: point geometry cannot include building height metadata.`,
+    );
+  }
+}
+
+function toFloorCountSource(
+  value: string,
+  context: string,
+): FloorCountSource {
+  switch (value) {
+    case "official-bFloor":
+    case "official-fList":
+      return value;
+    default:
+      throw new Error(
+        `Unsupported Yeungnam floor count source for ${context}: ${value}`,
+      );
+  }
+}
+
+function toBuildingHeightSource(
+  value: string,
+  context: string,
+): BuildingHeightSource {
+  switch (value) {
+    case "official-floor-count":
+    case "manual-height":
+    case "osm-height":
+    case "osm-building-levels":
+      return value;
+    default:
+      throw new Error(
+        `Unsupported Yeungnam building height source for ${context}: ${value}`,
       );
   }
 }
