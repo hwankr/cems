@@ -484,4 +484,57 @@ describe("CampusMap", () => {
 
     await act(async () => root.unmount());
   });
+
+  it("uses Mapbox Standard with a day preset and slotted layers for the light theme", async () => {
+    const container = document.createElement("div");
+    const root = createRoot(container);
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <CampusMap
+          mapboxToken="test-token"
+          school={school}
+          subjects={subjects}
+          comparisons={comparisons}
+          selectedSubjectId="yu-e21"
+          onSelectSubject={() => {}}
+          mapStyleUrl="mapbox://styles/mapbox/standard"
+          mapTheme="light"
+        />,
+      ),
+    );
+
+    const mapOptions = mockMapbox.MapConstructor.mock.calls[0]?.[0] as
+      | { style?: string; config?: Record<string, unknown> }
+      | undefined;
+    const firstMap = mockMapbox.instances[0];
+    const extrusionLayer = firstMap.addLayer.mock.calls.find(
+      ([layer]) =>
+        (layer as { id: string }).id ===
+        "energy-subject-building-extrusions",
+    )?.[0] as { slot?: string; paint?: Record<string, unknown> } | undefined;
+    const labelLayer = firstMap.addLayer.mock.calls.find(
+      ([layer]) => (layer as { id: string }).id === "energy-subject-labels",
+    )?.[0] as { slot?: string; paint?: Record<string, unknown> } | undefined;
+
+    expect(mapOptions).toMatchObject({
+      style: "mapbox://styles/mapbox/standard",
+      config: { basemap: { lightPreset: "day" } },
+    });
+    expect(firstMap.setLight).not.toHaveBeenCalled();
+    expect(firstMap.setLayoutProperty).not.toHaveBeenCalledWith(
+      "building",
+      "visibility",
+      "none",
+    );
+    expect(extrusionLayer?.slot).toBe("top");
+    expect(labelLayer?.slot).toBe("top");
+    expect(extrusionLayer?.paint).toMatchObject({
+      "fill-extrusion-opacity": 0.92,
+    });
+    expect(labelLayer?.paint).toMatchObject({ "text-color": "#1e293b" });
+
+    await act(async () => root.unmount());
+  });
 });
