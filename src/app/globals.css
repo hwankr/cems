@@ -1,36 +1,128 @@
 @import "tailwindcss";
 
-:root {
-  --background: #f1f5f9;
-  --foreground: #0f172a;
+@theme {
+  /* Surfaces — dark, layered */
+  --color-canvas: #060910;
+  --color-surface: #0d1320;
+  --color-surface-2: #131c2e;
+  --color-surface-3: #1b2438;
+  --color-inset: #0a0f1a;
+
+  /* Hairlines */
+  --color-line: rgb(148 163 184 / 0.12);
+  --color-line-strong: rgb(148 163 184 / 0.22);
+
+  /* Ink */
+  --color-ink: #e8edf6;
+  --color-ink-muted: #9aa7bd;
+  --color-ink-subtle: #6b7689;
+
+  /* Brand accent — sky */
+  --color-accent: #38bdf8;
+  --color-accent-strong: #0ea5e9;
+  --color-accent-soft: rgb(56 189 248 / 0.15);
+
+  /* Energy semantics */
+  --color-saving: #34d399;
+  --color-saving-soft: rgb(52 211 153 / 0.15);
+  --color-overuse: #fb7185;
+  --color-overuse-soft: rgb(251 113 133 / 0.15);
+  --color-warn: #fbbf24;
+
+  /* Elevation */
+  --shadow-card:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.03),
+    0 14px 32px -22px rgb(0 0 0 / 0.8);
+  --shadow-pop: 0 24px 60px -28px rgb(0 0 0 / 0.85);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    min-height: 100%;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family:
+      var(--font-geist-sans),
+      "Apple SD Gothic Neo",
+      "Malgun Gothic",
+      "Noto Sans KR",
+      Arial,
+      Helvetica,
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  button,
+  input,
+  select {
+    font: inherit;
+  }
+
+  ::selection {
+    background: var(--color-accent-soft);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+  }
 }
 
-html,
-body {
-  min-height: 100%;
+/* Mapbox GL chrome — match the dark theme. !important overrides mapbox-gl.css. */
+.mapboxgl-ctrl-group {
+  background: rgb(13 19 32 / 0.82) !important;
+  border: 1px solid var(--color-line-strong) !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden;
+  box-shadow: var(--shadow-pop);
+  backdrop-filter: blur(8px);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family:
-    var(--font-geist-sans),
-    "Apple SD Gothic Neo",
-    "Malgun Gothic",
-    "Noto Sans KR",
-    Arial,
-    Helvetica,
-    sans-serif;
+.mapboxgl-ctrl-group button {
+  width: 34px;
+  height: 34px;
+  background-color: transparent;
 }
 
-button,
-input {
-  font: inherit;
+.mapboxgl-ctrl-group button + button {
+  border-top: 1px solid var(--color-line);
+}
+
+.mapboxgl-ctrl-group button:hover {
+  background-color: rgb(56 189 248 / 0.14);
+}
+
+.mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
+  filter: invert(0.92) hue-rotate(180deg) brightness(1.05);
+}
+
+.mapboxgl-ctrl-attrib.mapboxgl-compact {
+  background: rgb(6 9 16 / 0.7) !important;
+  border-radius: 0.5rem;
+}
+
+.mapboxgl-ctrl-attrib a,
+.mapboxgl-ctrl-attrib {
+  color: var(--color-ink-subtle) !important;
+}
+
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
+  margin: 0 0.65rem 0.65rem 0;
 }
