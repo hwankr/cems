@@ -6,6 +6,8 @@ import type {
   CampusPlaceKind,
   Coordinate,
   EnergySubject,
+  FootprintConfidence,
+  FootprintSource,
   FloorCountSource,
   GeometryConfidence,
   GeometrySource,
@@ -44,6 +46,8 @@ type GeneratedGeometryFeature = {
     basementFloors?: number;
     floorCountSource?: string;
     heightSource?: string;
+    footprintSource?: string;
+    footprintConfidence?: string;
   };
   geometry: {
     type: string;
@@ -159,6 +163,7 @@ function createSubjectGeometry(feature: GeneratedGeometryFeature): SubjectGeomet
   switch (feature.geometry.type) {
     case "Point":
       rejectPointHeightMetadata(feature, context);
+      rejectPointFootprintMetadata(feature, context);
 
       return {
         type: "Point",
@@ -179,6 +184,7 @@ function createSubjectGeometry(feature: GeneratedGeometryFeature): SubjectGeomet
         geometrySource,
         geometryConfidence,
         ...createBuildingHeightMetadata(feature, context),
+        ...createBuildingFootprintMetadata(feature, context),
       };
     case "MultiPolygon":
       return {
@@ -190,6 +196,7 @@ function createSubjectGeometry(feature: GeneratedGeometryFeature): SubjectGeomet
         geometrySource,
         geometryConfidence,
         ...createBuildingHeightMetadata(feature, context),
+        ...createBuildingFootprintMetadata(feature, context),
       };
     default:
       throw new Error(
@@ -347,6 +354,16 @@ function readGeneratedGeometryFeature(
       heightSource: readOptionalString(
         properties,
         "heightSource",
+        `${context} properties`,
+      ),
+      footprintSource: readOptionalString(
+        properties,
+        "footprintSource",
+        `${context} properties`,
+      ),
+      footprintConfidence: readOptionalString(
+        properties,
+        "footprintConfidence",
         `${context} properties`,
       ),
     },
@@ -569,6 +586,33 @@ function createBuildingHeightMetadata(
   return metadata;
 }
 
+function createBuildingFootprintMetadata(
+  feature: GeneratedGeometryFeature,
+  context: string,
+): Pick<
+  Exclude<SubjectGeometry, { type: "Point" }>,
+  "footprintSource" | "footprintConfidence"
+> {
+  const { footprintSource, footprintConfidence } = feature.properties;
+  const metadata: Pick<
+    Exclude<SubjectGeometry, { type: "Point" }>,
+    "footprintSource" | "footprintConfidence"
+  > = {};
+
+  if (footprintSource !== undefined) {
+    metadata.footprintSource = toFootprintSource(footprintSource, context);
+  }
+
+  if (footprintConfidence !== undefined) {
+    metadata.footprintConfidence = toFootprintConfidence(
+      footprintConfidence,
+      context,
+    );
+  }
+
+  return metadata;
+}
+
 function rejectPointHeightMetadata(
   feature: GeneratedGeometryFeature,
   context: string,
@@ -594,6 +638,19 @@ function rejectPointHeightMetadata(
   }
 }
 
+function rejectPointFootprintMetadata(
+  feature: GeneratedGeometryFeature,
+  context: string,
+) {
+  const { footprintSource, footprintConfidence } = feature.properties;
+
+  if (footprintSource !== undefined || footprintConfidence !== undefined) {
+    throw new Error(
+      `${context} properties: point geometry cannot include building footprint metadata.`,
+    );
+  }
+}
+
 function toFloorCountSource(
   value: string,
   context: string,
@@ -605,6 +662,38 @@ function toFloorCountSource(
     default:
       throw new Error(
         `Unsupported Yeungnam floor count source for ${context}: ${value}`,
+      );
+  }
+}
+
+function toFootprintSource(
+  value: string,
+  context: string,
+): FootprintSource {
+  switch (value) {
+    case "openstreetmap":
+    case "manual":
+    case "campus-ems-reference":
+      return value;
+    default:
+      throw new Error(
+        `Unsupported Yeungnam footprint source for ${context}: ${value}`,
+      );
+  }
+}
+
+function toFootprintConfidence(
+  value: string,
+  context: string,
+): FootprintConfidence {
+  switch (value) {
+    case "verified":
+    case "estimated":
+    case "needs-review":
+      return value;
+    default:
+      throw new Error(
+        `Unsupported Yeungnam footprint confidence for ${context}: ${value}`,
       );
   }
 }

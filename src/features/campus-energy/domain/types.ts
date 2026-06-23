@@ -31,6 +31,13 @@ export type BuildingHeightSource =
   | "osm-height"
   | "osm-building-levels";
 
+export type FootprintSource =
+  | "openstreetmap"
+  | "manual"
+  | "campus-ems-reference";
+
+export type FootprintConfidence = "verified" | "estimated" | "needs-review";
+
 export type GeometrySource = {
   kind: GeometrySourceKind;
   name: string;
@@ -46,6 +53,11 @@ type BuildingHeightMetadata = {
   heightSource?: BuildingHeightSource;
 };
 
+type BuildingFootprintMetadata = {
+  footprintSource?: FootprintSource;
+  footprintConfidence?: FootprintConfidence;
+};
+
 type PointSubjectGeometry = {
   type: "Point";
   coordinates: Coordinate;
@@ -58,14 +70,16 @@ type PolygonSubjectGeometry = {
   coordinates: Coordinate[][];
   geometrySource: GeometrySource;
   geometryConfidence: GeometryConfidence;
-} & BuildingHeightMetadata;
+} & BuildingHeightMetadata &
+  BuildingFootprintMetadata;
 
 type MultiPolygonSubjectGeometry = {
   type: "MultiPolygon";
   coordinates: Coordinate[][][];
   geometrySource: GeometrySource;
   geometryConfidence: GeometryConfidence;
-} & BuildingHeightMetadata;
+} & BuildingHeightMetadata &
+  BuildingFootprintMetadata;
 
 export type SubjectGeometry =
   | PointSubjectGeometry

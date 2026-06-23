@@ -64,6 +64,8 @@ const validGeneratedGeometries = {
         basementFloors: 1,
         floorCountSource: "official-bFloor",
         heightSource: "official-floor-count",
+        footprintSource: "campus-ems-reference",
+        footprintConfidence: "estimated",
       },
       geometry: {
         type: "Polygon",
@@ -323,6 +325,26 @@ describe("demo campus data", () => {
     );
   });
 
+  it("rejects generated polygon features with unsupported footprint source values", async () => {
+    await expect(
+      importYeungnamBuildingsWithGeneratedData({
+        geometries: {
+          features: [
+            {
+              ...validGeneratedGeometries.features[0],
+              properties: {
+                ...validGeneratedGeometries.features[0].properties,
+                footprintSource: "unknown-source",
+              },
+            },
+          ],
+        },
+      }),
+    ).rejects.toThrow(
+      "Unsupported Yeungnam footprint source for E21: unknown-source",
+    );
+  });
+
   it("rejects generated point fallback features with building height metadata", async () => {
     await expect(
       importYeungnamBuildingsWithGeneratedData({
@@ -346,6 +368,32 @@ describe("demo campus data", () => {
       }),
     ).rejects.toThrow(
       "yu-official-dd73bbe1 properties: point geometry cannot include building height metadata.",
+    );
+  });
+
+  it("rejects generated point fallback features with building footprint metadata", async () => {
+    await expect(
+      importYeungnamBuildingsWithGeneratedData({
+        geometries: {
+          features: [
+            {
+              properties: {
+                subjectId: "yu-official-dd73bbe1",
+                geometrySource: "official-campus-map",
+                geometryConfidence: "verified",
+                footprintSource: "campus-ems-reference",
+                footprintConfidence: "estimated",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [128.7601738129029, 35.8308105775303],
+              },
+            },
+          ],
+        },
+      }),
+    ).rejects.toThrow(
+      "yu-official-dd73bbe1 properties: point geometry cannot include building footprint metadata.",
     );
   });
 
@@ -412,6 +460,31 @@ describe("demo campus data", () => {
       basementFloors: 1,
       floorCountSource: "official-bFloor",
       heightSource: "official-floor-count",
+      footprintSource: "campus-ems-reference",
+      footprintConfidence: "estimated",
+    });
+  });
+
+  it("maps F29 to a polygon footprint with official floor height", () => {
+    const f29Feature = (
+      buildingGeometries as {
+        features: Array<{
+          properties: {
+            officialCode?: string;
+            displayHeightMeters?: number;
+            heightSource?: string;
+          };
+          geometry: { type: string };
+        }>;
+      }
+    ).features.find((feature) => feature.properties.officialCode === "F29");
+
+    expect(f29Feature).toMatchObject({
+      geometry: { type: "Polygon" },
+      properties: {
+        displayHeightMeters: 10.8,
+        heightSource: "official-floor-count",
+      },
     });
   });
 

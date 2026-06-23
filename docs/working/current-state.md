@@ -37,7 +37,8 @@ The key abstraction is an **energy saving subject**. A subject can be a building
 - `src/features/campus-energy/data/demo-campus.ts` contains Yeungnam University demo school, building, group, participant, and mock energy readings.
 - `src/features/campus-energy/data/localized-demo-campus.ts` maps the demo school, subjects, groups, and participant name into the active locale.
 - Admin mode shows actual versus forecast usage, saved and overused kWh, building diagnosis ranking, selected building details, and a Mapbox-backed campus map.
-- The admin campus map avoids visible app-level polygon floor fills and point circles. It disables Mapbox Standard 3D objects, renders reviewed polygon buildings as floor-count-based extrusions from official Yeungnam campus-map floor data, keeps lightweight status outlines and labels, and uses transparent polygon/point hit layers so map clicks still select and focus campus subjects.
+- The admin campus map avoids visible app-level polygon floor fills and point circles. It uses Mapbox `dark-v11`, hides default Mapbox building layers, renders height-bearing polygon geometries as floor-count-based extrusions from official Yeungnam campus-map floor data, keeps lightweight status outlines and centered building-name labels, and only makes those extruded polygons clickable/focusable on the map.
+- Yeungnam generated geometry now contains 121 mapped campus subjects: 73 polygon footprints and 48 official point fallbacks. 69 polygons have positive extrusion height and render as map click zones. 24 of the polygon footprints come from the offline local `campus-ems` reference file, while `fallback_square` reference entries remain excluded from 3D extrusion.
 - Participant mode shows the demo user's affiliation, affiliation points, saved energy, rank, group leaderboard, and character progress.
 - The app builds without a Mapbox token. If `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` is missing, the map area shows a configuration state instead of constructing a map.
 - No real API, database, authentication, energy ingestion pipeline, ML pipeline, deployment configuration, or full RPG system has been implemented yet.
@@ -59,6 +60,7 @@ After that, use the docs map to open:
 `docs/superpowers/plans/2026-06-20-campus-energy-platform-mvp.md` is a completed execution plan, not the current backlog.
 `docs/superpowers/plans/2026-06-21-korean-first-i18n.md` records the Korean-first i18n implementation plan.
 `docs/superpowers/plans/2026-06-23-mapbox-building-click-focus.md` records the markerless Mapbox building click-focus implementation plan.
+`docs/superpowers/plans/2026-06-23-mapbox-campus-ems-geometry-parity.md` records the local `campus-ems` geometry parity implementation plan.
 
 Before editing Next.js code, follow `AGENTS.md` and read the relevant local Next.js docs under `node_modules/next/dist/docs/`.
 

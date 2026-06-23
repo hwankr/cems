@@ -9,14 +9,14 @@ way/153003635,과학도서관,,,yes,,,https://www.openstreetmap.org/way/15300363
 way/153003637,상경관,,,university,,,https://www.openstreetmap.org/way/153003637,estimated,B02,College of Business & Economics Building,Auto-filled from a unique normalized exact Korean or English name match.
 way/153003640,IT관(공대본관),,,university,,,https://www.openstreetmap.org/way/153003640,estimated,E21,Information&Telecommunication Hall,Auto-filled from a unique normalized exact Korean or English name match.
 way/153003643,제1과학관,,,university,,,https://www.openstreetmap.org/way/153003643,estimated,F21,Sciences Building 1,Auto-filled from a unique normalized exact Korean or English name match.
-way/153003645,대학본부,,,yes,,,https://www.openstreetmap.org/way/153003645,unreviewed,,,
+way/153003645,대학본부,,,yes,,,https://www.openstreetmap.org/way/153003645,estimated,C01,Headquarters,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/153003646,중앙기기센터,,,yes,,,https://www.openstreetmap.org/way/153003646,estimated,G14,Annex : Center for Research Facilities,Auto-filled from a unique normalized exact Korean or English name match.
 way/153003650,천마아트센터,,Chunma Arts Center,yes,,,https://www.openstreetmap.org/way/153003650,estimated,E02,Chunma Arts Center Tower,Auto-filled from a unique normalized exact Korean or English name match.
-way/153129431,대학본부,,,yes,,,https://www.openstreetmap.org/way/153129431,unreviewed,,,
+way/153129431,대학본부,,,yes,,,https://www.openstreetmap.org/way/153129431,estimated,C21,University Registrar Office,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/153129434,전기관,,,university,,,https://www.openstreetmap.org/way/153129434,estimated,E22,Electrical Engineering Building,Auto-filled from a unique normalized exact Korean or English name match.
 way/153129436,건설관,,,university,,,https://www.openstreetmap.org/way/153129436,estimated,F07,Construction Engineering Building,Auto-filled from a unique normalized exact Korean or English name match.
 way/153129443,건축관,,,university,,,https://www.openstreetmap.org/way/153129443,estimated,F03,Architecture Building,Auto-filled from a unique normalized exact Korean or English name match.
-way/153129446,사범대학,,,university,,,https://www.openstreetmap.org/way/153129446,unreviewed,,,
+way/153129446,사범대학,,,university,,,https://www.openstreetmap.org/way/153129446,estimated,A08,College of Education Building,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/153129454,사범대학,,,university,,,https://www.openstreetmap.org/way/153129454,unreviewed,,,
 way/153732584,학군단 (ROTC),,,yes,,,https://www.openstreetmap.org/way/153732584,estimated,C28,ROTC,Auto-filled from a unique normalized exact Korean or English name match.
 way/153732585,정보전산원,,,university,,,https://www.openstreetmap.org/way/153732585,estimated,F04,Computer & IT Center,Auto-filled from a unique normalized exact Korean or English name match.
@@ -25,10 +25,10 @@ way/153732589,공과대학 강당,,,yes,,,https://www.openstreetmap.org/way/1537
 way/153732590,,,,university,,,https://www.openstreetmap.org/way/153732590,unreviewed,,,
 way/153732600,외국어교육원,,,yes,,,https://www.openstreetmap.org/way/153732600,estimated,C02,Foreign Language Institute,Auto-filled from a unique normalized exact Korean or English name match.
 way/153732609,약학대학본관,,,university,,,https://www.openstreetmap.org/way/153732609,unreviewed,,,
-way/153732616,,,,yes,,,https://www.openstreetmap.org/way/153732616,unreviewed,,,
-way/210933794,기계공학관,,,university,,,https://www.openstreetmap.org/way/210933794,unreviewed,,,
+way/153732616,,,,yes,,,https://www.openstreetmap.org/way/153732616,estimated,F06,Ins' of Information & Computing Systems,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
+way/210933794,기계공학관,,,university,,,https://www.openstreetmap.org/way/210933794,estimated,E29,Mechanical Engineering Buliding,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/210933807,소재관,,,university,,,https://www.openstreetmap.org/way/210933807,estimated,E28,Materials Engineering Buliding,Auto-filled from a unique normalized exact Korean or English name match.
-way/210935468,자연자원대학 본관,,,university,,,https://www.openstreetmap.org/way/210935468,unreviewed,,,
+way/210935468,자연자원대학 본관,,,university,,,https://www.openstreetmap.org/way/210935468,estimated,F27,"Main Building, College of Life and Applied Sciences",Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/210935471,기계공학부,,,university,,,https://www.openstreetmap.org/way/210935471,unreviewed,,,
 way/210935472,자원대제2실험동,,,university,,,https://www.openstreetmap.org/way/210935472,unreviewed,,,
 way/210935474,생활과학대학 별관,,,university,,,https://www.openstreetmap.org/way/210935474,estimated,G02,College of Human Ecology & Kinesiology(annnex),Auto-filled from a unique normalized exact Korean or English name match.
@@ -37,9 +37,9 @@ way/210935477,생활과학대학 본관,,,university,,,https://www.openstreetmap
 way/211077852,노천강당,,,yes,,,https://www.openstreetmap.org/way/211077852,estimated,B01,Amphitheater,Auto-filled from a unique normalized exact Korean or English name match.
 way/236156801,생산기술연구원,,,yes,,,https://www.openstreetmap.org/way/236156801,estimated,G15,Production Technology Research Center,Auto-filled from a unique normalized exact Korean or English name match.
 way/236156802,중앙기기센터분관,,,yes,,,https://www.openstreetmap.org/way/236156802,unreviewed,,,
-way/236156803,학생식당,,Student Cafeteria,yes,,,https://www.openstreetmap.org/way/236156803,unreviewed,,,
+way/236156803,학생식당,,Student Cafeteria,yes,,,https://www.openstreetmap.org/way/236156803,estimated,B06,Student Center,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/236381268,법정관,,,yes,,,https://www.openstreetmap.org/way/236381268,estimated,B05,Social Science Building,Auto-filled from a unique normalized exact Korean or English name match.
-way/236381269,미술대학교,,,yes,,,https://www.openstreetmap.org/way/236381269,unreviewed,,,
+way/236381269,미술대학교,,,yes,,,https://www.openstreetmap.org/way/236381269,estimated,A07,College of Arts-Art Building,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/271074405,,,,industrial,,,https://www.openstreetmap.org/way/271074405,unreviewed,,,
 way/271074694,,,,government,,,https://www.openstreetmap.org/way/271074694,unreviewed,,,
 way/271074695,,,,government,,,https://www.openstreetmap.org/way/271074695,unreviewed,,,
@@ -48,15 +48,15 @@ way/271074697,,,,government,,,https://www.openstreetmap.org/way/271074697,unrevi
 way/271074698,,,,government,,,https://www.openstreetmap.org/way/271074698,unreviewed,,,
 way/271074872,까치둥지,,,yes,,,https://www.openstreetmap.org/way/271074872,unreviewed,,,
 way/271074873,,,,yes,,,https://www.openstreetmap.org/way/271074873,unreviewed,,,
-way/279943224,,,,yes,,,https://www.openstreetmap.org/way/279943224,unreviewed,,,
+way/279943224,,,,yes,,,https://www.openstreetmap.org/way/279943224,estimated,C04,AI Smart Education Center,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/280189412,,,,yes,,,https://www.openstreetmap.org/way/280189412,unreviewed,,,
 way/280436520,대학원,,,yes,,,https://www.openstreetmap.org/way/280436520,unreviewed,,,
 way/280437860,GS25,GS25,GS25,yes,,,https://www.openstreetmap.org/way/280437860,unreviewed,,,
 way/334273921,,,,yes,,,https://www.openstreetmap.org/way/334273921,unreviewed,,,
 way/334273922,,,,yes,,,https://www.openstreetmap.org/way/334273922,unreviewed,,,
-way/348365622,Design,,,university,,,https://www.openstreetmap.org/way/348365622,unreviewed,,,
-way/348450382,,,,roof,,,https://www.openstreetmap.org/way/348450382,unreviewed,,,
-way/365429830,,,,yes,,,https://www.openstreetmap.org/way/365429830,unreviewed,,,
+way/348365622,Design,,,university,,,https://www.openstreetmap.org/way/348365622,estimated,A06,College of Arts-Design Building,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
+way/348450382,,,,roof,,,https://www.openstreetmap.org/way/348450382,estimated,A01,CHUNMA Gate/YU Metro Square,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
+way/365429830,,,,yes,,,https://www.openstreetmap.org/way/365429830,estimated,A24,College of Arts-Pottery Workshop,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/365429831,,,,yes,,,https://www.openstreetmap.org/way/365429831,unreviewed,,,
 way/404687358,학생지원센터,,,yes,,,https://www.openstreetmap.org/way/404687358,estimated,A05,Student Support Center,Auto-filled from a unique normalized exact Korean or English name match.
 way/413839796,,,,yes,,,https://www.openstreetmap.org/way/413839796,unreviewed,,,
@@ -64,14 +64,14 @@ way/421226754,대구프린트,,,yes,,,https://www.openstreetmap.org/way/42122675
 way/430697887,,,,yes,,,https://www.openstreetmap.org/way/430697887,unreviewed,,,
 way/468967476,창업보육센터,,,yes,,,https://www.openstreetmap.org/way/468967476,estimated,G12,Business Incubation Center,Auto-filled from a unique normalized exact Korean or English name match.
 way/468967516,CRC(LED-IT),,,yes,,,https://www.openstreetmap.org/way/468967516,estimated,G11,CRC,Auto-filled from a unique normalized exact Korean or English name match.
-way/468967720,산학협동기술원,,,yes,,,https://www.openstreetmap.org/way/468967720,unreviewed,,,
+way/468967720,산학협동기술원,,,yes,,,https://www.openstreetmap.org/way/468967720,estimated,G13,Robot Engineering Building,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/468970579,,,,yes,,,https://www.openstreetmap.org/way/468970579,unreviewed,,,
 way/468970706,,,,yes,,,https://www.openstreetmap.org/way/468970706,unreviewed,,,
 way/468970723,,,,yes,,,https://www.openstreetmap.org/way/468970723,unreviewed,,,
 way/468970761,,,,yes,,,https://www.openstreetmap.org/way/468970761,unreviewed,,,
-way/468971064,식당,,,university,,,https://www.openstreetmap.org/way/468971064,unreviewed,,,
-way/468971645,생명공학관,,,university,,,https://www.openstreetmap.org/way/468971645,unreviewed,,,
-way/468971867,자원대제3실험동,,,university,,,https://www.openstreetmap.org/way/468971867,unreviewed,,,
+way/468971064,식당,,,university,,,https://www.openstreetmap.org/way/468971064,estimated,F25,College of Science Cafeteria,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
+way/468971645,생명공학관,,,university,,,https://www.openstreetmap.org/way/468971645,estimated,F26,"Lab Ⅰ, College of Life and Applied Sciences",Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
+way/468971867,자원대제3실험동,,,university,,,https://www.openstreetmap.org/way/468971867,estimated,F29,"Lab Ⅲ, College of Life and Applied Sciences","Manual reviewed match: campus-ems only provided a fallback_square for F29, but current OSM has the nearest named building footprint about 33m from the official point. The OSM name appears to be an older resource-college name for the same third laboratory."
 way/468971975,,,,yes,,,https://www.openstreetmap.org/way/468971975,unreviewed,,,
 way/468972035,,,,yes,,,https://www.openstreetmap.org/way/468972035,unreviewed,,,
 way/469432756,온천골,,,yes,,,https://www.openstreetmap.org/way/469432756,unreviewed,,,
@@ -106,7 +106,7 @@ way/469432788,,,,residential,,,https://www.openstreetmap.org/way/469432788,unrev
 way/469432789,,,,residential,,,https://www.openstreetmap.org/way/469432789,unreviewed,,,
 way/469432790,생활관G동,,,dormitory,,,https://www.openstreetmap.org/way/469432790,estimated,D07,Dormitory(G),Auto-filled from a unique normalized exact Korean or English name match.
 way/469432791,생활관H동,,,dormitory,,,https://www.openstreetmap.org/way/469432791,estimated,D08,Dormitory(H),Auto-filled from a unique normalized exact Korean or English name match.
-way/469432792,학생식당,,,yes,,,https://www.openstreetmap.org/way/469432792,unreviewed,,,
+way/469432792,학생식당,,,yes,,,https://www.openstreetmap.org/way/469432792,estimated,D09,Dormitory Restarurant,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/469432793,생활관F동,,,dormitory,,,https://www.openstreetmap.org/way/469432793,estimated,D06,Dormitory(F),Auto-filled from a unique normalized exact Korean or English name match.
 way/469432794,고시원,,,dormitory,,,https://www.openstreetmap.org/way/469432794,estimated,D10,Center for the Hig,Auto-filled from a unique normalized exact Korean or English name match.
 way/469432795,생활관E동,,,dormitory,,,https://www.openstreetmap.org/way/469432795,estimated,D05,Dormitory(E),Auto-filled from a unique normalized exact Korean or English name match.
@@ -114,7 +114,7 @@ way/469432796,생활관C동,,,dormitory,,,https://www.openstreetmap.org/way/4694
 way/469432797,생활관B동,,,dormitory,,,https://www.openstreetmap.org/way/469432797,estimated,D02,Dormitory(B),Auto-filled from a unique normalized exact Korean or English name match.
 way/469432798,생활관D동,,,dormitory,,,https://www.openstreetmap.org/way/469432798,estimated,D04,Dormitory(D),Auto-filled from a unique normalized exact Korean or English name match.
 way/469432799,생활관A동,,,dormitory,,,https://www.openstreetmap.org/way/469432799,estimated,D01,Dormitory(A),Auto-filled from a unique normalized exact Korean or English name match.
-way/469432800,향토생활관,,,dormitory,,,https://www.openstreetmap.org/way/469432800,unreviewed,,,
+way/469432800,향토생활관,,,dormitory,,,https://www.openstreetmap.org/way/469432800,estimated,D21,Hyangto Hall,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/469432801,경북글로벌교류센터,,,dormitory,,,https://www.openstreetmap.org/way/469432801,unreviewed,,,
 way/469432803,,,,residential,,,https://www.openstreetmap.org/way/469432803,unreviewed,,,
 way/469432804,,,,residential,,,https://www.openstreetmap.org/way/469432804,unreviewed,,,
@@ -224,7 +224,7 @@ way/471518189,,,,residential,,,https://www.openstreetmap.org/way/471518189,unrev
 way/471518227,,,,commercial,,,https://www.openstreetmap.org/way/471518227,unreviewed,,,
 way/471552484,음악대학,,,university,,,https://www.openstreetmap.org/way/471552484,estimated,A10,College of Arts-Music Building,Auto-filled from a unique normalized exact Korean or English name match.
 way/471552486,필승관,,,yes,,,https://www.openstreetmap.org/way/471552486,estimated,A13,Multi-Purpose Gymnasium,Auto-filled from a unique normalized exact Korean or English name match.
-way/471552488,심포니홀,,,yes,,,https://www.openstreetmap.org/way/471552488,unreviewed,,,
+way/471552488,심포니홀,,,yes,,,https://www.openstreetmap.org/way/471552488,estimated,A11,College of Arts-Symphony Hall,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/471552489,씨름장,,,yes,,,https://www.openstreetmap.org/way/471552489,estimated,A14,Ssireum Arena,Auto-filled from a unique normalized exact Korean or English name match.
 way/472439123,Coffe two box,,,yes,,,https://www.openstreetmap.org/way/472439123,unreviewed,,,
 way/528347215,,,,school,,,https://www.openstreetmap.org/way/528347215,unreviewed,,,
@@ -264,9 +264,9 @@ way/928753185,갑제동회관,,,yes,,,https://www.openstreetmap.org/way/92875318
 way/928753188,의인정사,,,yes,,,https://www.openstreetmap.org/way/928753188,estimated,G43,WHNJEONGSA,Auto-filled from a unique normalized exact Korean or English name match.
 way/928753190,,,,yes,,,https://www.openstreetmap.org/way/928753190,unreviewed,,,
 way/928753191,,,,yes,,,https://www.openstreetmap.org/way/928753191,unreviewed,,,
-way/928753192,,,,yes,,,https://www.openstreetmap.org/way/928753192,unreviewed,,,
+way/928753192,,,,yes,,,https://www.openstreetmap.org/way/928753192,estimated,G41,KUGAESEOWON,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/928755748,법학전문도서관,,,school,,,https://www.openstreetmap.org/way/928755748,estimated,G03,Law School Library,Auto-filled from a unique normalized exact Korean or English name match.
-way/928755749,법학전문대학원,,,school,,,https://www.openstreetmap.org/way/928755749,unreviewed,,,
+way/928755749,법학전문대학원,,,school,,,https://www.openstreetmap.org/way/928755749,estimated,G04,Law School,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
 way/930715256,대자연요양원,,,yes,,,https://www.openstreetmap.org/way/930715256,unreviewed,,,
 way/930715263,카페베네,,,yes,,,https://www.openstreetmap.org/way/930715263,unreviewed,,,
 way/930715264,카페데로토,,,yes,,,https://www.openstreetmap.org/way/930715264,unreviewed,,,
@@ -302,5 +302,5 @@ way/1344745877,,,,roof,,,https://www.openstreetmap.org/way/1344745877,unreviewed
 way/1344745878,,,,roof,,,https://www.openstreetmap.org/way/1344745878,unreviewed,,,
 way/1344745881,,,,yes,,,https://www.openstreetmap.org/way/1344745881,unreviewed,,,
 way/1344745882,,,,yes,,,https://www.openstreetmap.org/way/1344745882,unreviewed,,,
-way/1344746517,,,,yes,,,https://www.openstreetmap.org/way/1344746517,unreviewed,,,
-way/1344746518,,,,yes,,,https://www.openstreetmap.org/way/1344746518,unreviewed,,,
+way/1344746517,,,,yes,,,https://www.openstreetmap.org/way/1344746517,estimated,C26,University Press,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.
+way/1344746518,,,,yes,,,https://www.openstreetmap.org/way/1344746518,estimated,C25,Head Quarters of University Reserve Forces,Imported from local campus-ems reference GeoJSON because it maps this current point fallback to a non-fallback polygon.

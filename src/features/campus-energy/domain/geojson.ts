@@ -4,6 +4,8 @@ import type {
   EnergyComparison,
   EnergyStatus,
   EnergySubject,
+  FootprintConfidence,
+  FootprintSource,
   FloorCountSource,
   SubjectGeometry,
 } from "./types";
@@ -27,6 +29,8 @@ export type EnergySubjectFeatureProperties = {
   basementFloors?: number;
   floorCountSource?: FloorCountSource;
   heightSource?: BuildingHeightSource;
+  footprintSource?: FootprintSource;
+  footprintConfidence?: FootprintConfidence;
 };
 
 export type EnergySubjectFeature = {
@@ -130,6 +134,14 @@ function attachHeightProperties(
 
   if (geometry.heightSource !== undefined) {
     properties.heightSource = geometry.heightSource;
+  }
+
+  if (geometry.footprintSource !== undefined) {
+    properties.footprintSource = geometry.footprintSource;
+  }
+
+  if (geometry.footprintConfidence !== undefined) {
+    properties.footprintConfidence = geometry.footprintConfidence;
   }
 }
 

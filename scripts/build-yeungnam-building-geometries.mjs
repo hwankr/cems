@@ -26,6 +26,7 @@ const REPORT_URL = new URL(`../${REPORT_PATH}`, import.meta.url);
 const SCHOOL_PREFIX_KO = "\uC601\uB0A8\uB300\uD559\uAD50";
 const ALLOWED_CONFIDENCE = new Set(["verified", "estimated", "needs-review"]);
 const METERS_PER_OFFICIAL_FLOOR = 3.6;
+const HEIGHT_ELIGIBLE_KINDS = new Set(["building", "utility", "outdoor"]);
 
 const FALLBACK_SEEDS = [
   {
@@ -455,7 +456,7 @@ function getPreferredHeightMetadata(building, properties) {
 
 function getHeightMetadata(building, reviewedFeature) {
   if (
-    building.kind !== "building" ||
+    !HEIGHT_ELIGIBLE_KINDS.has(building.kind) ||
     !reviewedFeature ||
     !isPolygonalGeometry(reviewedFeature.geometry)
   ) {
@@ -467,6 +468,26 @@ function getHeightMetadata(building, reviewedFeature) {
   return {
     ...getOfficialFloorMetadata(building),
     ...getPreferredHeightMetadata(building, properties),
+  };
+}
+
+function getFootprintMetadata(reviewedFeature) {
+  if (!reviewedFeature || !isPolygonalGeometry(reviewedFeature.geometry)) {
+    return {};
+  }
+
+  const properties = reviewedFeature.properties ?? {};
+  const footprintSource =
+    typeof properties.matchMethod === "string" &&
+    properties.matchMethod.startsWith("campus-ems-reference-")
+      ? "campus-ems-reference"
+      : properties.geometrySource;
+
+  return {
+    ...(footprintSource ? { footprintSource } : {}),
+    ...(properties.geometryConfidence
+      ? { footprintConfidence: properties.geometryConfidence }
+      : {}),
   };
 }
 
@@ -517,6 +538,9 @@ function featureFromManual(building, manualFeature) {
       sourceUrl: properties.sourceUrl ?? null,
       displayHeightMeters: properties.displayHeightMeters,
       heightMeters: properties.heightMeters,
+      matchMethod: properties.matchMethod ?? null,
+      referencePolygonSource: properties.referencePolygonSource ?? null,
+      referenceOsmId: properties.referenceOsmId ?? null,
     },
     geometry: manualFeature.geometry,
   });
@@ -568,7 +592,14 @@ export function buildGeometryFeatureForCatalogEntry(building, reviewedFeature) {
         sourceUrl: properties.sourceUrl ?? null,
         osmIds: properties.osmIds ?? undefined,
         matchMethod: properties.matchMethod ?? null,
+        ...(properties.referencePolygonSource
+          ? { referencePolygonSource: properties.referencePolygonSource }
+          : {}),
+        ...(properties.referenceOsmId
+          ? { referenceOsmId: properties.referenceOsmId }
+          : {}),
         ...getHeightMetadata(building, reviewedFeature),
+        ...getFootprintMetadata(reviewedFeature),
       },
       geometry: reviewedFeature.geometry,
     };

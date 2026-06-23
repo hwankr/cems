@@ -15,13 +15,19 @@ type MockMapInstance = {
   addControl: ReturnType<typeof vi.fn>;
   addLayer: ReturnType<typeof vi.fn>;
   addSource: ReturnType<typeof vi.fn>;
+  easeTo: ReturnType<typeof vi.fn>;
   flyTo: ReturnType<typeof vi.fn>;
   getCanvas: ReturnType<typeof vi.fn>;
+  getLayer: ReturnType<typeof vi.fn>;
   getSource: ReturnType<typeof vi.fn>;
+  getZoom: ReturnType<typeof vi.fn>;
   handlers: Map<string, (event: unknown) => void>;
   on: ReturnType<typeof vi.fn>;
   remove: ReturnType<typeof vi.fn>;
+  setLayoutProperty: ReturnType<typeof vi.fn>;
+  setLight: ReturnType<typeof vi.fn>;
   sources: Map<string, MockGeoJsonSource>;
+  stop: ReturnType<typeof vi.fn>;
 };
 
 const mockMapbox = vi.hoisted(() => {
@@ -33,9 +39,16 @@ const mockMapbox = vi.hoisted(() => {
       addSource: vi.fn((id: string) => {
         instance.sources.set(id, { setData: vi.fn() });
       }),
+      easeTo: vi.fn(),
       flyTo: vi.fn(),
       getCanvas: vi.fn(() => ({ style: { cursor: "" } })),
+      getLayer: vi.fn((id: string) =>
+        ["building", "building-outline", "building-extrusion"].includes(id)
+          ? { id }
+          : undefined,
+      ),
       getSource: vi.fn((id: string) => instance.sources.get(id)),
+      getZoom: vi.fn(() => 16.2),
       handlers: new Map(),
       on: vi.fn(
         (
@@ -52,7 +65,10 @@ const mockMapbox = vi.hoisted(() => {
         },
       ),
       remove: vi.fn(),
+      setLayoutProperty: vi.fn(),
+      setLight: vi.fn(),
       sources: new Map(),
+      stop: vi.fn(),
     };
 
     instances.push(instance);
@@ -233,7 +249,7 @@ describe("CampusMap", () => {
     document.body.replaceChildren();
   });
 
-  it("registers floor-based extrusion and invisible hit layers instead of visible floor fills or circle markers", async () => {
+  it("registers floor-based extrusion and polygon hit layers instead of visible floor fills or circle markers", async () => {
     const container = document.createElement("div");
     const root = createRoot(container);
     document.body.append(container);
@@ -241,7 +257,11 @@ describe("CampusMap", () => {
     await act(async () => renderMap(root));
 
     const mapOptions = mockMapbox.MapConstructor.mock.calls[0]?.[0] as
-      | { config?: { basemap?: Record<string, unknown> } }
+      | {
+          style?: string;
+          minZoom?: number;
+          localIdeographFontFamily?: string;
+        }
       | undefined;
     const firstMap = mockMapbox.instances[0];
     const layerIds = firstMap.addLayer.mock.calls.map(
@@ -255,11 +275,22 @@ describe("CampusMap", () => {
       ([layer]) =>
         (layer as { id: string }).id === "energy-subject-point-hit-areas",
     )?.[0] as { paint?: Record<string, unknown> } | undefined;
+    const labelLayer = firstMap.addLayer.mock.calls.find(
+      ([layer]) => (layer as { id: string }).id === "energy-subject-labels",
+    )?.[0] as
+      | {
+          layout?: Record<string, unknown>;
+          paint?: Record<string, unknown>;
+        }
+      | undefined;
     const extrusionLayer = firstMap.addLayer.mock.calls.find(
       ([layer]) =>
         (layer as { id: string }).id ===
         "energy-subject-building-extrusions",
     )?.[0] as { filter?: unknown; paint?: Record<string, unknown> } | undefined;
+    const outlineLayer = firstMap.addLayer.mock.calls.find(
+      ([layer]) => (layer as { id: string }).id === "energy-subject-outlines",
+    )?.[0] as { filter?: unknown } | undefined;
     const sourceData = firstMap.addSource.mock.calls[0]?.[1] as
       | {
           data?: {
@@ -277,26 +308,78 @@ describe("CampusMap", () => {
     expect(layerIds).not.toContain("energy-subject-circles");
     expect(layerIds).toContain("energy-subject-building-extrusions");
     expect(layerIds).toContain("energy-subject-polygon-hit-areas");
-    expect(layerIds).toContain("energy-subject-point-hit-areas");
-    expect(mapOptions?.config?.basemap).toMatchObject({
-      show3dObjects: false,
+    expect(layerIds).not.toContain("energy-subject-point-hit-areas");
+    expect(mapOptions).toMatchObject({
+      style: "mapbox://styles/mapbox/dark-v11",
+      minZoom: 15.3,
+      localIdeographFontFamily:
+        "'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif",
+    });
+    expect(firstMap.setLayoutProperty).toHaveBeenCalledWith(
+      "building",
+      "visibility",
+      "none",
+    );
+    expect(firstMap.setLayoutProperty).toHaveBeenCalledWith(
+      "building-outline",
+      "visibility",
+      "none",
+    );
+    expect(firstMap.setLayoutProperty).toHaveBeenCalledWith(
+      "building-extrusion",
+      "visibility",
+      "none",
+    );
+    expect(firstMap.setLight).toHaveBeenCalledWith({
+      anchor: "viewport",
+      color: "#ffffff",
+      intensity: 0.35,
+      position: [1.5, 210, 30],
     });
     expect(polygonHitLayer?.paint).toMatchObject({ "fill-opacity": 0 });
-    expect(pointHitLayer?.paint).toMatchObject({
-      "circle-opacity": 0,
-      "circle-stroke-opacity": 0,
-    });
-    expect(extrusionLayer?.filter).toEqual([
+    expect(pointHitLayer).toBeUndefined();
+    const extrudablePolygonFilter = [
       "all",
       [
         "any",
         ["==", ["geometry-type"], "Polygon"],
         ["==", ["geometry-type"], "MultiPolygon"],
       ],
-      [">", ["coalesce", ["get", "displayHeightMeters"], 0], 0],
-    ]);
+      [
+        ">",
+        ["coalesce", ["to-number", ["get", "displayHeightMeters"]], 0],
+        0,
+      ],
+    ];
+    expect(extrusionLayer?.filter).toEqual(extrudablePolygonFilter);
+    expect(polygonHitLayer?.filter).toEqual(extrudablePolygonFilter);
+    expect(outlineLayer?.filter).toEqual(extrudablePolygonFilter);
+    expect(labelLayer?.filter).toEqual(extrudablePolygonFilter);
     expect(extrusionLayer?.paint).toMatchObject({
-      "fill-extrusion-height": ["get", "displayHeightMeters"],
+      "fill-extrusion-height": [
+        "+",
+        3,
+        ["coalesce", ["to-number", ["get", "displayHeightMeters"]], 0],
+      ],
+    });
+    expect(labelLayer?.layout).toMatchObject({
+      "text-field": [
+        "coalesce",
+        ["get", "name"],
+        ["get", "officialCode"],
+        ["get", "shortName"],
+      ],
+      "text-anchor": "center",
+      "text-justify": "center",
+      "text-padding": 2,
+      "text-allow-overlap": false,
+      "text-ignore-placement": false,
+    });
+    expect(labelLayer?.paint).toMatchObject({
+      "text-color": "#f8fafc",
+      "text-halo-color": "rgba(2, 6, 23, 0.85)",
+      "text-halo-width": 1.4,
+      "text-halo-blur": 0.4,
     });
     expect(pointFeature?.properties).not.toHaveProperty("displayHeightMeters");
 
@@ -329,10 +412,11 @@ describe("CampusMap", () => {
     expect(mockMapbox.MapConstructor).toHaveBeenCalledTimes(1);
     expect(firstMap.remove).not.toHaveBeenCalled();
     expect(source?.setData).toHaveBeenCalled();
-    expect(firstMap.flyTo).toHaveBeenCalledWith(
+    expect(firstMap.stop).toHaveBeenCalled();
+    expect(firstMap.easeTo).toHaveBeenCalledWith(
       expect.objectContaining({
         center: [128.761, 35.834],
-        essential: true,
+        duration: 800,
       }),
     );
 
@@ -367,17 +451,18 @@ describe("CampusMap", () => {
     expect(mockMapbox.MapConstructor).toHaveBeenCalledTimes(1);
     expect(firstMap.remove).not.toHaveBeenCalled();
     expect(source?.setData).toHaveBeenCalled();
-    expect(firstMap.flyTo).toHaveBeenCalledWith(
+    expect(firstMap.stop).toHaveBeenCalled();
+    expect(firstMap.easeTo).toHaveBeenCalledWith(
       expect.objectContaining({
         center: [128.761, 35.834],
-        essential: true,
+        duration: 800,
       }),
     );
 
     await act(async () => root.unmount());
   });
 
-  it("keeps point fallback subjects clickable without rendering visible circles", async () => {
+  it("does not register point fallback subjects as map click zones", async () => {
     const container = document.createElement("div");
     const root = createRoot(container);
     document.body.append(container);
@@ -385,29 +470,11 @@ describe("CampusMap", () => {
     await act(async () => renderMap(root));
 
     const firstMap = mockMapbox.instances[0];
-    const source = firstMap.sources.get("energy-subjects");
     const pointClickHandler = firstMap.handlers.get(
       "click:energy-subject-point-hit-areas",
     );
 
-    expect(source).toBeDefined();
-    expect(pointClickHandler).toBeDefined();
-
-    await act(async () =>
-      pointClickHandler?.({
-        features: [{ properties: { id: "yu-official-dd73bbe1" } }],
-      }),
-    );
-
-    expect(mockMapbox.MapConstructor).toHaveBeenCalledTimes(1);
-    expect(firstMap.remove).not.toHaveBeenCalled();
-    expect(source?.setData).toHaveBeenCalled();
-    expect(firstMap.flyTo).toHaveBeenCalledWith(
-      expect.objectContaining({
-        center: [128.7601738129029, 35.8308105775303],
-        essential: true,
-      }),
-    );
+    expect(pointClickHandler).toBeUndefined();
 
     await act(async () => root.unmount());
   });

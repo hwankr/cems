@@ -13,7 +13,6 @@ import type { EnergyComparison, EnergySubject, School } from "../domain/types";
 import {
   ENERGY_SUBJECT_EXTRUSION_PAINT,
   ENERGY_SUBJECT_OUTLINE_PAINT,
-  ENERGY_SUBJECT_POINT_HIT_PAINT,
   ENERGY_SUBJECT_POLYGON_HIT_PAINT,
 } from "./mapbox-style";
 
@@ -35,22 +34,16 @@ const ENERGY_SUBJECT_EXTRUSION_LAYER_ID =
 const ENERGY_SUBJECT_POLYGON_HIT_LAYER_ID =
   "energy-subject-polygon-hit-areas";
 const ENERGY_SUBJECT_OUTLINE_LAYER_ID = "energy-subject-outlines";
-const ENERGY_SUBJECT_POINT_HIT_LAYER_ID = "energy-subject-point-hit-areas";
 const ENERGY_SUBJECT_LABEL_LAYER_ID = "energy-subject-labels";
 const POLYGON_FILTER: mapboxgl.FilterSpecification = [
   "any",
   ["==", ["geometry-type"], "Polygon"],
   ["==", ["geometry-type"], "MultiPolygon"],
 ];
-const POINT_FILTER: mapboxgl.FilterSpecification = [
-  "==",
-  ["geometry-type"],
-  "Point",
-];
-const EXTRUSION_FILTER: mapboxgl.FilterSpecification = [
+const EXTRUDABLE_POLYGON_FILTER: mapboxgl.FilterSpecification = [
   "all",
   POLYGON_FILTER,
-  [">", ["coalesce", ["get", "displayHeightMeters"], 0], 0],
+  [">", ["coalesce", ["to-number", ["get", "displayHeightMeters"]], 0], 0],
 ];
 
 type CampusMapProps = {
@@ -105,25 +98,36 @@ export function CampusMap({
       bearing: -24,
       center: school.center,
       container: containerRef.current,
+      localIdeographFontFamily:
+        "'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif",
+      minZoom: 15.3,
       pitch: school.pitch,
-      style: "mapbox://styles/mapbox/standard",
+      style: "mapbox://styles/mapbox/dark-v11",
       zoom: school.zoom,
-      config: {
-        basemap: {
-          theme: "monochrome",
-          lightPreset: "day",
-          show3dObjects: false,
-        },
-      },
     });
 
     mapRef.current = map;
+    if (process.env.NODE_ENV !== "production") {
+      (window as typeof window & { __map?: mapboxgl.Map }).__map = map;
+    }
     map.addControl(
       new mapboxgl.NavigationControl({ visualizePitch: true }),
       "bottom-right",
     );
 
     map.on("load", () => {
+      ["building", "building-outline", "building-extrusion"].forEach((id) => {
+        if (map.getLayer(id)) {
+          map.setLayoutProperty(id, "visibility", "none");
+        }
+      });
+      map.setLight({
+        anchor: "viewport",
+        color: "#ffffff",
+        intensity: 0.35,
+        position: [1.5, 210, 30],
+      });
+
       map.addSource(ENERGY_SUBJECT_SOURCE_ID, {
         type: "geojson",
         data: featureCollectionRef.current,
@@ -132,56 +136,64 @@ export function CampusMap({
         id: ENERGY_SUBJECT_EXTRUSION_LAYER_ID,
         type: "fill-extrusion",
         source: ENERGY_SUBJECT_SOURCE_ID,
-        filter: EXTRUSION_FILTER,
+        filter: EXTRUDABLE_POLYGON_FILTER,
         paint: ENERGY_SUBJECT_EXTRUSION_PAINT,
       });
       map.addLayer({
         id: ENERGY_SUBJECT_POLYGON_HIT_LAYER_ID,
         type: "fill",
         source: ENERGY_SUBJECT_SOURCE_ID,
-        filter: POLYGON_FILTER,
+        filter: EXTRUDABLE_POLYGON_FILTER,
         paint: ENERGY_SUBJECT_POLYGON_HIT_PAINT,
       });
       map.addLayer({
         id: ENERGY_SUBJECT_OUTLINE_LAYER_ID,
         type: "line",
         source: ENERGY_SUBJECT_SOURCE_ID,
-        filter: POLYGON_FILTER,
+        filter: EXTRUDABLE_POLYGON_FILTER,
         paint: ENERGY_SUBJECT_OUTLINE_PAINT,
-      });
-      map.addLayer({
-        id: ENERGY_SUBJECT_POINT_HIT_LAYER_ID,
-        type: "circle",
-        source: ENERGY_SUBJECT_SOURCE_ID,
-        filter: POINT_FILTER,
-        paint: ENERGY_SUBJECT_POINT_HIT_PAINT,
       });
       map.addLayer({
         id: ENERGY_SUBJECT_LABEL_LAYER_ID,
         type: "symbol",
         source: ENERGY_SUBJECT_SOURCE_ID,
+        filter: EXTRUDABLE_POLYGON_FILTER,
         minzoom: 15,
         layout: {
           "text-field": [
             "coalesce",
+            ["get", "name"],
             ["get", "officialCode"],
             ["get", "shortName"],
           ],
-          "text-size": ["case", ["get", "selected"], 13, 11],
-          "text-offset": [0, 0.75],
-          "text-anchor": "top",
+          "text-size": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            15,
+            9,
+            16.5,
+            11,
+            18,
+            13,
+          ],
+          "text-anchor": "center",
+          "text-justify": "center",
+          "text-padding": 2,
+          "text-allow-overlap": false,
+          "text-ignore-placement": false,
         },
         paint: {
-          "text-color": "#0f172a",
-          "text-halo-color": "#ffffff",
-          "text-halo-width": 1.25,
+          "text-color": "#f8fafc",
+          "text-halo-color": "rgba(2, 6, 23, 0.85)",
+          "text-halo-width": 1.4,
+          "text-halo-blur": 0.4,
         },
       });
 
       [
         ENERGY_SUBJECT_EXTRUSION_LAYER_ID,
         ENERGY_SUBJECT_POLYGON_HIT_LAYER_ID,
-        ENERGY_SUBJECT_POINT_HIT_LAYER_ID,
         ENERGY_SUBJECT_LABEL_LAYER_ID,
       ].forEach((layerId) => {
         map.on("click", layerId, (event) => {
@@ -199,6 +211,12 @@ export function CampusMap({
 
     return () => {
       map.remove();
+      if (
+        process.env.NODE_ENV !== "production" &&
+        (window as typeof window & { __map?: mapboxgl.Map }).__map === map
+      ) {
+        delete (window as typeof window & { __map?: mapboxgl.Map }).__map;
+      }
       mapRef.current = null;
     };
   }, [mapboxToken, school.center, school.pitch, school.zoom]);
@@ -222,13 +240,13 @@ export function CampusMap({
         ? 17.1
         : 16.4;
 
-    mapRef.current.flyTo({
+    mapRef.current.stop();
+    mapRef.current.easeTo({
       center: selectedSubjectCenter,
       zoom,
       pitch: school.pitch,
-      curve: 1.25,
-      duration: 900,
-      essential: true,
+      bearing: -24,
+      duration: 800,
     });
   }, [school.pitch, selectedSubject]);
 

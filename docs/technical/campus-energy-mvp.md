@@ -35,7 +35,7 @@ NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
 `.env.example` intentionally leaves this value blank. Do not commit `.env.local`.
 
-When the token is missing, the app still builds and the map area renders a configuration state. When a valid token is provided, Mapbox renders the Yeungnam campus view with Mapbox Standard 3D objects disabled, floor-count-based building extrusions, transparent polygon click hit areas, lightweight status outlines, invisible point fallback hit areas, and labels based on official campus codes. The admin map intentionally avoids visible polygon floor fills and visible point circles so users can click campus subjects without extra marker clutter.
+When the token is missing, the app still builds and the map area renders a configuration state. When a valid token is provided, Mapbox renders the Yeungnam campus view on the `dark-v11` style, hides default Mapbox building layers, and overlays floor-count-based building extrusions, transparent polygon click hit areas, lightweight status outlines, and centered building-name labels. The admin map intentionally avoids visible polygon floor fills and visible point circles. Only polygon or multipolygon features with positive `displayHeightMeters` are rendered as clickable map zones; official point fallbacks remain data fallbacks and are not map click targets.
 
 ## Yeungnam Building Mapping
 
@@ -45,8 +45,11 @@ The Yeungnam building map uses these data layers:
 - official English campus map from `https://www.yu.ac.kr/english/about/campus-map.do`
 - OSM building footprints fetched into `data/raw/yeungnam-osm-buildings.geojson`
 - reviewed or auto-estimated matches in `data/raw/yeungnam-building-matches.json`
+- offline `campus-ems` reference footprints copied into `data/reference/campus-ems-yu-buildings.geojson`
 
 The official campus catalog preserves `bFloor` as `officialFloorText` and parses it into `aboveGroundFloors` and `basementFloors`. If `bFloor` cannot be parsed, `fList` labels such as `1F` and `2F` are used as a fallback for the above-ground floor count. OSM `level` is not used as a building floor count. Generated polygon and multipolygon building features can carry `displayHeightMeters` and `heightSource`; the default official-floor display height is `aboveGroundFloors * 3.6`. Point fallback features do not receive height metadata and are not rendered as 3D buildings.
+
+The local `campus-ems` project was used as an offline reference for improving Gyeongsan-campus footprint coverage. Only non-`fallback_square` reference polygons are imported into the main geometry pipeline. `fallback_square` entries remain excluded from 3D extrusion unless the product explicitly accepts approximate artificial footprints later.
 
 Generated app data lives in:
 
@@ -59,19 +62,21 @@ Current generated counts:
 - 121 official campus-map entries with GPS points
 - generated geometry metadata covers `gyeongsan` and `daemyeong`
 - 305 OSM building footprints in the Yeungnam bbox
-- 121 mapped campus geometries after official point fallback: 48 polygons, 73 points
-- 42 polygon building geometries currently have floor-count-based extrusion height
-- 73 official campus-map point fallbacks
+- 121 mapped campus geometries after official point fallback: 73 polygons, 48 points
+- 69 polygon geometries currently have extrusion height metadata and are rendered as map click zones
+- 24 polygons use the offline `campus-ems` reference as their footprint source
+- 48 official campus-map point fallbacks
 
 The runtime adapter loads all 121 catalog entries as subjects. It matches geometry by subject id first, then by official building code for legacy/reviewed features.
 
-Official campus-map point fallbacks are still data fallbacks, not exact building footprints. The UI keeps them clickable through invisible hit areas, but exact building-footprint clicking for those entries requires adding reviewed polygon geometry in `data/raw/yeungnam-building-matches.json` or `data/raw/yeungnam-manual-building-geometries.geojson`.
+Official campus-map point fallbacks are still data fallbacks, not exact building footprints. The UI does not create invisible click zones for them. Exact building-footprint clicking for those entries requires adding reviewed polygon geometry in `data/raw/yeungnam-building-matches.json` or `data/raw/yeungnam-manual-building-geometries.geojson`.
 
 Regenerate the map data with:
 
 ```powershell
 node scripts/fetch-yeungnam-campus-catalog.mjs
 node scripts/fetch-yeungnam-osm-buildings.mjs
+node scripts/import-campus-ems-reference-geometries.mjs
 node scripts/build-yeungnam-building-geometries.mjs --strict --allow-official-point-fallbacks
 ```
 

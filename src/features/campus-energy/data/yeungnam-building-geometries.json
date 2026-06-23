@@ -22,17 +22,82 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "landmark",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "A01",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/348450382",
+        "osmIds": [
+          "way/348450382"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.7532976281431,
-          35.83563976723486
+          [
+            [
+              128.7536307,
+              35.8359187
+            ],
+            [
+              128.753649,
+              35.8358269
+            ],
+            [
+              128.7535136,
+              35.8355866
+            ],
+            [
+              128.7535207,
+              35.8355421
+            ],
+            [
+              128.7534848,
+              35.835533
+            ],
+            [
+              128.7534372,
+              35.8354596
+            ],
+            [
+              128.7533755,
+              35.8354943
+            ],
+            [
+              128.7532787,
+              35.8355032
+            ],
+            [
+              128.7532113,
+              35.8355134
+            ],
+            [
+              128.7528897,
+              35.8355449
+            ],
+            [
+              128.7528535,
+              35.8355801
+            ],
+            [
+              128.7531917,
+              35.8355721
+            ],
+            [
+              128.7533379,
+              35.8355791
+            ],
+            [
+              128.7533475,
+              35.8356248
+            ],
+            [
+              128.7536307,
+              35.8359187
+            ]
+          ]
         ]
       }
     },
@@ -57,7 +122,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -108,7 +175,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 7.2,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -179,7 +248,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -226,17 +297,123 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "A06",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/348365622",
+        "osmIds": [
+          "way/348365622"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 3,
+        "basementFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 10.8,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.75724314289113,
-          35.83515409112729
+          [
+            [
+              128.7577599,
+              35.8348233
+            ],
+            [
+              128.7575147,
+              35.8349347
+            ],
+            [
+              128.7575312,
+              35.8349586
+            ],
+            [
+              128.7575176,
+              35.8350086
+            ],
+            [
+              128.757364,
+              35.8350841
+            ],
+            [
+              128.7574572,
+              35.8352188
+            ],
+            [
+              128.7573924,
+              35.8352483
+            ],
+            [
+              128.7574622,
+              35.8353492
+            ],
+            [
+              128.7573436,
+              35.8354032
+            ],
+            [
+              128.7573035,
+              35.8353452
+            ],
+            [
+              128.7571493,
+              35.8354153
+            ],
+            [
+              128.7570889,
+              35.8353279
+            ],
+            [
+              128.7570047,
+              35.8353662
+            ],
+            [
+              128.7569407,
+              35.8352735
+            ],
+            [
+              128.7571154,
+              35.8351941
+            ],
+            [
+              128.7571005,
+              35.8351725
+            ],
+            [
+              128.757058,
+              35.8351918
+            ],
+            [
+              128.7570072,
+              35.8351185
+            ],
+            [
+              128.7571239,
+              35.8350655
+            ],
+            [
+              128.7571737,
+              35.8350428
+            ],
+            [
+              128.7571422,
+              35.8349973
+            ],
+            [
+              128.7577038,
+              35.8347421
+            ],
+            [
+              128.7577323,
+              35.8347834
+            ],
+            [
+              128.7577599,
+              35.8348233
+            ]
+          ]
         ]
       }
     },
@@ -249,17 +426,131 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "A07",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/236381269",
+        "osmIds": [
+          "way/236381269"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 2,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 7.2,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.7583346388585,
-          35.834719099407316
+          [
+            [
+              128.75794,
+              35.8344899
+            ],
+            [
+              128.7579469,
+              35.8344341
+            ],
+            [
+              128.7577275,
+              35.8344161
+            ],
+            [
+              128.7577035,
+              35.8346075
+            ],
+            [
+              128.757923,
+              35.8346255
+            ],
+            [
+              128.7579242,
+              35.8346161
+            ],
+            [
+              128.7579668,
+              35.8346218
+            ],
+            [
+              128.7580094,
+              35.8346275
+            ],
+            [
+              128.7579994,
+              35.8346379
+            ],
+            [
+              128.7579168,
+              35.8347852
+            ],
+            [
+              128.7582801,
+              35.8348927
+            ],
+            [
+              128.7582936,
+              35.8348604
+            ],
+            [
+              128.7583574,
+              35.8348808
+            ],
+            [
+              128.7583426,
+              35.8349067
+            ],
+            [
+              128.758555,
+              35.8349519
+            ],
+            [
+              128.7585925,
+              35.834874
+            ],
+            [
+              128.758604,
+              35.8348622
+            ],
+            [
+              128.7586809,
+              35.8347836
+            ],
+            [
+              128.75853,
+              35.8346706
+            ],
+            [
+              128.7585027,
+              35.8346977
+            ],
+            [
+              128.7584506,
+              35.8346655
+            ],
+            [
+              128.7584791,
+              35.8346379
+            ],
+            [
+              128.7581936,
+              35.8344345
+            ],
+            [
+              128.7581232,
+              35.8345082
+            ],
+            [
+              128.7580209,
+              35.834498
+            ],
+            [
+              128.75794,
+              35.8344899
+            ]
+          ]
         ]
       }
     },
@@ -272,17 +563,127 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "A08",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/153129446",
+        "osmIds": [
+          "way/153129446"
+        ],
+        "matchMethod": "campus-ems-reference-name_exact",
+        "aboveGroundFloors": 5,
+        "basementFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 18,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.7590547299206,
-          35.83425349118948
+          [
+            [
+              128.7583114,
+              35.8342187
+            ],
+            [
+              128.7584779,
+              35.8339836
+            ],
+            [
+              128.7589642,
+              35.8341878
+            ],
+            [
+              128.7590242,
+              35.8341099
+            ],
+            [
+              128.7590627,
+              35.834058
+            ],
+            [
+              128.7593695,
+              35.8341841
+            ],
+            [
+              128.7592837,
+              35.8343102
+            ],
+            [
+              128.7591281,
+              35.834245
+            ],
+            [
+              128.7590798,
+              35.8343232
+            ],
+            [
+              128.7589994,
+              35.8342885
+            ],
+            [
+              128.7589511,
+              35.83435
+            ],
+            [
+              128.7589243,
+              35.8343841
+            ],
+            [
+              128.7592408,
+              35.8345277
+            ],
+            [
+              128.7591549,
+              35.8346364
+            ],
+            [
+              128.7587043,
+              35.8344276
+            ],
+            [
+              128.758808,
+              35.8342961
+            ],
+            [
+              128.7588277,
+              35.8342711
+            ],
+            [
+              128.7585595,
+              35.8341493
+            ],
+            [
+              128.7584629,
+              35.8342798
+            ],
+            [
+              128.7586453,
+              35.834358
+            ],
+            [
+              128.7585595,
+              35.8344798
+            ],
+            [
+              128.758302,
+              35.834358
+            ],
+            [
+              128.7583825,
+              35.8342537
+            ],
+            [
+              128.7583466,
+              35.8342356
+            ],
+            [
+              128.7583114,
+              35.8342187
+            ]
+          ]
         ]
       }
     },
@@ -330,7 +731,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 14.4,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -425,17 +828,63 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "A11",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/471552488",
+        "osmIds": [
+          "way/471552488"
+        ],
+        "matchMethod": "campus-ems-reference-name_partial",
+        "aboveGroundFloors": 3,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 10.8,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.76126921957854,
-          35.83531140831219
+          [
+            [
+              128.7609976,
+              35.8353054
+            ],
+            [
+              128.7610494,
+              35.8352471
+            ],
+            [
+              128.7610144,
+              35.8352266
+            ],
+            [
+              128.7610923,
+              35.8351389
+            ],
+            [
+              128.7611142,
+              35.8351631
+            ],
+            [
+              128.7611514,
+              35.8351411
+            ],
+            [
+              128.7615036,
+              35.8353468
+            ],
+            [
+              128.7613549,
+              35.8355141
+            ],
+            [
+              128.7609976,
+              35.8353054
+            ]
+          ]
         ]
       }
     },
@@ -478,7 +927,14 @@
         "osmIds": [
           "way/471552486"
         ],
-        "matchMethod": "normalized-exact-name"
+        "matchMethod": "normalized-exact-name",
+        "aboveGroundFloors": 2,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 7.2,
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -524,7 +980,13 @@
         "osmIds": [
           "way/471552489"
         ],
-        "matchMethod": "normalized-exact-name"
+        "matchMethod": "normalized-exact-name",
+        "aboveGroundFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 3.6,
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -609,17 +1071,46 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "A24",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/365429830",
+        "osmIds": [
+          "way/365429830"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 3.6,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.7595137863297,
-          35.835247016798675
+          [
+            [
+              128.7595689,
+              35.8351307
+            ],
+            [
+              128.7595528,
+              35.835293
+            ],
+            [
+              128.75942,
+              35.8352843
+            ],
+            [
+              128.7594362,
+              35.835122
+            ],
+            [
+              128.7595689,
+              35.8351307
+            ]
+          ]
         ]
       }
     },
@@ -713,7 +1204,9 @@
         "basementFloors": 0,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -788,7 +1281,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 14.4,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -1102,7 +1597,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 72,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -1177,7 +1674,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 18,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -1252,17 +1751,47 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "B06",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/236156803",
+        "osmIds": [
+          "way/236156803"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 3,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 10.8,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.75675192043371,
-          35.83420608297126
+          [
+            [
+              128.7564202,
+              35.8344387
+            ],
+            [
+              128.756353,
+              35.8342789
+            ],
+            [
+              128.7569905,
+              35.8341027
+            ],
+            [
+              128.7570577,
+              35.8342625
+            ],
+            [
+              128.7564202,
+              35.8344387
+            ]
+          ]
         ]
       }
     },
@@ -1282,7 +1811,14 @@
         "osmIds": [
           "way/936257478"
         ],
-        "matchMethod": "normalized-exact-name"
+        "matchMethod": "normalized-exact-name",
+        "aboveGroundFloors": 2,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 7.2,
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -1321,17 +1857,47 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "C01",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/153003645",
+        "osmIds": [
+          "way/153003645"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 4,
+        "basementFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 14.4,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.7613728717339,
-          35.829988752548296
+          [
+            [
+              128.7613147,
+              35.8303292
+            ],
+            [
+              128.7610358,
+              35.8296594
+            ],
+            [
+              128.7612825,
+              35.8295811
+            ],
+            [
+              128.7615722,
+              35.8302683
+            ],
+            [
+              128.7613147,
+              35.8303292
+            ]
+          ]
         ]
       }
     },
@@ -1356,7 +1922,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -1442,17 +2010,47 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "C04",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/279943224",
+        "osmIds": [
+          "way/279943224"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 3,
+        "basementFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 10.8,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.76027767590867,
-          35.833257860637396
+          [
+            [
+              128.7602867,
+              35.8335636
+            ],
+            [
+              128.7605429,
+              35.8334124
+            ],
+            [
+              128.7601985,
+              35.8330289
+            ],
+            [
+              128.7599424,
+              35.8331801
+            ],
+            [
+              128.7602867,
+              35.8335636
+            ]
+          ]
         ]
       }
     },
@@ -1511,17 +2109,47 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "C21",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/153129431",
+        "osmIds": [
+          "way/153129431"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 2,
+        "basementFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 7.2,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.761776036763,
-          35.82995580798122
+          [
+            [
+              128.7616051,
+              35.8300709
+            ],
+            [
+              128.7615306,
+              35.8298961
+            ],
+            [
+              128.7619873,
+              35.8297697
+            ],
+            [
+              128.7620517,
+              35.829948
+            ],
+            [
+              128.7616051,
+              35.8300709
+            ]
+          ]
         ]
       }
     },
@@ -1557,17 +2185,47 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "C25",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/1344746518",
+        "osmIds": [
+          "way/1344746518"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 2,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 7.2,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.76207294224062,
-          35.832123162864264
+          [
+            [
+              128.7618388,
+              35.8322342
+            ],
+            [
+              128.7618143,
+              35.8321725
+            ],
+            [
+              128.7620963,
+              35.8320987
+            ],
+            [
+              128.7621209,
+              35.8321605
+            ],
+            [
+              128.7618388,
+              35.8322342
+            ]
+          ]
         ]
       }
     },
@@ -1580,17 +2238,47 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "C26",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/1344746517",
+        "osmIds": [
+          "way/1344746517"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 2,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 7.2,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.7617210904386,
-          35.83222519328381
+          [
+            [
+              128.7615208,
+              35.8323172
+            ],
+            [
+              128.7614963,
+              35.8322555
+            ],
+            [
+              128.7617783,
+              35.8321818
+            ],
+            [
+              128.7618028,
+              35.8322435
+            ],
+            [
+              128.7615208,
+              35.8323172
+            ]
+          ]
         ]
       }
     },
@@ -1638,7 +2326,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -1712,7 +2402,9 @@
         "basementFloors": 0,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -1795,7 +2487,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 14.4,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -1850,7 +2544,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 14.4,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -1901,7 +2597,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 7.2,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -1968,7 +2666,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 18,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2035,7 +2735,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 18,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2090,7 +2792,9 @@
         "basementFloors": 2,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 18,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2157,7 +2861,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 18,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2212,17 +2918,79 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "D09",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/469432792",
+        "osmIds": [
+          "way/469432792"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 2,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 7.2,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.74886821973703,
-          35.829964153602255
+          [
+            [
+              128.7486456,
+              35.8301784
+            ],
+            [
+              128.7487022,
+              35.8297609
+            ],
+            [
+              128.748874,
+              35.8297752
+            ],
+            [
+              128.7490986,
+              35.8297939
+            ],
+            [
+              128.7490968,
+              35.8298226
+            ],
+            [
+              128.7491764,
+              35.8298283
+            ],
+            [
+              128.7491251,
+              35.8301612
+            ],
+            [
+              128.7490543,
+              35.8301655
+            ],
+            [
+              128.7490508,
+              35.830197
+            ],
+            [
+              128.7489004,
+              35.830187
+            ],
+            [
+              128.7488951,
+              35.8302186
+            ],
+            [
+              128.7487164,
+              35.830197
+            ],
+            [
+              128.7486456,
+              35.8301784
+            ]
+          ]
         ]
       }
     },
@@ -2247,7 +3015,9 @@
         "basementFloors": 0,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 18,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2310,17 +3080,75 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "D21",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/469432800",
+        "osmIds": [
+          "way/469432800"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 15,
+        "basementFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 54,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.74793356208158,
-          35.82846836752795
+          [
+            [
+              128.7475849,
+              35.8286142
+            ],
+            [
+              128.7476202,
+              35.8284004
+            ],
+            [
+              128.7478662,
+              35.8284219
+            ],
+            [
+              128.747914,
+              35.8283975
+            ],
+            [
+              128.7479671,
+              35.8281909
+            ],
+            [
+              128.7482219,
+              35.8282139
+            ],
+            [
+              128.7483794,
+              35.8281264
+            ],
+            [
+              128.7485316,
+              35.8282698
+            ],
+            [
+              128.7483635,
+              35.828372
+            ],
+            [
+              128.7480078,
+              35.8285883
+            ],
+            [
+              128.7479158,
+              35.8286443
+            ],
+            [
+              128.7475849,
+              35.8286142
+            ]
+          ]
         ]
       }
     },
@@ -2345,7 +3173,9 @@
         "basementFloors": 2,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2480,7 +3310,9 @@
         "basementFloors": 0,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 3.6,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2530,7 +3362,14 @@
         "osmIds": [
           "way/1053823164"
         ],
-        "matchMethod": "normalized-exact-name"
+        "matchMethod": "normalized-exact-name",
+        "aboveGroundFloors": 2,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 7.2,
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2601,7 +3440,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2676,7 +3517,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2747,7 +3590,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2818,7 +3663,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 14.4,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2888,7 +3735,13 @@
         "osmIds": [
           "way/1053826026"
         ],
-        "matchMethod": "normalized-exact-name"
+        "matchMethod": "normalized-exact-name",
+        "aboveGroundFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 3.6,
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2939,7 +3792,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 18,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -2994,17 +3849,55 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "E29",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/210933794",
+        "osmIds": [
+          "way/210933794"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 5,
+        "basementFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 18,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.75404226246766,
-          35.826610888319735
+          [
+            [
+              128.7535613,
+              35.826643
+            ],
+            [
+              128.7540343,
+              35.8266138
+            ],
+            [
+              128.7542645,
+              35.8265984
+            ],
+            [
+              128.7545286,
+              35.8265808
+            ],
+            [
+              128.7545484,
+              35.8267837
+            ],
+            [
+              128.7535811,
+              35.8268459
+            ],
+            [
+              128.7535613,
+              35.826643
+            ]
+          ]
         ]
       }
     },
@@ -3029,7 +3922,9 @@
         "basementFloors": 0,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 7.2,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3100,7 +3995,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3151,7 +4048,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 7.2,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3190,17 +4089,47 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "F06",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/153732616",
+        "osmIds": [
+          "way/153732616"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 1,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 3.6,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.75527653469197,
-          35.82927145958731
+          [
+            [
+              128.7551948,
+              35.829399
+            ],
+            [
+              128.7551824,
+              35.8292445
+            ],
+            [
+              128.755405,
+              35.8292328
+            ],
+            [
+              128.7554173,
+              35.8293872
+            ],
+            [
+              128.7551948,
+              35.829399
+            ]
+          ]
         ]
       }
     },
@@ -3225,7 +4154,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 14.4,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3276,7 +4207,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 14.4,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3331,7 +4264,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3382,7 +4317,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 14.4,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3472,7 +4409,9 @@
         "aboveGroundFloors": 4,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 14.4,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3531,17 +4470,63 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "F25",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/468971064",
+        "osmIds": [
+          "way/468971064"
+        ],
+        "matchMethod": "campus-ems-reference-name_partial",
+        "aboveGroundFloors": 3,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 10.8,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.75638658315623,
-          35.82842620317354
+          [
+            [
+              128.7566959,
+              35.8282268
+            ],
+            [
+              128.7566924,
+              35.8283388
+            ],
+            [
+              128.7565543,
+              35.8283388
+            ],
+            [
+              128.7565579,
+              35.8284593
+            ],
+            [
+              128.7560305,
+              35.8284794
+            ],
+            [
+              128.7559987,
+              35.8282383
+            ],
+            [
+              128.7561544,
+              35.8282268
+            ],
+            [
+              128.7561544,
+              35.8282584
+            ],
+            [
+              128.7566959,
+              35.8282268
+            ]
+          ]
         ]
       }
     },
@@ -3554,17 +4539,63 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "F26",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/468971645",
+        "osmIds": [
+          "way/468971645"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 2,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 7.2,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.75619582425037,
-          35.82805502449726
+          [
+            [
+              128.7566888,
+              35.8278796
+            ],
+            [
+              128.7566959,
+              35.8279973
+            ],
+            [
+              128.7565402,
+              35.8280174
+            ],
+            [
+              128.7565366,
+              35.8280662
+            ],
+            [
+              128.7564517,
+              35.828069
+            ],
+            [
+              128.7564552,
+              35.8281035
+            ],
+            [
+              128.7557863,
+              35.8281522
+            ],
+            [
+              128.755758,
+              35.8279399
+            ],
+            [
+              128.7566888,
+              35.8278796
+            ]
+          ]
         ]
       }
     },
@@ -3577,17 +4608,47 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "F27",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/210935468",
+        "osmIds": [
+          "way/210935468"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 2,
+        "basementFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 7.2,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.75677425241906,
-          35.827690624358354
+          [
+            [
+              128.7564197,
+              35.8276299
+            ],
+            [
+              128.7571412,
+              35.827594
+            ],
+            [
+              128.7571506,
+              35.8277178
+            ],
+            [
+              128.756429,
+              35.8277537
+            ],
+            [
+              128.7564197,
+              35.8276299
+            ]
+          ]
         ]
       }
     },
@@ -3623,17 +4684,71 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "F29",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/468971867",
+        "osmIds": [
+          "way/468971867"
+        ],
+        "matchMethod": "manual-reviewed-nearest-name-history",
+        "aboveGroundFloors": 3,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 10.8,
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.75539707034088,
-          35.827710751884105
+          [
+            [
+              128.7563384,
+              35.8276013
+            ],
+            [
+              128.7563243,
+              35.8274808
+            ],
+            [
+              128.7556448,
+              35.8275296
+            ],
+            [
+              128.7556554,
+              35.8276329
+            ],
+            [
+              128.7550006,
+              35.827673
+            ],
+            [
+              128.7550219,
+              35.8278567
+            ],
+            [
+              128.7557722,
+              35.8278079
+            ],
+            [
+              128.7557686,
+              35.8277677
+            ],
+            [
+              128.7558217,
+              35.8277649
+            ],
+            [
+              128.7558111,
+              35.8276415
+            ],
+            [
+              128.7563384,
+              35.8276013
+            ]
+          ]
         ]
       }
     },
@@ -3658,7 +4773,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 7.2,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3757,7 +4874,9 @@
         "basementFloors": 0,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 7.2,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3808,7 +4927,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 14.4,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3855,17 +4976,47 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "G04",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/928755749",
+        "osmIds": [
+          "way/928755749"
+        ],
+        "matchMethod": "campus-ems-reference-name_partial",
+        "aboveGroundFloors": 5,
+        "basementFloors": 0,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 18,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.75937326657277,
-          35.82838250779437
+          [
+            [
+              128.7590091,
+              35.8285031
+            ],
+            [
+              128.7589484,
+              35.8283024
+            ],
+            [
+              128.7594761,
+              35.828204
+            ],
+            [
+              128.7595462,
+              35.8283781
+            ],
+            [
+              128.7590091,
+              35.8285031
+            ]
+          ]
         ]
       }
     },
@@ -3890,7 +5041,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 18,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -3957,7 +5110,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 18,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -4024,7 +5179,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 7.2,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -4071,17 +5228,79 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "G13",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/468967720",
+        "osmIds": [
+          "way/468967720"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "aboveGroundFloors": 3,
+        "basementFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 10.8,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.75619919056396,
-          35.82544621717952
+          [
+            [
+              128.755957,
+              35.8255168
+            ],
+            [
+              128.755965,
+              35.8255625
+            ],
+            [
+              128.7563647,
+              35.825532
+            ],
+            [
+              128.7563566,
+              35.8254907
+            ],
+            [
+              128.756429,
+              35.825482
+            ],
+            [
+              128.7564076,
+              35.8252841
+            ],
+            [
+              128.7563432,
+              35.8252863
+            ],
+            [
+              128.7563378,
+              35.8252406
+            ],
+            [
+              128.7559355,
+              35.8252667
+            ],
+            [
+              128.7559436,
+              35.8253146
+            ],
+            [
+              128.7558792,
+              35.8253167
+            ],
+            [
+              128.7558926,
+              35.8255255
+            ],
+            [
+              128.755957,
+              35.8255168
+            ]
+          ]
         ]
       }
     },
@@ -4106,7 +5325,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 10.8,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -4189,7 +5410,9 @@
         "basementFloors": 1,
         "floorCountSource": "official-bFloor",
         "displayHeightMeters": 7.2,
-        "heightSource": "official-floor-count"
+        "heightSource": "official-floor-count",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",
@@ -4248,17 +5471,46 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "manual",
+        "geometryConfidence": "estimated",
         "officialCode": "G16",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "local-reference:data/reference/campus-ems-yu-buildings.geojson",
+        "matchMethod": "campus-ems-reference-name_exact",
+        "referencePolygonSource": "name_exact",
+        "referenceOsmId": "way/236156797",
+        "aboveGroundFloors": 3,
+        "basementFloors": 1,
+        "floorCountSource": "official-bFloor",
+        "displayHeightMeters": 10.8,
+        "heightSource": "official-floor-count",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.7549556288866,
-          35.82500030631081
+          [
+            [
+              128.7547457,
+              35.8248309
+            ],
+            [
+              128.7554769,
+              35.8247823
+            ],
+            [
+              128.7555194,
+              35.8252023
+            ],
+            [
+              128.7547882,
+              35.8252509
+            ],
+            [
+              128.7547457,
+              35.8248309
+            ]
+          ]
         ]
       }
     },
@@ -4294,17 +5546,41 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "building",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "manual",
+        "geometryConfidence": "estimated",
         "officialCode": "G18",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "local-reference:data/reference/campus-ems-yu-buildings.geojson",
+        "matchMethod": "campus-ems-reference-name_exact",
+        "referencePolygonSource": "name_exact",
+        "referenceOsmId": "way/236156799",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.75378451449842,
-          35.82508048371851
+          [
+            [
+              128.7535293,
+              35.8249351
+            ],
+            [
+              128.7538346,
+              35.8249088
+            ],
+            [
+              128.7538918,
+              35.8253469
+            ],
+            [
+              128.7535866,
+              35.8253732
+            ],
+            [
+              128.7535293,
+              35.8249351
+            ]
+          ]
         ]
       }
     },
@@ -4340,17 +5616,42 @@
         "schoolId": "yeungnam",
         "campusId": "gyeongsan",
         "kind": "landmark",
-        "geometrySource": "official-campus-map",
-        "geometryConfidence": "verified",
+        "geometrySource": "openstreetmap",
+        "geometryConfidence": "estimated",
         "officialCode": "G41",
-        "sourceUrl": "https://www.yu.ac.kr/main/intro/campus-map.do",
-        "matchMethod": "official-campus-map-point"
+        "sourceUrl": "https://www.openstreetmap.org/way/928753192",
+        "osmIds": [
+          "way/928753192"
+        ],
+        "matchMethod": "campus-ems-reference-spatial",
+        "footprintSource": "campus-ems-reference",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          128.76120630717392,
-          35.82833537821079
+          [
+            [
+              128.7610858,
+              35.8283851
+            ],
+            [
+              128.7610559,
+              35.8283181
+            ],
+            [
+              128.7612114,
+              35.8282724
+            ],
+            [
+              128.7612413,
+              35.8283393
+            ],
+            [
+              128.7610858,
+              35.8283851
+            ]
+          ]
         ]
       }
     },
@@ -4393,7 +5694,9 @@
         "osmIds": [
           "way/928753188"
         ],
-        "matchMethod": "normalized-exact-name"
+        "matchMethod": "normalized-exact-name",
+        "footprintSource": "openstreetmap",
+        "footprintConfidence": "estimated"
       },
       "geometry": {
         "type": "Polygon",

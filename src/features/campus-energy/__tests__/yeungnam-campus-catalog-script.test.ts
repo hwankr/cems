@@ -14,6 +14,10 @@ import {
   parseOfficialCampusMapHtml,
 } from "../../../../scripts/fetch-yeungnam-campus-catalog.mjs";
 import { overpassJsonToGeoJson } from "../../../../scripts/fetch-yeungnam-osm-buildings.mjs";
+import {
+  createCampusEmsReferenceGeometryUpdates,
+  summarizeCampusEmsReferenceComparison,
+} from "../../../../scripts/import-campus-ems-reference-geometries.mjs";
 import buildingGeometries from "../data/yeungnam-building-geometries.json";
 
 const koHtml = `
@@ -340,6 +344,180 @@ describe("OSM Yeungnam building footprint parser", () => {
   });
 });
 
+describe("campus-ems reference geometry importer", () => {
+  const catalog = {
+    buildings: [
+      {
+        id: "yu-a06",
+        schoolId: "yeungnam",
+        campusId: "gyeongsan",
+        officialCode: "A06",
+        name: "College of Arts-Design Building",
+        nameKo: "College of Arts-Design Building",
+        shortName: "A06",
+        kind: "building",
+      },
+      {
+        id: "yu-a09",
+        schoolId: "yeungnam",
+        campusId: "gyeongsan",
+        officialCode: "A09",
+        name: "Tennis Court",
+        nameKo: "Tennis Court",
+        shortName: "A09",
+        kind: "outdoor",
+      },
+      {
+        id: "yu-g16",
+        schoolId: "yeungnam",
+        campusId: "gyeongsan",
+        officialCode: "G16",
+        name: "Automotive Building",
+        nameKo: "Automotive Building",
+        shortName: "G16",
+        kind: "building",
+      },
+    ],
+  };
+  const currentGeometries = {
+    features: [
+      {
+        type: "Feature",
+        properties: {
+          subjectId: "yu-a06",
+          officialCode: "A06",
+          geometrySource: "official-campus-map",
+        },
+        geometry: { type: "Point", coordinates: [128, 35] },
+      },
+      {
+        type: "Feature",
+        properties: {
+          subjectId: "yu-a09",
+          officialCode: "A09",
+          geometrySource: "official-campus-map",
+        },
+        geometry: { type: "Point", coordinates: [128, 35] },
+      },
+      {
+        type: "Feature",
+        properties: {
+          subjectId: "yu-g16",
+          officialCode: "G16",
+          geometrySource: "official-campus-map",
+        },
+        geometry: { type: "Point", coordinates: [128, 35] },
+      },
+    ],
+  };
+  const currentOsmGeoJson = {
+    features: [
+      {
+        type: "Feature",
+        properties: { osmId: "way/348365622" },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[[128, 35], [129, 35], [129, 36], [128, 35]]],
+        },
+      },
+    ],
+  };
+  const referenceGeoJson = {
+    features: [
+      {
+        type: "Feature",
+        properties: {
+          bNo: "A06",
+          bName: "College of Arts-Design Building",
+          polygon_source: "spatial",
+          osm_id: 348365622,
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[[128, 35], [129, 35], [129, 36], [128, 35]]],
+        },
+      },
+      {
+        type: "Feature",
+        properties: {
+          bNo: "A09",
+          bName: "Tennis Court",
+          polygon_source: "fallback_square",
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[[128, 35], [129, 35], [129, 36], [128, 35]]],
+        },
+      },
+      {
+        type: "Feature",
+        properties: {
+          bNo: "G16",
+          bName: "Automotive Building",
+          polygon_source: "name_exact",
+          osm_id: 236156797,
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[[128, 35], [129, 35], [129, 36], [128, 35]]],
+        },
+      },
+    ],
+  };
+
+  it("summarizes current point fallbacks that campus-ems maps as polygons", () => {
+    expect(
+      summarizeCampusEmsReferenceComparison({
+        catalog,
+        currentGeometries,
+        referenceGeoJson,
+      }),
+    ).toMatchObject({
+      sharedOfficialCodes: 3,
+      pointFallbackReferencePolygons: 3,
+      nonFallbackReferencePolygons: 2,
+      fallbackSquareReferencePolygons: 1,
+    });
+  });
+
+  it("imports non-fallback reference polygons and excludes fallback squares by default", () => {
+    const result = createCampusEmsReferenceGeometryUpdates({
+      catalog,
+      currentGeometries,
+      currentOsmGeoJson,
+      existingMatches: [],
+      existingManualFeatures: [],
+      referenceGeoJson,
+    });
+
+    expect(result.matches).toEqual([
+      expect.objectContaining({
+        officialCode: "A06",
+        catalogId: "yu-a06",
+        osmId: "way/348365622",
+        geometrySource: "openstreetmap",
+        geometryConfidence: "estimated",
+        matchMethod: "campus-ems-reference-spatial",
+      }),
+    ]);
+    expect(result.manualFeatures).toEqual([
+      expect.objectContaining({
+        properties: expect.objectContaining({
+          subjectId: "yu-g16",
+          officialCode: "G16",
+          geometrySource: "manual",
+          geometryConfidence: "estimated",
+          matchMethod: "campus-ems-reference-name_exact",
+        }),
+        geometry: referenceGeoJson.features[2].geometry,
+      }),
+    ]);
+    expect(result.excludedFallbackSquares).toEqual([
+      expect.objectContaining({ officialCode: "A09" }),
+    ]);
+  });
+});
+
 describe("official point fallback geometry", () => {
   it("uses reviewed geometry before official point geometry", () => {
     const result = runGeometryHelper(`const building = {
@@ -393,6 +571,8 @@ describe("official point fallback geometry", () => {
         floorCountSource: "official-bFloor",
         displayHeightMeters: 10.8,
         heightSource: "official-floor-count",
+        footprintSource: "openstreetmap",
+        footprintConfidence: "estimated",
       },
     });
   });
@@ -456,6 +636,39 @@ describe("official point fallback geometry", () => {
     ]);
   });
 
+  it("marks campus-ems reference polygons as reference footprints", () => {
+    const result = runGeometryHelper(`const building = {
+      id: "yu-a06",
+      schoolId: "yeungnam",
+      campusId: "gyeongsan",
+      officialCode: "A06",
+      name: "College of Arts-Design Building",
+      nameKo: "Arts Design Building",
+      shortName: "A06",
+      kind: "building",
+      aboveGroundFloors: 3,
+      floorCountSource: "official-bFloor",
+    };
+    const reviewedFeature = {
+      type: "Feature",
+      properties: {
+        geometrySource: "openstreetmap",
+        geometryConfidence: "estimated",
+        matchMethod: "campus-ems-reference-spatial",
+      },
+      geometry: {
+        type: "Polygon",
+        coordinates: [[[128, 35], [129, 35], [129, 36], [128, 35]]],
+      },
+    };
+    console.log(JSON.stringify(buildGeometryFeatureForCatalogEntry(building, reviewedFeature)));`);
+
+    expect(result.properties).toMatchObject({
+      footprintSource: "campus-ems-reference",
+      footprintConfidence: "estimated",
+    });
+  });
+
   it("uses official point geometry when reviewed geometry is missing", () => {
     const result = runGeometryHelper(`const building = {
       id: "yu-official-dd73bbe1",
@@ -498,6 +711,7 @@ describe("official point fallback geometry", () => {
     expect(result.properties).not.toHaveProperty("displayHeightMeters");
     expect(result.properties).not.toHaveProperty("heightSource");
     expect(result.properties).not.toHaveProperty("aboveGroundFloors");
+    expect(result.properties).not.toHaveProperty("footprintSource");
   });
 
   it("does not add extrusion height to non-building polygons", () => {
@@ -528,6 +742,41 @@ describe("official point fallback geometry", () => {
 
     expect(result.properties).not.toHaveProperty("displayHeightMeters");
     expect(result.properties).not.toHaveProperty("heightSource");
+  });
+
+  it("adds official floor height to building-like utility polygons", () => {
+    const result = runGeometryHelper(`const building = {
+      id: "yu-e26",
+      schoolId: "yeungnam",
+      campusId: "gyeongsan",
+      officialCode: "E26",
+      name: "Water Research Laboratory Building",
+      nameKo: "Water Research Laboratory Building",
+      shortName: "E26",
+      kind: "utility",
+      aboveGroundFloors: 1,
+      floorCountSource: "official-bFloor",
+    };
+    const reviewedFeature = {
+      type: "Feature",
+      properties: {
+        geometrySource: "openstreetmap",
+        geometryConfidence: "estimated",
+        matchMethod: "normalized-exact-name",
+      },
+      geometry: {
+        type: "Polygon",
+        coordinates: [[[128, 35], [129, 35], [129, 36], [128, 35]]],
+      },
+    };
+    console.log(JSON.stringify(buildGeometryFeatureForCatalogEntry(building, reviewedFeature)));`);
+
+    expect(result.properties).toMatchObject({
+      displayHeightMeters: 3.6,
+      aboveGroundFloors: 1,
+      floorCountSource: "official-bFloor",
+      heightSource: "official-floor-count",
+    });
   });
 
   it("requires explicit acceptance for official point fallbacks in strict mode", () => {
@@ -595,14 +844,14 @@ describe("official point fallback geometry", () => {
       }
 
       expect(failureOutput).toContain(
-        "Strict mapping failed: 73 official campus-map point fallbacks require --allow-official-point-fallbacks.",
+        "Strict mapping failed: 48 official campus-map point fallbacks require --allow-official-point-fallbacks.",
       );
 
       expect(readFileSync(outputGeoJsonPath, "utf8")).toBe(sentinel);
       expect(JSON.parse(readFileSync(reportPath, "utf8"))).toMatchObject({
         strict: true,
         officialPointFallbackAcceptanceAllowed: false,
-        officialPointFallbackCount: 73,
+        officialPointFallbackCount: 48,
       });
       expect(existsSync(reviewCsvPath)).toBe(true);
     } finally {

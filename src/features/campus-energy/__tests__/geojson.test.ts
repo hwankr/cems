@@ -152,6 +152,8 @@ describe("createEnergySubjectFeatureCollection", () => {
         basementFloors: 1,
         floorCountSource: "official-bFloor",
         heightSource: "official-floor-count",
+        footprintSource: "campus-ems-reference",
+        footprintConfidence: "estimated",
       },
     };
     const comparison = compareEnergy({
@@ -198,6 +200,8 @@ describe("createEnergySubjectFeatureCollection", () => {
             basementFloors: 1,
             floorCountSource: "official-bFloor",
             heightSource: "official-floor-count",
+            footprintSource: "campus-ems-reference",
+            footprintConfidence: "estimated",
           },
         },
       ],

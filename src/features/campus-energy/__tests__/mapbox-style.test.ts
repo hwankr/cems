@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 import {
   ENERGY_SUBJECT_EXTRUSION_PAINT,
   ENERGY_SUBJECT_OUTLINE_PAINT,
-  ENERGY_SUBJECT_POINT_HIT_PAINT,
   ENERGY_SUBJECT_POLYGON_HIT_PAINT,
 } from "../components/mapbox-style";
 
@@ -36,12 +35,6 @@ describe("Mapbox style expressions", () => {
           paint: ENERGY_SUBJECT_POLYGON_HIT_PAINT,
         },
         {
-          id: "energy-subject-point-hit-areas",
-          type: "circle",
-          source: "subjects",
-          paint: ENERGY_SUBJECT_POINT_HIT_PAINT,
-        },
-        {
           id: "energy-subject-outlines",
           type: "line",
           source: "subjects",
@@ -55,21 +48,20 @@ describe("Mapbox style expressions", () => {
 
   it("uses displayHeightMeters for extrusion height", () => {
     expect(ENERGY_SUBJECT_EXTRUSION_PAINT).toMatchObject({
-      "fill-extrusion-height": ["get", "displayHeightMeters"],
-      "fill-extrusion-opacity": 0.72,
+      "fill-extrusion-base": 0,
+      "fill-extrusion-opacity": 0.86,
+      "fill-extrusion-vertical-gradient": true,
     });
+    expect(ENERGY_SUBJECT_EXTRUSION_PAINT["fill-extrusion-height"]).toEqual([
+      "+",
+      3,
+      ["coalesce", ["to-number", ["get", "displayHeightMeters"]], 0],
+    ]);
   });
 
   it("keeps polygon hit areas visually transparent", () => {
     expect(ENERGY_SUBJECT_POLYGON_HIT_PAINT).toMatchObject({
       "fill-opacity": 0,
-    });
-  });
-
-  it("keeps point fallback hit areas visually transparent", () => {
-    expect(ENERGY_SUBJECT_POINT_HIT_PAINT).toMatchObject({
-      "circle-opacity": 0,
-      "circle-stroke-opacity": 0,
     });
   });
 });

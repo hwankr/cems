@@ -2,7 +2,95 @@
   "type": "FeatureCollection",
   "metadata": {
     "generatedAt": "2026-06-22T00:56:03.197Z",
-    "description": "Manual Yeungnam building geometries. Add reviewed GeoJSON features with officialCode or subjectId when OSM is missing or incorrect."
+    "description": "Manual Yeungnam building geometries. Add reviewed GeoJSON features with officialCode or subjectId when OSM is missing or incorrect.",
+    "campusEmsReferenceImport": {
+      "importedManualFeatureCount": 2,
+      "lastRunImportedManualFeatureCount": 0,
+      "excludedFallbackSquareCount": 23
+    }
   },
-  "features": []
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g16",
+        "officialCode": "G16",
+        "geometrySource": "manual",
+        "geometryConfidence": "estimated",
+        "sourceUrl": "local-reference:data/reference/campus-ems-yu-buildings.geojson",
+        "matchMethod": "campus-ems-reference-name_exact",
+        "referenceName": "자동차관",
+        "referencePolygonSource": "name_exact",
+        "referenceOsmId": "way/236156797"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              128.7547457,
+              35.8248309
+            ],
+            [
+              128.7554769,
+              35.8247823
+            ],
+            [
+              128.7555194,
+              35.8252023
+            ],
+            [
+              128.7547882,
+              35.8252509
+            ],
+            [
+              128.7547457,
+              35.8248309
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subjectId": "yu-g18",
+        "officialCode": "G18",
+        "geometrySource": "manual",
+        "geometryConfidence": "estimated",
+        "sourceUrl": "local-reference:data/reference/campus-ems-yu-buildings.geojson",
+        "matchMethod": "campus-ems-reference-name_exact",
+        "referenceName": "제2공장형실습장",
+        "referencePolygonSource": "name_exact",
+        "referenceOsmId": "way/236156799"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              128.7535293,
+              35.8249351
+            ],
+            [
+              128.7538346,
+              35.8249088
+            ],
+            [
+              128.7538918,
+              35.8253469
+            ],
+            [
+              128.7535866,
+              35.8253732
+            ],
+            [
+              128.7535293,
+              35.8249351
+            ]
+          ]
+        ]
+      }
+    }
+  ]
 }

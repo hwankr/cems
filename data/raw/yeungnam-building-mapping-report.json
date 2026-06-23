@@ -14,53 +14,18 @@
   },
   "catalogEntries": 121,
   "osmFootprints": 305,
-  "manualFeatures": 0,
-  "matchEntries": 48,
+  "manualFeatures": 2,
+  "matchEntries": 71,
   "mappedGeometries": 121,
-  "officialPointFallbackCount": 73,
+  "officialPointFallbackCount": 48,
   "officialPointFallbackAcceptanceAllowed": true,
   "officialPointFallbacks": [
-    {
-      "subjectId": "yu-a01",
-      "officialCode": "A01",
-      "name": "CHUNMA Gate/YU Metro Square",
-      "nameKo": "천마지문",
-      "kind": "landmark"
-    },
-    {
-      "subjectId": "yu-a06",
-      "officialCode": "A06",
-      "name": "College of Arts-Design Building",
-      "nameKo": "예술대학 디자인관",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-a07",
-      "officialCode": "A07",
-      "name": "College of Arts-Art Building",
-      "nameKo": "예술대학 미술관",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-a08",
-      "officialCode": "A08",
-      "name": "College of Education Building",
-      "nameKo": "사범대학",
-      "kind": "building"
-    },
     {
       "subjectId": "yu-a09",
       "officialCode": "A09",
       "name": "Tennis Court",
       "nameKo": "중앙테니스장",
       "kind": "outdoor"
-    },
-    {
-      "subjectId": "yu-a11",
-      "officialCode": "A11",
-      "name": "College of Arts-Symphony Hall",
-      "nameKo": "예술대학 심포니홀",
-      "kind": "building"
     },
     {
       "subjectId": "yu-a12",
@@ -81,13 +46,6 @@
       "officialCode": "A17",
       "name": "Y-STAR Workshops for Young Creators in Gyeongsan",
       "nameKo": "Y-STAR 경산 청년창의창작소",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-a24",
-      "officialCode": "A24",
-      "name": "College of Arts-Pottery Workshop",
-      "nameKo": "예술대학 세라믹 실기동",
       "kind": "building"
     },
     {
@@ -119,31 +77,10 @@
       "kind": "building"
     },
     {
-      "subjectId": "yu-b06",
-      "officialCode": "B06",
-      "name": "Student Center",
-      "nameKo": "학생회관",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-c01",
-      "officialCode": "C01",
-      "name": "Headquarters",
-      "nameKo": "본부본관",
-      "kind": "building"
-    },
-    {
       "subjectId": "yu-c03",
       "officialCode": "C03",
       "name": "Chunma Hall",
       "nameKo": "천마관",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-c04",
-      "officialCode": "C04",
-      "name": "AI Smart Education Center",
-      "nameKo": "AI스마트교육센터",
       "kind": "building"
     },
     {
@@ -161,31 +98,10 @@
       "kind": "building"
     },
     {
-      "subjectId": "yu-c21",
-      "officialCode": "C21",
-      "name": "University Registrar Office",
-      "nameKo": "학사민원실",
-      "kind": "building"
-    },
-    {
       "subjectId": "yu-c24",
       "officialCode": "C24",
       "name": "Meditation Room",
       "nameKo": "명상실",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-c25",
-      "officialCode": "C25",
-      "name": "Head Quarters of University Reserve Forces",
-      "nameKo": "연대본부 및 노동조합",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-c26",
-      "officialCode": "C26",
-      "name": "University Press",
-      "nameKo": "출판부",
       "kind": "building"
     },
     {
@@ -203,87 +119,10 @@
       "kind": "outdoor"
     },
     {
-      "subjectId": "yu-d09",
-      "officialCode": "D09",
-      "name": "Dormitory Restarurant",
-      "nameKo": "생활관식당",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-d21",
-      "officialCode": "D21",
-      "name": "Hyangto Hall",
-      "nameKo": "생활관(향토관,기독생활관)",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-e29",
-      "officialCode": "E29",
-      "name": "Mechanical Engineering Buliding",
-      "nameKo": "기계관",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-f06",
-      "officialCode": "F06",
-      "name": "Ins' of Information & Computing Systems",
-      "nameKo": "정보통신연구소",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-f25",
-      "officialCode": "F25",
-      "name": "College of Science Cafeteria",
-      "nameKo": "자연계식당",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-f26",
-      "officialCode": "F26",
-      "name": "Lab Ⅰ, College of Life and Applied Sciences",
-      "nameKo": "생명응용과학대 제1실험동",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-f27",
-      "officialCode": "F27",
-      "name": "Main Building, College of Life and Applied Sciences",
-      "nameKo": "생명응용과학대본관",
-      "kind": "building"
-    },
-    {
       "subjectId": "yu-f28",
       "officialCode": "F28",
       "name": "Lab Ⅱ, College of Life and Applied Sciences",
       "nameKo": "생명응용과학대제2실험동",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-f29",
-      "officialCode": "F29",
-      "name": "Lab Ⅲ, College of Life and Applied Sciences",
-      "nameKo": "생명응용과학대제3실험동",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-g04",
-      "officialCode": "G04",
-      "name": "Law School",
-      "nameKo": "대학원/법학전문대학원",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-g13",
-      "officialCode": "G13",
-      "name": "Robot Engineering Building",
-      "nameKo": "로봇관",
-      "kind": "building"
-    },
-    {
-      "subjectId": "yu-g16",
-      "officialCode": "G16",
-      "name": "Automotive Engineering Building",
-      "nameKo": "자동차관",
       "kind": "building"
     },
     {
@@ -294,25 +133,11 @@
       "kind": "building"
     },
     {
-      "subjectId": "yu-g18",
-      "officialCode": "G18",
-      "name": "Ladoratory Plant II",
-      "nameKo": "제2공장형실습장",
-      "kind": "building"
-    },
-    {
       "subjectId": "yu-g19",
       "officialCode": "G19",
       "name": "Security Education Practice Yard",
       "nameKo": "안전교육체험장",
       "kind": "building"
-    },
-    {
-      "subjectId": "yu-g41",
-      "officialCode": "G41",
-      "name": "KUGAESEOWON",
-      "nameKo": "구계서원",
-      "kind": "landmark"
     },
     {
       "subjectId": "yu-g42",
@@ -533,7 +358,7 @@
     }
   ],
   "missingCount": 0,
-  "unmatchedOsmFootprints": 257,
+  "unmatchedOsmFootprints": 234,
   "missingCatalogEntries": [],
   "unmatchedOsmNamedFootprints": [
     {
@@ -542,27 +367,6 @@
       "osmNameKo": null,
       "osmNameEn": null,
       "sourceUrl": "https://www.openstreetmap.org/way/153003630"
-    },
-    {
-      "osmId": "way/153003645",
-      "osmName": "대학본부",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/153003645"
-    },
-    {
-      "osmId": "way/153129431",
-      "osmName": "대학본부",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/153129431"
-    },
-    {
-      "osmId": "way/153129446",
-      "osmName": "사범대학",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/153129446"
     },
     {
       "osmId": "way/153129454",
@@ -577,20 +381,6 @@
       "osmNameKo": null,
       "osmNameEn": null,
       "sourceUrl": "https://www.openstreetmap.org/way/153732609"
-    },
-    {
-      "osmId": "way/210933794",
-      "osmName": "기계공학관",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/210933794"
-    },
-    {
-      "osmId": "way/210935468",
-      "osmName": "자연자원대학 본관",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/210935468"
     },
     {
       "osmId": "way/210935471",
@@ -612,20 +402,6 @@
       "osmNameKo": null,
       "osmNameEn": null,
       "sourceUrl": "https://www.openstreetmap.org/way/236156802"
-    },
-    {
-      "osmId": "way/236156803",
-      "osmName": "학생식당",
-      "osmNameKo": null,
-      "osmNameEn": "Student Cafeteria",
-      "sourceUrl": "https://www.openstreetmap.org/way/236156803"
-    },
-    {
-      "osmId": "way/236381269",
-      "osmName": "미술대학교",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/236381269"
     },
     {
       "osmId": "way/271074696",
@@ -656,46 +432,11 @@
       "sourceUrl": "https://www.openstreetmap.org/way/280437860"
     },
     {
-      "osmId": "way/348365622",
-      "osmName": "Design",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/348365622"
-    },
-    {
       "osmId": "way/421226754",
       "osmName": "대구프린트",
       "osmNameKo": null,
       "osmNameEn": null,
       "sourceUrl": "https://www.openstreetmap.org/way/421226754"
-    },
-    {
-      "osmId": "way/468967720",
-      "osmName": "산학협동기술원",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/468967720"
-    },
-    {
-      "osmId": "way/468971064",
-      "osmName": "식당",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/468971064"
-    },
-    {
-      "osmId": "way/468971645",
-      "osmName": "생명공학관",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/468971645"
-    },
-    {
-      "osmId": "way/468971867",
-      "osmName": "자원대제3실험동",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/468971867"
     },
     {
       "osmId": "way/469432756",
@@ -731,20 +472,6 @@
       "osmNameKo": null,
       "osmNameEn": null,
       "sourceUrl": "https://www.openstreetmap.org/way/469432784"
-    },
-    {
-      "osmId": "way/469432792",
-      "osmName": "학생식당",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/469432792"
-    },
-    {
-      "osmId": "way/469432800",
-      "osmName": "향토생활관",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/469432800"
     },
     {
       "osmId": "way/469432801",
@@ -943,13 +670,6 @@
       "sourceUrl": "https://www.openstreetmap.org/way/471500013"
     },
     {
-      "osmId": "way/471552488",
-      "osmName": "심포니홀",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/471552488"
-    },
-    {
       "osmId": "way/472439123",
       "osmName": "Coffe two box",
       "osmNameKo": null,
@@ -997,13 +717,6 @@
       "osmNameKo": null,
       "osmNameEn": null,
       "sourceUrl": "https://www.openstreetmap.org/way/928753185"
-    },
-    {
-      "osmId": "way/928755749",
-      "osmName": "법학전문대학원",
-      "osmNameKo": null,
-      "osmNameEn": null,
-      "sourceUrl": "https://www.openstreetmap.org/way/928755749"
     },
     {
       "osmId": "way/930715256",
