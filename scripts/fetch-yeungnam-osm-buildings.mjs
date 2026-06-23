@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
