@@ -1,5 +1,6 @@
 "use client";
 
+import { Languages } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   localeCookieName,
@@ -22,16 +23,17 @@ export function LanguageSwitcher() {
   }
 
   return (
-    <label className="flex items-center gap-2 text-xs font-semibold text-slate-600">
-      <span>{messages.app.language.label}</span>
+    <label className="inline-flex items-center gap-1.5 rounded-full border border-line bg-inset px-2.5 py-1.5 text-xs font-medium text-ink-muted">
+      <Languages size={15} aria-hidden="true" className="text-ink-subtle" />
+      <span className="sr-only">{messages.app.language.label}</span>
       <select
         aria-label={messages.app.language.label}
         value={locale}
         onChange={(event) => changeLocale(event.target.value as Locale)}
-        className="border border-slate-300 bg-white px-2 py-2 text-sm text-slate-950"
+        className="cursor-pointer bg-transparent pr-1 text-ink outline-none"
       >
         {supportedLocales.map((option) => (
-          <option key={option} value={option}>
+          <option key={option} value={option} className="bg-surface text-ink">
             {messages.app.language.options[option]}
           </option>
         ))}
