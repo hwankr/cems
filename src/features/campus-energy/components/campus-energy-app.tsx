@@ -10,7 +10,7 @@ import {
   getDemoEnergyComparisons,
 } from "../data/demo-campus";
 import { localizeDemoCampus } from "../data/localized-demo-campus";
-import { AdminDashboard } from "./admin-dashboard";
+import { AdminMapView } from "./admin-map-view";
 import { AppHeader } from "./app-header";
 import { BottomNav } from "./bottom-nav";
 import { ParticipantDashboard } from "./participant-dashboard";
@@ -48,6 +48,23 @@ function CampusEnergyShell({ mapboxToken }: { mapboxToken: string }) {
     [locale, messages],
   );
 
+  if (mode === "admin") {
+    return (
+      <div className="fixed inset-0 bg-canvas text-ink">
+        <AdminMapView
+          mapboxToken={mapboxToken}
+          school={localizedDemo.school}
+          subjects={localizedDemo.subjects}
+          comparisons={comparisons}
+          selectedSubjectId={selectedSubjectId}
+          onSelectSubject={setSelectedSubjectId}
+          mode={mode}
+          onModeChange={setMode}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-dvh flex-col bg-canvas text-ink">
       <AppHeader
@@ -56,21 +73,10 @@ function CampusEnergyShell({ mapboxToken }: { mapboxToken: string }) {
         schoolName={localizedDemo.school.name}
       />
       <main className="mx-auto w-full max-w-[1600px] flex-1 px-4 pb-24 pt-4 sm:px-6 sm:pt-6 lg:px-8 lg:pb-10">
-        {mode === "admin" ? (
-          <AdminDashboard
-            mapboxToken={mapboxToken}
-            school={localizedDemo.school}
-            subjects={localizedDemo.subjects}
-            comparisons={comparisons}
-            selectedSubjectId={selectedSubjectId}
-            onSelectSubject={setSelectedSubjectId}
-          />
-        ) : (
-          <ParticipantDashboard
-            groups={localizedDemo.groups}
-            participant={localizedDemo.participant}
-          />
-        )}
+        <ParticipantDashboard
+          groups={localizedDemo.groups}
+          participant={localizedDemo.participant}
+        />
       </main>
       <BottomNav mode={mode} onModeChange={setMode} />
     </div>

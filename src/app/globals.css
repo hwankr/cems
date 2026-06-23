@@ -162,3 +162,15 @@ html[data-theme="dark"] .mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
 .mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
   margin: 0 0.65rem 0.65rem 0;
 }
+
+/* Building popup entrance. */
+@keyframes cems-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

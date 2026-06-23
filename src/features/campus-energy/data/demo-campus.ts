@@ -6,6 +6,7 @@ import type {
   ParticipantProfile,
   School,
 } from "../domain/types";
+import { generateDemoEnergyReadings } from "./demo-energy";
 import {
   yeungnamBuildingSubjects,
   type YeungnamBuildingSubject,
@@ -107,7 +108,9 @@ export const demoDefaultSubjectId =
   "";
 
 export function getDemoEnergyComparisons() {
-  return demoEnergyReadings.map(compareEnergy);
+  return generateDemoEnergyReadings(demoSubjects, demoEnergyReadings).map(
+    compareEnergy,
+  );
 }
 
 export function getDemoGroupRankings() {

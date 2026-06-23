@@ -1,6 +1,7 @@
 import type {
   FillExtrusionLayerSpecification,
   FillLayerSpecification,
+  HeatmapLayerSpecification,
   LineLayerSpecification,
   SymbolLayerSpecification,
 } from "mapbox-gl";
@@ -17,9 +18,9 @@ export const ENERGY_SUBJECT_EXTRUSION_PAINT: FillExtrusionLayerSpecification["pa
       "match",
       ["get", "status"],
       "saving",
-      "#34d399",
+      "#10b981",
       "overuse",
-      "#fb7185",
+      "#f43f5e",
       "#64748b",
     ],
     "fill-extrusion-height": [
@@ -42,9 +43,9 @@ export const ENERGY_SUBJECT_EXTRUSION_PAINT_LIGHT: FillExtrusionLayerSpecificati
       "match",
       ["get", "status"],
       "saving",
-      "#34d399",
+      "#10b981",
       "overuse",
-      "#fb7185",
+      "#f43f5e",
       "#a8b3c4",
     ],
     "fill-extrusion-height": [
@@ -89,3 +90,27 @@ export const ENERGY_SUBJECT_LABEL_PAINT_LIGHT: SymbolLayerSpecification["paint"]
     "text-halo-width": 1.4,
     "text-halo-blur": 0.4,
   };
+
+// Usage heatmap over building centroids, weighted by the `weight` property
+// (actual usage normalized 0..1). Green (low) → amber → rose (high).
+export const ENERGY_HEAT_PAINT: HeatmapLayerSpecification["paint"] = {
+  "heatmap-weight": ["coalesce", ["to-number", ["get", "weight"]], 0],
+  "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 14, 0.7, 18, 1.4],
+  "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 14, 16, 17, 48],
+  "heatmap-opacity": 0.5,
+  "heatmap-color": [
+    "interpolate",
+    ["linear"],
+    ["heatmap-density"],
+    0,
+    "rgba(16, 185, 129, 0)",
+    0.3,
+    "rgba(16, 185, 129, 0.45)",
+    0.55,
+    "rgba(251, 191, 36, 0.6)",
+    0.8,
+    "rgba(244, 63, 94, 0.75)",
+    1,
+    "rgba(244, 63, 94, 0.92)",
+  ],
+};
