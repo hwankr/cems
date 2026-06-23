@@ -46,6 +46,8 @@ const EXTRUDABLE_POLYGON_FILTER: mapboxgl.FilterSpecification = [
   [">", ["coalesce", ["to-number", ["get", "displayHeightMeters"]], 0], 0],
 ];
 
+const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
+
 type CampusMapProps = {
   mapboxToken: string;
   school: School;
@@ -53,6 +55,7 @@ type CampusMapProps = {
   comparisons: EnergyComparison[];
   selectedSubjectId: string;
   onSelectSubject: (subjectId: string) => void;
+  mapStyleUrl?: string;
 };
 
 export function CampusMap({
@@ -62,6 +65,7 @@ export function CampusMap({
   comparisons,
   selectedSubjectId,
   onSelectSubject,
+  mapStyleUrl = DEFAULT_MAP_STYLE,
 }: CampusMapProps) {
   const { messages } = useI18n();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -102,7 +106,7 @@ export function CampusMap({
         "'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif",
       minZoom: 15.3,
       pitch: school.pitch,
-      style: "mapbox://styles/mapbox/dark-v11",
+      style: mapStyleUrl,
       zoom: school.zoom,
     });
 
@@ -219,7 +223,7 @@ export function CampusMap({
       }
       mapRef.current = null;
     };
-  }, [mapboxToken, school.center, school.pitch, school.zoom]);
+  }, [mapStyleUrl, mapboxToken, school.center, school.pitch, school.zoom]);
 
   useEffect(() => {
     const source = mapRef.current?.getSource(ENERGY_SUBJECT_SOURCE_ID);
@@ -275,7 +279,7 @@ export function CampusMap({
     <div className="relative h-[56vh] min-h-[22rem] w-full overflow-hidden rounded-2xl ring-1 ring-line lg:h-[42rem]">
       <div ref={containerRef} className="h-full w-full" />
       <div
-        className="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_0_70px_24px_rgb(6_9_16_/_0.55)]"
+        className="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_0_60px_20px_var(--map-vignette)]"
         aria-hidden="true"
       />
       <div className="pointer-events-none absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-surface/80 px-2.5 py-1 text-[11px] font-semibold text-ink backdrop-blur">

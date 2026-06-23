@@ -1,6 +1,7 @@
 "use client";
 
 import { Activity, Gauge, TrendingDown, TrendingUp } from "lucide-react";
+import { useTheme } from "@/features/theme/theme-provider";
 import { useI18n } from "@/i18n/client";
 import { formatKwh } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
@@ -9,6 +10,11 @@ import type { EnergyComparison, EnergySubject, School } from "../domain/types";
 import { BuildingRankTable } from "./building-rank-table";
 import { CampusMap } from "./campus-map";
 import { MetricCard } from "./metric-card";
+
+const MAP_STYLES = {
+  light: "mapbox://styles/mapbox/light-v11",
+  dark: "mapbox://styles/mapbox/dark-v11",
+} as const;
 
 type AdminDashboardProps = {
   mapboxToken: string;
@@ -21,6 +27,7 @@ type AdminDashboardProps = {
 
 export function AdminDashboard(props: AdminDashboardProps) {
   const { locale, messages } = useI18n();
+  const { resolvedTheme } = useTheme();
   const summary = summarizeEnergy(props.comparisons);
   const selectedComparison = props.comparisons.find(
     (item) => item.subjectId === props.selectedSubjectId,
@@ -42,7 +49,7 @@ export function AdminDashboard(props: AdminDashboardProps) {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-6">
       <div className="min-w-0">
-        <CampusMap {...props} />
+        <CampusMap {...props} mapStyleUrl={MAP_STYLES[resolvedTheme]} />
       </div>
       <aside className="flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-3">
