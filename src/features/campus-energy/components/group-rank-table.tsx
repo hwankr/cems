@@ -19,9 +19,9 @@ export function GroupRankTable({
   const { locale, messages } = useI18n();
 
   return (
-    <div className="border border-slate-200 bg-white">
-      <div className="border-b border-slate-200 px-4 py-3">
-        <h2 className="font-semibold text-slate-950">
+    <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-card">
+      <div className="border-b border-line px-4 py-3">
+        <h2 className="text-sm font-semibold text-ink">
           {messages.participant.affiliationRanking}
         </h2>
       </div>
@@ -29,27 +29,28 @@ export function GroupRankTable({
         const group = groups.find((item) => item.id === ranking.subjectId);
         if (!group) return null;
 
+        const selected = selectedGroupId === group.id;
         return (
           <div
             key={group.id}
-            className={`grid grid-cols-[auto_1fr_auto] items-center gap-3 border-b border-slate-100 px-4 py-3 ${
-              selectedGroupId === group.id ? "bg-blue-50" : ""
+            className={`grid grid-cols-[auto_1fr_auto] items-center gap-3 border-b border-line/60 px-4 py-3 ${
+              selected ? "bg-accent-soft" : ""
             }`}
           >
-            <span className="text-sm font-semibold text-slate-500">
-              #{ranking.rank}
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-surface-3 text-xs font-semibold tabular-nums text-ink-muted">
+              {ranking.rank}
             </span>
-            <span>
-              <span className="block text-sm font-semibold text-slate-950">
+            <span className="min-w-0">
+              <span className="block truncate text-sm font-semibold text-ink">
                 {group.name}
               </span>
-              <span className="block text-xs text-slate-500">
+              <span className="block text-xs text-ink-subtle">
                 {interpolate(messages.participant.savedLine, {
                   value: formatKwh(locale, ranking.savingsKwh),
                 })}
               </span>
             </span>
-            <span className="text-sm font-semibold text-emerald-700">
+            <span className="text-sm font-semibold tabular-nums text-saving">
               {formatPoints(locale, ranking.points)}
             </span>
           </div>

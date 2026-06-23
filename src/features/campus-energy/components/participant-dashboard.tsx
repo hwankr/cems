@@ -1,10 +1,9 @@
 "use client";
 
+import { Coins, Leaf, Trophy } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { formatKwh, formatPoints } from "@/i18n/format";
-import {
-  getDemoGroupRankings,
-} from "../data/demo-campus";
+import { getDemoGroupRankings } from "../data/demo-campus";
 import type { AffiliationGroup, ParticipantProfile } from "../domain/types";
 import { getCharacterProgress } from "../domain/scoring";
 import { CharacterCard } from "./character-card";
@@ -30,16 +29,16 @@ export function ParticipantDashboard({
   const progress = getCharacterProgress(points);
 
   return (
-    <div className="grid flex-1 grid-cols-1 gap-4 lg:grid-cols-[1fr_24rem]">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-6">
       <section className="grid content-start gap-4">
-        <div className="border border-slate-200 bg-white p-5">
-          <p className="text-xs font-semibold uppercase text-blue-700">
+        <div className="rounded-2xl border border-line bg-gradient-to-br from-accent-soft to-surface p-5 shadow-card">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-accent">
             {messages.participant.myAffiliation}
           </p>
-          <h2 className="mt-1 text-2xl font-semibold text-slate-950">
+          <h2 className="mt-1 text-2xl font-semibold text-ink">
             {myGroup?.name ?? messages.participant.unassigned}
           </h2>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-ink-muted">
             {messages.participant.pointsDescription}
           </p>
         </div>
@@ -48,15 +47,19 @@ export function ParticipantDashboard({
             label={messages.participant.myPoints}
             value={formatPoints(locale, points)}
             tone="saving"
+            icon={<Coins size={15} aria-hidden="true" />}
           />
           <MetricCard
             label={messages.participant.savedEnergy}
             value={formatKwh(locale, myRanking?.savingsKwh ?? 0)}
             tone="saving"
+            icon={<Leaf size={15} aria-hidden="true" />}
           />
           <MetricCard
             label={messages.participant.rank}
             value={`#${myRanking?.rank ?? "-"}`}
+            tone="accent"
+            icon={<Trophy size={15} aria-hidden="true" />}
           />
         </div>
         <GroupRankTable
