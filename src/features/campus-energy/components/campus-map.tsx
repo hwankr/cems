@@ -250,12 +250,20 @@ export function CampusMap({
     });
   }, [school.pitch, selectedSubject]);
 
+  const legend = [
+    { key: "saving" as const, color: "bg-saving" },
+    { key: "neutral" as const, color: "bg-ink-subtle" },
+    { key: "overuse" as const, color: "bg-overuse" },
+  ];
+
   if (!mapboxToken) {
     return (
-      <div className="flex h-full min-h-[28rem] items-center justify-center bg-slate-950 p-6 text-white">
-        <div className="max-w-sm border border-white/15 bg-white/10 p-5">
-          <h2 className="font-semibold">{messages.map.missingTokenTitle}</h2>
-          <p className="mt-2 text-sm text-white/70">
+      <div className="flex h-[56vh] min-h-[22rem] w-full items-center justify-center rounded-2xl border border-line bg-inset p-6 lg:h-[42rem]">
+        <div className="max-w-sm rounded-xl border border-line-strong bg-surface/80 p-5 text-center shadow-pop">
+          <h2 className="font-semibold text-ink">
+            {messages.map.missingTokenTitle}
+          </h2>
+          <p className="mt-2 text-sm text-ink-muted">
             {messages.map.missingTokenDescription}
           </p>
         </div>
@@ -263,5 +271,28 @@ export function CampusMap({
     );
   }
 
-  return <div ref={containerRef} className="h-full min-h-[28rem] w-full" />;
+  return (
+    <div className="relative h-[56vh] min-h-[22rem] w-full overflow-hidden rounded-2xl ring-1 ring-line lg:h-[42rem]">
+      <div ref={containerRef} className="absolute inset-0" />
+      <div
+        className="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_0_70px_24px_rgb(6_9_16_/_0.55)]"
+        aria-hidden="true"
+      />
+      <div className="pointer-events-none absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-surface/80 px-2.5 py-1 text-[11px] font-semibold text-ink backdrop-blur">
+        <span className="h-1.5 w-1.5 rounded-full bg-saving" aria-hidden="true" />
+        {messages.map.live}
+      </div>
+      <div className="pointer-events-none absolute bottom-3 left-3 flex items-center gap-3 rounded-full border border-line-strong bg-surface/80 px-3 py-1.5 text-[11px] text-ink-muted backdrop-blur">
+        {legend.map(({ key, color }) => (
+          <span key={key} className="inline-flex items-center gap-1.5">
+            <span
+              className={`h-2 w-2 rounded-full ${color}`}
+              aria-hidden="true"
+            />
+            {messages.status[key]}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 }

@@ -96,8 +96,14 @@ vi.mock(
     useI18n: () => ({
       messages: {
         map: {
+          live: "Live campus",
           missingTokenDescription: "Missing token",
           missingTokenTitle: "Map unavailable",
+        },
+        status: {
+          saving: "Saving",
+          neutral: "Neutral",
+          overuse: "Overuse",
         },
       },
     }),

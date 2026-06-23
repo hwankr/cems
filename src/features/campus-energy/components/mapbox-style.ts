@@ -16,9 +16,9 @@ export const ENERGY_SUBJECT_EXTRUSION_PAINT: FillExtrusionLayerSpecification["pa
       "match",
       ["get", "status"],
       "saving",
-      "#38bdf8",
+      "#34d399",
       "overuse",
-      "#f97316",
+      "#fb7185",
       "#64748b",
     ],
     "fill-extrusion-height": [
@@ -29,7 +29,7 @@ export const ENERGY_SUBJECT_EXTRUSION_PAINT: FillExtrusionLayerSpecification["pa
     "fill-extrusion-base": 0,
     "fill-extrusion-opacity": 0.86,
     "fill-extrusion-vertical-gradient": true,
-    "fill-extrusion-ambient-occlusion-intensity": 0.35,
+    "fill-extrusion-ambient-occlusion-intensity": 0.4,
     "fill-extrusion-cast-shadows": false,
   };
 
@@ -38,11 +38,11 @@ export const ENERGY_SUBJECT_OUTLINE_PAINT: LineLayerSpecification["paint"] = {
     "match",
     ["get", "status"],
     "saving",
-    "#047857",
+    "#10b981",
     "overuse",
-    "#be123c",
-    "#64748b",
+    "#e11d48",
+    "#475569",
   ],
-  "line-opacity": ["case", ["get", "selected"], 0.95, 0.56],
+  "line-opacity": ["case", ["get", "selected"], 0.95, 0.5],
   "line-width": ["case", ["get", "selected"], 3, 1.2],
 };
