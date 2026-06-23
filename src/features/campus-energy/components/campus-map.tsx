@@ -273,7 +273,7 @@ export function CampusMap({
 
   return (
     <div className="relative h-[56vh] min-h-[22rem] w-full overflow-hidden rounded-2xl ring-1 ring-line lg:h-[42rem]">
-      <div ref={containerRef} className="absolute inset-0" />
+      <div ref={containerRef} className="h-full w-full" />
       <div
         className="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_0_70px_24px_rgb(6_9_16_/_0.55)]"
         aria-hidden="true"
