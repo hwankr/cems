@@ -171,6 +171,18 @@ export const estateItemCatalog: readonly EstateItemDefinition[] = [
     placementRule: "ground",
   },
   {
+    id: "decorative-shrub",
+    nameKey: "estate.items.decorativeShrub.name",
+    descriptionKey: "estate.items.decorativeShrub.description",
+    category: "nature",
+    cost: 110,
+    footprintWidth: 1,
+    footprintHeight: 1,
+    canRotate: false,
+    assetId: "decorative-shrub",
+    placementRule: "land",
+  },
+  {
     id: "small-sculpture",
     nameKey: "estate.items.smallSculpture.name",
     descriptionKey: "estate.items.smallSculpture.description",

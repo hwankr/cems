@@ -29,6 +29,11 @@ import {
   hitTestDiamondCellAtCanvasPoint,
 } from "../isometric/hit-testing";
 import {
+  createEstateAssetLoadSnapshot,
+  EstateAssetLoader,
+  type EstateAssetLoadSnapshot,
+} from "../isometric/asset-loader";
+import {
   createEstateRenderScene,
   EstateIsometricRenderer,
   findTopRenderItemAtCell,
@@ -86,6 +91,10 @@ export function EstateCanvas({
   const [selectedItemId, setSelectedItemId] = useState<string | null>(
     initialSelectedItemId,
   );
+  const [assetLoadSnapshot, setAssetLoadSnapshot] =
+    useState<EstateAssetLoadSnapshot>(() =>
+      createEstateAssetLoadSnapshot(estateAssetManifest),
+    );
 
   const scene = useMemo(
     () =>
@@ -102,6 +111,8 @@ export function EstateCanvas({
   const sceneRef = useRef<EstateRenderScene>(scene);
   const cameraRef = useRef<IsometricCamera>(camera);
   const viewportRef = useRef<CanvasViewport>(viewport);
+  const assetLoadSnapshotRef =
+    useRef<EstateAssetLoadSnapshot>(assetLoadSnapshot);
 
   useEffect(() => {
     sceneRef.current = scene;
@@ -114,6 +125,10 @@ export function EstateCanvas({
   useEffect(() => {
     viewportRef.current = viewport;
   }, [viewport]);
+
+  useEffect(() => {
+    assetLoadSnapshotRef.current = assetLoadSnapshot;
+  }, [assetLoadSnapshot]);
 
   const drawLatest = useCallback(() => {
     frameRef.current = null;
@@ -132,6 +147,7 @@ export function EstateCanvas({
       cameraRef.current,
       nextViewport,
       estateAssetManifest,
+      assetLoadSnapshotRef.current,
     );
   }, []);
 
@@ -156,13 +172,35 @@ export function EstateCanvas({
 
   useEffect(() => {
     markDirty();
-  }, [camera, markDirty, scene, viewport]);
+  }, [assetLoadSnapshot, camera, markDirty, scene, viewport]);
 
   useEffect(() => {
     return () => {
       if (frameRef.current !== null) {
         cancelAnimationFrame(frameRef.current);
       }
+    };
+  }, []);
+
+  useEffect(() => {
+    const loader = new EstateAssetLoader();
+    let cancelled = false;
+    const preload = loader.preload(estateAssetManifest);
+
+    Promise.resolve().then(() => {
+      if (!cancelled) {
+        setAssetLoadSnapshot(loader.getSnapshot(estateAssetManifest));
+      }
+    });
+    preload.then((snapshot) => {
+      if (!cancelled) {
+        setAssetLoadSnapshot(snapshot);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      loader.dispose();
     };
   }, []);
 
@@ -385,6 +423,16 @@ export function EstateCanvas({
           <Maximize2 size={16} aria-hidden="true" />
         </CanvasButton>
       </div>
+      {assetLoadSnapshot.status === "loading" ? (
+        <div
+          className="absolute right-3 top-3 flex h-9 items-center gap-1.5 rounded-lg border border-line bg-surface/86 px-3 shadow-card backdrop-blur"
+          aria-label="Estate assets loading"
+        >
+          <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-accent" />
+          <span className="h-2.5 w-8 animate-pulse rounded-full bg-ink-subtle/30" />
+          <span className="h-2.5 w-5 animate-pulse rounded-full bg-ink-subtle/20" />
+        </div>
+      ) : null}
     </div>
   );
 

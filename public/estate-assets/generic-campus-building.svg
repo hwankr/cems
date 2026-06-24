@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 232">
+  <defs>
+    <linearGradient id="roof" x1="70" y1="42" x2="188" y2="98" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f4fbff"/>
+      <stop offset="1" stop-color="#b9dde7"/>
+    </linearGradient>
+  </defs>
+  <path d="M128 214 42 170 128 126 214 170Z" fill="#9bb7a6" opacity=".22"/>
+  <path d="M58 94 128 58 198 94 128 130Z" fill="url(#roof)" stroke="#5e8794" stroke-width="1.5"/>
+  <path d="M58 94 128 130 128 202 58 166Z" fill="#8fbcca" stroke="#507789" stroke-width="1.2"/>
+  <path d="M198 94 128 130 128 202 198 166Z" fill="#6695a6" stroke="#456b7a" stroke-width="1.2"/>
+  <path d="M58 166 128 202 198 166 128 214Z" fill="#6f8d8a" opacity=".35"/>
+  <path d="M82 111 112 126 112 176 82 160Z" fill="#d8eef4" opacity=".82"/>
+  <path d="M121 130 151 115 151 169 121 185Z" fill="#c4e5ed" opacity=".72"/>
+  <path d="M161 109 184 98 184 148 161 160Z" fill="#d7edf2" opacity=".68"/>
+  <path d="M87 75 128 54 169 75 128 96Z" fill="#e3f5f7" opacity=".85"/>
+  <path d="M109 66 135 53 158 65 132 79Z" fill="#78b3c1" opacity=".45"/>
+</svg>

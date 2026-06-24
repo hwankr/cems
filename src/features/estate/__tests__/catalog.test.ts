@@ -18,6 +18,7 @@ const requiredItemIds = [
   "stone-path",
   "bright-sidewalk-block",
   "grass-decoration",
+  "decorative-shrub",
   "small-sculpture",
 ] as const;
 
