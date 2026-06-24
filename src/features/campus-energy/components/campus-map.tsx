@@ -75,7 +75,7 @@ const DIMMED_EXTRUSION_OPACITY = 0.16;
 // Popup card footprint used when projecting the selected building to a screen
 // slot. Mirrors BuildingPopup's width and approximate height.
 const POPUP_WIDTH = 344;
-const POPUP_HEIGHT = 360;
+const POPUP_HEIGHT = 408;
 const POPUP_PAD = 16;
 const POPUP_GAP = 22;
 

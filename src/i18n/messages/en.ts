@@ -124,6 +124,7 @@ export const enMessages = {
       area: "Floor area",
       completion: "Built",
       close: "Close",
+      openEstate: "Open estate",
       noData: "No data",
     },
   },

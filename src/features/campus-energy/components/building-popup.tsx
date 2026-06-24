@@ -1,6 +1,7 @@
 "use client";
 
-import { Minus, TrendingDown, TrendingUp, X } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Minus, TrendingDown, TrendingUp, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useI18n } from "@/i18n/client";
 import { formatNumber } from "@/i18n/format";
@@ -44,6 +45,9 @@ export function BuildingPopup({
   const ratePct = forecast > 0 ? Math.abs(delta / forecast) * 100 : 0;
   const deltaSign = delta > 0 ? "+" : delta < 0 ? "−" : "";
   const deltaText = `${deltaSign}${formatNumber(locale, Math.abs(delta))}`;
+  const estateHref = `/${locale}/subjects/${encodeURIComponent(
+    subject.id,
+  )}/estate`;
   const rateText =
     status === "neutral"
       ? messages.status.neutral
@@ -162,6 +166,14 @@ export function BuildingPopup({
           <span className="w-px bg-line" aria-hidden="true" />
           <Stat value={String(detail.completionYear)} label={popup.completion} />
         </div>
+
+        <Link
+          href={estateHref}
+          className="mt-3.5 flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-line-strong bg-ink px-3 text-sm font-bold text-surface transition hover:bg-ink-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        >
+          <span>{popup.openEstate}</span>
+          <ArrowRight size={16} aria-hidden="true" />
+        </Link>
       </div>
     </div>
   );

@@ -123,6 +123,7 @@ export const koMessages = {
       area: "연면적",
       completion: "준공",
       close: "닫기",
+      openEstate: "영지 이동",
       noData: "데이터 없음",
     },
   },
