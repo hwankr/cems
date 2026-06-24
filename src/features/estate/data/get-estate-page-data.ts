@@ -9,17 +9,13 @@ import type {
   EnergySubject,
   School,
 } from "@/features/campus-energy/domain/types";
+import { calculateEstatePointAccount } from "@/features/estate/domain/point-account";
+import type { EstatePointAccount } from "@/features/estate/domain/types";
 import type { Locale } from "@/i18n/config";
 import { enMessages } from "@/i18n/messages/en";
 import { koMessages } from "@/i18n/messages/ko";
 import type { Messages } from "@/i18n/messages/types";
 import { demoHistoricalEarnedPointsBySubjectId } from "./demo-estate-data";
-
-export type EstatePointAccount = {
-  earnedPoints: number;
-  spentPoints: number;
-  availablePoints: number;
-};
 
 export type EstatePageSchool = Pick<School, "id" | "name" | "shortName">;
 
@@ -66,7 +62,6 @@ export function getEstatePageData(
   const currentPoints = comparison ? calculatePoints(comparison) : 0;
   const earnedPoints =
     currentPoints + (demoHistoricalEarnedPointsBySubjectId[subjectId] ?? 0);
-  const spentPoints = 0;
 
   return {
     school: {
@@ -84,10 +79,6 @@ export function getEstatePageData(
       ...(subject.officialCode ? { officialCode: subject.officialCode } : {}),
     },
     comparison,
-    pointAccount: {
-      earnedPoints,
-      spentPoints,
-      availablePoints: Math.max(0, earnedPoints - spentPoints),
-    },
+    pointAccount: calculateEstatePointAccount(earnedPoints, []),
   };
 }
