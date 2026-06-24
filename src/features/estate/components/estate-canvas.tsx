@@ -16,6 +16,8 @@ import {
   estateItemCatalog,
 } from "../data/estate-item-catalog";
 import { estateExpansionCatalog } from "../data/estate-expansion-catalog";
+import type { EstateEditorMode } from "../domain/editor";
+import { canPlaceEstateItem } from "../domain/placement";
 import type { EstateGridCell, EstateSnapshot } from "../domain/types";
 import {
   fitCameraToWorldBounds,
@@ -44,7 +46,14 @@ import {
 
 type EstateCanvasProps = {
   snapshot: EstateSnapshot;
-  initialSelectedItemId?: string | null;
+  mode?: EstateEditorMode;
+  selectedItemId?: string | null;
+  fitViewSignal?: number;
+  onCellClick?: (cell: EstateGridCell) => void;
+  onGroundPaintStart?: () => void;
+  onGroundPaintCell?: (cell: EstateGridCell) => void;
+  onGroundPaintEnd?: () => void;
+  onItemSelect?: (instanceId: string) => void;
 };
 
 type CanvasViewport = ViewportSize & {
@@ -62,7 +71,14 @@ const maxZoom = 1.6;
 
 export function EstateCanvas({
   snapshot,
-  initialSelectedItemId = snapshot.items[0]?.id ?? null,
+  mode = { type: "view" },
+  selectedItemId = null,
+  fitViewSignal = 0,
+  onCellClick,
+  onGroundPaintStart,
+  onGroundPaintCell,
+  onGroundPaintEnd,
+  onItemSelect,
 }: EstateCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -72,6 +88,7 @@ export function EstateCanvas({
     pointerId: number;
     last: TouchPoint;
   } | null>(null);
+  const paintPointerRef = useRef<number | null>(null);
   const touchPanRef = useRef<TouchPoint | null>(null);
   const pinchRef = useRef<{
     distance: number;
@@ -88,13 +105,80 @@ export function EstateCanvas({
     zoom: 1,
   });
   const [hoverCell, setHoverCell] = useState<EstateGridCell | null>(null);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(
-    initialSelectedItemId,
-  );
   const [assetLoadSnapshot, setAssetLoadSnapshot] =
     useState<EstateAssetLoadSnapshot>(() =>
       createEstateAssetLoadSnapshot(estateAssetManifest),
     );
+
+  const placementPreview = useMemo(() => {
+    if (!hoverCell) return null;
+
+    if (mode.type === "placing") {
+      const definition = itemDefinitions.find(
+        (candidate) => candidate.id === mode.definitionId,
+      );
+      if (!definition) return null;
+
+      const result = canPlaceEstateItem(
+        snapshot,
+        {
+          definitionId: definition.id,
+          x: hoverCell.x,
+          y: hoverCell.y,
+          rotation: mode.rotation,
+        },
+        itemDefinitions,
+        estateExpansionCatalog,
+      );
+
+      return {
+        id: "__placement-preview__",
+        assetId: definition.assetId,
+        x: hoverCell.x,
+        y: hoverCell.y,
+        rotation: mode.rotation,
+        footprintWidth: definition.footprintWidth,
+        footprintHeight: definition.footprintHeight,
+        valid: result.ok,
+      };
+    }
+
+    if (mode.type === "moving") {
+      const item = snapshot.items.find(
+        (candidate) => candidate.id === mode.instanceId,
+      );
+      const definition = itemDefinitions.find(
+        (candidate) => candidate.id === item?.definitionId,
+      );
+      if (!item || !definition) return null;
+
+      const result = canPlaceEstateItem(
+        snapshot,
+        {
+          definitionId: definition.id,
+          x: hoverCell.x,
+          y: hoverCell.y,
+          rotation: mode.rotation,
+        },
+        itemDefinitions,
+        estateExpansionCatalog,
+        { ignoreInstanceId: item.id },
+      );
+
+      return {
+        id: "__move-preview__",
+        assetId: definition.assetId,
+        x: hoverCell.x,
+        y: hoverCell.y,
+        rotation: mode.rotation,
+        footprintWidth: definition.footprintWidth,
+        footprintHeight: definition.footprintHeight,
+        valid: result.ok,
+      };
+    }
+
+    return null;
+  }, [hoverCell, mode, snapshot]);
 
   const scene = useMemo(
     () =>
@@ -104,8 +188,9 @@ export function EstateCanvas({
         parcelDefinitions: estateExpansionCatalog,
         hoverCell,
         selectedItemId,
+        placementPreview,
       }),
-    [hoverCell, selectedItemId, snapshot],
+    [hoverCell, placementPreview, selectedItemId, snapshot],
   );
 
   const sceneRef = useRef<EstateRenderScene>(scene);
@@ -169,6 +254,12 @@ export function EstateCanvas({
     },
     [],
   );
+
+  useEffect(() => {
+    if (fitViewSignal === 0) return;
+
+    fitViewport();
+  }, [fitViewport, fitViewSignal]);
 
   useEffect(() => {
     markDirty();
@@ -350,10 +441,33 @@ export function EstateCanvas({
       viewport,
       { allowedCells: getSceneCellList(scene) },
     );
+
+    if (event.button === 0 && mode.type === "painting-ground") {
+      event.currentTarget.setPointerCapture(event.pointerId);
+      paintPointerRef.current = event.pointerId;
+      if (cell) {
+        setHoverCell(cell);
+        onGroundPaintStart?.();
+        onGroundPaintCell?.(cell);
+      }
+      return;
+    }
+
+    if (
+      event.button === 0 &&
+      (mode.type === "placing" || mode.type === "moving")
+    ) {
+      if (cell) {
+        setHoverCell(cell);
+        onCellClick?.(cell);
+      }
+      return;
+    }
+
     const item = cell ? findTopRenderItemAtCell(scene, cell) : null;
 
     if (item && event.button === 0) {
-      setSelectedItemId(item.id);
+      onItemSelect?.(item.id);
       return;
     }
 
@@ -368,6 +482,26 @@ export function EstateCanvas({
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLCanvasElement>) => {
     const point = getPointerFromReactEvent(event);
+    const cell = hitTestDiamondCellAtCanvasPoint(
+      point,
+      camera,
+      viewport,
+      { allowedCells: getSceneCellList(scene) },
+    );
+
+    if (paintPointerRef.current === event.pointerId) {
+      setHoverCell(cell);
+      if (cell) {
+        onGroundPaintCell?.(cell);
+      }
+      return;
+    }
+
+    if (mode.type === "placing" || mode.type === "moving") {
+      setHoverCell(cell);
+      return;
+    }
+
     const pan = pointerPanRef.current;
 
     if (pan?.pointerId === event.pointerId) {
@@ -380,16 +514,16 @@ export function EstateCanvas({
       return;
     }
 
-    const cell = hitTestDiamondCellAtCanvasPoint(
-      point,
-      camera,
-      viewport,
-      { allowedCells: getSceneCellList(scene) },
-    );
     setHoverCell(cell);
   };
 
   const handlePointerUp = (event: ReactPointerEvent<HTMLCanvasElement>) => {
+    if (paintPointerRef.current === event.pointerId) {
+      paintPointerRef.current = null;
+      onGroundPaintEnd?.();
+      return;
+    }
+
     if (pointerPanRef.current?.pointerId === event.pointerId) {
       pointerPanRef.current = null;
     }

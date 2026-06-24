@@ -460,7 +460,19 @@ export class EstateIsometricRenderer {
     ctx.globalAlpha = alpha;
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(image, box.x, box.y, box.width, box.height);
+    if (item.rotation === 0) {
+      ctx.drawImage(image, box.x, box.y, box.width, box.height);
+    } else {
+      ctx.translate(anchor.x, anchor.y);
+      ctx.rotate((Math.PI / 2) * item.rotation);
+      ctx.drawImage(
+        image,
+        box.x - anchor.x,
+        box.y - anchor.y,
+        box.width,
+        box.height,
+      );
+    }
     ctx.restore();
   }
 

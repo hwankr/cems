@@ -91,7 +91,7 @@ describe("EstateCanvas", () => {
       root.render(
         <EstateCanvas
           snapshot={createDemoEstateSeedSnapshot("yu-e21")}
-          initialSelectedItemId="yu-e21:landmark"
+          selectedItemId="yu-e21:landmark"
         />,
       ),
     );

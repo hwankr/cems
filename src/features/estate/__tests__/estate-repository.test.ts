@@ -40,6 +40,12 @@ class TestStorage implements Storage {
   }
 }
 
+class ThrowingWriteStorage extends TestStorage {
+  override setItem(): void {
+    throw new Error("write failed");
+  }
+}
+
 function createSnapshot(subjectId: string): EstateSnapshot {
   return {
     ...createDemoEstateSeedSnapshot(subjectId),
@@ -105,6 +111,24 @@ describe("estate persistence", () => {
     expect(expectLoadedSnapshot(await repository.load("yu-e21"))).toEqual(
       snapshot,
     );
+  });
+
+  it("returns a write failure without mutating the submitted snapshot", async () => {
+    const repository = new LocalStorageEstateRepository({
+      storage: new ThrowingWriteStorage(),
+    });
+    const snapshot = createSnapshot("yu-e21");
+    const original = structuredClone(snapshot);
+
+    await expect(repository.save("yu-e21", snapshot)).resolves.toEqual({
+      ok: false,
+      error: {
+        code: "write-failed",
+        subjectId: "yu-e21",
+        message: "Estate snapshot could not be written to localStorage.",
+      },
+    });
+    expect(snapshot).toEqual(original);
   });
 
   it("recovers corrupted JSON with the subject seed and error information", async () => {

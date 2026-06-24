@@ -76,6 +76,7 @@ export type EstateCommandFailureReason =
   | "missing-inventory"
   | "parcel-not-adjacent"
   | "already-unlocked"
+  | "protected-item"
   | "invalid-definition";
 
 export type EstateCommandResult =
@@ -139,6 +140,20 @@ export type EstatePaintGroundCommand = {
   y: number;
 };
 
+export type EstatePaintGroundCellsCommand = {
+  type: "paint-ground-cells";
+  definitionId: string;
+  cells: EstateGridCell[];
+};
+
+export type EstateMoveItemCommand = {
+  type: "move-item";
+  instanceId: string;
+  x: number;
+  y: number;
+  rotation: QuarterTurn;
+};
+
 export type EstateRemoveItemCommand = {
   type: "remove-item";
   instanceId: string;
@@ -153,8 +168,26 @@ export type EstateCommand =
   | EstatePurchaseItemCommand
   | EstatePlaceItemCommand
   | EstatePaintGroundCommand
+  | EstatePaintGroundCellsCommand
+  | EstateMoveItemCommand
   | EstateRemoveItemCommand
   | EstateUnlockParcelCommand;
+
+export type EstateGroundPaintCommandResult =
+  | {
+      ok: true;
+      snapshot: EstateSnapshot;
+      paintedCells: EstateGridCell[];
+      skippedCells: EstateGridCell[];
+      stoppedReason?: "insufficient-points";
+    }
+  | {
+      ok: false;
+      snapshot: EstateSnapshot;
+      reason: EstateCommandFailureReason;
+      paintedCells: EstateGridCell[];
+      skippedCells: EstateGridCell[];
+    };
 
 export type EstateParseResult =
   | { ok: true; snapshot: EstateSnapshot }
