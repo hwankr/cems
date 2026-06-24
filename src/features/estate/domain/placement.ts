@@ -1,4 +1,5 @@
 import {
+  getAllEstateCellKeys,
   getCellKey,
   getParcelCells,
   getUnlockedEstateCellKeys,
@@ -115,12 +116,17 @@ export function canPlaceEstateItem(
     snapshot.unlockedParcelIds,
     parcelDefinitions,
   );
+  const allParcelCells = getAllEstateCellKeys(parcelDefinitions);
 
   if (
     occupiedCells.length === 0 ||
-    occupiedCells.some((cell) => !unlockedCells.has(getCellKey(cell)))
+    occupiedCells.some((cell) => !allParcelCells.has(getCellKey(cell)))
   ) {
     return { ok: false, reason: "out-of-bounds" };
+  }
+
+  if (occupiedCells.some((cell) => !unlockedCells.has(getCellKey(cell)))) {
+    return { ok: false, reason: "locked-cell" };
   }
 
   if (

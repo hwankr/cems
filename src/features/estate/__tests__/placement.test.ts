@@ -35,7 +35,7 @@ describe("estate placement", () => {
     });
   });
 
-  it("rejects placement outside unlocked cells", () => {
+  it("rejects placement on locked parcel cells with a locked-cell reason", () => {
     const pavilion = getEstateItemFootprint("solar-pavilion", estateItemCatalog);
 
     expect(pavilion).toEqual({ width: 3, height: 2 });
@@ -47,6 +47,22 @@ describe("estate placement", () => {
           definitionId: "solar-pavilion",
           x: 7,
           y: 7,
+          rotation: 0,
+        },
+        estateItemCatalog,
+        estateExpansionCatalog,
+      ),
+    ).toEqual({ ok: false, reason: "locked-cell" });
+  });
+
+  it("rejects placement outside the parcel catalog as out-of-bounds", () => {
+    expect(
+      canPlaceEstateItem(
+        baseSnapshot,
+        {
+          definitionId: "bench",
+          x: 99,
+          y: 99,
           rotation: 0,
         },
         estateItemCatalog,

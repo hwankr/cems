@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   canvasToWorld,
   fitCameraToWorldBounds,
+  focusCameraOnWorldBounds,
   panCameraByCanvasDelta,
   worldToCanvas,
   zoomCameraAtCanvasPoint,
@@ -71,5 +72,27 @@ describe("isometric camera", () => {
     expect(topLeft.y).toBeGreaterThanOrEqual(32);
     expect(bottomRight.x).toBeLessThanOrEqual(480);
     expect(bottomRight.y).toBeLessThanOrEqual(352);
+  });
+
+  it("focuses a world bounds while limiting sudden zoom changes", () => {
+    const viewport = { width: 800, height: 480 };
+    const current = { x: 0, y: 0, zoom: 0.9 };
+    const target = focusCameraOnWorldBounds(
+      current,
+      { minX: 600, minY: 120, maxX: 900, maxY: 360 },
+      viewport,
+      {
+        padding: 48,
+        minZoom: 0.25,
+        maxZoom: 1.6,
+        minZoomRatio: 0.82,
+        maxZoomRatio: 1.12,
+      },
+    );
+
+    expect(target.x).toBe(750);
+    expect(target.y).toBe(240);
+    expect(target.zoom).toBeGreaterThanOrEqual(0.9 * 0.82);
+    expect(target.zoom).toBeLessThanOrEqual(0.9 * 1.12);
   });
 });

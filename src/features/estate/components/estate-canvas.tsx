@@ -21,11 +21,13 @@ import { canPlaceEstateItem } from "../domain/placement";
 import type { EstateGridCell, EstateSnapshot } from "../domain/types";
 import {
   fitCameraToWorldBounds,
+  focusCameraOnWorldBounds,
   panCameraByCanvasDelta,
   zoomCameraAtCanvasPoint,
   type IsometricCamera,
   type ViewportSize,
 } from "../isometric/camera";
+import { getCellsWorldBounds } from "../isometric/projection";
 import {
   getPointerCanvasPosition,
   hitTestDiamondCellAtCanvasPoint,
@@ -49,7 +51,11 @@ type EstateCanvasProps = {
   mode?: EstateEditorMode;
   selectedItemId?: string | null;
   fitViewSignal?: number;
+  focusParcelId?: string | null;
+  recentlyUnlockedParcelId?: string | null;
+  unlockAnimationProgress?: number;
   onCellClick?: (cell: EstateGridCell) => void;
+  onLockedParcelClick?: (parcelId: string) => void;
   onGroundPaintStart?: () => void;
   onGroundPaintCell?: (cell: EstateGridCell) => void;
   onGroundPaintEnd?: () => void;
@@ -74,7 +80,11 @@ export function EstateCanvas({
   mode = { type: "view" },
   selectedItemId = null,
   fitViewSignal = 0,
+  focusParcelId = null,
+  recentlyUnlockedParcelId = null,
+  unlockAnimationProgress = 1,
   onCellClick,
+  onLockedParcelClick,
   onGroundPaintStart,
   onGroundPaintCell,
   onGroundPaintEnd,
@@ -94,6 +104,7 @@ export function EstateCanvas({
     distance: number;
     midpoint: TouchPoint;
   } | null>(null);
+  const cameraAnimationRef = useRef<number | null>(null);
   const [viewport, setViewport] = useState<CanvasViewport>({
     width: 1,
     height: 1,
@@ -189,8 +200,17 @@ export function EstateCanvas({
         hoverCell,
         selectedItemId,
         placementPreview,
+        recentlyUnlockedParcelId,
+        animationProgress: unlockAnimationProgress,
       }),
-    [hoverCell, placementPreview, selectedItemId, snapshot],
+    [
+      hoverCell,
+      placementPreview,
+      recentlyUnlockedParcelId,
+      selectedItemId,
+      snapshot,
+      unlockAnimationProgress,
+    ],
   );
 
   const sceneRef = useRef<EstateRenderScene>(scene);
@@ -255,11 +275,38 @@ export function EstateCanvas({
     [],
   );
 
+  const focusParcel = useCallback((parcelId: string) => {
+    const scene = sceneRef.current;
+    const parcel = scene.parcels.find((candidate) => candidate.id === parcelId);
+    if (!parcel || parcel.cells.length === 0) return;
+
+    const target = focusCameraOnWorldBounds(
+      cameraRef.current,
+      getCellsWorldBounds(parcel.cells, scene.metrics),
+      viewportRef.current,
+      {
+        padding: 64,
+        minZoom,
+        maxZoom,
+        minZoomRatio: 0.82,
+        maxZoomRatio: 1.12,
+      },
+    );
+
+    animateCameraTo(target);
+  }, []);
+
   useEffect(() => {
     if (fitViewSignal === 0) return;
 
     fitViewport();
   }, [fitViewport, fitViewSignal]);
+
+  useEffect(() => {
+    if (!focusParcelId) return;
+
+    focusParcel(focusParcelId);
+  }, [focusParcel, focusParcelId]);
 
   useEffect(() => {
     markDirty();
@@ -269,6 +316,9 @@ export function EstateCanvas({
     return () => {
       if (frameRef.current !== null) {
         cancelAnimationFrame(frameRef.current);
+      }
+      if (cameraAnimationRef.current !== null) {
+        cancelAnimationFrame(cameraAnimationRef.current);
       }
     };
   }, []);
@@ -471,6 +521,13 @@ export function EstateCanvas({
       return;
     }
 
+    const parcel = cell ? findSceneParcelAtCell(scene, cell) : null;
+
+    if (parcel && !parcel.unlocked && event.button === 0) {
+      onLockedParcelClick?.(parcel.id);
+      return;
+    }
+
     if (event.button === 0 || event.button === 1) {
       event.currentTarget.setPointerCapture(event.pointerId);
       pointerPanRef.current = {
@@ -581,6 +638,44 @@ export function EstateCanvas({
       ),
     );
   }
+
+  function animateCameraTo(target: IsometricCamera) {
+    if (cameraAnimationRef.current !== null) {
+      cancelAnimationFrame(cameraAnimationRef.current);
+      cameraAnimationRef.current = null;
+    }
+
+    if (prefersReducedMotion()) {
+      cameraRef.current = target;
+      setCamera(target);
+      return;
+    }
+
+    const start = cameraRef.current;
+    const startTime = performance.now();
+    const durationMs = 420;
+
+    const step = (time: number) => {
+      const progress = Math.min(1, (time - startTime) / durationMs);
+      const eased = easeOutCubic(progress);
+      const next = {
+        x: lerp(start.x, target.x, eased),
+        y: lerp(start.y, target.y, eased),
+        zoom: lerp(start.zoom, target.zoom, eased),
+      };
+
+      cameraRef.current = next;
+      setCamera(next);
+
+      if (progress < 1) {
+        cameraAnimationRef.current = requestAnimationFrame(step);
+      } else {
+        cameraAnimationRef.current = null;
+      }
+    };
+
+    cameraAnimationRef.current = requestAnimationFrame(step);
+  }
 }
 
 function CanvasButton({
@@ -610,6 +705,34 @@ function getPointerFromReactEvent(
 ): TouchPoint {
   const rect = event.currentTarget.getBoundingClientRect();
   return getPointerCanvasPosition(event, rect, 1).css;
+}
+
+function findSceneParcelAtCell(
+  scene: EstateRenderScene,
+  cell: EstateGridCell,
+) {
+  const key = `${cell.x}:${cell.y}`;
+
+  return (
+    scene.parcels.find((parcel) =>
+      parcel.cells.some((candidate) => `${candidate.x}:${candidate.y}` === key),
+    ) ?? null
+  );
+}
+
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+function easeOutCubic(value: number): number {
+  return 1 - (1 - value) ** 3;
+}
+
+function lerp(start: number, end: number, progress: number): number {
+  return start + (end - start) * progress;
 }
 
 function getTouchPoint(touch: Touch, canvas: HTMLCanvasElement): TouchPoint {

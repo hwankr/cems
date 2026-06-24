@@ -1,6 +1,7 @@
 import { baseEstateBuildingDefinition } from "../data/estate-item-catalog";
 import {
   findEstateParcelDefinition,
+  getAllEstateCellKeys,
   getCellKey,
   isParcelAdjacentToUnlockedParcel,
   isEstateCellUnlocked,
@@ -231,13 +232,21 @@ export function paintEstateGround(
   }
 
   if (
+    !getAllEstateCellKeys(context.parcelDefinitions).has(
+      getCellKey({ x: command.x, y: command.y }),
+    )
+  ) {
+    return fail(snapshot, "out-of-bounds");
+  }
+
+  if (
     !isEstateCellUnlocked(
       { x: command.x, y: command.y },
       snapshot.unlockedParcelIds,
       context.parcelDefinitions,
     )
   ) {
-    return fail(snapshot, "out-of-bounds");
+    return fail(snapshot, "locked-cell");
   }
 
   const existingTile = snapshot.groundTiles.find(

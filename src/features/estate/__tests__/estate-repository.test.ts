@@ -83,10 +83,14 @@ describe("estate persistence", () => {
     const storage = new TestStorage();
     const repository = new LocalStorageEstateRepository({ storage });
 
-    const snapshotA = createSnapshot("yu-e21");
+    const snapshotA = {
+      ...createSnapshot("yu-e21"),
+      unlockedParcelIds: ["central-campus", "east-yard"],
+    };
     const snapshotB = {
       ...createSnapshot("yu-e22"),
       inventory: [{ definitionId: "pine-tree", quantity: 1 }],
+      unlockedParcelIds: ["central-campus", "south-yard"],
     };
 
     await repository.save("yu-e21", snapshotA);
@@ -97,6 +101,32 @@ describe("estate persistence", () => {
     );
     expect(expectLoadedSnapshot(await repository.load("yu-e22"))).toEqual(
       snapshotB,
+    );
+  });
+
+  it("keeps an unlocked parcel after save and reload", async () => {
+    const repository = new LocalStorageEstateRepository({
+      storage: new TestStorage(),
+    });
+    const snapshot = {
+      ...createSnapshot("yu-e21"),
+      unlockedParcelIds: ["central-campus", "east-yard"],
+      transactions: [
+        ...createSnapshot("yu-e21").transactions,
+        {
+          id: "tx-east-yard",
+          kind: "unlock-parcel" as const,
+          pointDelta: -2_000,
+          parcelId: "east-yard",
+          createdAt: "2026-06-24T00:00:00.000Z",
+        },
+      ],
+    };
+
+    await repository.save("yu-e21", snapshot);
+
+    expect(expectLoadedSnapshot(await repository.load("yu-e21"))).toEqual(
+      snapshot,
     );
   });
 

@@ -103,6 +103,34 @@ export function fitCameraToWorldBounds(
   };
 }
 
+export function focusCameraOnWorldBounds(
+  current: IsometricCamera,
+  bounds: WorldBounds,
+  viewport: ViewportSize,
+  options: FitCameraOptions & {
+    minZoomRatio?: number;
+    maxZoomRatio?: number;
+  } = {},
+): IsometricCamera {
+  const fitted = fitCameraToWorldBounds(bounds, viewport, options);
+  const minZoomRatio = options.minZoomRatio ?? 0.82;
+  const maxZoomRatio = options.maxZoomRatio ?? 1.12;
+  const minZoom = Math.max(
+    options.minZoom ?? DEFAULT_MIN_ZOOM,
+    current.zoom * minZoomRatio,
+  );
+  const maxZoom = Math.min(
+    options.maxZoom ?? DEFAULT_MAX_ZOOM,
+    current.zoom * maxZoomRatio,
+  );
+
+  return {
+    x: fitted.x,
+    y: fitted.y,
+    zoom: clampZoom(fitted.zoom, minZoom, Math.max(minZoom, maxZoom)),
+  };
+}
+
 export function getCameraWorldBounds(
   camera: IsometricCamera,
   viewport: ViewportSize,

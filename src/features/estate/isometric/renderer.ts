@@ -1,4 +1,4 @@
-import { getParcelCells } from "../domain/expansion";
+import { getCellKey, getParcelCells } from "../domain/expansion";
 import type {
   EstateAssetManifest,
   EstateGroundAssetDefinition,
@@ -65,8 +65,11 @@ export type EstateRenderScene = {
   groundTiles: EstateRenderGroundTile[];
   items: EstateRenderItem[];
   hoverCell?: EstateGridCell | null;
+  hoverParcelId?: string | null;
   selectedItemId?: string | null;
   placementPreview?: EstateRenderPlacementPreview | null;
+  recentlyUnlockedParcelId?: string | null;
+  animationProgress?: number;
 };
 
 export type CreateEstateRenderSceneInput = {
@@ -77,6 +80,8 @@ export type CreateEstateRenderSceneInput = {
   hoverCell?: EstateGridCell | null;
   selectedItemId?: string | null;
   placementPreview?: EstateRenderPlacementPreview | null;
+  recentlyUnlockedParcelId?: string | null;
+  animationProgress?: number;
 };
 
 export function createEstateRenderScene({
@@ -87,20 +92,24 @@ export function createEstateRenderScene({
   hoverCell = null,
   selectedItemId = null,
   placementPreview = null,
+  recentlyUnlockedParcelId = null,
+  animationProgress = 1,
 }: CreateEstateRenderSceneInput): EstateRenderScene {
   const unlockedParcelIds = new Set(snapshot.unlockedParcelIds);
   const itemDefinitionById = new Map(
     itemDefinitions.map((definition) => [definition.id, definition]),
   );
+  const parcels = parcelDefinitions.map((parcel) => ({
+    id: parcel.id,
+    cells: getParcelCells(parcel),
+    unlocked: unlockedParcelIds.has(parcel.id),
+    cost: parcel.cost,
+  }));
+  const hoverCellKey = hoverCell ? getCellKey(hoverCell) : null;
 
   return {
     metrics,
-    parcels: parcelDefinitions.map((parcel) => ({
-      id: parcel.id,
-      cells: getParcelCells(parcel),
-      unlocked: unlockedParcelIds.has(parcel.id),
-      cost: parcel.cost,
-    })),
+    parcels,
     groundTiles: snapshot.groundTiles.map((tile) =>
       createRenderGroundTile(tile, itemDefinitionById),
     ),
@@ -108,8 +117,15 @@ export function createEstateRenderScene({
       createRenderItem(item, itemDefinitionById),
     ),
     hoverCell,
+    hoverParcelId: hoverCellKey
+      ? (parcels.find((parcel) =>
+          parcel.cells.some((cell) => getCellKey(cell) === hoverCellKey),
+        )?.id ?? null)
+      : null,
     selectedItemId,
     placementPreview,
+    recentlyUnlockedParcelId,
+    animationProgress,
   };
 }
 
@@ -187,6 +203,8 @@ export class EstateIsometricRenderer {
       loadedAssets,
       visibleWorldBounds,
     );
+    this.drawParcelHoverGlow(scene, camera, viewport);
+    this.drawUnlockAnimation(scene, camera, viewport);
     this.drawHoverOverlay(scene, camera, viewport);
     this.drawSelectionFootprintGlow(scene, camera, viewport);
     this.drawItems(
@@ -232,7 +250,7 @@ export class EstateIsometricRenderer {
           {
             fill: parcel.unlocked ? "#76ad61" : "#7f8b78",
             stroke: parcel.unlocked ? "#5d924b" : "#687365",
-            alpha: parcel.unlocked ? 1 : 0.58,
+            alpha: getParcelFloorAlpha(scene, parcel),
             lineWidth: 1,
           },
         );
@@ -249,6 +267,93 @@ export class EstateIsometricRenderer {
         );
       }
     }
+  }
+
+  private drawParcelHoverGlow(
+    scene: EstateRenderScene,
+    camera: IsometricCamera,
+    viewport: ViewportSize,
+  ) {
+    if (!scene.hoverParcelId) return;
+
+    const parcel = scene.parcels.find(
+      (candidate) => candidate.id === scene.hoverParcelId,
+    );
+    if (!parcel) return;
+
+    for (const cell of parcel.cells) {
+      strokeWorldPolygon(
+        this.context,
+        getCellDiamondPoints(cell, scene.metrics),
+        camera,
+        viewport,
+        {
+          stroke: parcel.unlocked ? "#dcfce7" : "#fef3c7",
+          alpha: parcel.unlocked ? 0.55 : 0.76,
+          lineWidth: 3,
+          lineDash: [8, 6],
+        },
+      );
+    }
+  }
+
+  private drawUnlockAnimation(
+    scene: EstateRenderScene,
+    camera: IsometricCamera,
+    viewport: ViewportSize,
+  ) {
+    if (!scene.recentlyUnlockedParcelId) return;
+
+    const progress = Math.min(1, Math.max(0, scene.animationProgress ?? 1));
+    if (progress >= 1) return;
+
+    const parcel = scene.parcels.find(
+      (candidate) => candidate.id === scene.recentlyUnlockedParcelId,
+    );
+    if (!parcel) return;
+
+    const bounds = getCellsWorldBounds(parcel.cells, scene.metrics);
+    const sweepX = bounds.minX + (bounds.maxX - bounds.minX) * progress;
+
+    drawWorldPolygon(
+      this.context,
+      [
+        { x: sweepX - 60, y: bounds.minY - 36 },
+        { x: sweepX + 28, y: bounds.minY - 36 },
+        { x: sweepX + 96, y: bounds.maxY + 36 },
+        { x: sweepX + 8, y: bounds.maxY + 36 },
+      ],
+      camera,
+      viewport,
+      {
+        fill: "rgba(255, 255, 255, 0.72)",
+        stroke: "rgba(255, 255, 255, 0.18)",
+        alpha: (1 - progress) * 0.42,
+        lineWidth: 1,
+      },
+    );
+
+    const ctx = this.context;
+    ctx.save();
+    ctx.fillStyle = "#fef3c7";
+    ctx.globalAlpha = Math.max(0, 0.72 - progress * 0.72);
+
+    for (const [index, cell] of parcel.cells.entries()) {
+      if (index % 5 !== 0) continue;
+
+      const center = worldToCanvas(
+        getCellCenterScreen(cell, scene.metrics),
+        camera,
+        viewport,
+      );
+      const lift = 18 * progress;
+      const radius = (1.5 + (index % 3)) * camera.zoom;
+      ctx.beginPath();
+      ctx.arc(center.x, center.y - lift, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.restore();
   }
 
   private drawLockedParcelLabel(
@@ -717,6 +822,18 @@ export class EstateIsometricRenderer {
     ctx.fillRect(0, 0, viewport.width, viewport.height);
     ctx.restore();
   }
+}
+
+function getParcelFloorAlpha(
+  scene: EstateRenderScene,
+  parcel: EstateRenderParcel,
+): number {
+  if (!parcel.unlocked) return 0.58;
+
+  if (scene.recentlyUnlockedParcelId !== parcel.id) return 1;
+
+  const progress = Math.min(1, Math.max(0, scene.animationProgress ?? 1));
+  return 0.58 + 0.42 * progress;
 }
 
 function createRenderGroundTile(

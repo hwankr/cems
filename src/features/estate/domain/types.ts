@@ -72,6 +72,7 @@ export type EstateSnapshot = {
 export type EstateCommandFailureReason =
   | "insufficient-points"
   | "out-of-bounds"
+  | "locked-cell"
   | "collision"
   | "missing-inventory"
   | "parcel-not-adjacent"
@@ -97,14 +98,23 @@ export type EstateRectBounds = EstateGridCell & {
   height: number;
 };
 
-export type EstateExpansionParcelDefinition = {
-  id: string;
-  nameKey: string;
-  cost: number;
-  bounds?: EstateRectBounds;
-  cells?: EstateGridCell[];
-  isDefault?: boolean;
+export type EstateParcelBounds = {
+  minX: number;
+  minY: number;
+  width: number;
+  height: number;
 };
+
+export type EstateParcelDefinition = {
+  id: string;
+  nameKey?: string;
+  bounds: EstateParcelBounds;
+  cost: number;
+  adjacentParcelIds: string[];
+  initial: boolean;
+};
+
+export type EstateExpansionParcelDefinition = EstateParcelDefinition;
 
 export type EstateClock = () => string;
 export type EstateIdFactory = () => string;

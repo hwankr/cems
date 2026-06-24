@@ -43,7 +43,10 @@ import {
   type EstateEditorMode,
   type EstateSaveStatus,
 } from "../domain/editor";
-import { getCellKey } from "../domain/expansion";
+import {
+  getCellKey,
+  isParcelAdjacentToUnlockedParcel,
+} from "../domain/expansion";
 import { getInventoryQuantity } from "../domain/inventory";
 import { findEstateItemDefinition } from "../domain/placement";
 import { calculateEstatePointAccount } from "../domain/point-account";
@@ -53,6 +56,7 @@ import type {
   EstateCommand,
   EstateCommandContext,
   EstateCommandFailureReason,
+  EstateExpansionParcelDefinition,
   EstateGridCell,
   EstateItemCategory,
   EstateItemDefinition,
@@ -186,6 +190,7 @@ const commandFailureLabels = {
   ko: {
     "insufficient-points": "절감 포인트가 부족합니다.",
     "out-of-bounds": "잠금 해제된 영역 안에 배치해야 합니다.",
+    "locked-cell": "아직 잠긴 셀에는 배치할 수 없습니다.",
     collision: "다른 오브젝트와 겹칩니다.",
     "missing-inventory": "인벤토리에 보유 수량이 없습니다.",
     "parcel-not-adjacent": "연결된 구역부터 확장할 수 있습니다.",
@@ -196,6 +201,7 @@ const commandFailureLabels = {
   en: {
     "insufficient-points": "Not enough saving points.",
     "out-of-bounds": "Place it inside an unlocked area.",
+    "locked-cell": "Locked cells cannot be used yet.",
     collision: "It overlaps another object.",
     "missing-inventory": "No owned quantity in inventory.",
     "parcel-not-adjacent": "Expand from a connected parcel first.",
@@ -217,6 +223,14 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   const [message, setMessage] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<EstateSaveStatus>("saved");
   const [fitViewSignal, setFitViewSignal] = useState(0);
+  const [focusParcelId, setFocusParcelId] = useState<string | null>(null);
+  const [pendingExpansionParcelId, setPendingExpansionParcelId] = useState<
+    string | null
+  >(null);
+  const [recentlyUnlockedParcelId, setRecentlyUnlockedParcelId] = useState<
+    string | null
+  >(null);
+  const [unlockAnimationProgress, setUnlockAnimationProgress] = useState(1);
   const [pendingPurchaseIds, setPendingPurchaseIds] = useState<Set<string>>(
     () => new Set(),
   );
@@ -225,6 +239,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   const snapshotRef = useRef(snapshot);
   const messageTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const expansionAnimationFrameRef = useRef<number | null>(null);
   const latestSnapshotToSaveRef = useRef<EstateSnapshot | null>(null);
   const purchaseLockRef = useRef(createEstatePurchaseLock());
   const groundDragVisitedCellKeysRef = useRef(new Set<string>());
@@ -263,6 +278,13 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       ),
     [shopCategory],
   );
+  const unlockedParcelCount = snapshot.unlockedParcelIds.length;
+  const pendingExpansionParcel = pendingExpansionParcelId
+    ? estateExpansionCatalog.find(
+        (parcel) => parcel.id === pendingExpansionParcelId,
+      ) ?? null
+    : null;
+  const nextExpansionParcel = getNextUnlockableParcel(snapshot);
 
   const showMessage = useCallback((nextMessage: string) => {
     setMessage(nextMessage);
@@ -383,6 +405,10 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
         ),
       );
       setActivePanel("shop");
+      setPendingExpansionParcelId(null);
+      setFocusParcelId(null);
+      setRecentlyUnlockedParcelId(null);
+      setUnlockAnimationProgress(1);
       setSnapshot(data.initialSnapshot);
       snapshotRef.current = data.initialSnapshot;
       setSaveStatus("saved");
@@ -450,8 +476,54 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       if (saveTimerRef.current) {
         clearTimeout(saveTimerRef.current);
       }
+      if (expansionAnimationFrameRef.current) {
+        cancelAnimationFrame(expansionAnimationFrameRef.current);
+      }
     };
   }, []);
+
+  useEffect(() => {
+    if (!recentlyUnlockedParcelId) return;
+
+    if (prefersReducedMotion()) {
+      expansionAnimationFrameRef.current = requestAnimationFrame(() => {
+        setUnlockAnimationProgress(1);
+        setRecentlyUnlockedParcelId(null);
+        expansionAnimationFrameRef.current = null;
+      });
+
+      return () => {
+        if (expansionAnimationFrameRef.current) {
+          cancelAnimationFrame(expansionAnimationFrameRef.current);
+          expansionAnimationFrameRef.current = null;
+        }
+      };
+    }
+
+    const startTime = performance.now();
+    const durationMs = 520;
+
+    const step = (time: number) => {
+      const progress = Math.min(1, (time - startTime) / durationMs);
+      setUnlockAnimationProgress(progress);
+
+      if (progress < 1) {
+        expansionAnimationFrameRef.current = requestAnimationFrame(step);
+      } else {
+        expansionAnimationFrameRef.current = null;
+        setRecentlyUnlockedParcelId(null);
+      }
+    };
+
+    expansionAnimationFrameRef.current = requestAnimationFrame(step);
+
+    return () => {
+      if (expansionAnimationFrameRef.current) {
+        cancelAnimationFrame(expansionAnimationFrameRef.current);
+        expansionAnimationFrameRef.current = null;
+      }
+    };
+  }, [recentlyUnlockedParcelId]);
 
   const cancelEditing = useCallback(() => {
     setMode((current) => {
@@ -598,6 +670,28 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
         return next;
       });
     }, purchaseLockMs);
+  }
+
+  function handleRequestExpansion(parcelId: string) {
+    setActivePanel("expansion");
+    setPendingExpansionParcelId(parcelId);
+  }
+
+  function handleConfirmExpansion(parcelId: string) {
+    const result = applyCommand({
+      type: "unlock-parcel",
+      parcelId,
+    });
+
+    if (!result.ok) return;
+
+    setPendingExpansionParcelId(null);
+    setFocusParcelId(parcelId);
+    setRecentlyUnlockedParcelId(parcelId);
+    setUnlockAnimationProgress(0);
+    showMessage(
+      language === "ko" ? "영지를 확장했습니다." : "Estate expanded.",
+    );
   }
 
   function handleStartInventoryAction(definitionId: string) {
@@ -791,6 +885,18 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
               label={messages.estate.availablePoints}
               value={formatPoints(locale, pointAccount.availablePoints)}
             />
+            <StatusPill
+              icon={<Hammer size={15} aria-hidden="true" />}
+              label={language === "ko" ? "해제 구역" : "Unlocked"}
+              value={`${unlockedParcelCount}/${estateExpansionCatalog.length}`}
+            />
+            {nextExpansionParcel ? (
+              <StatusPill
+                icon={<Coins size={15} aria-hidden="true" />}
+                label={language === "ko" ? "다음 확장" : "Next"}
+                value={formatPoints(locale, nextExpansionParcel.cost)}
+              />
+            ) : null}
             <SaveStatusPill
               status={saveStatus}
               label={saveStatusLabels[language][saveStatus]}
@@ -823,7 +929,11 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
               mode={mode}
               selectedItemId={selectedInstanceId}
               fitViewSignal={fitViewSignal}
+              focusParcelId={focusParcelId}
+              recentlyUnlockedParcelId={recentlyUnlockedParcelId}
+              unlockAnimationProgress={unlockAnimationProgress}
               onCellClick={handleCellClick}
+              onLockedParcelClick={handleRequestExpansion}
               onGroundPaintStart={handleGroundPaintStart}
               onGroundPaintCell={handleGroundPaintCell}
               onItemSelect={handleItemSelect}
@@ -908,25 +1018,23 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
                   language={language}
                   pointBalance={pointAccount.availablePoints}
                   snapshot={snapshot}
-                  onUnlock={(parcelId) => {
-                    const result = applyCommand({
-                      type: "unlock-parcel",
-                      parcelId,
-                    });
-                    if (result.ok) {
-                      showMessage(
-                        language === "ko"
-                          ? "영지를 확장했습니다."
-                          : "Estate expanded.",
-                      );
-                    }
-                  }}
+                  onRequestUnlock={handleRequestExpansion}
                 />
               ) : null}
             </div>
           </aside>
         </section>
       </div>
+      {pendingExpansionParcel ? (
+        <ExpansionConfirmDialog
+          language={language}
+          parcel={pendingExpansionParcel}
+          pointBalance={pointAccount.availablePoints}
+          snapshot={snapshot}
+          onCancel={() => setPendingExpansionParcelId(null)}
+          onConfirm={() => handleConfirmExpansion(pendingExpansionParcel.id)}
+        />
+      ) : null}
     </main>
   );
 }
@@ -1300,12 +1408,12 @@ function ExpansionPanel({
   language,
   pointBalance,
   snapshot,
-  onUnlock,
+  onRequestUnlock,
 }: {
   language: "ko" | "en";
   pointBalance: number;
   snapshot: EstateSnapshot;
-  onUnlock: (parcelId: string) => void;
+  onRequestUnlock: (parcelId: string) => void;
 }) {
   const lockedParcels = estateExpansionCatalog.filter(
     (parcel) => !snapshot.unlockedParcelIds.includes(parcel.id),
@@ -1323,31 +1431,276 @@ function ExpansionPanel({
 
   return (
     <div className="grid gap-2">
-      {lockedParcels.map((parcel) => (
-        <div
-          key={parcel.id}
-          className="flex items-center justify-between gap-2 rounded-lg border border-line bg-surface-2 p-3"
-        >
-          <div>
-            <h2 className="text-sm font-semibold text-ink">
+      {lockedParcels.map((parcel) => {
+        const status = getParcelUnlockStatus(parcel, snapshot, pointBalance);
+
+        return (
+          <div
+            key={parcel.id}
+            className="grid gap-2 rounded-lg border border-line bg-surface-2 p-3"
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <h2 className="truncate text-sm font-semibold text-ink">
+                  {getParcelName(parcel.id, language)}
+                </h2>
+                <p className="mt-1 text-xs text-ink-subtle">
+                  {language === "ko" ? "크기" : "Size"}{" "}
+                  {formatParcelSize(parcel)} ·{" "}
+                  {language === "ko" ? "비용" : "Cost"}{" "}
+                  {formatPointsForUi(parcel.cost)}
+                </p>
+              </div>
+              <span
+                className={`shrink-0 rounded-md px-2 py-1 text-[11px] font-semibold ${
+                  status.canUnlock
+                    ? "bg-accent-soft text-accent"
+                    : "bg-line text-ink-subtle"
+                }`}
+              >
+                {status.canUnlock
+                  ? language === "ko"
+                    ? "구매 가능"
+                    : "Available"
+                  : language === "ko"
+                    ? "대기"
+                    : "Locked"}
+              </span>
+            </div>
+
+            <div className="grid gap-1 text-xs text-ink-subtle">
+              <p>
+                {language === "ko" ? "인접 조건" : "Adjacent"}:{" "}
+                {parcel.adjacentParcelIds
+                  .map((parcelId) => getParcelName(parcelId, language))
+                  .join(", ")}
+                {" · "}
+                <span
+                  className={
+                    status.adjacent ? "text-accent" : "text-ink-subtle"
+                  }
+                >
+                  {status.adjacent
+                    ? language === "ko"
+                      ? "충족"
+                      : "Met"
+                    : language === "ko"
+                      ? "미충족"
+                      : "Not met"}
+                </span>
+              </p>
+              {!status.affordable ? (
+                <p className="font-medium text-overuse">
+                  {language === "ko"
+                    ? `${formatPointsForUi(status.missingPoints)} 포인트가 더 필요합니다.`
+                    : `${formatPointsForUi(status.missingPoints)} more points needed.`}
+                </p>
+              ) : null}
+            </div>
+
+            <button
+              type="button"
+              className="inline-flex h-9 items-center justify-center rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent transition hover:brightness-105"
+              onClick={() => onRequestUnlock(parcel.id)}
+            >
+              {language === "ko" ? "확장 확인" : "Review expansion"}
+            </button>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ExpansionConfirmDialog({
+  language,
+  parcel,
+  pointBalance,
+  snapshot,
+  onCancel,
+  onConfirm,
+}: {
+  language: "ko" | "en";
+  parcel: EstateExpansionParcelDefinition;
+  pointBalance: number;
+  snapshot: EstateSnapshot;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
+  const status = getParcelUnlockStatus(parcel, snapshot, pointBalance);
+
+  return (
+    <div className="fixed inset-0 z-40 grid place-items-center bg-ink/45 px-4 backdrop-blur-sm">
+      <section
+        className="w-full max-w-md rounded-xl border border-line bg-surface p-4 shadow-pop"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="estate-expansion-dialog-title"
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[11px] font-semibold uppercase text-accent">
+              {language === "ko" ? "토지 확장" : "Land expansion"}
+            </p>
+            <h2
+              id="estate-expansion-dialog-title"
+              className="mt-1 text-lg font-semibold text-ink"
+            >
               {getParcelName(parcel.id, language)}
             </h2>
-            <p className="text-xs text-ink-subtle">
-              {language === "ko" ? "필요 포인트" : "Cost"} {parcel.cost}
-            </p>
           </div>
           <button
             type="button"
-            className="h-9 rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent transition disabled:cursor-not-allowed disabled:bg-line-strong disabled:text-ink-subtle"
-            disabled={pointBalance < parcel.cost}
-            onClick={() => onUnlock(parcel.id)}
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-ink-muted transition hover:bg-surface-2 hover:text-ink"
+            aria-label={language === "ko" ? "닫기" : "Close"}
+            title={language === "ko" ? "닫기" : "Close"}
+            onClick={onCancel}
           >
-            {language === "ko" ? "확장" : "Unlock"}
+            <X size={16} aria-hidden="true" />
           </button>
         </div>
-      ))}
+
+        <dl className="mt-4 grid gap-2 text-sm">
+          <div className="flex justify-between gap-3">
+            <dt className="text-ink-subtle">{language === "ko" ? "크기" : "Size"}</dt>
+            <dd className="font-medium text-ink">{formatParcelSize(parcel)}</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-ink-subtle">{language === "ko" ? "비용" : "Cost"}</dt>
+            <dd className="font-mono font-semibold text-ink">
+              {formatPointsForUi(parcel.cost)}
+            </dd>
+          </div>
+          <div className="grid gap-1">
+            <dt className="text-ink-subtle">
+              {language === "ko" ? "인접 조건" : "Adjacent requirement"}
+            </dt>
+            <dd className="text-ink">
+              {parcel.adjacentParcelIds
+                .map((parcelId) => getParcelName(parcelId, language))
+                .join(", ")}
+            </dd>
+          </div>
+        </dl>
+
+        <div
+          className={`mt-4 rounded-lg border px-3 py-2 text-sm ${
+            status.canUnlock
+              ? "border-accent-soft bg-accent-soft text-ink"
+              : "border-line bg-surface-2 text-ink-muted"
+          }`}
+        >
+          {status.canUnlock
+            ? language === "ko"
+              ? "조건이 충족되었습니다. 확장 후 즉시 배치할 수 있습니다."
+              : "Ready to unlock. You can build on it immediately."
+            : getExpansionBlockedMessage(status, language)}
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            className="h-10 rounded-lg border border-line bg-surface-2 text-sm font-semibold text-ink-muted transition hover:text-ink"
+            onClick={onCancel}
+          >
+            {language === "ko" ? "취소" : "Cancel"}
+          </button>
+          <button
+            type="button"
+            className="h-10 rounded-lg bg-accent text-sm font-semibold text-on-accent transition disabled:cursor-not-allowed disabled:bg-line-strong disabled:text-ink-subtle"
+            disabled={!status.canUnlock}
+            onClick={onConfirm}
+          >
+            {language === "ko" ? "확장하기" : "Unlock"}
+          </button>
+        </div>
+      </section>
     </div>
   );
+}
+
+type ParcelUnlockStatus = {
+  alreadyUnlocked: boolean;
+  adjacent: boolean;
+  affordable: boolean;
+  canUnlock: boolean;
+  missingPoints: number;
+};
+
+function getParcelUnlockStatus(
+  parcel: EstateExpansionParcelDefinition,
+  snapshot: EstateSnapshot,
+  pointBalance: number,
+): ParcelUnlockStatus {
+  const alreadyUnlocked = snapshot.unlockedParcelIds.includes(parcel.id);
+  const adjacent =
+    parcel.initial ||
+    isParcelAdjacentToUnlockedParcel(
+      parcel.id,
+      snapshot.unlockedParcelIds,
+      estateExpansionCatalog,
+    );
+  const affordable = pointBalance >= parcel.cost;
+
+  return {
+    alreadyUnlocked,
+    adjacent,
+    affordable,
+    canUnlock: !alreadyUnlocked && adjacent && affordable,
+    missingPoints: Math.max(0, parcel.cost - pointBalance),
+  };
+}
+
+function getNextUnlockableParcel(
+  snapshot: EstateSnapshot,
+): EstateExpansionParcelDefinition | null {
+  return (
+    estateExpansionCatalog
+      .filter((parcel) => !snapshot.unlockedParcelIds.includes(parcel.id))
+      .filter((parcel) =>
+        isParcelAdjacentToUnlockedParcel(
+          parcel.id,
+          snapshot.unlockedParcelIds,
+          estateExpansionCatalog,
+        ),
+      )
+      .sort((a, b) => a.cost - b.cost)[0] ?? null
+  );
+}
+
+function getExpansionBlockedMessage(
+  status: ParcelUnlockStatus,
+  language: "ko" | "en",
+): string {
+  if (status.alreadyUnlocked) {
+    return language === "ko"
+      ? "이미 해제된 구역입니다."
+      : "This parcel is already unlocked.";
+  }
+
+  if (!status.adjacent) {
+    return language === "ko"
+      ? "먼저 인접한 구역을 해제해야 합니다."
+      : "Unlock an adjacent parcel first.";
+  }
+
+  if (!status.affordable) {
+    return language === "ko"
+      ? `${formatPointsForUi(status.missingPoints)} 포인트가 더 필요합니다.`
+      : `${formatPointsForUi(status.missingPoints)} more points needed.`;
+  }
+
+  return language === "ko"
+    ? "현재 확장할 수 없습니다."
+    : "This parcel cannot be unlocked right now.";
+}
+
+function formatParcelSize(parcel: EstateExpansionParcelDefinition): string {
+  return `${parcel.bounds.width}x${parcel.bounds.height}`;
+}
+
+function formatPointsForUi(points: number): string {
+  return new Intl.NumberFormat("ko-KR").format(points);
 }
 
 function getItemName(
@@ -1359,16 +1712,18 @@ function getItemName(
 
 function getParcelName(parcelId: string, language: "ko" | "en"): string {
   const ko: Record<string, string> = {
+    "central-campus": "중심 구역",
     "east-yard": "동쪽 마당",
     "south-yard": "남쪽 마당",
-    "north-garden": "북쪽 정원",
-    "remote-island": "원격 구역",
+    "south-east-plaza": "동남쪽 광장",
+    "west-terrace": "서쪽 테라스",
   };
   const en: Record<string, string> = {
+    "central-campus": "Central parcel",
     "east-yard": "East yard",
     "south-yard": "South yard",
-    "north-garden": "North garden",
-    "remote-island": "Remote parcel",
+    "south-east-plaza": "Southeast plaza",
+    "west-terrace": "West terrace",
   };
 
   return (language === "ko" ? ko : en)[parcelId] ?? parcelId;
@@ -1384,4 +1739,11 @@ function createEstateId(): string {
 
 function nextQuarterTurn(rotation: QuarterTurn): QuarterTurn {
   return ((rotation + 1) % 4) as QuarterTurn;
+}
+
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
 }

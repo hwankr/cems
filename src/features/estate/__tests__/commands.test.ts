@@ -403,11 +403,58 @@ describe("estate commands", () => {
     });
   });
 
+  it("rejects expansion when available points are below the parcel cost", () => {
+    const snapshot = createInitialEstateSnapshot("yu-e21", {
+      now: () => "2026-06-24T00:00:00.000Z",
+    });
+
+    const result = unlockEstateParcel(
+      snapshot,
+      { parcelId: "east-yard" },
+      createContext(1_999),
+    );
+
+    expect(result).toEqual({
+      ok: false,
+      snapshot,
+      reason: "insufficient-points",
+    });
+  });
+
+  it("records one unlock transaction and spends points after successful expansion", () => {
+    const snapshot = createInitialEstateSnapshot("yu-e21", {
+      now: () => "2026-06-24T00:00:00.000Z",
+    });
+
+    const result = unlockEstateParcel(
+      snapshot,
+      { parcelId: "east-yard" },
+      createContext(2_000, ["tx-east-yard"]),
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(result.snapshot.unlockedParcelIds).toEqual([
+      "central-campus",
+      "east-yard",
+    ]);
+    expect(result.snapshot.transactions).toEqual([
+      {
+        id: "tx-east-yard",
+        kind: "unlock-parcel",
+        pointDelta: -2_000,
+        parcelId: "east-yard",
+        createdAt: "2026-06-24T00:00:00.000Z",
+      },
+    ]);
+  });
+
   it("rejects expansion when no unlocked parcel is adjacent", () => {
     const snapshot: EstateSnapshot = {
       schemaVersion: 1,
       subjectId: "yu-e21",
-      unlockedParcelIds: ["remote-island"],
+      unlockedParcelIds: ["central-campus"],
       items: [],
       inventory: [],
       groundTiles: [],
@@ -417,7 +464,7 @@ describe("estate commands", () => {
 
     const result = unlockEstateParcel(
       snapshot,
-      { parcelId: "east-yard" },
+      { parcelId: "south-east-plaza" },
       createContext(5_000),
     );
 
