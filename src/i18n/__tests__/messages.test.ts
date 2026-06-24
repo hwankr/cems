@@ -16,6 +16,9 @@ describe("messages", () => {
     expect(Object.keys(enMessages.mapView.controls)).toEqual(
       Object.keys(koMessages.mapView.controls),
     );
+    expect(Object.keys(enMessages.estate)).toEqual(
+      Object.keys(koMessages.estate),
+    );
     expect(enMessages.app.eyebrow).toBe("Campus Energy Management System");
     expect(enMessages.mapView.controls.resetView).toBe("Reset view");
   });

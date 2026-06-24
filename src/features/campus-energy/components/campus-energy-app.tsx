@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ThemeProvider } from "@/features/theme/theme-provider";
-import { I18nProvider, useI18n } from "@/i18n/client";
+import { useI18n } from "@/i18n/client";
 import type { Locale } from "@/i18n/config";
 import type { Messages } from "@/i18n/messages/types";
 import {
@@ -13,6 +12,7 @@ import { localizeDemoCampus } from "../data/localized-demo-campus";
 import { AdminMapView } from "./admin-map-view";
 import { AppHeader } from "./app-header";
 import { BottomNav } from "./bottom-nav";
+import { CampusEnergyProviders } from "./campus-energy-providers";
 import { ParticipantDashboard } from "./participant-dashboard";
 
 type Mode = "admin" | "participant";
@@ -29,11 +29,9 @@ export function CampusEnergyApp({
   messages,
 }: CampusEnergyAppProps) {
   return (
-    <I18nProvider locale={locale} messages={messages}>
-      <ThemeProvider>
-        <CampusEnergyShell mapboxToken={mapboxToken} />
-      </ThemeProvider>
-    </I18nProvider>
+    <CampusEnergyProviders locale={locale} messages={messages}>
+      <CampusEnergyShell mapboxToken={mapboxToken} />
+    </CampusEnergyProviders>
   );
 }
 

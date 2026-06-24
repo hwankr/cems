@@ -74,6 +74,18 @@ export const enMessages = {
       },
     },
   },
+  estate: {
+    title: "Building estate",
+    backToMap: "Back to map",
+    earnedPoints: "Earned points",
+    spentPoints: "Spent points",
+    availablePoints: "Available points",
+    savedEnergy: "Current saved energy",
+    loading: "Loading estate data",
+    unavailable: "Unavailable",
+    enginePlaceholder: "Estate engine preparing",
+    officialCode: "Official code",
+  },
   map: {
     live: "Live campus",
     missingTokenDescription: "Set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in .env.local.",

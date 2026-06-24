@@ -72,6 +72,18 @@ export const koMessages = {
       },
     },
   },
+  estate: {
+    title: "건물 영지",
+    backToMap: "지도 화면으로 돌아가기",
+    earnedPoints: "적립 포인트",
+    spentPoints: "사용 포인트",
+    availablePoints: "사용 가능 포인트",
+    savedEnergy: "현재 절감량",
+    loading: "영지 데이터를 불러오는 중",
+    unavailable: "확인 불가",
+    enginePlaceholder: "영지 엔진 준비 중",
+    officialCode: "공식 코드",
+  },
   map: {
     live: "실시간 캠퍼스",
     missingTokenDescription:
