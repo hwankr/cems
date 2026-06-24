@@ -10,12 +10,18 @@ import type {
   School,
 } from "@/features/campus-energy/domain/types";
 import { calculateEstatePointAccount } from "@/features/estate/domain/point-account";
-import type { EstatePointAccount } from "@/features/estate/domain/types";
+import type {
+  EstatePointAccount,
+  EstateSnapshot,
+} from "@/features/estate/domain/types";
 import type { Locale } from "@/i18n/config";
 import { enMessages } from "@/i18n/messages/en";
 import { koMessages } from "@/i18n/messages/ko";
 import type { Messages } from "@/i18n/messages/types";
-import { demoHistoricalEarnedPointsBySubjectId } from "./demo-estate-data";
+import {
+  createDemoEstateSeedSnapshot,
+  demoHistoricalEarnedPointsBySubjectId,
+} from "./demo-estate-data";
 
 export type EstatePageSchool = Pick<School, "id" | "name" | "shortName">;
 
@@ -35,6 +41,7 @@ export type EstatePageData = {
   subject: EstatePageSubject;
   comparison: EnergyComparison | null;
   pointAccount: EstatePointAccount;
+  initialSnapshot: EstateSnapshot;
 };
 
 const messagesByLocale = {
@@ -80,5 +87,6 @@ export function getEstatePageData(
     },
     comparison,
     pointAccount: calculateEstatePointAccount(earnedPoints, []),
+    initialSnapshot: createDemoEstateSeedSnapshot(subjectId),
   };
 }

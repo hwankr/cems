@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ArrowLeft, BadgeCheck, Coins, Hammer, Leaf } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Coins, Leaf } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { formatKwh, formatPoints } from "@/i18n/format";
 import type { EstatePageData } from "../data/get-estate-page-data";
+import { EstateCanvas } from "./estate-canvas";
 
 type EstateGameClientProps = {
   data: EstatePageData;
@@ -80,15 +81,12 @@ export function EstateGameClient({ data }: EstateGameClientProps) {
           />
         </section>
 
-        <section className="grid min-h-[22rem] place-items-center rounded-2xl border border-dashed border-line-strong bg-surface p-6 text-center shadow-card">
-          <div className="grid justify-items-center gap-3">
-            <span className="grid h-12 w-12 place-items-center rounded-xl bg-accent-soft text-accent">
-              <Hammer size={22} aria-hidden="true" />
-            </span>
-            <p className="text-lg font-semibold text-ink">
-              {messages.estate.enginePlaceholder}
-            </p>
-          </div>
+        <section className="rounded-2xl border border-line bg-surface p-3 shadow-card">
+          <EstateCanvas
+            key={data.subject.id}
+            snapshot={data.initialSnapshot}
+            initialSelectedItemId={data.initialSnapshot.items[0]?.id ?? null}
+          />
         </section>
       </div>
     </main>

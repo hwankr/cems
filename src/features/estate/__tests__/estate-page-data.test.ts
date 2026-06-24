@@ -15,6 +15,13 @@ describe("getEstatePageData", () => {
     expect(data?.subject.type).toBe("building");
     expect(data?.subject.officialCode).toBe("E21");
     expect(data?.comparison?.subjectId).toBe("yu-e21");
+    expect(data?.initialSnapshot.subjectId).toBe("yu-e21");
+    expect(data?.initialSnapshot.items).toContainEqual(
+      expect.objectContaining({
+        id: "yu-e21:landmark",
+        definitionId: "base-campus-building",
+      }),
+    );
   });
 
   it("localizes subject and school names by locale", () => {
