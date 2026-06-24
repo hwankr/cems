@@ -13,6 +13,40 @@ This document records the current implemented MVP. It is not a future architectu
 - `src/features/campus-energy/domain/scoring.ts` turns savings into points, rankings, and character levels.
 - `src/features/campus-energy/data/demo-campus.ts` holds the Yeungnam University demo school, buildings, groups, participant, and mock readings.
 
+## Building Estate Demo
+
+The participant estate route is implemented at:
+
+- `/ko/subjects/yu-e21/estate`
+- `/en/subjects/yu-e21/estate`
+
+The route is a Mapbox-free App Router page under `src/app/[locale]/subjects/[subjectId]/estate/page.tsx`. It validates the locale and subject id on the server, loads locale messages, resolves `EstatePageData`, and passes serializable data into the client estate game.
+
+The implemented estate structure is:
+
+- `src/features/estate/data/` - item catalog, expansion catalog, asset manifest, page data, and demo seed snapshots
+- `src/features/estate/domain/` - point accounting, commands/reducer, placement/collision, expansion, inventory, serialization, and editor helpers
+- `src/features/estate/isometric/` - projection, camera, hit testing, render order, asset loader, and Canvas renderer
+- `src/features/estate/persistence/` - repository interface, localStorage adapter, and memory adapter for tests
+- `src/features/estate/components/estate-game-client.tsx` - client shell for points, save status, shop, inventory, selection, expansion dialog, and keyboard shortcuts
+- `src/features/estate/components/estate-canvas.tsx` - lazy-loaded Canvas renderer with pan, zoom, hit testing, asset loading, ResizeObserver cleanup, and pointer/touch listener cleanup
+
+The Canvas and asset code is loaded through `next/dynamic` from the estate client so the route can split the heavier renderer work. The estate game route does not import `mapbox-gl` or `CampusMap`; Mapbox remains in the campus map surface.
+
+The UI includes screen-reader-only live state for selection, balance, save status, and errors. The Canvas has an ARIA label plus a text summary of placed objects, unlocked parcels, and ground tiles. The expansion dialog traps focus, closes with Escape, and returns focus to the button that opened it. Touch targets in the shop, inventory, selection, expansion, dialog, and Canvas controls are at least 44px.
+
+### localStorage Limitations
+
+The first estate MVP stores progress in browser `localStorage` through `LocalStorageEstateRepository`. It is a convenience store only:
+
+- It can be unavailable when storage is blocked.
+- Writes can fail when quota is exceeded.
+- Corrupted or incompatible records are recovered to the subject seed snapshot.
+- Saved state is not authoritative and does not verify a user's real school membership or earned points.
+- A future server-backed repository must recompute earned points server-side and validate spending before accepting writes.
+
+The current client handles storage load failure and write failure as recoverable UI states. It flushes pending saves on `pagehide`, `visibilitychange`, and route unmount, but route-exit save is still best-effort because localStorage can fail.
+
 ## Runtime Data
 
 The MVP uses mock data only:
@@ -97,14 +131,24 @@ npm run test
 npm run lint
 npm run build
 git diff --check
+git status --short
 ```
 
-Current test coverage includes domain logic, generated Yeungnam data validation, GeoJSON conversion, and localization fallback behavior:
+Current test coverage includes domain logic, generated Yeungnam data validation, GeoJSON conversion, localization fallback behavior, and estate regressions:
 
 - `src/features/campus-energy/__tests__/energy.test.ts`
 - `src/features/campus-energy/__tests__/geojson.test.ts`
 - `src/features/campus-energy/__tests__/localized-demo-campus.test.ts`
 - `src/features/campus-energy/__tests__/scoring.test.ts`
+- `src/features/estate/__tests__/point-account.test.ts`
+- `src/features/estate/__tests__/commands.test.ts`
+- `src/features/estate/__tests__/placement.test.ts`
+- `src/features/estate/__tests__/expansion.test.ts`
+- `src/features/estate/__tests__/serialization.test.ts`
+- `src/features/estate/__tests__/estate-repository.test.ts`
+- `src/features/estate/__tests__/isometric-hit-testing.test.ts`
+- `src/features/estate/__tests__/estate-canvas.test.tsx`
+- `src/features/estate/__tests__/estate-quality.test.ts`
 
 ## Not Implemented Yet
 

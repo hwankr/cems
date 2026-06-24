@@ -32,6 +32,12 @@ For the map:
 
 The app builds without the token and shows a configuration state for the map.
 
+## Building Estate Demo
+
+Open the estate demo at `/ko/subjects/yu-e21/estate` or `/en/subjects/yu-e21/estate`.
+
+Use the right panel on desktop, or the bottom sheet on mobile, to buy items, place inventory, paint ground tiles, and review land expansion. The Canvas supports drag panning, wheel or pinch zoom, and the fit-view button.
+
 ## Commands
 
 ```bash

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   AlertTriangle,
   ArrowLeft,
@@ -29,6 +30,8 @@ import {
 } from "react";
 import { useI18n } from "@/i18n/client";
 import { formatKwh, formatPoints } from "@/i18n/format";
+import { interpolate } from "@/i18n/interpolate";
+import type { Messages } from "@/i18n/messages/types";
 import {
   baseEstateBuildingDefinition,
   estateItemCatalog,
@@ -55,7 +58,6 @@ import { estateReducer } from "../domain/reducer";
 import type {
   EstateCommand,
   EstateCommandContext,
-  EstateCommandFailureReason,
   EstateExpansionParcelDefinition,
   EstateGridCell,
   EstateItemCategory,
@@ -66,7 +68,12 @@ import type {
 } from "../domain/types";
 import { LocalStorageEstateRepository } from "../persistence/local-storage-estate-repository";
 import type { EstateRepository } from "../persistence/estate-repository";
-import { EstateCanvas } from "./estate-canvas";
+import type { EstateCanvasProps } from "./estate-canvas";
+
+const EstateCanvas = dynamic<EstateCanvasProps>(
+  () => import("./estate-canvas").then((module) => module.default),
+  { ssr: false },
+);
 
 type EstateGameClientProps = {
   data: EstatePageData;
@@ -81,6 +88,7 @@ type EstateMetricProps = {
 
 type ActiveEstatePanel = "shop" | "inventory" | "expansion";
 type EstateShopCategory = "all" | EstateItemCategory;
+type EstateMessages = Messages["estate"];
 
 const itemDefinitions = estateItemCatalog;
 const allItemDefinitions = [baseEstateBuildingDefinition, ...estateItemCatalog];
@@ -98,122 +106,9 @@ const categoryOrder: EstateShopCategory[] = [
   "landmark",
 ];
 
-const itemNames: Record<"ko" | "en", Record<string, string>> = {
-  ko: {
-    "base-campus-building": "중앙 랜드마크",
-    "broadleaf-tree": "활엽수",
-    "pine-tree": "소나무",
-    "flower-bed": "꽃 화단",
-    bench: "벤치",
-    "solar-street-light": "태양광 가로등",
-    "campus-flag": "캠퍼스 깃발",
-    fountain: "분수",
-    "small-greenhouse": "소형 온실",
-    "solar-pavilion": "태양광 파빌리온",
-    "recycling-station": "분리수거 스테이션",
-    "stone-path": "돌길 타일",
-    "bright-sidewalk-block": "밝은 보도 타일",
-    "grass-decoration": "잔디 타일",
-    "decorative-shrub": "장식 관목",
-    "small-sculpture": "소형 조형물",
-  },
-  en: {
-    "base-campus-building": "Central landmark",
-    "broadleaf-tree": "Broadleaf tree",
-    "pine-tree": "Pine tree",
-    "flower-bed": "Flower bed",
-    bench: "Bench",
-    "solar-street-light": "Solar street light",
-    "campus-flag": "Campus flag",
-    fountain: "Fountain",
-    "small-greenhouse": "Small greenhouse",
-    "solar-pavilion": "Solar pavilion",
-    "recycling-station": "Recycling station",
-    "stone-path": "Stone path tile",
-    "bright-sidewalk-block": "Bright sidewalk tile",
-    "grass-decoration": "Grass tile",
-    "decorative-shrub": "Decorative shrub",
-    "small-sculpture": "Small sculpture",
-  },
-};
-
-const categoryLabels = {
-  ko: {
-    all: "전체",
-    landmark: "상징",
-    nature: "자연",
-    furniture: "가구",
-    energy: "에너지",
-    facility: "시설",
-    ground: "바닥",
-  },
-  en: {
-    all: "All",
-    landmark: "Landmark",
-    nature: "Nature",
-    furniture: "Furniture",
-    energy: "Energy",
-    facility: "Facility",
-    ground: "Ground",
-  },
-} satisfies Record<"ko" | "en", Record<EstateShopCategory, string>>;
-
-const panelLabels = {
-  ko: {
-    shop: "꾸미기",
-    inventory: "인벤토리",
-    expansion: "확장",
-    fit: "화면 맞춤",
-  },
-  en: {
-    shop: "Decorate",
-    inventory: "Inventory",
-    expansion: "Expand",
-    fit: "Fit view",
-  },
-} satisfies Record<"ko" | "en", Record<ActiveEstatePanel | "fit", string>>;
-
-const saveStatusLabels = {
-  ko: {
-    saved: "저장됨",
-    saving: "저장 중",
-    failed: "저장 실패",
-  },
-  en: {
-    saved: "Saved",
-    saving: "Saving",
-    failed: "Save failed",
-  },
-} satisfies Record<"ko" | "en", Record<EstateSaveStatus, string>>;
-
-const commandFailureLabels = {
-  ko: {
-    "insufficient-points": "절감 포인트가 부족합니다.",
-    "out-of-bounds": "잠금 해제된 영역 안에 배치해야 합니다.",
-    "locked-cell": "아직 잠긴 셀에는 배치할 수 없습니다.",
-    collision: "다른 오브젝트와 겹칩니다.",
-    "missing-inventory": "인벤토리에 보유 수량이 없습니다.",
-    "parcel-not-adjacent": "연결된 구역부터 확장할 수 있습니다.",
-    "already-unlocked": "이미 확장된 구역입니다.",
-    "protected-item": "중앙 랜드마크는 이동, 회전, 철거할 수 없습니다.",
-    "invalid-definition": "이 작업을 수행할 수 없는 아이템입니다.",
-  },
-  en: {
-    "insufficient-points": "Not enough saving points.",
-    "out-of-bounds": "Place it inside an unlocked area.",
-    "locked-cell": "Locked cells cannot be used yet.",
-    collision: "It overlaps another object.",
-    "missing-inventory": "No owned quantity in inventory.",
-    "parcel-not-adjacent": "Expand from a connected parcel first.",
-    "already-unlocked": "This parcel is already unlocked.",
-    "protected-item": "The central landmark cannot be moved, rotated, or removed.",
-    "invalid-definition": "This item cannot be used for that action.",
-  },
-} satisfies Record<"ko" | "en", Record<EstateCommandFailureReason, string>>;
-
 export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   const { locale, messages } = useI18n();
-  const language = locale === "en" ? "en" : "ko";
+  const copy = messages.estate;
   const [snapshot, setSnapshot] = useState<EstateSnapshot>(
     data.initialSnapshot,
   );
@@ -244,6 +139,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   const purchaseLockRef = useRef(createEstatePurchaseLock());
   const groundDragVisitedCellKeysRef = useRef(new Set<string>());
   const repositoryRef = useRef<EstateRepository | null>(null);
+  const focusReturnRef = useRef<HTMLElement | null>(null);
 
   if (repositoryRef.current === null) {
     repositoryRef.current = repository ?? new LocalStorageEstateRepository();
@@ -374,14 +270,14 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       );
 
       if (!result.ok) {
-        showMessage(commandFailureLabels[language][result.reason]);
+        showMessage(copy.commandFailures[result.reason]);
         return result;
       }
 
       commitSnapshot(result.snapshot);
       return result;
     },
-    [commitSnapshot, createCommandContext, language, showMessage],
+    [commitSnapshot, copy.commandFailures, createCommandContext, showMessage],
   );
 
   useEffect(() => {
@@ -419,11 +315,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
 
         if (!result.ok) {
           setSaveStatus("failed");
-          showMessage(
-            language === "ko"
-              ? "저장된 영지를 불러오지 못했습니다."
-              : "Could not load the saved estate.",
-          );
+          showMessage(copy.messages.cannotLoad);
           return;
         }
 
@@ -433,11 +325,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
         }
 
         if (result.recovered) {
-          showMessage(
-            language === "ko"
-              ? "손상된 저장 데이터를 기본 영지로 복구했습니다."
-              : "Recovered damaged save data with the default estate.",
-          );
+          showMessage(copy.messages.recovered);
         }
       });
     }, 0);
@@ -446,7 +334,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       cancelled = true;
       clearTimeout(resetTimer);
     };
-  }, [data.initialSnapshot, data.subject.id, flushSave, language, showMessage]);
+  }, [copy.messages, data.initialSnapshot, data.subject.id, flushSave, showMessage]);
 
   useEffect(() => {
     const flush = () => {
@@ -547,11 +435,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       : null;
 
     if (!instance || !definition || !definition.canRotate) {
-      showMessage(
-        language === "ko"
-          ? "회전할 수 없는 아이템입니다."
-          : "This item cannot rotate.",
-      );
+      showMessage(copy.messages.cannotRotate);
       return;
     }
 
@@ -575,7 +459,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     if (result.ok) {
       setMode({ type: "selected", instanceId: instance.id });
     }
-  }, [applyCommand, language, mode, showMessage]);
+  }, [applyCommand, copy.messages.cannotRotate, mode, showMessage]);
 
   const removeSelectedItem = useCallback(() => {
     const instanceId = getSelectedEstateInstanceId(mode);
@@ -593,9 +477,9 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     if (
       definition.cost >= expensiveConfirmationPoint &&
       !window.confirm(
-        language === "ko"
-          ? `${getItemName(definition, language)}을(를) 철거할까요? 포인트는 환불되지 않습니다.`
-          : `Remove ${getItemName(definition, language)}? Points will not be refunded.`,
+        interpolate(copy.messages.removeConfirm, {
+          item: getItemName(definition, copy),
+        }),
       )
     ) {
       return;
@@ -604,13 +488,9 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     const result = applyCommand({ type: "remove-item", instanceId });
     if (result.ok) {
       setMode({ type: "view" });
-      showMessage(
-        language === "ko"
-          ? "철거했습니다. 아이템이 인벤토리로 돌아갔습니다."
-          : "Removed. The item returned to inventory.",
-      );
+      showMessage(copy.messages.removed);
     }
-  }, [applyCommand, language, mode, showMessage]);
+  }, [applyCommand, copy, mode, showMessage]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -656,9 +536,9 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
 
     if (result.ok) {
       showMessage(
-        language === "ko"
-          ? `${getItemName(definition, language)}을(를) 구매했습니다.`
-          : `Purchased ${getItemName(definition, language)}.`,
+        interpolate(copy.messages.purchase, {
+          item: getItemName(definition, copy),
+        }),
       );
     }
 
@@ -673,9 +553,18 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   }
 
   function handleRequestExpansion(parcelId: string) {
+    if (document.activeElement instanceof HTMLElement) {
+      focusReturnRef.current = document.activeElement;
+    }
     setActivePanel("expansion");
     setPendingExpansionParcelId(parcelId);
   }
+
+  const closeExpansionDialog = useCallback(() => {
+    const focusTarget = focusReturnRef.current;
+    setPendingExpansionParcelId(null);
+    focusTarget?.focus();
+  }, []);
 
   function handleConfirmExpansion(parcelId: string) {
     const result = applyCommand({
@@ -685,13 +574,11 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
 
     if (!result.ok) return;
 
-    setPendingExpansionParcelId(null);
+    closeExpansionDialog();
     setFocusParcelId(parcelId);
     setRecentlyUnlockedParcelId(parcelId);
     setUnlockAnimationProgress(0);
-    showMessage(
-      language === "ko" ? "영지를 확장했습니다." : "Estate expanded.",
-    );
+    showMessage(copy.messages.expanded);
   }
 
   function handleStartInventoryAction(definitionId: string) {
@@ -702,17 +589,13 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       definition.placementRule !== "ground" &&
       getInventoryQuantity(snapshotRef.current.inventory, definition.id) < 1
     ) {
-      showMessage(commandFailureLabels[language]["missing-inventory"]);
+      showMessage(copy.commandFailures["missing-inventory"]);
       return;
     }
 
     if (definition.placementRule === "ground") {
       setMode({ type: "painting-ground", definitionId: definition.id });
-      showMessage(
-        language === "ko"
-          ? "드래그해서 경로 타일을 칠하세요."
-          : "Drag on the grid to paint path tiles.",
-      );
+      showMessage(copy.messages.paintInstruction);
       return;
     }
 
@@ -741,12 +624,8 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
         );
         showMessage(
           remainingQuantity > 0
-            ? language === "ko"
-              ? "배치 완료. 기본값은 연속 배치 없이 보기 모드로 돌아갑니다."
-              : "Placed. Returning to view mode by default."
-            : language === "ko"
-              ? "배치 완료."
-              : "Placed.",
+            ? copy.messages.placedReturnView
+            : copy.messages.placed,
         );
       }
       return;
@@ -763,7 +642,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
 
       if (result.ok) {
         setMode({ type: "selected", instanceId: mode.instanceId });
-        showMessage(language === "ko" ? "이동했습니다." : "Moved.");
+        showMessage(copy.messages.moved);
       }
     }
   }
@@ -789,7 +668,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     );
 
     if (!result.ok) {
-      showMessage(commandFailureLabels[language][result.reason]);
+      showMessage(copy.commandFailures[result.reason]);
       return;
     }
 
@@ -798,19 +677,11 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     }
 
     if (result.skippedCells.length > 0) {
-      showMessage(
-        language === "ko"
-          ? "잠긴 셀에는 칠할 수 없습니다."
-          : "Locked cells cannot be painted.",
-      );
+      showMessage(copy.messages.lockedPaint);
     }
 
     if (result.stoppedReason === "insufficient-points") {
-      showMessage(
-        language === "ko"
-          ? "잔액이 부족해 마지막 가능한 셀까지만 칠했습니다."
-          : "Painted only up to the last affordable cell.",
-      );
+      showMessage(copy.messages.paintAffordable);
     }
   }
 
@@ -820,7 +691,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
 
   function handleMoveSelected() {
     if (!selectedInstance || !selectedDefinition || selectedIsProtected) {
-      showMessage(commandFailureLabels[language]["protected-item"]);
+      showMessage(copy.commandFailures["protected-item"]);
       return;
     }
 
@@ -829,11 +700,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       instanceId: selectedInstance.id,
       rotation: selectedInstance.rotation,
     });
-    showMessage(
-      language === "ko"
-        ? "새 위치를 클릭해 이동을 확정하세요."
-        : "Click a new cell to confirm the move.",
-    );
+    showMessage(copy.messages.moveInstruction);
   }
 
   function handleRotatePlacing() {
@@ -841,11 +708,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
 
     const definition = findEstateItemDefinition(itemDefinitions, mode.definitionId);
     if (!definition?.canRotate) {
-      showMessage(
-        language === "ko"
-          ? "회전할 수 없는 아이템입니다."
-          : "This item cannot rotate.",
-      );
+      showMessage(copy.messages.cannotRotate);
       return;
     }
 
@@ -853,16 +716,16 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   }
 
   return (
-    <main className="min-h-dvh bg-canvas px-3 py-4 text-ink sm:px-5 lg:px-7">
-      <div className="mx-auto grid w-full max-w-7xl gap-4">
-        <header className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface px-3 py-3 shadow-card sm:px-4">
-          <div className="flex min-w-0 items-center gap-3">
+    <main className="relative min-h-dvh overflow-hidden bg-canvas px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 text-ink sm:px-5 lg:px-7">
+      <div className="relative z-10 mx-auto grid h-full w-full max-w-7xl gap-3 lg:gap-4">
+        <header className="flex min-w-0 flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface px-3 py-2.5 shadow-card sm:px-4">
+          <div className="flex min-w-0 max-w-full items-center gap-3">
             <Link
               href={`/${locale}`}
               onClick={() => {
                 void flushSave();
               }}
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line text-ink-muted transition hover:border-accent hover:bg-accent-soft hover:text-accent"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-line text-ink-muted transition hover:border-accent hover:bg-accent-soft hover:text-accent"
               aria-label={messages.estate.backToMap}
               title={messages.estate.backToMap}
             >
@@ -879,7 +742,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex min-w-0 max-w-full flex-nowrap items-center gap-2 overflow-x-auto pb-1 sm:w-auto sm:overflow-visible sm:pb-0">
             <StatusPill
               icon={<Coins size={15} aria-hidden="true" />}
               label={messages.estate.availablePoints}
@@ -887,24 +750,34 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
             />
             <StatusPill
               icon={<Hammer size={15} aria-hidden="true" />}
-              label={language === "ko" ? "해제 구역" : "Unlocked"}
+              label={copy.expansion.unlocked}
               value={`${unlockedParcelCount}/${estateExpansionCatalog.length}`}
             />
             {nextExpansionParcel ? (
               <StatusPill
                 icon={<Coins size={15} aria-hidden="true" />}
-                label={language === "ko" ? "다음 확장" : "Next"}
+                label={copy.expansion.next}
                 value={formatPoints(locale, nextExpansionParcel.cost)}
               />
             ) : null}
             <SaveStatusPill
               status={saveStatus}
-              label={saveStatusLabels[language][saveStatus]}
+              label={copy.saveStatus[saveStatus]}
             />
           </div>
         </header>
+        <p className="sr-only" aria-live="polite">
+          {interpolate(copy.aria.liveSummary, {
+            selection: selectedDefinition
+              ? getItemName(selectedDefinition, copy)
+              : copy.aria.noneSelected,
+            balance: formatPoints(locale, pointAccount.availablePoints),
+            saveStatus: copy.saveStatus[saveStatus],
+          })}
+          {message ? ` ${message}` : ""}
+        </p>
 
-        <section className="grid gap-3 sm:grid-cols-3">
+        <section className="hidden gap-3 lg:grid lg:grid-cols-3">
           <EstateMetric
             icon={<Leaf size={16} aria-hidden="true" />}
             label={messages.estate.savedEnergy}
@@ -922,8 +795,8 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
           />
         </section>
 
-        <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_22rem]">
-          <div className="min-w-0 rounded-xl border border-line bg-surface p-2 shadow-card">
+        <section className="grid min-h-0 gap-4 lg:grid-cols-[minmax(0,1fr)_22rem]">
+          <div className="fixed inset-0 z-0 h-dvh min-h-dvh min-w-0 bg-surface p-0 lg:relative lg:inset-auto lg:z-auto lg:h-[calc(100dvh-18rem)] lg:min-h-[30rem] lg:rounded-xl lg:border lg:border-line lg:p-2 lg:shadow-card xl:h-[calc(100dvh-14rem)]">
             <EstateCanvas
               snapshot={snapshot}
               mode={mode}
@@ -932,6 +805,13 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
               focusParcelId={focusParcelId}
               recentlyUnlockedParcelId={recentlyUnlockedParcelId}
               unlockAnimationProgress={unlockAnimationProgress}
+              ariaLabel={copy.aria.canvasLabel}
+              ariaSummary={interpolate(copy.aria.canvasSummary, {
+                items: snapshot.items.length,
+                parcels: unlockedParcelCount,
+                tiles: snapshot.groundTiles.length,
+              })}
+              controls={copy.controls}
               onCellClick={handleCellClick}
               onLockedParcelClick={handleRequestExpansion}
               onGroundPaintStart={handleGroundPaintStart}
@@ -940,30 +820,30 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
             />
           </div>
 
-          <aside className="fixed inset-x-3 bottom-3 z-20 max-h-[58dvh] overflow-hidden rounded-xl border border-line bg-surface shadow-pop lg:static lg:z-auto lg:max-h-none lg:self-start lg:shadow-card">
+          <aside className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-20 max-h-[min(58dvh,calc(100dvh-8rem-env(safe-area-inset-bottom)))] overflow-hidden rounded-xl border border-line bg-surface shadow-pop lg:static lg:z-auto lg:max-h-[calc(100dvh-18rem)] lg:self-start lg:overflow-y-auto lg:shadow-card xl:max-h-[calc(100dvh-14rem)]">
             <div className="grid border-b border-line bg-surface-3 p-2">
               <div className="grid grid-cols-4 gap-1">
                 <ToolButton
                   active={activePanel === "shop"}
                   icon={<ShoppingBag size={16} aria-hidden="true" />}
-                  label={panelLabels[language].shop}
+                  label={copy.panels.shop}
                   onClick={() => setActivePanel("shop")}
                 />
                 <ToolButton
                   active={activePanel === "inventory"}
                   icon={<Package size={16} aria-hidden="true" />}
-                  label={panelLabels[language].inventory}
+                  label={copy.panels.inventory}
                   onClick={() => setActivePanel("inventory")}
                 />
                 <ToolButton
                   active={activePanel === "expansion"}
                   icon={<Hammer size={16} aria-hidden="true" />}
-                  label={panelLabels[language].expansion}
+                  label={copy.panels.expansion}
                   onClick={() => setActivePanel("expansion")}
                 />
                 <ToolButton
                   icon={<Maximize2 size={16} aria-hidden="true" />}
-                  label={panelLabels[language].fit}
+                  label={copy.panels.fit}
                   onClick={() => setFitViewSignal((value) => value + 1)}
                 />
               </div>
@@ -978,9 +858,9 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
 
               {selectedInstance && selectedDefinition ? (
                 <SelectionPanel
+                  copy={copy}
                   definition={selectedDefinition}
                   instance={selectedInstance}
-                  language={language}
                   mode={mode}
                   protectedItem={selectedIsProtected}
                   onCancel={cancelEditing}
@@ -995,8 +875,9 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
               {activePanel === "shop" ? (
                 <ShopPanel
                   category={shopCategory}
+                  copy={copy}
                   items={visibleShopItems}
-                  language={language}
+                  locale={locale}
                   pendingPurchaseIds={pendingPurchaseIds}
                   pointBalance={pointAccount.availablePoints}
                   snapshot={snapshot}
@@ -1007,7 +888,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
 
               {activePanel === "inventory" ? (
                 <InventoryPanel
-                  language={language}
+                  copy={copy}
                   snapshot={snapshot}
                   onUseItem={handleStartInventoryAction}
                 />
@@ -1015,7 +896,8 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
 
               {activePanel === "expansion" ? (
                 <ExpansionPanel
-                  language={language}
+                  copy={copy}
+                  locale={locale}
                   pointBalance={pointAccount.availablePoints}
                   snapshot={snapshot}
                   onRequestUnlock={handleRequestExpansion}
@@ -1027,11 +909,12 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       </div>
       {pendingExpansionParcel ? (
         <ExpansionConfirmDialog
-          language={language}
+          copy={copy}
+          locale={locale}
           parcel={pendingExpansionParcel}
           pointBalance={pointAccount.availablePoints}
           snapshot={snapshot}
-          onCancel={() => setPendingExpansionParcelId(null)}
+          onCancel={closeExpansionDialog}
           onConfirm={() => handleConfirmExpansion(pendingExpansionParcel.id)}
         />
       ) : null}
@@ -1137,8 +1020,9 @@ function ToolButton({
 
 function ShopPanel({
   category,
+  copy,
   items,
-  language,
+  locale,
   pendingPurchaseIds,
   pointBalance,
   snapshot,
@@ -1146,8 +1030,9 @@ function ShopPanel({
   onPurchase,
 }: {
   category: EstateShopCategory;
+  copy: EstateMessages;
   items: readonly EstateItemDefinition[];
-  language: "ko" | "en";
+  locale: "ko" | "en";
   pendingPurchaseIds: ReadonlySet<string>;
   pointBalance: number;
   snapshot: EstateSnapshot;
@@ -1161,14 +1046,14 @@ function ShopPanel({
           <button
             key={candidate}
             type="button"
-            className={`h-9 shrink-0 rounded-lg border px-3 text-xs font-semibold transition ${
+            className={`h-11 min-w-[44px] shrink-0 rounded-lg border px-3 text-xs font-semibold transition ${
               category === candidate
                 ? "border-accent bg-accent text-on-accent"
                 : "border-line bg-surface text-ink-muted hover:border-accent hover:text-accent"
             }`}
             onClick={() => onCategoryChange(candidate)}
           >
-            {categoryLabels[language][candidate]}
+            {copy.categories[candidate]}
           </button>
         ))}
       </div>
@@ -1190,35 +1075,29 @@ function ShopPanel({
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <h2 className="truncate text-sm font-semibold text-ink">
-                    {getItemName(definition, language)}
+                    {getItemName(definition, copy)}
                   </h2>
                   <p className="mt-1 text-xs text-ink-subtle">
-                    {categoryLabels[language][definition.category]} ·{" "}
+                    {copy.categories[definition.category]} ·{" "}
                     {definition.footprintWidth}x{definition.footprintHeight}
                   </p>
                 </div>
                 <span className="rounded-md bg-accent-soft px-2 py-1 font-mono text-xs font-semibold text-accent">
-                  {definition.cost}
+                  {formatPoints(locale, definition.cost)}
                 </span>
               </div>
               <div className="flex items-center justify-between gap-2">
                 <span className="text-xs font-medium text-ink-muted">
-                  {language === "ko" ? "보유" : "Owned"} {ownedQuantity}
+                  {copy.shop.owned} {ownedQuantity}
                 </span>
                 <button
                   type="button"
-                  className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent transition disabled:cursor-not-allowed disabled:bg-line-strong disabled:text-ink-subtle"
+                  className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent transition disabled:cursor-not-allowed disabled:bg-line-strong disabled:text-ink-subtle"
                   disabled={disabled}
                   onClick={() => onPurchase(definition)}
                 >
                   <ShoppingBag size={14} aria-hidden="true" />
-                  {pending
-                    ? language === "ko"
-                      ? "처리 중"
-                      : "Pending"
-                    : language === "ko"
-                      ? "구매"
-                      : "Buy"}
+                  {pending ? copy.shop.pending : copy.shop.buy}
                 </button>
               </div>
             </div>
@@ -1230,11 +1109,11 @@ function ShopPanel({
 }
 
 function InventoryPanel({
-  language,
+  copy,
   snapshot,
   onUseItem,
 }: {
-  language: "ko" | "en";
+  copy: EstateMessages;
   snapshot: EstateSnapshot;
   onUseItem: (definitionId: string) => void;
 }) {
@@ -1256,9 +1135,7 @@ function InventoryPanel({
   if (entries.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-line bg-surface-2 p-4 text-sm text-ink-muted">
-        {language === "ko"
-          ? "보유한 아이템이 없습니다. 상점에서 먼저 구매하세요."
-          : "No owned items. Buy from the shop first."}
+        {copy.inventory.empty}
       </div>
     );
   }
@@ -1272,16 +1149,16 @@ function InventoryPanel({
         >
           <div className="min-w-0">
             <h2 className="truncate text-sm font-semibold text-ink">
-              {getItemName(definition, language)}
+              {getItemName(definition, copy)}
             </h2>
             <p className="text-xs text-ink-subtle">
-              {language === "ko" ? "보유 수량" : "Quantity"} {quantity} ·{" "}
+              {copy.inventory.quantity} {quantity} ·{" "}
               {definition.footprintWidth}x{definition.footprintHeight}
             </p>
           </div>
           <button
             type="button"
-            className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent"
+            className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent"
             onClick={() => onUseItem(definition.id)}
           >
             {definition.placementRule === "ground" ? (
@@ -1290,12 +1167,8 @@ function InventoryPanel({
               <Package size={14} aria-hidden="true" />
             )}
             {definition.placementRule === "ground"
-              ? language === "ko"
-                ? "칠하기"
-                : "Paint"
-              : language === "ko"
-                ? "배치"
-                : "Place"}
+              ? copy.inventory.paint
+              : copy.inventory.place}
           </button>
         </div>
       ))}
@@ -1304,9 +1177,9 @@ function InventoryPanel({
 }
 
 function SelectionPanel({
+  copy,
   definition,
   instance,
-  language,
   mode,
   protectedItem,
   onCancel,
@@ -1314,9 +1187,9 @@ function SelectionPanel({
   onRotate,
   onRemove,
 }: {
+  copy: EstateMessages;
   definition: EstateItemDefinition;
   instance: EstateItemInstance;
-  language: "ko" | "en";
   mode: EstateEditorMode;
   protectedItem: boolean;
   onCancel: () => void;
@@ -1329,21 +1202,19 @@ function SelectionPanel({
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <h2 className="truncate text-sm font-semibold text-ink">
-            {getItemName(definition, language)}
+            {getItemName(definition, copy)}
           </h2>
           <p className="text-xs text-ink-muted">
             {mode.type === "moving"
-              ? language === "ko"
-                ? "이동 위치 선택 중"
-                : "Choosing move target"
+              ? copy.selection.choosingMoveTarget
               : `${instance.x}, ${instance.y}`}
           </p>
         </div>
         <button
           type="button"
-          className="grid h-8 w-8 place-items-center rounded-lg text-ink-muted transition hover:bg-surface hover:text-ink"
-          aria-label={language === "ko" ? "취소" : "Cancel"}
-          title={language === "ko" ? "취소" : "Cancel"}
+          className="grid h-11 w-11 place-items-center rounded-lg text-ink-muted transition hover:bg-surface hover:text-ink"
+          aria-label={copy.selection.cancel}
+          title={copy.selection.cancel}
           onClick={onCancel}
         >
           <X size={15} aria-hidden="true" />
@@ -1353,20 +1224,20 @@ function SelectionPanel({
         <SelectionButton
           disabled={protectedItem}
           icon={<Move size={14} aria-hidden="true" />}
-          label={language === "ko" ? "이동" : "Move"}
+          label={copy.selection.move}
           onClick={onMove}
         />
         <SelectionButton
           disabled={protectedItem || !definition.canRotate}
           icon={<RotateCw size={14} aria-hidden="true" />}
-          label={language === "ko" ? "회전" : "Rotate"}
+          label={copy.selection.rotate}
           onClick={onRotate}
         />
         <SelectionButton
           danger
           disabled={protectedItem}
           icon={<Trash2 size={14} aria-hidden="true" />}
-          label={language === "ko" ? "철거" : "Remove"}
+          label={copy.selection.remove}
           onClick={onRemove}
         />
       </div>
@@ -1390,7 +1261,7 @@ function SelectionButton({
   return (
     <button
       type="button"
-      className={`inline-flex h-9 items-center justify-center gap-1.5 rounded-lg text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-45 ${
+      className={`inline-flex h-11 items-center justify-center gap-1.5 rounded-lg text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-45 ${
         danger
           ? "bg-overuse-soft text-overuse hover:bg-overuse-soft"
           : "bg-surface text-ink-muted hover:text-accent"
@@ -1405,12 +1276,14 @@ function SelectionButton({
 }
 
 function ExpansionPanel({
-  language,
+  copy,
+  locale,
   pointBalance,
   snapshot,
   onRequestUnlock,
 }: {
-  language: "ko" | "en";
+  copy: EstateMessages;
+  locale: "ko" | "en";
   pointBalance: number;
   snapshot: EstateSnapshot;
   onRequestUnlock: (parcelId: string) => void;
@@ -1422,9 +1295,7 @@ function ExpansionPanel({
   if (lockedParcels.length === 0) {
     return (
       <div className="rounded-lg border border-line bg-surface-2 p-4 text-sm text-ink-muted">
-        {language === "ko"
-          ? "모든 구역이 확장되었습니다."
-          : "All parcels are unlocked."}
+        {copy.expansion.allUnlocked}
       </div>
     );
   }
@@ -1442,13 +1313,12 @@ function ExpansionPanel({
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
                 <h2 className="truncate text-sm font-semibold text-ink">
-                  {getParcelName(parcel.id, language)}
+                  {getParcelName(parcel.id, copy)}
                 </h2>
                 <p className="mt-1 text-xs text-ink-subtle">
-                  {language === "ko" ? "크기" : "Size"}{" "}
+                  {copy.expansion.size}{" "}
                   {formatParcelSize(parcel)} ·{" "}
-                  {language === "ko" ? "비용" : "Cost"}{" "}
-                  {formatPointsForUi(parcel.cost)}
+                  {copy.expansion.cost} {formatPoints(locale, parcel.cost)}
                 </p>
               </div>
               <span
@@ -1459,20 +1329,16 @@ function ExpansionPanel({
                 }`}
               >
                 {status.canUnlock
-                  ? language === "ko"
-                    ? "구매 가능"
-                    : "Available"
-                  : language === "ko"
-                    ? "대기"
-                    : "Locked"}
+                  ? copy.expansion.available
+                  : copy.expansion.locked}
               </span>
             </div>
 
             <div className="grid gap-1 text-xs text-ink-subtle">
               <p>
-                {language === "ko" ? "인접 조건" : "Adjacent"}:{" "}
+                {copy.expansion.adjacent}:{" "}
                 {parcel.adjacentParcelIds
-                  .map((parcelId) => getParcelName(parcelId, language))
+                  .map((parcelId) => getParcelName(parcelId, copy))
                   .join(", ")}
                 {" · "}
                 <span
@@ -1480,30 +1346,24 @@ function ExpansionPanel({
                     status.adjacent ? "text-accent" : "text-ink-subtle"
                   }
                 >
-                  {status.adjacent
-                    ? language === "ko"
-                      ? "충족"
-                      : "Met"
-                    : language === "ko"
-                      ? "미충족"
-                      : "Not met"}
+                  {status.adjacent ? copy.expansion.met : copy.expansion.notMet}
                 </span>
               </p>
               {!status.affordable ? (
                 <p className="font-medium text-overuse">
-                  {language === "ko"
-                    ? `${formatPointsForUi(status.missingPoints)} 포인트가 더 필요합니다.`
-                    : `${formatPointsForUi(status.missingPoints)} more points needed.`}
+                  {interpolate(copy.expansion.missingPoints, {
+                    points: formatPoints(locale, status.missingPoints),
+                  })}
                 </p>
               ) : null}
             </div>
 
             <button
               type="button"
-              className="inline-flex h-9 items-center justify-center rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent transition hover:brightness-105"
+              className="inline-flex h-11 items-center justify-center rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent transition hover:brightness-105"
               onClick={() => onRequestUnlock(parcel.id)}
             >
-              {language === "ko" ? "확장 확인" : "Review expansion"}
+              {copy.expansion.review}
             </button>
           </div>
         );
@@ -1513,14 +1373,16 @@ function ExpansionPanel({
 }
 
 function ExpansionConfirmDialog({
-  language,
+  copy,
+  locale,
   parcel,
   pointBalance,
   snapshot,
   onCancel,
   onConfirm,
 }: {
-  language: "ko" | "en";
+  copy: EstateMessages;
+  locale: "ko" | "en";
   parcel: EstateExpansionParcelDefinition;
   pointBalance: number;
   snapshot: EstateSnapshot;
@@ -1528,10 +1390,49 @@ function ExpansionConfirmDialog({
   onConfirm: () => void;
 }) {
   const status = getParcelUnlockStatus(parcel, snapshot, pointBalance);
+  const dialogRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    getFocusableElements(dialog)[0]?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onCancel();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusableElements = getFocusableElements(dialog);
+      if (focusableElements.length === 0) return;
+
+      const first = focusableElements[0];
+      const last = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+        return;
+      }
+
+      if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onCancel]);
 
   return (
     <div className="fixed inset-0 z-40 grid place-items-center bg-ink/45 px-4 backdrop-blur-sm">
       <section
+        ref={dialogRef}
         className="w-full max-w-md rounded-xl border border-line bg-surface p-4 shadow-pop"
         role="dialog"
         aria-modal="true"
@@ -1540,20 +1441,20 @@ function ExpansionConfirmDialog({
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-[11px] font-semibold uppercase text-accent">
-              {language === "ko" ? "토지 확장" : "Land expansion"}
+              {copy.dialog.landExpansion}
             </p>
             <h2
               id="estate-expansion-dialog-title"
               className="mt-1 text-lg font-semibold text-ink"
             >
-              {getParcelName(parcel.id, language)}
+              {getParcelName(parcel.id, copy)}
             </h2>
           </div>
           <button
             type="button"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-ink-muted transition hover:bg-surface-2 hover:text-ink"
-            aria-label={language === "ko" ? "닫기" : "Close"}
-            title={language === "ko" ? "닫기" : "Close"}
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-lg text-ink-muted transition hover:bg-surface-2 hover:text-ink"
+            aria-label={copy.dialog.close}
+            title={copy.dialog.close}
             onClick={onCancel}
           >
             <X size={16} aria-hidden="true" />
@@ -1562,22 +1463,22 @@ function ExpansionConfirmDialog({
 
         <dl className="mt-4 grid gap-2 text-sm">
           <div className="flex justify-between gap-3">
-            <dt className="text-ink-subtle">{language === "ko" ? "크기" : "Size"}</dt>
+            <dt className="text-ink-subtle">{copy.dialog.size}</dt>
             <dd className="font-medium text-ink">{formatParcelSize(parcel)}</dd>
           </div>
           <div className="flex justify-between gap-3">
-            <dt className="text-ink-subtle">{language === "ko" ? "비용" : "Cost"}</dt>
+            <dt className="text-ink-subtle">{copy.dialog.cost}</dt>
             <dd className="font-mono font-semibold text-ink">
-              {formatPointsForUi(parcel.cost)}
+              {formatPoints(locale, parcel.cost)}
             </dd>
           </div>
           <div className="grid gap-1">
             <dt className="text-ink-subtle">
-              {language === "ko" ? "인접 조건" : "Adjacent requirement"}
+              {copy.dialog.adjacentRequirement}
             </dt>
             <dd className="text-ink">
               {parcel.adjacentParcelIds
-                .map((parcelId) => getParcelName(parcelId, language))
+                .map((parcelId) => getParcelName(parcelId, copy))
                 .join(", ")}
             </dd>
           </div>
@@ -1591,27 +1492,25 @@ function ExpansionConfirmDialog({
           }`}
         >
           {status.canUnlock
-            ? language === "ko"
-              ? "조건이 충족되었습니다. 확장 후 즉시 배치할 수 있습니다."
-              : "Ready to unlock. You can build on it immediately."
-            : getExpansionBlockedMessage(status, language)}
+            ? copy.dialog.readyToUnlock
+            : getExpansionBlockedMessage(status, copy, locale)}
         </div>
 
         <div className="mt-4 grid grid-cols-2 gap-2">
           <button
             type="button"
-            className="h-10 rounded-lg border border-line bg-surface-2 text-sm font-semibold text-ink-muted transition hover:text-ink"
+            className="h-11 rounded-lg border border-line bg-surface-2 text-sm font-semibold text-ink-muted transition hover:text-ink"
             onClick={onCancel}
           >
-            {language === "ko" ? "취소" : "Cancel"}
+            {copy.dialog.cancel}
           </button>
           <button
             type="button"
-            className="h-10 rounded-lg bg-accent text-sm font-semibold text-on-accent transition disabled:cursor-not-allowed disabled:bg-line-strong disabled:text-ink-subtle"
+            className="h-11 rounded-lg bg-accent text-sm font-semibold text-on-accent transition disabled:cursor-not-allowed disabled:bg-line-strong disabled:text-ink-subtle"
             disabled={!status.canUnlock}
             onClick={onConfirm}
           >
-            {language === "ko" ? "확장하기" : "Unlock"}
+            {copy.dialog.unlock}
           </button>
         </div>
       </section>
@@ -1670,63 +1569,54 @@ function getNextUnlockableParcel(
 
 function getExpansionBlockedMessage(
   status: ParcelUnlockStatus,
-  language: "ko" | "en",
+  copy: EstateMessages,
+  locale: "ko" | "en",
 ): string {
   if (status.alreadyUnlocked) {
-    return language === "ko"
-      ? "이미 해제된 구역입니다."
-      : "This parcel is already unlocked.";
+    return copy.expansion.alreadyUnlocked;
   }
 
   if (!status.adjacent) {
-    return language === "ko"
-      ? "먼저 인접한 구역을 해제해야 합니다."
-      : "Unlock an adjacent parcel first.";
+    return copy.expansion.notAdjacent;
   }
 
   if (!status.affordable) {
-    return language === "ko"
-      ? `${formatPointsForUi(status.missingPoints)} 포인트가 더 필요합니다.`
-      : `${formatPointsForUi(status.missingPoints)} more points needed.`;
+    return interpolate(copy.expansion.missingPoints, {
+      points: formatPoints(locale, status.missingPoints),
+    });
   }
 
-  return language === "ko"
-    ? "현재 확장할 수 없습니다."
-    : "This parcel cannot be unlocked right now.";
+  return copy.expansion.blocked;
 }
 
 function formatParcelSize(parcel: EstateExpansionParcelDefinition): string {
   return `${parcel.bounds.width}x${parcel.bounds.height}`;
 }
 
-function formatPointsForUi(points: number): string {
-  return new Intl.NumberFormat("ko-KR").format(points);
-}
-
 function getItemName(
   definition: EstateItemDefinition,
-  language: "ko" | "en",
+  copy: EstateMessages,
 ): string {
-  return itemNames[language][definition.id] ?? definition.id;
+  return getRecordValue(copy.items, definition.id);
 }
 
-function getParcelName(parcelId: string, language: "ko" | "en"): string {
-  const ko: Record<string, string> = {
-    "central-campus": "중심 구역",
-    "east-yard": "동쪽 마당",
-    "south-yard": "남쪽 마당",
-    "south-east-plaza": "동남쪽 광장",
-    "west-terrace": "서쪽 테라스",
-  };
-  const en: Record<string, string> = {
-    "central-campus": "Central parcel",
-    "east-yard": "East yard",
-    "south-yard": "South yard",
-    "south-east-plaza": "Southeast plaza",
-    "west-terrace": "West terrace",
-  };
+function getParcelName(parcelId: string, copy: EstateMessages): string {
+  return getRecordValue(copy.parcels, parcelId);
+}
 
-  return (language === "ko" ? ko : en)[parcelId] ?? parcelId;
+function getRecordValue(
+  record: Readonly<Record<string, string>>,
+  key: string,
+): string {
+  return record[key] ?? key;
+}
+
+function getFocusableElements(container: HTMLElement): HTMLElement[] {
+  return [
+    ...container.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ),
+  ].filter((element) => !element.hasAttribute("disabled"));
 }
 
 function createEstateId(): string {

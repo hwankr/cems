@@ -46,7 +46,7 @@ import {
   type EstateRenderScene,
 } from "../isometric/renderer";
 
-type EstateCanvasProps = {
+export type EstateCanvasProps = {
   snapshot: EstateSnapshot;
   mode?: EstateEditorMode;
   selectedItemId?: string | null;
@@ -54,6 +54,14 @@ type EstateCanvasProps = {
   focusParcelId?: string | null;
   recentlyUnlockedParcelId?: string | null;
   unlockAnimationProgress?: number;
+  ariaLabel: string;
+  ariaSummary: string;
+  controls: {
+    assetsLoading: string;
+    fitView: string;
+    zoomIn: string;
+    zoomOut: string;
+  };
   onCellClick?: (cell: EstateGridCell) => void;
   onLockedParcelClick?: (parcelId: string) => void;
   onGroundPaintStart?: () => void;
@@ -83,6 +91,9 @@ export function EstateCanvas({
   focusParcelId = null,
   recentlyUnlockedParcelId = null,
   unlockAnimationProgress = 1,
+  ariaLabel,
+  ariaSummary,
+  controls,
   onCellClick,
   onLockedParcelClick,
   onGroundPaintStart,
@@ -316,9 +327,11 @@ export function EstateCanvas({
     return () => {
       if (frameRef.current !== null) {
         cancelAnimationFrame(frameRef.current);
+        frameRef.current = null;
       }
       if (cameraAnimationRef.current !== null) {
         cancelAnimationFrame(cameraAnimationRef.current);
+        cameraAnimationRef.current = null;
       }
     };
   }, []);
@@ -350,10 +363,8 @@ export function EstateCanvas({
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
 
-    const observer = new ResizeObserver((entries) => {
-      const rect = entries[0]?.contentRect;
-      if (!rect) return;
-
+    const syncCanvasSize = (rect: Pick<DOMRectReadOnly, "width" | "height">) => {
+      if (rect.width <= 0 || rect.height <= 0) return;
       const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
       const width = Math.max(1, Math.floor(rect.width));
       const height = Math.max(1, Math.floor(rect.height));
@@ -373,11 +384,33 @@ export function EstateCanvas({
       }
 
       markDirty();
+    };
+
+    syncCanvasSize(container.getBoundingClientRect());
+
+    const initialFrame = requestAnimationFrame(() => {
+      syncCanvasSize(container.getBoundingClientRect());
     });
 
-    observer.observe(container);
+    const observer =
+      typeof ResizeObserver === "undefined"
+        ? null
+        : new ResizeObserver((entries) => {
+            syncCanvasSize(entries[0]?.contentRect ?? container.getBoundingClientRect());
+          });
 
-    return () => observer.disconnect();
+    observer?.observe(container);
+
+    const handleResize = () => {
+      syncCanvasSize(container.getBoundingClientRect());
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      cancelAnimationFrame(initialFrame);
+      observer?.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
   }, [fitViewport, markDirty]);
 
   useEffect(() => {
@@ -589,13 +622,18 @@ export function EstateCanvas({
   return (
     <div
       ref={containerRef}
-      className="relative min-h-[28rem] overflow-hidden rounded-xl border border-line bg-inset shadow-card"
+      className="relative h-full min-h-[24rem] overflow-hidden bg-inset lg:rounded-xl lg:border lg:border-line lg:shadow-card"
     >
+      <p id="estate-canvas-summary" className="sr-only">
+        {ariaSummary}
+      </p>
       <canvas
         ref={canvasRef}
-        className="block h-full min-h-[28rem] w-full cursor-grab select-none active:cursor-grabbing"
+        className="block h-full min-h-[24rem] w-full cursor-grab select-none active:cursor-grabbing"
         style={{ touchAction: "none" }}
-        aria-label="Estate isometric canvas"
+        role="img"
+        aria-label={ariaLabel}
+        aria-describedby="estate-canvas-summary"
         onContextMenu={(event) => event.preventDefault()}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
@@ -604,20 +642,20 @@ export function EstateCanvas({
       />
 
       <div className="absolute left-3 top-3 flex overflow-hidden rounded-lg border border-line bg-surface/90 shadow-card backdrop-blur">
-        <CanvasButton label="Zoom in" onClick={() => zoomFromCenter(1.12)}>
+        <CanvasButton label={controls.zoomIn} onClick={() => zoomFromCenter(1.12)}>
           <Plus size={16} aria-hidden="true" />
         </CanvasButton>
-        <CanvasButton label="Zoom out" onClick={() => zoomFromCenter(1 / 1.12)}>
+        <CanvasButton label={controls.zoomOut} onClick={() => zoomFromCenter(1 / 1.12)}>
           <Minus size={16} aria-hidden="true" />
         </CanvasButton>
-        <CanvasButton label="Fit view" onClick={() => fitViewport()}>
+        <CanvasButton label={controls.fitView} onClick={() => fitViewport()}>
           <Maximize2 size={16} aria-hidden="true" />
         </CanvasButton>
       </div>
       {assetLoadSnapshot.status === "loading" ? (
         <div
-          className="absolute right-3 top-3 flex h-9 items-center gap-1.5 rounded-lg border border-line bg-surface/86 px-3 shadow-card backdrop-blur"
-          aria-label="Estate assets loading"
+          className="absolute right-3 top-3 flex h-11 items-center gap-1.5 rounded-lg border border-line bg-surface/86 px-3 shadow-card backdrop-blur"
+          aria-label={controls.assetsLoading}
         >
           <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-accent" />
           <span className="h-2.5 w-8 animate-pulse rounded-full bg-ink-subtle/30" />
@@ -692,7 +730,7 @@ function CanvasButton({
       type="button"
       aria-label={label}
       title={label}
-      className="grid h-10 w-10 place-items-center border-r border-line text-ink-muted transition last:border-r-0 hover:bg-accent-soft hover:text-accent"
+      className="grid h-11 w-11 place-items-center border-r border-line text-ink-muted transition last:border-r-0 hover:bg-accent-soft hover:text-accent"
       onClick={onClick}
     >
       {children}
@@ -757,3 +795,5 @@ function getPinchGesture(
     },
   };
 }
+
+export default EstateCanvas;
