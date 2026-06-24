@@ -90,6 +90,7 @@ export const enMessages = {
     controls: {
       zoomIn: "Zoom in",
       zoomOut: "Zoom out",
+      resetView: "Reset view",
       heatmap: "Usage heatmap",
       labels: "Building labels",
       settings: "Map settings",

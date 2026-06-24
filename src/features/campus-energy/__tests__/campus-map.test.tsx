@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 
-import { act, useState } from "react";
+import { act, createRef, useState } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { CampusMap } from "../components/campus-map";
+import { CampusMap, type CampusMapHandle } from "../components/campus-map";
 import { compareEnergy } from "../domain/energy";
 import type { EnergySubject, School } from "../domain/types";
 
@@ -28,6 +28,9 @@ type MockMapInstance = {
   setLight: ReturnType<typeof vi.fn>;
   sources: Map<string, MockGeoJsonSource>;
   stop: ReturnType<typeof vi.fn>;
+  zoomIn: ReturnType<typeof vi.fn>;
+  zoomOut: ReturnType<typeof vi.fn>;
+  zoomTo: ReturnType<typeof vi.fn>;
 };
 
 const mockMapbox = vi.hoisted(() => {
@@ -69,6 +72,9 @@ const mockMapbox = vi.hoisted(() => {
       setLight: vi.fn(),
       sources: new Map(),
       stop: vi.fn(),
+      zoomIn: vi.fn(),
+      zoomOut: vi.fn(),
+      zoomTo: vi.fn(),
     };
 
     instances.push(instance);
@@ -266,6 +272,8 @@ describe("CampusMap", () => {
       | {
           style?: string;
           minZoom?: number;
+          maxZoom?: number;
+          maxBounds?: [[number, number], [number, number]];
           localIdeographFontFamily?: string;
         }
       | undefined;
@@ -318,9 +326,16 @@ describe("CampusMap", () => {
     expect(mapOptions).toMatchObject({
       style: "mapbox://styles/mapbox/dark-v11",
       minZoom: 15.3,
+      maxZoom: 18.2,
+      maxBounds: [
+        [128.7463, 35.8219],
+        [128.7643, 35.8389],
+      ],
       localIdeographFontFamily:
         "'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif",
     });
+    expect(mockMapbox.NavigationControl).not.toHaveBeenCalled();
+    expect(firstMap.addControl).not.toHaveBeenCalled();
     expect(firstMap.setLayoutProperty).toHaveBeenCalledWith(
       "building",
       "visibility",
@@ -388,6 +403,87 @@ describe("CampusMap", () => {
       "text-halo-blur": 0.4,
     });
     expect(pointFeature?.properties).not.toHaveProperty("displayHeightMeters");
+
+    await act(async () => root.unmount());
+  });
+
+  it("clamps custom zoom controls to the Yeungnam campus zoom range", async () => {
+    const container = document.createElement("div");
+    const root = createRoot(container);
+    const mapRef = createRef<CampusMapHandle>();
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <CampusMap
+          ref={mapRef}
+          mapboxToken="test-token"
+          school={school}
+          subjects={subjects}
+          comparisons={comparisons}
+          selectedSubjectId="yu-e21"
+          onSelectSubject={() => {}}
+        />,
+      ),
+    );
+
+    const firstMap = mockMapbox.instances[0];
+
+    firstMap.getZoom.mockReturnValue(17.9);
+    await act(async () => mapRef.current?.zoomIn());
+
+    expect(firstMap.zoomTo).toHaveBeenCalledWith(18.2, {
+      duration: 280,
+      essential: true,
+    });
+
+    firstMap.zoomTo.mockClear();
+    firstMap.getZoom.mockReturnValue(15.5);
+    await act(async () => mapRef.current?.zoomOut());
+
+    expect(firstMap.zoomTo).toHaveBeenCalledWith(15.3, {
+      duration: 280,
+      essential: true,
+    });
+
+    await act(async () => root.unmount());
+  });
+
+  it("resets the map to the default Yeungnam campus camera", async () => {
+    const container = document.createElement("div");
+    const root = createRoot(container);
+    const mapRef = createRef<CampusMapHandle>();
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <CampusMap
+          ref={mapRef}
+          mapboxToken="test-token"
+          school={school}
+          subjects={subjects}
+          comparisons={comparisons}
+          selectedSubjectId=""
+          onSelectSubject={() => {}}
+        />,
+      ),
+    );
+
+    const firstMap = mockMapbox.instances[0];
+
+    expect(mapRef.current?.resetView).toEqual(expect.any(Function));
+
+    await act(async () => mapRef.current?.resetView());
+
+    expect(firstMap.stop).toHaveBeenCalled();
+    expect(firstMap.easeTo).toHaveBeenCalledWith({
+      center: school.center,
+      zoom: school.zoom,
+      pitch: school.pitch,
+      bearing: -24,
+      duration: 700,
+      essential: true,
+    });
 
     await act(async () => root.unmount());
   });

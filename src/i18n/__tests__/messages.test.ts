@@ -13,6 +13,10 @@ describe("messages", () => {
     expect(Object.keys(enMessages.admin.metrics)).toEqual(
       Object.keys(koMessages.admin.metrics),
     );
+    expect(Object.keys(enMessages.mapView.controls)).toEqual(
+      Object.keys(koMessages.mapView.controls),
+    );
     expect(enMessages.app.eyebrow).toBe("Campus Energy Management System");
+    expect(enMessages.mapView.controls.resetView).toBe("Reset view");
   });
 });

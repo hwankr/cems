@@ -1,12 +1,13 @@
 "use client";
 
-import { Flame, Minus, Plus, Settings, Tag } from "lucide-react";
+import { Flame, Minus, Plus, RotateCcw, Settings, Tag } from "lucide-react";
 import type { ReactNode } from "react";
 import { useI18n } from "@/i18n/client";
 
 type MapControlsProps = {
   onZoomIn: () => void;
   onZoomOut: () => void;
+  onResetView: () => void;
   showHeat: boolean;
   onToggleHeat: () => void;
   showLabels: boolean;
@@ -17,6 +18,7 @@ type MapControlsProps = {
 export function MapControls({
   onZoomIn,
   onZoomOut,
+  onResetView,
   showHeat,
   onToggleHeat,
   showLabels,
@@ -31,6 +33,10 @@ export function MapControls({
       <div className="flex flex-col overflow-hidden rounded-xl border border-line bg-surface/95 shadow-pop backdrop-blur">
         <ControlButton label={controls.zoomIn} onClick={onZoomIn}>
           <Plus size={18} aria-hidden="true" />
+        </ControlButton>
+        <span className="h-px bg-line" aria-hidden="true" />
+        <ControlButton label={controls.resetView} onClick={onResetView}>
+          <RotateCcw size={17} aria-hidden="true" />
         </ControlButton>
         <span className="h-px bg-line" aria-hidden="true" />
         <ControlButton label={controls.zoomOut} onClick={onZoomOut}>

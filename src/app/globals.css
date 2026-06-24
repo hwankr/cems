@@ -120,35 +120,7 @@
   }
 }
 
-/* Mapbox GL chrome — follows the active theme via tokens. */
-.mapboxgl-ctrl-group {
-  background: color-mix(in srgb, var(--color-surface) 90%, transparent) !important;
-  border: 1px solid var(--color-line-strong) !important;
-  border-radius: 0.75rem !important;
-  overflow: hidden;
-  box-shadow: var(--shadow-pop);
-  backdrop-filter: blur(8px);
-}
-
-.mapboxgl-ctrl-group button {
-  width: 34px;
-  height: 34px;
-  background-color: transparent;
-}
-
-.mapboxgl-ctrl-group button + button {
-  border-top: 1px solid var(--color-line);
-}
-
-.mapboxgl-ctrl-group button:hover {
-  background-color: var(--color-accent-soft);
-}
-
-/* Mapbox control icons ship dark; invert only on the dark theme. */
-html[data-theme="dark"] .mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
-  filter: invert(0.92) hue-rotate(180deg) brightness(1.05);
-}
-
+/* Mapbox attribution stays visible while custom controls own map movement. */
 .mapboxgl-ctrl-attrib.mapboxgl-compact {
   background: color-mix(in srgb, var(--color-surface) 85%, transparent) !important;
   border-radius: 0.5rem;
@@ -157,10 +129,6 @@ html[data-theme="dark"] .mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
 .mapboxgl-ctrl-attrib a,
 .mapboxgl-ctrl-attrib {
   color: var(--color-ink-subtle) !important;
-}
-
-.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
-  margin: 0 0.65rem 0.65rem 0;
 }
 
 /* Building popup entrance. */

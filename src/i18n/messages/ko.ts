@@ -89,6 +89,7 @@ export const koMessages = {
     controls: {
       zoomIn: "확대",
       zoomOut: "축소",
+      resetView: "기본 보기",
       heatmap: "사용량 히트맵",
       labels: "건물명 표시",
       settings: "지도 설정",

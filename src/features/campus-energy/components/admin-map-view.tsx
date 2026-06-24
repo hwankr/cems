@@ -107,6 +107,11 @@ export function AdminMapView({
           <MapControls
             onZoomIn={() => mapHandle.current?.zoomIn()}
             onZoomOut={() => mapHandle.current?.zoomOut()}
+            onResetView={() => {
+              onSelectSubject("");
+              setPopupPosition(null);
+              mapHandle.current?.resetView();
+            }}
             showHeat={showHeat}
             onToggleHeat={() => setShowHeat((value) => !value)}
             showLabels={showLabels}

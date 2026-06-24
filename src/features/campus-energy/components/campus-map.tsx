@@ -48,6 +48,16 @@ const ENERGY_SUBJECT_POLYGON_HIT_LAYER_ID =
   "energy-subject-polygon-hit-areas";
 const ENERGY_SUBJECT_OUTLINE_LAYER_ID = "energy-subject-outlines";
 const ENERGY_SUBJECT_LABEL_LAYER_ID = "energy-subject-labels";
+const DEFAULT_MAP_BEARING = -24;
+const CAMPUS_MIN_ZOOM = 15.3;
+const CAMPUS_MAX_ZOOM = 18.2;
+const CAMPUS_ZOOM_STEP = 0.7;
+const CAMPUS_ZOOM_DURATION_MS = 280;
+const CAMPUS_RESET_DURATION_MS = 700;
+const YEUNGNAM_CAMPUS_MAX_BOUNDS: mapboxgl.LngLatBoundsLike = [
+  [128.7463, 35.8219],
+  [128.7643, 35.8389],
+];
 const POLYGON_FILTER: mapboxgl.FilterSpecification = [
   "any",
   ["==", ["geometry-type"], "Polygon"],
@@ -72,6 +82,7 @@ const POPUP_GAP = 22;
 export type CampusMapHandle = {
   zoomIn: () => void;
   zoomOut: () => void;
+  resetView: () => void;
 };
 
 export type ScreenPosition = { left: number; top: number };
@@ -194,10 +205,45 @@ export const CampusMap = forwardRef<CampusMapHandle, CampusMapProps>(
     useImperativeHandle(
       ref,
       () => ({
-        zoomIn: () => mapRef.current?.zoomIn(),
-        zoomOut: () => mapRef.current?.zoomOut(),
+        zoomIn: () => {
+          const map = mapRef.current;
+          if (!map) return;
+          map.zoomTo(
+            clamp(
+              map.getZoom() + CAMPUS_ZOOM_STEP,
+              CAMPUS_MIN_ZOOM,
+              CAMPUS_MAX_ZOOM,
+            ),
+            { duration: CAMPUS_ZOOM_DURATION_MS, essential: true },
+          );
+        },
+        zoomOut: () => {
+          const map = mapRef.current;
+          if (!map) return;
+          map.zoomTo(
+            clamp(
+              map.getZoom() - CAMPUS_ZOOM_STEP,
+              CAMPUS_MIN_ZOOM,
+              CAMPUS_MAX_ZOOM,
+            ),
+            { duration: CAMPUS_ZOOM_DURATION_MS, essential: true },
+          );
+        },
+        resetView: () => {
+          const map = mapRef.current;
+          if (!map) return;
+          map.stop();
+          map.easeTo({
+            center: school.center,
+            zoom: school.zoom,
+            pitch: school.pitch,
+            bearing: DEFAULT_MAP_BEARING,
+            duration: CAMPUS_RESET_DURATION_MS,
+            essential: true,
+          });
+        },
       }),
-      [],
+      [school.center, school.pitch, school.zoom],
     );
 
     useEffect(() => {
@@ -277,12 +323,14 @@ export const CampusMap = forwardRef<CampusMapHandle, CampusMapProps>(
       const map = new mapboxgl.Map({
         accessToken: mapboxToken,
         antialias: true,
-        bearing: -24,
+        bearing: DEFAULT_MAP_BEARING,
         center: school.center,
         container: containerRef.current,
         localIdeographFontFamily:
           "'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif",
-        minZoom: 15.3,
+        minZoom: CAMPUS_MIN_ZOOM,
+        maxZoom: CAMPUS_MAX_ZOOM,
+        maxBounds: YEUNGNAM_CAMPUS_MAX_BOUNDS,
         pitch: school.pitch,
         style: mapStyleUrl,
         zoom: school.zoom,
@@ -299,10 +347,6 @@ export const CampusMap = forwardRef<CampusMapHandle, CampusMapProps>(
       if (process.env.NODE_ENV !== "production") {
         (window as typeof window & { __map?: mapboxgl.Map }).__map = map;
       }
-      map.addControl(
-        new mapboxgl.NavigationControl({ visualizePitch: true }),
-        "bottom-right",
-      );
 
       map.on("load", () => {
         if (!isStandard) {
@@ -490,7 +534,7 @@ export const CampusMap = forwardRef<CampusMapHandle, CampusMapProps>(
         center,
         zoom,
         pitch: school.pitch,
-        bearing: -24,
+        bearing: DEFAULT_MAP_BEARING,
         duration: 800,
       });
     }, [school.pitch, selectedSubject, positionPopup]);
