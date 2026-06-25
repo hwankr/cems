@@ -79,9 +79,30 @@ type TouchPoint = {
   y: number;
 };
 
+type PendingCanvasPress =
+  | {
+      pointerId: number;
+      start: TouchPoint;
+      last: TouchPoint;
+      action: {
+        type: "select-item";
+        instanceId: string;
+      };
+    }
+  | {
+      pointerId: number;
+      start: TouchPoint;
+      last: TouchPoint;
+      action: {
+        type: "open-locked-parcel";
+        parcelId: string;
+      };
+    };
+
 const itemDefinitions = [...baseEstateItemDefinitions, ...estateItemCatalog];
 const minZoom = 0.25;
 const maxZoom = 1.6;
+const tapMovementTolerancePx = 10;
 
 export function EstateCanvas({
   snapshot,
@@ -109,6 +130,7 @@ export function EstateCanvas({
     pointerId: number;
     last: TouchPoint;
   } | null>(null);
+  const pendingCanvasPressRef = useRef<PendingCanvasPress | null>(null);
   const paintPointerRef = useRef<number | null>(null);
   const touchPanRef = useRef<TouchPoint | null>(null);
   const pinchRef = useRef<{
@@ -554,14 +576,32 @@ export function EstateCanvas({
     const item = cell ? findTopRenderItemAtCell(scene, cell) : null;
 
     if (item && event.button === 0) {
-      onItemSelect?.(item.id);
+      event.currentTarget.setPointerCapture(event.pointerId);
+      pendingCanvasPressRef.current = {
+        pointerId: event.pointerId,
+        start: point,
+        last: point,
+        action: {
+          type: "select-item",
+          instanceId: item.id,
+        },
+      };
       return;
     }
 
     const parcel = cell ? findSceneParcelAtCell(scene, cell) : null;
 
     if (parcel && !parcel.unlocked && event.button === 0) {
-      onLockedParcelClick?.(parcel.id);
+      event.currentTarget.setPointerCapture(event.pointerId);
+      pendingCanvasPressRef.current = {
+        pointerId: event.pointerId,
+        start: point,
+        last: point,
+        action: {
+          type: "open-locked-parcel",
+          parcelId: parcel.id,
+        },
+      };
       return;
     }
 
@@ -588,6 +628,28 @@ export function EstateCanvas({
       if (cell) {
         onGroundPaintCell?.(cell);
       }
+      return;
+    }
+
+    const pendingPress = pendingCanvasPressRef.current;
+
+    if (pendingPress?.pointerId === event.pointerId) {
+      pendingPress.last = point;
+
+      if (isPastTapMovementTolerance(pendingPress.start, point)) {
+        pendingCanvasPressRef.current = null;
+        pointerPanRef.current = {
+          pointerId: event.pointerId,
+          last: point,
+        };
+        setCamera((current) =>
+          panCameraByCanvasDelta(current, {
+            x: point.x - pendingPress.start.x,
+            y: point.y - pendingPress.start.y,
+          }),
+        );
+      }
+
       return;
     }
 
@@ -618,6 +680,33 @@ export function EstateCanvas({
       return;
     }
 
+    if (pendingCanvasPressRef.current?.pointerId === event.pointerId) {
+      const pendingPress = pendingCanvasPressRef.current;
+      const releasePoint = getPointerFromReactEvent(event);
+      pendingCanvasPressRef.current = null;
+
+      if (!isPastTapMovementTolerance(pendingPress.start, releasePoint)) {
+        commitPendingCanvasPress(pendingPress);
+      }
+
+      return;
+    }
+
+    if (pointerPanRef.current?.pointerId === event.pointerId) {
+      pointerPanRef.current = null;
+    }
+  };
+
+  const handlePointerCancel = (event: ReactPointerEvent<HTMLCanvasElement>) => {
+    if (paintPointerRef.current === event.pointerId) {
+      paintPointerRef.current = null;
+      onGroundPaintEnd?.();
+    }
+
+    if (pendingCanvasPressRef.current?.pointerId === event.pointerId) {
+      pendingCanvasPressRef.current = null;
+    }
+
     if (pointerPanRef.current?.pointerId === event.pointerId) {
       pointerPanRef.current = null;
     }
@@ -642,7 +731,7 @@ export function EstateCanvas({
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
       />
 
       <div className="absolute bottom-3 left-3 hidden overflow-hidden rounded-xl border border-[var(--es-line)] bg-[var(--es-panel)] shadow-[0_10px_26px_-14px_rgba(30,50,30,0.45)] backdrop-blur-md lg:flex">
@@ -727,6 +816,15 @@ export function EstateCanvas({
     };
 
     cameraAnimationRef.current = requestAnimationFrame(step);
+  }
+
+  function commitPendingCanvasPress(pendingPress: PendingCanvasPress) {
+    if (pendingPress.action.type === "select-item") {
+      onItemSelect?.(pendingPress.action.instanceId);
+      return;
+    }
+
+    onLockedParcelClick?.(pendingPress.action.parcelId);
   }
 }
 
@@ -823,6 +921,10 @@ function getPinchGesture(
       y: (first.y + second.y) / 2,
     },
   };
+}
+
+function isPastTapMovementTolerance(start: TouchPoint, end: TouchPoint) {
+  return Math.hypot(end.x - start.x, end.y - start.y) > tapMovementTolerancePx;
 }
 
 export default EstateCanvas;

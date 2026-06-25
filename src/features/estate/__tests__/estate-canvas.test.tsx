@@ -3,8 +3,20 @@
 import { StrictMode, act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  baseEstateItemDefinitions,
+  estateItemCatalog,
+} from "../data/estate-item-catalog";
+import { estateExpansionCatalog } from "../data/estate-expansion-catalog";
 import { createDemoEstateSeedSnapshot } from "../data/demo-estate-data";
 import { EstateCanvas } from "../components/estate-canvas";
+import { fitCameraToWorldBounds, worldToCanvas } from "../isometric/camera";
+import { getCellCenterScreen, type WorldBounds } from "../isometric/projection";
+import {
+  createEstateRenderScene,
+  getSceneUnlockedWorldBounds,
+} from "../isometric/renderer";
+import type { EstateGridCell, EstateSnapshot } from "../domain/types";
 
 type ResizeObserverCallback = ConstructorParameters<typeof ResizeObserver>[0];
 
@@ -76,6 +88,23 @@ describe("EstateCanvas", () => {
     vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
       mockContext,
     );
+    vi.spyOn(HTMLCanvasElement.prototype, "getBoundingClientRect").mockReturnValue(
+      {
+        bottom: 360,
+        height: 360,
+        left: 0,
+        right: 720,
+        top: 0,
+        width: 720,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      },
+    );
+    Object.defineProperty(HTMLCanvasElement.prototype, "setPointerCapture", {
+      configurable: true,
+      value: vi.fn(),
+    });
     vi.stubGlobal("ResizeObserver", MockResizeObserver);
     vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => {
       const id = nextAnimationFrameId;
@@ -220,6 +249,86 @@ describe("EstateCanvas", () => {
 
     await act(async () => root.unmount());
   });
+
+  it("waits for an unmoved pointer release before selecting an estate item", async () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const onItemSelect = vi.fn();
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="23 placed objects, 1 unlocked parcel, and 10 ground tiles."
+          controls={{
+            assetsLoading: "Estate assets loading",
+            fitView: "Fit view",
+            zoomIn: "Zoom in",
+            zoomOut: "Zoom out",
+          }}
+          onItemSelect={onItemSelect}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+
+    const canvas = getCanvas();
+    const itemPoint = getInitialCanvasPointForCell(snapshot, { x: 7, y: 4 });
+
+    await dispatchPointer(canvas, "pointerdown", itemPoint);
+    expect(onItemSelect).not.toHaveBeenCalled();
+
+    await dispatchPointer(canvas, "pointerup", itemPoint);
+    expect(onItemSelect).toHaveBeenCalledWith("yu-e21:landmark");
+
+    await act(async () => root.unmount());
+  });
+
+  it("cancels locked parcel popups when the pointer moves like a pan", async () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const onLockedParcelClick = vi.fn();
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="23 placed objects, 1 unlocked parcel, and 10 ground tiles."
+          controls={{
+            assetsLoading: "Estate assets loading",
+            fitView: "Fit view",
+            zoomIn: "Zoom in",
+            zoomOut: "Zoom out",
+          }}
+          onLockedParcelClick={onLockedParcelClick}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+
+    const canvas = getCanvas();
+    const parcelPoint = getInitialCanvasPointForCell(snapshot, { x: 16, y: 0 });
+
+    await dispatchPointer(canvas, "pointerdown", parcelPoint);
+    await dispatchPointer(canvas, "pointermove", {
+      x: parcelPoint.x + 24,
+      y: parcelPoint.y,
+    });
+    await dispatchPointer(canvas, "pointerup", {
+      x: parcelPoint.x + 24,
+      y: parcelPoint.y,
+    });
+
+    expect(onLockedParcelClick).not.toHaveBeenCalled();
+
+    await act(async () => root.unmount());
+  });
 });
 
 async function flushAnimationFrames() {
@@ -230,4 +339,79 @@ async function flushAnimationFrames() {
       }
     }
   });
+}
+
+function getCanvas(): HTMLCanvasElement {
+  const canvas = document.querySelector("canvas");
+
+  if (!(canvas instanceof HTMLCanvasElement)) {
+    throw new Error("Expected estate canvas.");
+  }
+
+  return canvas;
+}
+
+async function dispatchPointer(
+  canvas: HTMLCanvasElement,
+  type: "pointerdown" | "pointermove" | "pointerup",
+  point: { x: number; y: number },
+) {
+  await act(async () => {
+    const event = new MouseEvent(type, {
+      bubbles: true,
+      button: 0,
+      buttons: type === "pointerup" ? 0 : 1,
+      clientX: point.x,
+      clientY: point.y,
+    });
+
+    Object.defineProperties(event, {
+      isPrimary: { value: true },
+      pointerId: { value: 1 },
+      pointerType: { value: "touch" },
+    });
+
+    canvas.dispatchEvent(event);
+  });
+}
+
+function getInitialCanvasPointForCell(
+  snapshot: EstateSnapshot,
+  cell: EstateGridCell,
+) {
+  const viewport = {
+    width: 720,
+    height: 360,
+  };
+  const scene = createEstateRenderScene({
+    snapshot,
+    itemDefinitions: [...baseEstateItemDefinitions, ...estateItemCatalog],
+    parcelDefinitions: estateExpansionCatalog,
+  });
+  const camera = fitCameraToWorldBounds(
+    expandWorldBoundsByRatio(getSceneUnlockedWorldBounds(scene), 0.28),
+    viewport,
+    {
+      padding: 44,
+      minZoom: 0.25,
+      maxZoom: 1.6,
+    },
+  );
+
+  return worldToCanvas(getCellCenterScreen(cell), camera, viewport);
+}
+
+function expandWorldBoundsByRatio(
+  bounds: WorldBounds,
+  ratio: number,
+): WorldBounds {
+  const marginX = (bounds.maxX - bounds.minX) * ratio;
+  const marginY = (bounds.maxY - bounds.minY) * ratio;
+
+  return {
+    minX: bounds.minX - marginX,
+    minY: bounds.minY - marginY,
+    maxX: bounds.maxX + marginX,
+    maxY: bounds.maxY + marginY,
+  };
 }

@@ -4,6 +4,10 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 
 ## 2026-06-25
 
+- The user reported that the estate experience felt uncomfortable because estate-related popups opened from very light touches.
+- Verified and fixed the estate canvas root cause: item selection and locked-parcel expansion no longer fire on `pointerdown`; they are committed only after an unmoved pointer release, and a pan-like move cancels the popup path. Changed `src/features/estate/components/estate-canvas.tsx` with regression coverage in `src/features/estate/__tests__/estate-canvas.test.tsx`.
+- Verification for the estate touch fix: targeted estate canvas test, full Vitest suite, ESLint, production build, and `git diff --check` all completed; ESLint still reports only the pre-existing `game-preview.tsx` warnings, and `git diff --check` only reports CRLF conversion warnings for touched files.
+
 - 사용자는 기존 영지(estate) 디자인이 불만이었다: 색감이 좋지 않고, UI 배치가 부자연스럽고 UX 고려가 부족하며, 특히 모바일에서 아이템 목록 패널이 화면 절반을 차지해 영지가 잘 안 보였다.
 - 사용자는 전반적인 디자인을 메인화면(Mapbox 지도)처럼 월드가 잘 보이도록, 데스크탑·모바일 모두 고려해 재디자인하길 원했다.
 - 확정된 방향: (1) 모바일 패널은 "하단 도크 + 필요할 때만 시트" 방식, (2) 앱의 블루 테마를 그대로 따르지 않고 estate 고유의 "햇살 정원" 톤을 유지하되 메인과 같은 품질로 깔끔하게 재구성, (3) 정원은 앱 다크모드와 무관하게 항상 햇살 톤으로 고정.
