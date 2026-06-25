@@ -622,14 +622,14 @@ export function EstateCanvas({
   return (
     <div
       ref={containerRef}
-      className="relative h-full min-h-[24rem] overflow-hidden bg-inset lg:rounded-xl lg:border lg:border-line lg:shadow-card"
+      className="relative h-full w-full overflow-hidden"
     >
       <p id="estate-canvas-summary" className="sr-only">
         {ariaSummary}
       </p>
       <canvas
         ref={canvasRef}
-        className="block h-full min-h-[24rem] w-full cursor-grab select-none active:cursor-grabbing"
+        className="block h-full w-full cursor-grab select-none active:cursor-grabbing"
         style={{ touchAction: "none" }}
         role="img"
         aria-label={ariaLabel}
@@ -641,7 +641,7 @@ export function EstateCanvas({
         onPointerCancel={handlePointerUp}
       />
 
-      <div className="absolute left-3 top-3 flex overflow-hidden rounded-lg border border-line bg-surface/90 shadow-card backdrop-blur">
+      <div className="absolute bottom-3 left-3 hidden overflow-hidden rounded-xl border border-[var(--es-line)] bg-[var(--es-panel)] shadow-[0_10px_26px_-14px_rgba(30,50,30,0.45)] backdrop-blur-md lg:flex">
         <CanvasButton label={controls.zoomIn} onClick={() => zoomFromCenter(1.12)}>
           <Plus size={16} aria-hidden="true" />
         </CanvasButton>
@@ -654,12 +654,22 @@ export function EstateCanvas({
       </div>
       {assetLoadSnapshot.status === "loading" ? (
         <div
-          className="absolute right-3 top-3 flex h-11 items-center gap-1.5 rounded-lg border border-line bg-surface/86 px-3 shadow-card backdrop-blur"
+          className="absolute left-1/2 top-3 flex h-9 -translate-x-1/2 items-center gap-1.5 rounded-full border border-[var(--es-line)] bg-[var(--es-panel)] px-3 shadow-[0_10px_26px_-14px_rgba(30,50,30,0.45)] backdrop-blur"
           aria-label={controls.assetsLoading}
         >
-          <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-accent" />
-          <span className="h-2.5 w-8 animate-pulse rounded-full bg-ink-subtle/30" />
-          <span className="h-2.5 w-5 animate-pulse rounded-full bg-ink-subtle/20" />
+          <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[var(--es-accent)]" />
+          <span
+            className="h-2.5 w-8 animate-pulse rounded-full"
+            style={{
+              background: "color-mix(in srgb, var(--es-ink-subtle) 30%, transparent)",
+            }}
+          />
+          <span
+            className="h-2.5 w-5 animate-pulse rounded-full"
+            style={{
+              background: "color-mix(in srgb, var(--es-ink-subtle) 22%, transparent)",
+            }}
+          />
         </div>
       ) : null}
     </div>
@@ -730,7 +740,7 @@ function CanvasButton({
       type="button"
       aria-label={label}
       title={label}
-      className="grid h-11 w-11 place-items-center border-r border-line text-ink-muted transition last:border-r-0 hover:bg-accent-soft hover:text-accent"
+      className="grid h-11 w-11 place-items-center border-r border-[var(--es-line)] text-[var(--es-ink-muted)] transition last:border-r-0 hover:bg-[var(--es-accent-soft)] hover:text-[var(--es-accent-strong)]"
       onClick={onClick}
     >
       {children}

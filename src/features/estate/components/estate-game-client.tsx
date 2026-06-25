@@ -69,6 +69,7 @@ import type {
 import { LocalStorageEstateRepository } from "../persistence/local-storage-estate-repository";
 import type { EstateRepository } from "../persistence/estate-repository";
 import type { EstateCanvasProps } from "./estate-canvas";
+import styles from "./estate-shell.module.css";
 
 const EstateCanvas = dynamic<EstateCanvasProps>(
   () => import("./estate-canvas").then((module) => module.default),
@@ -78,12 +79,6 @@ const EstateCanvas = dynamic<EstateCanvasProps>(
 type EstateGameClientProps = {
   data: EstatePageData;
   repository?: EstateRepository;
-};
-
-type EstateMetricProps = {
-  icon: ReactNode;
-  label: string;
-  value: string;
 };
 
 type ActiveEstatePanel = "shop" | "inventory" | "expansion";
@@ -114,6 +109,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   );
   const [mode, setMode] = useState<EstateEditorMode>({ type: "view" });
   const [activePanel, setActivePanel] = useState<ActiveEstatePanel>("shop");
+  const [sheetOpen, setSheetOpen] = useState(false);
   const [shopCategory, setShopCategory] = useState<EstateShopCategory>("all");
   const [message, setMessage] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<EstateSaveStatus>("saved");
@@ -301,6 +297,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
         ),
       );
       setActivePanel("shop");
+      setSheetOpen(false);
       setPendingExpansionParcelId(null);
       setFocusParcelId(null);
       setRecentlyUnlockedParcelId(null);
@@ -524,6 +521,16 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [cancelEditing, removeSelectedItem, rotateActiveItem]);
 
+  function selectPanel(panel: ActiveEstatePanel) {
+    if (activePanel === panel) {
+      setSheetOpen((open) => !open);
+      return;
+    }
+
+    setActivePanel(panel);
+    setSheetOpen(true);
+  }
+
   function handlePurchase(definition: EstateItemDefinition) {
     if (!purchaseLockRef.current.tryAcquire(definition.id)) return;
 
@@ -557,6 +564,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       focusReturnRef.current = document.activeElement;
     }
     setActivePanel("expansion");
+    setSheetOpen(true);
     setPendingExpansionParcelId(parcelId);
   }
 
@@ -594,11 +602,13 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     }
 
     if (definition.placementRule === "ground") {
+      setSheetOpen(false);
       setMode({ type: "painting-ground", definitionId: definition.id });
       showMessage(copy.messages.paintInstruction);
       return;
     }
 
+    setSheetOpen(false);
     setMode({
       type: "placing",
       definitionId: definition.id,
@@ -686,6 +696,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   }
 
   function handleItemSelect(instanceId: string) {
+    setSheetOpen(false);
     setMode({ type: "selected", instanceId });
   }
 
@@ -695,6 +706,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       return;
     }
 
+    setSheetOpen(false);
     setMode({
       type: "moving",
       instanceId: selectedInstance.id,
@@ -716,197 +728,211 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   }
 
   return (
-    <main className="relative min-h-dvh overflow-hidden bg-canvas px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 text-ink sm:px-5 lg:px-7">
-      <div className="relative z-10 mx-auto grid h-full w-full max-w-7xl gap-3 lg:gap-4">
-        <header className="flex min-w-0 flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface px-3 py-2.5 shadow-card sm:px-4">
-          <div className="flex min-w-0 max-w-full items-center gap-3">
-            <Link
-              href={`/${locale}`}
-              onClick={() => {
-                void flushSave();
-              }}
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-line text-ink-muted transition hover:border-accent hover:bg-accent-soft hover:text-accent"
-              aria-label={messages.estate.backToMap}
-              title={messages.estate.backToMap}
-            >
-              <ArrowLeft size={17} aria-hidden="true" />
-            </Link>
-            <div className="min-w-0">
-              <div className="flex items-center gap-2 text-[11px] font-semibold uppercase text-accent">
-                <BadgeCheck size={14} aria-hidden="true" />
-                <span>{officialCode}</span>
-              </div>
-              <h1 className="truncate text-xl font-semibold text-ink sm:text-2xl">
-                {data.subject.name}
-              </h1>
-            </div>
-          </div>
+    <main className={styles.estate}>
+      <div className="absolute inset-0 z-0">
+        <EstateCanvas
+          snapshot={snapshot}
+          mode={mode}
+          selectedItemId={selectedInstanceId}
+          fitViewSignal={fitViewSignal}
+          focusParcelId={focusParcelId}
+          recentlyUnlockedParcelId={recentlyUnlockedParcelId}
+          unlockAnimationProgress={unlockAnimationProgress}
+          ariaLabel={copy.aria.canvasLabel}
+          ariaSummary={interpolate(copy.aria.canvasSummary, {
+            items: snapshot.items.length,
+            parcels: unlockedParcelCount,
+            tiles: snapshot.groundTiles.length,
+          })}
+          controls={copy.controls}
+          onCellClick={handleCellClick}
+          onLockedParcelClick={handleRequestExpansion}
+          onGroundPaintStart={handleGroundPaintStart}
+          onGroundPaintCell={handleGroundPaintCell}
+          onItemSelect={handleItemSelect}
+        />
+      </div>
 
-          <div className="flex min-w-0 max-w-full flex-nowrap items-center gap-2 overflow-x-auto pb-1 sm:w-auto sm:overflow-visible sm:pb-0">
-            <StatusPill
-              icon={<Coins size={15} aria-hidden="true" />}
-              label={messages.estate.availablePoints}
-              value={formatPoints(locale, pointAccount.availablePoints)}
-            />
-            <StatusPill
-              icon={<Hammer size={15} aria-hidden="true" />}
-              label={copy.expansion.unlocked}
-              value={`${unlockedParcelCount}/${estateExpansionCatalog.length}`}
-            />
-            {nextExpansionParcel ? (
-              <StatusPill
-                icon={<Coins size={15} aria-hidden="true" />}
-                label={copy.expansion.next}
-                value={formatPoints(locale, nextExpansionParcel.cost)}
-              />
-            ) : null}
-            <SaveStatusPill
-              status={saveStatus}
-              label={copy.saveStatus[saveStatus]}
-            />
+      <p className="sr-only" aria-live="polite">
+        {interpolate(copy.aria.liveSummary, {
+          selection: selectedDefinition
+            ? getItemName(selectedDefinition, copy)
+            : copy.aria.noneSelected,
+          balance: formatPoints(locale, pointAccount.availablePoints),
+          saveStatus: copy.saveStatus[saveStatus],
+        })}
+        {message ? ` ${message}` : ""}
+      </p>
+
+      <div className="pointer-events-none absolute inset-x-2 top-2 z-30 flex items-start justify-between gap-2 sm:inset-x-3 sm:top-3">
+        <header
+          className={`${styles.panel} pointer-events-auto flex min-w-0 items-center gap-2.5 rounded-2xl px-2.5 py-2 sm:px-3`}
+        >
+          <Link
+            href={`/${locale}`}
+            onClick={() => {
+              void flushSave();
+            }}
+            className={`${styles.ghostBtn} grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[var(--es-line)]`}
+            aria-label={messages.estate.backToMap}
+            title={messages.estate.backToMap}
+          >
+            <ArrowLeft size={18} aria-hidden="true" />
+          </Link>
+          <div className="min-w-0">
+            <div
+              className={`${styles.muted} flex items-center gap-1 text-[11px] font-medium`}
+            >
+              <BadgeCheck size={12} aria-hidden="true" />
+              <span className="truncate">{officialCode}</span>
+            </div>
+            <h1 className="truncate text-[15px] font-semibold leading-tight sm:text-base">
+              {data.subject.name}
+            </h1>
           </div>
         </header>
-        <p className="sr-only" aria-live="polite">
-          {interpolate(copy.aria.liveSummary, {
-            selection: selectedDefinition
-              ? getItemName(selectedDefinition, copy)
-              : copy.aria.noneSelected,
-            balance: formatPoints(locale, pointAccount.availablePoints),
-            saveStatus: copy.saveStatus[saveStatus],
-          })}
-          {message ? ` ${message}` : ""}
-        </p>
 
-        <section className="hidden gap-3 lg:grid lg:grid-cols-3">
-          <EstateMetric
-            icon={<Leaf size={16} aria-hidden="true" />}
-            label={messages.estate.savedEnergy}
-            value={savedEnergyValue}
-          />
-          <EstateMetric
-            icon={<Coins size={16} aria-hidden="true" />}
-            label={messages.estate.earnedPoints}
-            value={formatPoints(locale, pointAccount.earnedPoints)}
-          />
-          <EstateMetric
-            icon={<Coins size={16} aria-hidden="true" />}
-            label={messages.estate.spentPoints}
-            value={formatPoints(locale, pointAccount.spentPoints)}
-          />
-        </section>
+        <div className="pointer-events-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <div
+            className={`${styles.chip} flex h-10 items-center gap-1.5 rounded-xl px-2.5`}
+          >
+            <Coins size={15} className={styles.coin} aria-hidden="true" />
+            <strong className="font-mono text-sm tabular-nums">
+              {formatPoints(locale, pointAccount.availablePoints)}
+            </strong>
+          </div>
+          <div
+            className={`${styles.chip} hidden h-10 items-center gap-1.5 rounded-xl px-2.5 sm:flex`}
+          >
+            <Hammer size={14} className={styles.muted} aria-hidden="true" />
+            <strong className="font-mono text-sm tabular-nums">
+              {unlockedParcelCount}/{estateExpansionCatalog.length}
+            </strong>
+          </div>
+          <SaveChip status={saveStatus} label={copy.saveStatus[saveStatus]} />
+        </div>
+      </div>
 
-        <section className="grid min-h-0 gap-4 lg:grid-cols-[minmax(0,1fr)_22rem]">
-          <div className="fixed inset-0 z-0 h-dvh min-h-dvh min-w-0 bg-surface p-0 lg:relative lg:inset-auto lg:z-auto lg:h-[calc(100dvh-18rem)] lg:min-h-[30rem] lg:rounded-xl lg:border lg:border-line lg:p-2 lg:shadow-card xl:h-[calc(100dvh-14rem)]">
-            <EstateCanvas
-              snapshot={snapshot}
-              mode={mode}
-              selectedItemId={selectedInstanceId}
-              fitViewSignal={fitViewSignal}
-              focusParcelId={focusParcelId}
-              recentlyUnlockedParcelId={recentlyUnlockedParcelId}
-              unlockAnimationProgress={unlockAnimationProgress}
-              ariaLabel={copy.aria.canvasLabel}
-              ariaSummary={interpolate(copy.aria.canvasSummary, {
-                items: snapshot.items.length,
-                parcels: unlockedParcelCount,
-                tiles: snapshot.groundTiles.length,
-              })}
-              controls={copy.controls}
-              onCellClick={handleCellClick}
-              onLockedParcelClick={handleRequestExpansion}
-              onGroundPaintStart={handleGroundPaintStart}
-              onGroundPaintCell={handleGroundPaintCell}
-              onItemSelect={handleItemSelect}
+      {message ? (
+        <div
+          className={`${styles.toast} pointer-events-none absolute left-1/2 top-[4.5rem] z-40 max-w-[calc(100vw_-_1.5rem)] -translate-x-1/2 rounded-xl px-3.5 py-2 text-center text-[13px] font-medium`}
+        >
+          {message}
+        </div>
+      ) : null}
+
+      {selectedInstance && selectedDefinition ? (
+        <SelectionBar
+          copy={copy}
+          definition={selectedDefinition}
+          instance={selectedInstance}
+          mode={mode}
+          protectedItem={selectedIsProtected}
+          onCancel={cancelEditing}
+          onMove={handleMoveSelected}
+          onRotate={
+            mode.type === "placing" ? handleRotatePlacing : rotateActiveItem
+          }
+          onRemove={removeSelectedItem}
+        />
+      ) : null}
+
+      <aside
+        className={`${styles.panelStrong} fixed inset-x-2 bottom-2 z-30 flex flex-col overflow-hidden rounded-3xl lg:absolute lg:inset-x-auto lg:bottom-3 lg:right-3 lg:top-[4.75rem] lg:w-[22rem] lg:rounded-2xl`}
+      >
+        {sheetOpen ? (
+          <button
+            type="button"
+            className="grid place-items-center pb-1 pt-2 lg:hidden"
+            onClick={() => setSheetOpen(false)}
+            aria-label={copy.dialog.close}
+          >
+            <span className={`${styles.handle} h-1.5 w-10 rounded-full`} />
+          </button>
+        ) : null}
+
+        <div className="flex gap-1 p-2">
+          <TabButton
+            active={activePanel === "shop"}
+            icon={<ShoppingBag size={16} aria-hidden="true" />}
+            label={copy.panels.shop}
+            onClick={() => selectPanel("shop")}
+          />
+          <TabButton
+            active={activePanel === "inventory"}
+            icon={<Package size={16} aria-hidden="true" />}
+            label={copy.panels.inventory}
+            onClick={() => selectPanel("inventory")}
+          />
+          <TabButton
+            active={activePanel === "expansion"}
+            icon={<Hammer size={16} aria-hidden="true" />}
+            label={copy.panels.expansion}
+            onClick={() => selectPanel("expansion")}
+          />
+          <TabButton
+            icon={<Maximize2 size={16} aria-hidden="true" />}
+            label={copy.panels.fit}
+            onClick={() => setFitViewSignal((value) => value + 1)}
+          />
+        </div>
+
+        <div
+          className={`${styles.sheetBody} ${sheetOpen ? styles.sheetBodyOpen : ""}`}
+        >
+          <div className="grid grid-cols-3 gap-1.5 pb-2.5">
+            <MiniMetric
+              icon={<Leaf size={14} aria-hidden="true" />}
+              label={messages.estate.savedEnergy}
+              value={savedEnergyValue}
+            />
+            <MiniMetric
+              icon={<Coins size={14} aria-hidden="true" />}
+              label={messages.estate.earnedPoints}
+              value={formatPoints(locale, pointAccount.earnedPoints)}
+            />
+            <MiniMetric
+              icon={<Coins size={14} aria-hidden="true" />}
+              label={messages.estate.spentPoints}
+              value={formatPoints(locale, pointAccount.spentPoints)}
             />
           </div>
 
-          <aside className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-20 max-h-[min(58dvh,calc(100dvh-8rem-env(safe-area-inset-bottom)))] overflow-hidden rounded-xl border border-line bg-surface shadow-pop lg:static lg:z-auto lg:max-h-[calc(100dvh-18rem)] lg:self-start lg:overflow-y-auto lg:shadow-card xl:max-h-[calc(100dvh-14rem)]">
-            <div className="grid border-b border-line bg-surface-3 p-2">
-              <div className="grid grid-cols-4 gap-1">
-                <ToolButton
-                  active={activePanel === "shop"}
-                  icon={<ShoppingBag size={16} aria-hidden="true" />}
-                  label={copy.panels.shop}
-                  onClick={() => setActivePanel("shop")}
-                />
-                <ToolButton
-                  active={activePanel === "inventory"}
-                  icon={<Package size={16} aria-hidden="true" />}
-                  label={copy.panels.inventory}
-                  onClick={() => setActivePanel("inventory")}
-                />
-                <ToolButton
-                  active={activePanel === "expansion"}
-                  icon={<Hammer size={16} aria-hidden="true" />}
-                  label={copy.panels.expansion}
-                  onClick={() => setActivePanel("expansion")}
-                />
-                <ToolButton
-                  icon={<Maximize2 size={16} aria-hidden="true" />}
-                  label={copy.panels.fit}
-                  onClick={() => setFitViewSignal((value) => value + 1)}
-                />
-              </div>
-            </div>
+          {activePanel === "shop" ? (
+            <ShopPanel
+              category={shopCategory}
+              copy={copy}
+              items={visibleShopItems}
+              locale={locale}
+              pendingPurchaseIds={pendingPurchaseIds}
+              pointBalance={pointAccount.availablePoints}
+              snapshot={snapshot}
+              onCategoryChange={setShopCategory}
+              onPurchase={handlePurchase}
+            />
+          ) : null}
 
-            <div className="max-h-[calc(58dvh-3.75rem)] overflow-y-auto p-3 lg:max-h-[calc(100dvh-16rem)]">
-              {message ? (
-                <div className="mb-3 rounded-lg border border-line bg-accent-soft px-3 py-2 text-sm font-medium text-ink">
-                  {message}
-                </div>
-              ) : null}
+          {activePanel === "inventory" ? (
+            <InventoryPanel
+              copy={copy}
+              snapshot={snapshot}
+              onUseItem={handleStartInventoryAction}
+            />
+          ) : null}
 
-              {selectedInstance && selectedDefinition ? (
-                <SelectionPanel
-                  copy={copy}
-                  definition={selectedDefinition}
-                  instance={selectedInstance}
-                  mode={mode}
-                  protectedItem={selectedIsProtected}
-                  onCancel={cancelEditing}
-                  onMove={handleMoveSelected}
-                  onRotate={
-                    mode.type === "placing" ? handleRotatePlacing : rotateActiveItem
-                  }
-                  onRemove={removeSelectedItem}
-                />
-              ) : null}
+          {activePanel === "expansion" ? (
+            <ExpansionPanel
+              copy={copy}
+              locale={locale}
+              nextExpansionParcel={nextExpansionParcel}
+              pointBalance={pointAccount.availablePoints}
+              snapshot={snapshot}
+              onRequestUnlock={handleRequestExpansion}
+            />
+          ) : null}
+        </div>
+      </aside>
 
-              {activePanel === "shop" ? (
-                <ShopPanel
-                  category={shopCategory}
-                  copy={copy}
-                  items={visibleShopItems}
-                  locale={locale}
-                  pendingPurchaseIds={pendingPurchaseIds}
-                  pointBalance={pointAccount.availablePoints}
-                  snapshot={snapshot}
-                  onCategoryChange={setShopCategory}
-                  onPurchase={handlePurchase}
-                />
-              ) : null}
-
-              {activePanel === "inventory" ? (
-                <InventoryPanel
-                  copy={copy}
-                  snapshot={snapshot}
-                  onUseItem={handleStartInventoryAction}
-                />
-              ) : null}
-
-              {activePanel === "expansion" ? (
-                <ExpansionPanel
-                  copy={copy}
-                  locale={locale}
-                  pointBalance={pointAccount.availablePoints}
-                  snapshot={snapshot}
-                  onRequestUnlock={handleRequestExpansion}
-                />
-              ) : null}
-            </div>
-          </aside>
-        </section>
-      </div>
       {pendingExpansionParcel ? (
         <ExpansionConfirmDialog
           copy={copy}
@@ -922,45 +948,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   );
 }
 
-function EstateMetric({ icon, label, value }: EstateMetricProps) {
-  return (
-    <div className="rounded-xl border border-line bg-surface p-3 shadow-card">
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-[11px] font-semibold uppercase text-ink-subtle">
-          {label}
-        </p>
-        <span className="grid h-7 w-7 place-items-center rounded-lg bg-accent-soft text-accent">
-          {icon}
-        </span>
-      </div>
-      <p className="mt-2 text-xl font-semibold tabular-nums text-ink">
-        {value}
-      </p>
-    </div>
-  );
-}
-
-function StatusPill({
-  icon,
-  label,
-  value,
-}: {
-  icon: ReactNode;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="flex h-10 items-center gap-2 rounded-lg border border-line bg-surface-3 px-3">
-      <span className="text-accent">{icon}</span>
-      <span className="hidden text-xs font-semibold text-ink-subtle sm:inline">
-        {label}
-      </span>
-      <strong className="font-mono text-sm text-ink">{value}</strong>
-    </div>
-  );
-}
-
-function SaveStatusPill({
+function SaveChip({
   status,
   label,
 }: {
@@ -978,19 +966,17 @@ function SaveStatusPill({
 
   return (
     <div
-      className={`flex h-10 items-center gap-2 rounded-lg border px-3 text-sm font-semibold ${
-        status === "failed"
-          ? "border-overuse-soft bg-overuse-soft text-overuse"
-          : "border-line bg-surface-3 text-ink-muted"
+      className={`${styles.chip} flex h-10 items-center gap-1.5 rounded-xl px-2.5 ${
+        status === "failed" ? styles.badgeDanger : styles.muted
       }`}
     >
       {icon}
-      <span>{label}</span>
+      <span className="hidden text-xs font-medium sm:inline">{label}</span>
     </div>
   );
 }
 
-function ToolButton({
+function TabButton({
   active = false,
   icon,
   label,
@@ -1004,16 +990,135 @@ function ToolButton({
   return (
     <button
       type="button"
-      className={`flex h-11 min-w-0 items-center justify-center gap-1.5 rounded-lg px-2 text-xs font-semibold transition ${
-        active
-          ? "bg-accent text-on-accent"
-          : "text-ink-muted hover:bg-accent-soft hover:text-accent"
+      aria-pressed={active}
+      className={`flex h-12 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-xl text-[11px] font-medium transition sm:h-11 sm:flex-row sm:gap-1.5 sm:text-xs ${
+        active ? styles.tabActive : styles.tab
       }`}
       title={label}
       onClick={onClick}
     >
       {icon}
       <span className="truncate">{label}</span>
+    </button>
+  );
+}
+
+function MiniMetric({
+  icon,
+  label,
+  value,
+}: {
+  icon: ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className={`${styles.miniMetric} flex flex-col gap-0.5 rounded-xl px-2.5 py-2`}>
+      <span className={`${styles.subtle} flex items-center gap-1 text-[10px] font-medium uppercase tracking-wide`}>
+        {icon}
+      </span>
+      <span className={`${styles.subtle} truncate text-[10px] font-medium`}>
+        {label}
+      </span>
+      <span className="truncate text-[13px] font-semibold tabular-nums">
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function SelectionBar({
+  copy,
+  definition,
+  instance,
+  mode,
+  protectedItem,
+  onCancel,
+  onMove,
+  onRotate,
+  onRemove,
+}: {
+  copy: EstateMessages;
+  definition: EstateItemDefinition;
+  instance: EstateItemInstance;
+  mode: EstateEditorMode;
+  protectedItem: boolean;
+  onCancel: () => void;
+  onMove: () => void;
+  onRotate: () => void;
+  onRemove: () => void;
+}) {
+  return (
+    <div
+      className={`${styles.panelStrong} absolute bottom-[4.75rem] left-1/2 z-40 flex max-w-[calc(100vw_-_1rem)] -translate-x-1/2 items-center gap-1 rounded-2xl p-1.5 lg:bottom-5`}
+    >
+      <div className="min-w-0 px-2">
+        <p className="truncate text-[13px] font-semibold">
+          {getItemName(definition, copy)}
+        </p>
+        <p className={`${styles.muted} truncate text-[11px]`}>
+          {mode.type === "moving"
+            ? copy.selection.choosingMoveTarget
+            : `${instance.x}, ${instance.y}`}
+        </p>
+      </div>
+      <span className={`${styles.divider} mx-0.5 h-7 w-px`} aria-hidden="true" />
+      <SelectionButton
+        disabled={protectedItem}
+        icon={<Move size={15} aria-hidden="true" />}
+        label={copy.selection.move}
+        onClick={onMove}
+      />
+      <SelectionButton
+        disabled={protectedItem || !definition.canRotate}
+        icon={<RotateCw size={15} aria-hidden="true" />}
+        label={copy.selection.rotate}
+        onClick={onRotate}
+      />
+      <SelectionButton
+        danger
+        disabled={protectedItem}
+        icon={<Trash2 size={15} aria-hidden="true" />}
+        label={copy.selection.remove}
+        onClick={onRemove}
+      />
+      <button
+        type="button"
+        className={`${styles.ghostBtn} grid h-10 w-10 shrink-0 place-items-center rounded-xl`}
+        aria-label={copy.selection.cancel}
+        title={copy.selection.cancel}
+        onClick={onCancel}
+      >
+        <X size={16} aria-hidden="true" />
+      </button>
+    </div>
+  );
+}
+
+function SelectionButton({
+  danger = false,
+  disabled = false,
+  icon,
+  label,
+  onClick,
+}: {
+  danger?: boolean;
+  disabled?: boolean;
+  icon: ReactNode;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className={`inline-flex h-10 items-center justify-center gap-1.5 rounded-xl px-2.5 text-xs font-medium sm:px-3 ${
+        danger ? styles.dangerBtn : styles.ghostBtn
+      }`}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {icon}
+      <span className="hidden sm:inline">{label}</span>
     </button>
   );
 }
@@ -1040,16 +1145,16 @@ function ShopPanel({
   onPurchase: (definition: EstateItemDefinition) => void;
 }) {
   return (
-    <div className="grid gap-3">
-      <div className="flex gap-1 overflow-x-auto pb-1">
+    <div className="grid gap-2.5">
+      <div className="flex gap-1.5 overflow-x-auto pb-1">
         {categoryOrder.map((candidate) => (
           <button
             key={candidate}
             type="button"
-            className={`h-11 min-w-[44px] shrink-0 rounded-lg border px-3 text-xs font-semibold transition ${
+            className={`h-9 shrink-0 rounded-full border px-3.5 text-xs font-medium transition ${
               category === candidate
-                ? "border-accent bg-accent text-on-accent"
-                : "border-line bg-surface text-ink-muted hover:border-accent hover:text-accent"
+                ? `${styles.tabActive} border-transparent`
+                : `${styles.muted} border-[var(--es-line)] hover:border-[var(--es-accent)]`
             }`}
             onClick={() => onCategoryChange(candidate)}
           >
@@ -1070,29 +1175,31 @@ function ShopPanel({
           return (
             <div
               key={definition.id}
-              className="grid gap-2 rounded-lg border border-line bg-surface-2 p-3"
+              className={`${styles.card} grid gap-2 rounded-2xl p-3`}
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <h2 className="truncate text-sm font-semibold text-ink">
+                  <h2 className="truncate text-sm font-semibold">
                     {getItemName(definition, copy)}
                   </h2>
-                  <p className="mt-1 text-xs text-ink-subtle">
+                  <p className={`${styles.subtle} mt-0.5 text-xs`}>
                     {copy.categories[definition.category]} ·{" "}
                     {definition.footprintWidth}x{definition.footprintHeight}
                   </p>
                 </div>
-                <span className="rounded-md bg-accent-soft px-2 py-1 font-mono text-xs font-semibold text-accent">
+                <span
+                  className={`${styles.priceTag} shrink-0 rounded-lg px-2 py-1 font-mono text-xs font-semibold`}
+                >
                   {formatPoints(locale, definition.cost)}
                 </span>
               </div>
               <div className="flex items-center justify-between gap-2">
-                <span className="text-xs font-medium text-ink-muted">
+                <span className={`${styles.muted} text-xs font-medium`}>
                   {copy.shop.owned} {ownedQuantity}
                 </span>
                 <button
                   type="button"
-                  className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent transition disabled:cursor-not-allowed disabled:bg-line-strong disabled:text-ink-subtle"
+                  className={`${styles.primaryBtn} inline-flex h-10 items-center gap-1.5 rounded-xl px-3.5 text-xs font-semibold`}
                   disabled={disabled}
                   onClick={() => onPurchase(definition)}
                 >
@@ -1134,7 +1241,9 @@ function InventoryPanel({
 
   if (entries.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-line bg-surface-2 p-4 text-sm text-ink-muted">
+      <div
+        className={`${styles.muted} rounded-2xl border border-dashed border-[var(--es-line)] bg-[var(--es-inset)] p-4 text-sm`}
+      >
         {copy.inventory.empty}
       </div>
     );
@@ -1145,20 +1254,20 @@ function InventoryPanel({
       {entries.map(({ definition, quantity }) => (
         <div
           key={definition.id}
-          className="flex items-center justify-between gap-2 rounded-lg border border-line bg-surface-2 p-3"
+          className={`${styles.card} flex items-center justify-between gap-2 rounded-2xl p-3`}
         >
           <div className="min-w-0">
-            <h2 className="truncate text-sm font-semibold text-ink">
+            <h2 className="truncate text-sm font-semibold">
               {getItemName(definition, copy)}
             </h2>
-            <p className="text-xs text-ink-subtle">
+            <p className={`${styles.subtle} text-xs`}>
               {copy.inventory.quantity} {quantity} ·{" "}
               {definition.footprintWidth}x{definition.footprintHeight}
             </p>
           </div>
           <button
             type="button"
-            className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent"
+            className={`${styles.primaryBtn} inline-flex h-10 shrink-0 items-center gap-1.5 rounded-xl px-3.5 text-xs font-semibold`}
             onClick={() => onUseItem(definition.id)}
           >
             {definition.placementRule === "ground" ? (
@@ -1176,114 +1285,17 @@ function InventoryPanel({
   );
 }
 
-function SelectionPanel({
-  copy,
-  definition,
-  instance,
-  mode,
-  protectedItem,
-  onCancel,
-  onMove,
-  onRotate,
-  onRemove,
-}: {
-  copy: EstateMessages;
-  definition: EstateItemDefinition;
-  instance: EstateItemInstance;
-  mode: EstateEditorMode;
-  protectedItem: boolean;
-  onCancel: () => void;
-  onMove: () => void;
-  onRotate: () => void;
-  onRemove: () => void;
-}) {
-  return (
-    <div className="mb-3 grid gap-2 rounded-lg border border-accent-soft bg-accent-soft p-3">
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <h2 className="truncate text-sm font-semibold text-ink">
-            {getItemName(definition, copy)}
-          </h2>
-          <p className="text-xs text-ink-muted">
-            {mode.type === "moving"
-              ? copy.selection.choosingMoveTarget
-              : `${instance.x}, ${instance.y}`}
-          </p>
-        </div>
-        <button
-          type="button"
-          className="grid h-11 w-11 place-items-center rounded-lg text-ink-muted transition hover:bg-surface hover:text-ink"
-          aria-label={copy.selection.cancel}
-          title={copy.selection.cancel}
-          onClick={onCancel}
-        >
-          <X size={15} aria-hidden="true" />
-        </button>
-      </div>
-      <div className="grid grid-cols-3 gap-1.5">
-        <SelectionButton
-          disabled={protectedItem}
-          icon={<Move size={14} aria-hidden="true" />}
-          label={copy.selection.move}
-          onClick={onMove}
-        />
-        <SelectionButton
-          disabled={protectedItem || !definition.canRotate}
-          icon={<RotateCw size={14} aria-hidden="true" />}
-          label={copy.selection.rotate}
-          onClick={onRotate}
-        />
-        <SelectionButton
-          danger
-          disabled={protectedItem}
-          icon={<Trash2 size={14} aria-hidden="true" />}
-          label={copy.selection.remove}
-          onClick={onRemove}
-        />
-      </div>
-    </div>
-  );
-}
-
-function SelectionButton({
-  danger = false,
-  disabled = false,
-  icon,
-  label,
-  onClick,
-}: {
-  danger?: boolean;
-  disabled?: boolean;
-  icon: ReactNode;
-  label: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      className={`inline-flex h-11 items-center justify-center gap-1.5 rounded-lg text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-45 ${
-        danger
-          ? "bg-overuse-soft text-overuse hover:bg-overuse-soft"
-          : "bg-surface text-ink-muted hover:text-accent"
-      }`}
-      disabled={disabled}
-      onClick={onClick}
-    >
-      {icon}
-      <span>{label}</span>
-    </button>
-  );
-}
-
 function ExpansionPanel({
   copy,
   locale,
+  nextExpansionParcel,
   pointBalance,
   snapshot,
   onRequestUnlock,
 }: {
   copy: EstateMessages;
   locale: "ko" | "en";
+  nextExpansionParcel: EstateExpansionParcelDefinition | null;
   pointBalance: number;
   snapshot: EstateSnapshot;
   onRequestUnlock: (parcelId: string) => void;
@@ -1294,7 +1306,7 @@ function ExpansionPanel({
 
   if (lockedParcels.length === 0) {
     return (
-      <div className="rounded-lg border border-line bg-surface-2 p-4 text-sm text-ink-muted">
+      <div className={`${styles.card} ${styles.muted} rounded-2xl p-4 text-sm`}>
         {copy.expansion.allUnlocked}
       </div>
     );
@@ -1302,30 +1314,41 @@ function ExpansionPanel({
 
   return (
     <div className="grid gap-2">
+      {nextExpansionParcel ? (
+        <div
+          className={`${styles.muted} flex items-center justify-between gap-2 rounded-xl bg-[var(--es-inset)] px-3 py-2 text-xs font-medium`}
+        >
+          <span>{copy.expansion.next}</span>
+          <span className="inline-flex items-center gap-1">
+            <Coins size={13} className={styles.coin} aria-hidden="true" />
+            <span className="font-mono tabular-nums">
+              {formatPoints(locale, nextExpansionParcel.cost)}
+            </span>
+          </span>
+        </div>
+      ) : null}
+
       {lockedParcels.map((parcel) => {
         const status = getParcelUnlockStatus(parcel, snapshot, pointBalance);
 
         return (
           <div
             key={parcel.id}
-            className="grid gap-2 rounded-lg border border-line bg-surface-2 p-3"
+            className={`${styles.card} grid gap-2 rounded-2xl p-3`}
           >
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <h2 className="truncate text-sm font-semibold text-ink">
+                <h2 className="truncate text-sm font-semibold">
                   {getParcelName(parcel.id, copy)}
                 </h2>
-                <p className="mt-1 text-xs text-ink-subtle">
-                  {copy.expansion.size}{" "}
-                  {formatParcelSize(parcel)} ·{" "}
+                <p className={`${styles.subtle} mt-0.5 text-xs`}>
+                  {copy.expansion.size} {formatParcelSize(parcel)} ·{" "}
                   {copy.expansion.cost} {formatPoints(locale, parcel.cost)}
                 </p>
               </div>
               <span
                 className={`shrink-0 rounded-md px-2 py-1 text-[11px] font-semibold ${
-                  status.canUnlock
-                    ? "bg-accent-soft text-accent"
-                    : "bg-line text-ink-subtle"
+                  status.canUnlock ? styles.badgeAvailable : styles.badgeLocked
                 }`}
               >
                 {status.canUnlock
@@ -1334,23 +1357,19 @@ function ExpansionPanel({
               </span>
             </div>
 
-            <div className="grid gap-1 text-xs text-ink-subtle">
+            <div className={`${styles.subtle} grid gap-1 text-xs`}>
               <p>
                 {copy.expansion.adjacent}:{" "}
                 {parcel.adjacentParcelIds
                   .map((parcelId) => getParcelName(parcelId, copy))
                   .join(", ")}
                 {" · "}
-                <span
-                  className={
-                    status.adjacent ? "text-accent" : "text-ink-subtle"
-                  }
-                >
+                <span className={status.adjacent ? styles.badgeAvailable : ""}>
                   {status.adjacent ? copy.expansion.met : copy.expansion.notMet}
                 </span>
               </p>
               {!status.affordable ? (
-                <p className="font-medium text-overuse">
+                <p className={`${styles.badgeDanger} font-medium`}>
                   {interpolate(copy.expansion.missingPoints, {
                     points: formatPoints(locale, status.missingPoints),
                   })}
@@ -1360,7 +1379,7 @@ function ExpansionPanel({
 
             <button
               type="button"
-              className="inline-flex h-11 items-center justify-center rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent transition hover:brightness-105"
+              className={`${styles.primaryBtn} inline-flex h-10 items-center justify-center rounded-xl px-3 text-xs font-semibold`}
               onClick={() => onRequestUnlock(parcel.id)}
             >
               {copy.expansion.review}
@@ -1430,29 +1449,32 @@ function ExpansionConfirmDialog({
   }, [onCancel]);
 
   return (
-    <div className="fixed inset-0 z-40 grid place-items-center bg-ink/45 px-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 grid place-items-center bg-[rgba(20,30,20,0.45)] px-4 backdrop-blur-sm">
       <section
         ref={dialogRef}
-        className="w-full max-w-md rounded-xl border border-line bg-surface p-4 shadow-pop"
+        className={`${styles.panelStrong} w-full max-w-md rounded-2xl p-4`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="estate-expansion-dialog-title"
       >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold uppercase text-accent">
+            <p
+              className="text-[11px] font-semibold uppercase"
+              style={{ color: "var(--es-accent-strong)" }}
+            >
               {copy.dialog.landExpansion}
             </p>
             <h2
               id="estate-expansion-dialog-title"
-              className="mt-1 text-lg font-semibold text-ink"
+              className="mt-1 text-lg font-semibold"
             >
               {getParcelName(parcel.id, copy)}
             </h2>
           </div>
           <button
             type="button"
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-lg text-ink-muted transition hover:bg-surface-2 hover:text-ink"
+            className={`${styles.ghostBtn} grid h-10 w-10 shrink-0 place-items-center rounded-xl`}
             aria-label={copy.dialog.close}
             title={copy.dialog.close}
             onClick={onCancel}
@@ -1463,20 +1485,18 @@ function ExpansionConfirmDialog({
 
         <dl className="mt-4 grid gap-2 text-sm">
           <div className="flex justify-between gap-3">
-            <dt className="text-ink-subtle">{copy.dialog.size}</dt>
-            <dd className="font-medium text-ink">{formatParcelSize(parcel)}</dd>
+            <dt className={styles.muted}>{copy.dialog.size}</dt>
+            <dd className="font-medium">{formatParcelSize(parcel)}</dd>
           </div>
           <div className="flex justify-between gap-3">
-            <dt className="text-ink-subtle">{copy.dialog.cost}</dt>
-            <dd className="font-mono font-semibold text-ink">
+            <dt className={styles.muted}>{copy.dialog.cost}</dt>
+            <dd className="font-mono font-semibold">
               {formatPoints(locale, parcel.cost)}
             </dd>
           </div>
           <div className="grid gap-1">
-            <dt className="text-ink-subtle">
-              {copy.dialog.adjacentRequirement}
-            </dt>
-            <dd className="text-ink">
+            <dt className={styles.muted}>{copy.dialog.adjacentRequirement}</dt>
+            <dd>
               {parcel.adjacentParcelIds
                 .map((parcelId) => getParcelName(parcelId, copy))
                 .join(", ")}
@@ -1485,10 +1505,10 @@ function ExpansionConfirmDialog({
         </dl>
 
         <div
-          className={`mt-4 rounded-lg border px-3 py-2 text-sm ${
+          className={`mt-4 rounded-xl px-3 py-2 text-sm ${
             status.canUnlock
-              ? "border-accent-soft bg-accent-soft text-ink"
-              : "border-line bg-surface-2 text-ink-muted"
+              ? styles.selectionCard
+              : `${styles.muted} ${styles.miniMetric}`
           }`}
         >
           {status.canUnlock
@@ -1499,14 +1519,14 @@ function ExpansionConfirmDialog({
         <div className="mt-4 grid grid-cols-2 gap-2">
           <button
             type="button"
-            className="h-11 rounded-lg border border-line bg-surface-2 text-sm font-semibold text-ink-muted transition hover:text-ink"
+            className={`${styles.ghostBtn} h-11 rounded-xl border border-[var(--es-line)] text-sm font-semibold`}
             onClick={onCancel}
           >
             {copy.dialog.cancel}
           </button>
           <button
             type="button"
-            className="h-11 rounded-lg bg-accent text-sm font-semibold text-on-accent transition disabled:cursor-not-allowed disabled:bg-line-strong disabled:text-ink-subtle"
+            className={`${styles.primaryBtn} h-11 rounded-xl text-sm font-semibold`}
             disabled={!status.canUnlock}
             onClick={onConfirm}
           >

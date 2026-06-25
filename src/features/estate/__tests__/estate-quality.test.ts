@@ -53,20 +53,30 @@ describe("estate release quality gates", () => {
     expect(koEstate.panels?.shop).toBe("상점");
   });
 
-  it("keeps the estate Canvas full-screen while desktop tools remain overlays", () => {
+  it("keeps the estate world full-screen with click-through overlay chrome on clean tokens", () => {
     const pageSource = readProjectFile(
       "src/app/[locale]/subjects/[subjectId]/estate/page.tsx",
     );
+    const clientSource = readProjectFile(
+      "src/features/estate/components/estate-game-client.tsx",
+    );
     const styleSource = readProjectFile(
-      "src/app/[locale]/subjects/[subjectId]/estate/estate-page.module.css",
+      "src/features/estate/components/estate-shell.module.css",
     );
 
-    expect(pageSource).toContain('import styles from "./estate-page.module.css"');
-    expect(pageSource).toContain("className={styles.shell}");
-    expect(styleSource).toContain("height: 100dvh");
-    expect(styleSource).toContain("section:last-of-type > div:first-child");
-    expect(styleSource).toContain("section:last-of-type > aside");
-    expect(styleSource).toContain("position: absolute !important");
+    // The page renders the client directly; the brittle shell wrapper is gone.
+    expect(pageSource).toContain("EstateGameClient");
+    expect(pageSource).not.toContain("styles.shell");
+
+    // The world is a full-bleed hero with floating, click-through overlay chrome.
+    expect(clientSource).toContain("styles.estate");
+    expect(clientSource).toContain("absolute inset-0");
+    expect(clientSource).toContain("pointer-events-none");
+
+    // Estate identity lives in flat design tokens, not nested !important overrides.
+    expect(styleSource).toContain("position: fixed");
+    expect(styleSource).toContain("--es-accent");
+    expect(styleSource).not.toContain("section:last-of-type");
   });
 });
 

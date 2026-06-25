@@ -4,7 +4,6 @@ import { EstateGameClient } from "@/features/estate/components/estate-game-clien
 import { getEstatePageData } from "@/features/estate/data/get-estate-page-data";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
-import styles from "./estate-page.module.css";
 
 type EstatePageProps = {
   params: Promise<{
@@ -25,9 +24,7 @@ export default async function EstatePage({ params }: EstatePageProps) {
 
   return (
     <CampusEnergyProviders locale={locale} messages={messages}>
-      <div className={styles.shell}>
-        <EstateGameClient data={data} />
-      </div>
+      <EstateGameClient data={data} />
     </CampusEnergyProviders>
   );
 }

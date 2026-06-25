@@ -1,0 +1,250 @@
+/*
+ * Estate "sunny garden" identity. A self-contained, daylight palette that is
+ * intentionally distinct from the blue campus map, but built to the same
+ * quality: flat tokens, no descendant overrides, no !important. The isometric
+ * world is the hero and every surface below floats above it as warm glass.
+ */
+.estate {
+  --es-sky-top: #e4eef0;
+  --es-sky-mid: #eef5e7;
+  --es-sky-bot: #d9e7d3;
+
+  --es-ink: #27332a;
+  --es-ink-muted: #5c6b5e;
+  --es-ink-subtle: #7c8a7e;
+
+  --es-panel: rgb(255 253 247 / 0.9);
+  --es-panel-strong: rgb(255 253 247 / 0.96);
+  --es-panel-solid: #fbfaf4;
+  --es-inset: #f1f0e6;
+
+  --es-line: rgb(54 74 54 / 0.16);
+  --es-line-soft: rgb(54 74 54 / 0.1);
+
+  --es-accent: #46924f;
+  --es-accent-strong: #3a7b42;
+  --es-accent-soft: #eaf3e2;
+  --es-on-accent: #ffffff;
+
+  --es-gold: #d99a2b;
+  --es-gold-soft: #f7edd6;
+  --es-gold-ink: #a9701a;
+
+  --es-danger: #9a3b3b;
+  --es-danger-soft: #f6e7e6;
+
+  --es-shadow: 0 16px 40px -18px rgb(30 50 30 / 0.5);
+  --es-shadow-sm: 0 10px 26px -14px rgb(30 50 30 / 0.45);
+
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  color: var(--es-ink);
+  background: linear-gradient(
+    180deg,
+    var(--es-sky-top) 0%,
+    var(--es-sky-mid) 55%,
+    var(--es-sky-bot) 100%
+  );
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.muted {
+  color: var(--es-ink-muted);
+}
+
+.subtle {
+  color: var(--es-ink-subtle);
+}
+
+/* Floating glass surfaces. */
+.panel {
+  border: 1px solid var(--es-line);
+  background: var(--es-panel);
+  box-shadow: var(--es-shadow);
+  backdrop-filter: blur(12px) saturate(125%);
+}
+
+.panelStrong {
+  border: 1px solid var(--es-line);
+  background: var(--es-panel-strong);
+  box-shadow: var(--es-shadow);
+  backdrop-filter: blur(14px) saturate(130%);
+}
+
+.chip {
+  border: 1px solid var(--es-line);
+  background: var(--es-panel);
+  box-shadow: var(--es-shadow-sm);
+  backdrop-filter: blur(10px) saturate(120%);
+}
+
+/* Inner content cards (shop items, inventory rows, expansion rows). */
+.card {
+  border: 1px solid var(--es-line-soft);
+  background: var(--es-panel-solid);
+  transition:
+    border-color 150ms ease,
+    transform 150ms ease;
+}
+
+.card:hover {
+  border-color: var(--es-line);
+  transform: translateY(-1px);
+}
+
+.selectionCard {
+  border: 1px solid color-mix(in srgb, var(--es-accent) 28%, transparent);
+  background: var(--es-accent-soft);
+}
+
+/* Buttons. */
+.primaryBtn {
+  background: var(--es-accent);
+  color: var(--es-on-accent);
+  transition:
+    background 150ms ease,
+    transform 150ms ease;
+}
+
+.primaryBtn:hover:not(:disabled) {
+  background: var(--es-accent-strong);
+  transform: translateY(-1px);
+}
+
+.primaryBtn:disabled {
+  background: color-mix(in srgb, var(--es-ink-subtle) 32%, var(--es-inset));
+  color: var(--es-ink-subtle);
+  cursor: not-allowed;
+}
+
+.ghostBtn {
+  color: var(--es-ink-muted);
+  transition:
+    background 150ms ease,
+    color 150ms ease;
+}
+
+.ghostBtn:hover:not(:disabled) {
+  background: var(--es-accent-soft);
+  color: var(--es-accent-strong);
+}
+
+.ghostBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.dangerBtn {
+  background: var(--es-danger-soft);
+  color: var(--es-danger);
+  transition: filter 150ms ease;
+}
+
+.dangerBtn:hover:not(:disabled) {
+  filter: brightness(0.97);
+}
+
+.dangerBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Tabs in the builder console / mobile dock. */
+.tab {
+  color: var(--es-ink-muted);
+  transition:
+    background 150ms ease,
+    color 150ms ease;
+}
+
+.tab:hover {
+  color: var(--es-accent-strong);
+}
+
+.tabActive {
+  background: var(--es-accent-soft);
+  color: var(--es-accent-strong);
+}
+
+/* Pills and tags. */
+.priceTag {
+  background: var(--es-gold-soft);
+  color: var(--es-gold-ink);
+}
+
+.coin {
+  color: var(--es-gold);
+}
+
+.badgeAvailable {
+  background: var(--es-accent-soft);
+  color: var(--es-accent-strong);
+}
+
+.badgeLocked {
+  background: var(--es-inset);
+  color: var(--es-ink-subtle);
+}
+
+.badgeDanger {
+  color: var(--es-danger);
+}
+
+.miniMetric {
+  border: 1px solid var(--es-line-soft);
+  background: var(--es-inset);
+}
+
+.toast {
+  border: 1px solid var(--es-line);
+  background: var(--es-accent-soft);
+  color: var(--es-accent-strong);
+  box-shadow: var(--es-shadow-sm);
+  backdrop-filter: blur(10px);
+}
+
+.divider {
+  background: var(--es-line);
+}
+
+/* Mobile sheet grab handle. */
+.handle {
+  background: color-mix(in srgb, var(--es-ink-subtle) 45%, transparent);
+}
+
+/*
+ * Scrollable builder body. On mobile it is a bottom sheet that collapses to 0
+ * (dock only) and expands to ~46% of the viewport. On desktop it always fills
+ * the docked console. Driven here (not via a Tailwind arbitrary) so the dvh
+ * height is reliable, with a vh fallback for engines without dvh support.
+ */
+.sheetBody {
+  overflow-y: auto;
+  max-height: 0;
+  padding: 0 0.625rem calc(0.625rem + env(safe-area-inset-bottom));
+  transition: max-height 300ms ease-out;
+}
+
+.sheetBodyOpen {
+  max-height: 46vh;
+  max-height: 46dvh;
+}
+
+@media (min-width: 1024px) {
+  .sheetBody {
+    flex: 1 1 0%;
+    max-height: none;
+    padding-bottom: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .estate *,
+  .estate *::before,
+  .estate *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
