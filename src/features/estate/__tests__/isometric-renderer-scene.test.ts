@@ -26,11 +26,11 @@ describe("estate isometric render scene", () => {
     expect(scene.parcels).toHaveLength(estateExpansionCatalog.length);
     expect(scene.parcels.find((parcel) => parcel.id === "central-campus"))
       .toMatchObject({ unlocked: true, cells: expect.any(Array) });
-    expect(scene.parcels.find((parcel) => parcel.id === "east-yard"))
-      .toMatchObject({ unlocked: false, cost: 2_000 });
+    expect(scene.parcels.find((parcel) => parcel.id === "east"))
+      .toMatchObject({ unlocked: false, cost: 4_000 });
     expect(scene.groundTiles).toEqual(
       expect.arrayContaining([
-        { x: 3, y: 5, assetId: "bright-sidewalk-block" },
+        { x: 7, y: 7, assetId: "bright-sidewalk-block" },
       ]),
     );
     expect(scene.items.find((item) => item.id === "yu-e21:landmark"))
@@ -48,13 +48,13 @@ describe("estate isometric render scene", () => {
       snapshot,
       itemDefinitions,
       parcelDefinitions: estateExpansionCatalog,
-      hoverCell: { x: 8, y: 0 },
-      recentlyUnlockedParcelId: "east-yard",
+      hoverCell: { x: 16, y: 0 },
+      recentlyUnlockedParcelId: "east",
       animationProgress: 0.4,
     });
 
-    expect(scene.hoverParcelId).toBe("east-yard");
-    expect(scene.recentlyUnlockedParcelId).toBe("east-yard");
+    expect(scene.hoverParcelId).toBe("east");
+    expect(scene.recentlyUnlockedParcelId).toBe("east");
     expect(scene.animationProgress).toBe(0.4);
   });
 

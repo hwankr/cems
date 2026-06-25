@@ -196,10 +196,14 @@ export const enMessages = {
     },
     parcels: {
       "central-campus": "Central parcel",
-      "east-yard": "East yard",
-      "south-yard": "South yard",
-      "south-east-plaza": "Southeast plaza",
-      "west-terrace": "West terrace",
+      north: "North yard",
+      east: "East yard",
+      south: "South yard",
+      west: "West yard",
+      "north-east": "Northeast plot",
+      "south-east": "Southeast plot",
+      "south-west": "Southwest plot",
+      "north-west": "Northwest plot",
     },
     saveStatus: {
       failed: "Save failed",

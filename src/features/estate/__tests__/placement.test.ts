@@ -45,7 +45,7 @@ describe("estate placement", () => {
         baseSnapshot,
         {
           definitionId: "solar-pavilion",
-          x: 7,
+          x: 16,
           y: 7,
           rotation: 0,
         },

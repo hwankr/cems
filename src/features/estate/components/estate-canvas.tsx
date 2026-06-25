@@ -27,7 +27,7 @@ import {
   type IsometricCamera,
   type ViewportSize,
 } from "../isometric/camera";
-import { getCellsWorldBounds } from "../isometric/projection";
+import { getCellsWorldBounds, type WorldBounds } from "../isometric/projection";
 import {
   getPointerCanvasPosition,
   hitTestDiamondCellAtCanvasPoint,
@@ -273,10 +273,12 @@ export function EstateCanvas({
   }, [drawLatest]);
 
   const fitViewport = useCallback(
-    (nextViewport = viewportRef.current) => {
+    (nextViewport = viewportRef.current, revealRatio = 0) => {
       const bounds = getSceneUnlockedWorldBounds(sceneRef.current);
+      const fitBounds =
+        revealRatio > 0 ? expandWorldBoundsByRatio(bounds, revealRatio) : bounds;
       setCamera(
-        fitCameraToWorldBounds(bounds, nextViewport, {
+        fitCameraToWorldBounds(fitBounds, nextViewport, {
           padding: 44,
           minZoom,
           maxZoom,
@@ -380,7 +382,9 @@ export function EstateCanvas({
 
       if (!hasFitInitialViewportRef.current) {
         hasFitInitialViewportRef.current = true;
-        fitViewport(nextViewport);
+        // Zoom out a touch on first load so the surrounding locked plots peek in
+        // at the edges, conveying how far the estate can still expand.
+        fitViewport(nextViewport, 0.28);
       }
 
       markDirty();
@@ -766,6 +770,21 @@ function findSceneParcelAtCell(
       parcel.cells.some((candidate) => `${candidate.x}:${candidate.y}` === key),
     ) ?? null
   );
+}
+
+function expandWorldBoundsByRatio(
+  bounds: WorldBounds,
+  ratio: number,
+): WorldBounds {
+  const marginX = (bounds.maxX - bounds.minX) * ratio;
+  const marginY = (bounds.maxY - bounds.minY) * ratio;
+
+  return {
+    minX: bounds.minX - marginX,
+    minY: bounds.minY - marginY,
+    maxX: bounds.maxX + marginX,
+    maxY: bounds.maxY + marginY,
+  };
 }
 
 function prefersReducedMotion(): boolean {

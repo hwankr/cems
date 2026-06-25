@@ -344,7 +344,7 @@ describe("estate commands", () => {
           { x: 0, y: 0 },
           { x: 0, y: 0 },
           { x: 1, y: 0 },
-          { x: 8, y: 0 },
+          { x: 16, y: 0 },
         ],
       },
       createContext(1_000, ["tx-ground"]),
@@ -357,7 +357,7 @@ describe("estate commands", () => {
       { x: 0, y: 0 },
       { x: 1, y: 0 },
     ]);
-    expect(result.skippedCells).toEqual([{ x: 8, y: 0 }]);
+    expect(result.skippedCells).toEqual([{ x: 16, y: 0 }]);
     expect(result.snapshot.transactions).toContainEqual({
       id: "tx-ground",
       kind: "purchase-ground",
@@ -410,8 +410,8 @@ describe("estate commands", () => {
 
     const result = unlockEstateParcel(
       snapshot,
-      { parcelId: "east-yard" },
-      createContext(1_999),
+      { parcelId: "east" },
+      createContext(3_999),
     );
 
     expect(result).toEqual({
@@ -428,8 +428,8 @@ describe("estate commands", () => {
 
     const result = unlockEstateParcel(
       snapshot,
-      { parcelId: "east-yard" },
-      createContext(2_000, ["tx-east-yard"]),
+      { parcelId: "east" },
+      createContext(4_000, ["tx-east"]),
     );
 
     expect(result.ok).toBe(true);
@@ -437,14 +437,14 @@ describe("estate commands", () => {
 
     expect(result.snapshot.unlockedParcelIds).toEqual([
       "central-campus",
-      "east-yard",
+      "east",
     ]);
     expect(result.snapshot.transactions).toEqual([
       {
-        id: "tx-east-yard",
+        id: "tx-east",
         kind: "unlock-parcel",
-        pointDelta: -2_000,
-        parcelId: "east-yard",
+        pointDelta: -4_000,
+        parcelId: "east",
         createdAt: "2026-06-24T00:00:00.000Z",
       },
     ]);
@@ -464,8 +464,8 @@ describe("estate commands", () => {
 
     const result = unlockEstateParcel(
       snapshot,
-      { parcelId: "south-east-plaza" },
-      createContext(5_000),
+      { parcelId: "south-east" },
+      createContext(20_000),
     );
 
     expect(result).toEqual({
@@ -480,12 +480,12 @@ describe("estate commands", () => {
       ...createInitialEstateSnapshot("yu-e21", {
         now: () => "2026-06-24T00:00:00.000Z",
       }),
-      unlockedParcelIds: ["central-campus", "east-yard"],
+      unlockedParcelIds: ["central-campus", "east"],
     };
 
     const result = unlockEstateParcel(
       snapshot,
-      { parcelId: "east-yard" },
+      { parcelId: "east" },
       createContext(5_000),
     );
 

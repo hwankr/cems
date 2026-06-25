@@ -36,6 +36,10 @@ import {
   baseEstateBuildingDefinition,
   estateItemCatalog,
 } from "../data/estate-item-catalog";
+import {
+  estateAssetManifest,
+  type EstateAssetManifest,
+} from "../data/estate-asset-manifest";
 import { estateExpansionCatalog } from "../data/estate-expansion-catalog";
 import type { EstatePageData } from "../data/get-estate-page-data";
 import {
@@ -1013,12 +1017,10 @@ function MiniMetric({
   value: string;
 }) {
   return (
-    <div className={`${styles.miniMetric} flex flex-col gap-0.5 rounded-xl px-2.5 py-2`}>
-      <span className={`${styles.subtle} flex items-center gap-1 text-[10px] font-medium uppercase tracking-wide`}>
+    <div className={`${styles.miniMetric} flex flex-col gap-1 rounded-xl px-2.5 py-2`}>
+      <span className={`${styles.subtle} flex items-center gap-1 text-[10px] font-medium`}>
         {icon}
-      </span>
-      <span className={`${styles.subtle} truncate text-[10px] font-medium`}>
-        {label}
+        <span className="truncate">{label}</span>
       </span>
       <span className="truncate text-[13px] font-semibold tabular-nums">
         {value}
@@ -1123,6 +1125,37 @@ function SelectionButton({
   );
 }
 
+function ItemThumb({ definition }: { definition: EstateItemDefinition }) {
+  const sizing = "h-14 w-14 shrink-0 rounded-xl sm:h-16 sm:w-16";
+  const manifest: EstateAssetManifest = estateAssetManifest;
+  const itemAsset = manifest.items[definition.assetId];
+
+  if (itemAsset) {
+    return (
+      <div className={`${styles.thumb} ${sizing}`} aria-hidden="true">
+        <span
+          className={styles.thumbSprite}
+          style={{ backgroundImage: `url("${itemAsset.src}")` }}
+        />
+      </div>
+    );
+  }
+
+  const groundAsset = manifest.ground[definition.assetId];
+
+  if (groundAsset) {
+    return (
+      <div
+        className={`${styles.thumbGround} ${sizing}`}
+        style={{ backgroundImage: `url("${groundAsset.src}")` }}
+        aria-hidden="true"
+      />
+    );
+  }
+
+  return <div className={`${styles.thumb} ${sizing}`} aria-hidden="true" />;
+}
+
 function ShopPanel({
   category,
   copy,
@@ -1175,37 +1208,40 @@ function ShopPanel({
           return (
             <div
               key={definition.id}
-              className={`${styles.card} grid gap-2 rounded-2xl p-3`}
+              className={`${styles.card} flex gap-3 rounded-2xl p-2.5`}
             >
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <h2 className="truncate text-sm font-semibold">
-                    {getItemName(definition, copy)}
-                  </h2>
-                  <p className={`${styles.subtle} mt-0.5 text-xs`}>
-                    {copy.categories[definition.category]} ·{" "}
-                    {definition.footprintWidth}x{definition.footprintHeight}
-                  </p>
+              <ItemThumb definition={definition} />
+              <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <h2 className="truncate text-sm font-semibold">
+                      {getItemName(definition, copy)}
+                    </h2>
+                    <p className={`${styles.subtle} mt-0.5 text-xs`}>
+                      {copy.categories[definition.category]} ·{" "}
+                      {definition.footprintWidth}x{definition.footprintHeight}
+                    </p>
+                  </div>
+                  <span
+                    className={`${styles.priceTag} shrink-0 rounded-lg px-2 py-1 font-mono text-xs font-semibold`}
+                  >
+                    {formatPoints(locale, definition.cost)}
+                  </span>
                 </div>
-                <span
-                  className={`${styles.priceTag} shrink-0 rounded-lg px-2 py-1 font-mono text-xs font-semibold`}
-                >
-                  {formatPoints(locale, definition.cost)}
-                </span>
-              </div>
-              <div className="flex items-center justify-between gap-2">
-                <span className={`${styles.muted} text-xs font-medium`}>
-                  {copy.shop.owned} {ownedQuantity}
-                </span>
-                <button
-                  type="button"
-                  className={`${styles.primaryBtn} inline-flex h-10 items-center gap-1.5 rounded-xl px-3.5 text-xs font-semibold`}
-                  disabled={disabled}
-                  onClick={() => onPurchase(definition)}
-                >
-                  <ShoppingBag size={14} aria-hidden="true" />
-                  {pending ? copy.shop.pending : copy.shop.buy}
-                </button>
+                <div className="mt-auto flex items-center justify-between gap-2">
+                  <span className={`${styles.muted} text-xs font-medium`}>
+                    {copy.shop.owned} {ownedQuantity}
+                  </span>
+                  <button
+                    type="button"
+                    className={`${styles.primaryBtn} inline-flex h-10 items-center gap-1.5 rounded-xl px-3.5 text-xs font-semibold`}
+                    disabled={disabled}
+                    onClick={() => onPurchase(definition)}
+                  >
+                    <ShoppingBag size={14} aria-hidden="true" />
+                    {pending ? copy.shop.pending : copy.shop.buy}
+                  </button>
+                </div>
               </div>
             </div>
           );
@@ -1254,9 +1290,10 @@ function InventoryPanel({
       {entries.map(({ definition, quantity }) => (
         <div
           key={definition.id}
-          className={`${styles.card} flex items-center justify-between gap-2 rounded-2xl p-3`}
+          className={`${styles.card} flex items-center gap-3 rounded-2xl p-2.5`}
         >
-          <div className="min-w-0">
+          <ItemThumb definition={definition} />
+          <div className="min-w-0 flex-1">
             <h2 className="truncate text-sm font-semibold">
               {getItemName(definition, copy)}
             </h2>

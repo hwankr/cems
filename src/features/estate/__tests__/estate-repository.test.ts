@@ -2,6 +2,11 @@ import { describe, expect, it, vi } from "vitest";
 import {
   createDemoEstateSeedSnapshot,
 } from "../data/demo-estate-data";
+import { estateExpansionCatalog } from "../data/estate-expansion-catalog";
+import {
+  baseEstateBuildingDefinition,
+  estateItemCatalog,
+} from "../data/estate-item-catalog";
 import {
   createDebouncedEstateSaver,
   getEstateStorageKey,
@@ -85,12 +90,12 @@ describe("estate persistence", () => {
 
     const snapshotA = {
       ...createSnapshot("yu-e21"),
-      unlockedParcelIds: ["central-campus", "east-yard"],
+      unlockedParcelIds: ["central-campus", "east"],
     };
     const snapshotB = {
       ...createSnapshot("yu-e22"),
       inventory: [{ definitionId: "pine-tree", quantity: 1 }],
-      unlockedParcelIds: ["central-campus", "south-yard"],
+      unlockedParcelIds: ["central-campus", "south"],
     };
 
     await repository.save("yu-e21", snapshotA);
@@ -110,14 +115,14 @@ describe("estate persistence", () => {
     });
     const snapshot = {
       ...createSnapshot("yu-e21"),
-      unlockedParcelIds: ["central-campus", "east-yard"],
+      unlockedParcelIds: ["central-campus", "east"],
       transactions: [
         ...createSnapshot("yu-e21").transactions,
         {
-          id: "tx-east-yard",
+          id: "tx-east",
           kind: "unlock-parcel" as const,
-          pointDelta: -2_000,
-          parcelId: "east-yard",
+          pointDelta: -4_000,
+          parcelId: "east",
           createdAt: "2026-06-24T00:00:00.000Z",
         },
       ],
@@ -309,7 +314,7 @@ describe("estate persistence", () => {
     expect(createDemoEstateSeedSnapshot("yu-e22").subjectId).toBe("yu-e22");
   });
 
-  it("seeds yu-e21 with an IT building landmark, entrance sidewalk, and trees", () => {
+  it("seeds yu-e21 with a central landmark, paved axis, and framing trees", () => {
     const snapshot = createDemoEstateSeedSnapshot("yu-e21");
 
     expect(snapshot.items).toEqual(
@@ -317,8 +322,8 @@ describe("estate persistence", () => {
         expect.objectContaining({
           id: "yu-e21:landmark",
           definitionId: "base-campus-building",
-          x: 3,
-          y: 3,
+          x: 7,
+          y: 4,
         }),
         expect.objectContaining({ definitionId: "broadleaf-tree" }),
         expect.objectContaining({ definitionId: "pine-tree" }),
@@ -326,10 +331,46 @@ describe("estate persistence", () => {
     );
     expect(snapshot.groundTiles).toEqual(
       expect.arrayContaining([
-        { x: 3, y: 6, definitionId: "bright-sidewalk-block" },
-        { x: 4, y: 6, definitionId: "bright-sidewalk-block" },
+        { x: 7, y: 7, definitionId: "bright-sidewalk-block" },
+        { x: 8, y: 7, definitionId: "bright-sidewalk-block" },
       ]),
     );
+  });
+
+  it("places every seed item inside the central parcel without overlaps", () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const central = estateExpansionCatalog.find(
+      (parcel) => parcel.id === "central-campus",
+    );
+    if (!central) throw new Error("Expected a central parcel.");
+
+    const { minX, minY, width, height } = central.bounds;
+    const definitions = new Map(
+      [baseEstateBuildingDefinition, ...estateItemCatalog].map((definition) => [
+        definition.id,
+        definition,
+      ]),
+    );
+    const occupied = new Set<string>();
+
+    for (const item of snapshot.items) {
+      const definition = definitions.get(item.definitionId);
+      expect(definition).toBeTruthy();
+      if (!definition) continue;
+
+      for (let x = item.x; x < item.x + definition.footprintWidth; x += 1) {
+        for (let y = item.y; y < item.y + definition.footprintHeight; y += 1) {
+          expect(x).toBeGreaterThanOrEqual(minX);
+          expect(y).toBeGreaterThanOrEqual(minY);
+          expect(x).toBeLessThan(minX + width);
+          expect(y).toBeLessThan(minY + height);
+
+          const key = `${x}:${y}`;
+          expect(occupied.has(key)).toBe(false);
+          occupied.add(key);
+        }
+      }
+    }
   });
 
   it("does not mutate the source object while saving or strip unknown runtime fields into storage", async () => {

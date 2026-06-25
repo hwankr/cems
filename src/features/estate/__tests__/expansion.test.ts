@@ -18,7 +18,7 @@ describe("estate expansion catalog", () => {
       {
         id: "central-campus",
         cost: 0,
-        bounds: { minX: 0, minY: 0, width: 8, height: 8 },
+        bounds: { minX: 0, minY: 0, width: 16, height: 16 },
       },
     );
   });
@@ -26,22 +26,22 @@ describe("estate expansion catalog", () => {
   it("uses explicit adjacency rules for unlock availability", () => {
     expect(
       isParcelAdjacentToUnlockedParcel(
-        "east-yard",
+        "east",
         ["central-campus"],
         estateExpansionCatalog,
       ),
     ).toBe(true);
     expect(
       isParcelAdjacentToUnlockedParcel(
-        "south-east-plaza",
+        "south-east",
         ["central-campus"],
         estateExpansionCatalog,
       ),
     ).toBe(false);
     expect(
       isParcelAdjacentToUnlockedParcel(
-        "south-east-plaza",
-        ["central-campus", "east-yard"],
+        "south-east",
+        ["central-campus", "east"],
         estateExpansionCatalog,
       ),
     ).toBe(true);
@@ -49,15 +49,15 @@ describe("estate expansion catalog", () => {
 
   it("computes unlocked cells as the union of all unlocked parcel cells", () => {
     const cells = getUnlockedEstateCells(
-      ["central-campus", "east-yard"],
+      ["central-campus", "east"],
       estateExpansionCatalog,
     );
     const cellKeys = new Set(cells.map((cell) => `${cell.x}:${cell.y}`));
 
-    expect(cells).toHaveLength(96);
+    expect(cells).toHaveLength(512);
     expect(cellKeys.size).toBe(cells.length);
     expect(cells).toContainEqual({ x: 0, y: 0 });
-    expect(cells).toContainEqual({ x: 11, y: 7 });
+    expect(cells).toContainEqual({ x: 16, y: 0 });
   });
 
   it("validates parcel catalog adjacency and rejects overlapping bounds", () => {
@@ -90,9 +90,9 @@ describe("estate expansion catalog", () => {
 
   it("expands rectangular bounds from min coordinates", () => {
     const parcel = estateExpansionCatalog.find(
-      (candidate) => candidate.id === "south-yard",
+      (candidate) => candidate.id === "south",
     );
 
-    expect(parcel ? getParcelCells(parcel) : []).toContainEqual({ x: 0, y: 11 });
+    expect(parcel ? getParcelCells(parcel) : []).toContainEqual({ x: 0, y: 16 });
   });
 });

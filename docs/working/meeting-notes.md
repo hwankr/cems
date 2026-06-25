@@ -17,6 +17,18 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - 사용자 요청으로 나머지 브랜치를 모두 삭제했다: `feature/estate-fullscreen-polish`(로컬+원격), `building-estate-game`·`feature/building-estate-game`(로컬, 이미 main에 머지됨). 최종적으로 로컬·원격 모두 `main` 단일 브랜치만 남았다.
 - `.claude/launch.json`(프리뷰용 로컬 설정)은 커밋에서 의도적으로 제외해 untracked로 두었다.
 
+### 같은 날 후속 세션 — estate 디자인 2차·3차 개편
+
+- 사용자는 estate 전반 디자인이 여전히 불만이었다: 기본 영지 디자인 자체(시작이 휑함, 건물·나무·아이템 아트/색감, 바닥·잠긴 구역 표현, 떠 있는 패널/UI 배치 — 네 가지 모두), 상점 탭 아이템에 미리보기 사진이 없는 점, 확장 방법이 직관적이지 않은 점.
+- 확정 방향(2차): 상점은 "카드에 썸네일 추가", 확장은 "캔버스에서 바로". estate 고유 햇살 톤은 유지하되 메인 지도와 같은 품질로 끌어올린다.
+- 2차 구현: 햇살 팔레트(따뜻한 하늘 그라데이션 `#fbf3e2→#eef4e0→#d8e8d2` + 캔버스 햇무리, 잔디 2톤 `#8fc46a`/`#86bd63`, 꿀색 포인트 `#f2b53c`), 셀 내부 경계 옅게/구역 외곽선만 또렷, 잠긴 땅은 회색 박스 대신 따뜻한 점선 "예정 부지" + 인접 확장가능 구역에 꿀색 "+가격" 배지(클릭하면 기존 확장 다이얼로그). 상점·인벤토리 카드에 잔디 타일 배경 위 아이소메트릭 썸네일(아이템=SVG 스프라이트, 바닥재=타일 텍스처, `<img>` 대신 background-image), 가격은 꿀색 알약. 시작 정원을 더 풍성하게 재배치. 변경: `renderer.ts`, `estate-shell.module.css`, `estate-asset-manifest.ts`, `estate-game-client.tsx`, `demo-estate-data.ts`. 설계 스펙은 `docs/superpowers/specs/2026-06-25-estate-redesign-design.md`에 기록.
+- 확정 방향(3차): 기본(중앙) 영지를 16×16으로 키우고, 애초에 전체 영역을 크게 잡은 뒤 나머지를 잠금 형태로 처음부터 보여줘 "아직 이만큼 확장 가능"이라는 느낌을 준다. 사용자 선택: 전체 약 48×48(코어의 9배), 처음 화면은 "코어 + 가장자리 잠금 땅 살짝".
+- 3차 구현: 확장 카탈로그를 9구역으로 교체 — 중앙 `central-campus` 16×16(무료·초기 해제)을 같은 16×16 잠금 구역 8개(north/east/south/west 가장자리 + north-east/south-east/south-west/north-west 모서리)가 둘러싸 48×48을 이루고 코어를 중앙에 둔다(x·y −16..31). 가장자리는 코어에서 바로, 모서리는 인접 가장자리를 거쳐 단계적으로 열린다. 비용 3,000/4,000/6,000/8,000(가장자리), 12,000/15,000/18,000/22,000(모서리). 초기 카메라는 코어 기준에서 약 28% 줌아웃해 잠긴 링이 가장자리에 보이게(화면맞춤 버튼은 해제 영역에 딱 맞춤 유지). 큰 맵을 위해 렌더러 `drawParcelFloors`에 화면 밖 구역/셀 컬링 추가. 시작 정원을 16×16에 맞게 대칭으로 재배치(중앙 건물→앞쪽 분수 축, 모서리·중간 나무, 벤치·화단·가로등·관목 23개, 충돌 없음). parcel i18n 9개를 ko/en에 갱신. 변경: `estate-expansion-catalog.ts`, `demo-estate-data.ts`, `estate-canvas.tsx`, `renderer.ts`, `ko.ts`, `en.ts`.
+- 작업 중 확인한 사실: 기존 parcel id(east-yard 등)를 쓰던 테스트(expansion·commands·renderer-scene·repository·placement)를 새 id·비용·좌표로 갱신했고, 시드 아이템이 중앙 구역 안에서 겹치지 않는지 검사하는 가드 테스트를 신규 추가했다. 16×16 코어로 (8,0) 등 일부 셀이 잠김→해제로 바뀌어 placement/paint 테스트의 "잠긴 셀" 좌표를 (16,0)으로 옮겼다.
+- 검증: Vitest 87/87 통과(영향 테스트 갱신 + 시드 무충돌 가드 신규 포함), ESLint 0 errors(기존 경고 2개는 무관 파일 `game-preview.tsx`), `npm run build` 통과(빌드의 TypeScript 검사 포함). `tsc --noEmit`에는 무관한 사전 존재 테스트 오류 4개만 남음(`asset-manifest.test.ts` readonly 인자, `isometric-renderer-assets.test.ts`의 `"loaded"` 리터럴) — 내 변경으로 추가된 오류는 없음. 라이브 실측(dev): 구역 칩 `1/9`, 확장 패널에 잠긴 8구역이 새 이름으로 표시, 콘솔 에러 0; 상점 15개 아이템 전부 썸네일+꿀색 가격 알약.
+- 도구 한계로 확인한 사실: estate 풀블리드 캔버스 페이지에서 preview 스크린샷 도구가 매번 멈춘다(다른 라우트 `/ko`는 정상, 그리고 이 현상은 이번 수정 이전 원본에서도 동일). 페이지는 무에러·responsive이고 캔버스는 1회 페인트 후 idle(rAF 0)이라 리페인트 루프가 아님을 확인했다. 캔버스 월드의 실제 픽셀 이미지는 첨부하지 못했고, 검증은 테스트·라이브 DOM·빌드로 갈음했다.
+- 사용자 요청으로 회의록을 정리하고 변경분을 커밋해 `origin/main`에 푸시했다(`.claude/launch.json`은 계속 제외).
+
 ## 2026-06-23
 
 - The user wanted the uncomfortable black floor-only Mapbox building appearance removed.

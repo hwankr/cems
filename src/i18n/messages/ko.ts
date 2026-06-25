@@ -196,10 +196,14 @@ export const koMessages = {
     },
     parcels: {
       "central-campus": "중심 구역",
-      "east-yard": "동쪽 마당",
-      "south-yard": "남쪽 마당",
-      "south-east-plaza": "동남쪽 광장",
-      "west-terrace": "서쪽 테라스",
+      north: "북쪽 마당",
+      east: "동쪽 마당",
+      south: "남쪽 마당",
+      west: "서쪽 마당",
+      "north-east": "북동쪽 구역",
+      "south-east": "남동쪽 구역",
+      "south-west": "남서쪽 구역",
+      "north-west": "북서쪽 구역",
     },
     saveStatus: {
       failed: "저장 실패",

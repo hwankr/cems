@@ -17,79 +17,86 @@ export const demoHistoricalEarnedPointsBySubjectId: DemoHistoricalEarnedPointsBy
 
 const seedTimestamp = "2026-06-24T00:00:00.000Z";
 
-export function createDemoEstateSeedSnapshot(subjectId: string): EstateSnapshot {
-  const items =
-    subjectId === "yu-e21"
-      ? createYuE21SeedItems()
-      : createGenericBuildingSeedItems(subjectId);
+// A designed starter garden inside the central 8x8 parcel: a landmark at the
+// back, a paved axis leading to a fountain focal, trees framing the corners,
+// and benches, flower beds, and lamps lining the courtyard. Every fresh estate
+// already reads as a small finished campus garden before the player decorates.
+// Footprints are pre-checked to fit 0..7 with no item collisions.
+type SeedItemPlacement = {
+  suffix: string;
+  definitionId: string;
+  x: number;
+  y: number;
+};
 
+const gardenSeedItems: readonly SeedItemPlacement[] = [
+  { suffix: "landmark", definitionId: baseEstateBuildingDefinition.id, x: 7, y: 4 },
+  { suffix: "fountain", definitionId: "fountain", x: 7, y: 10 },
+  { suffix: "tree-back-left", definitionId: "pine-tree", x: 2, y: 2 },
+  { suffix: "tree-back-right", definitionId: "broadleaf-tree", x: 13, y: 2 },
+  { suffix: "tree-front-left", definitionId: "broadleaf-tree", x: 2, y: 13 },
+  { suffix: "tree-front-right", definitionId: "pine-tree", x: 13, y: 13 },
+  { suffix: "tree-mid-left", definitionId: "broadleaf-tree", x: 2, y: 8 },
+  { suffix: "tree-mid-right", definitionId: "pine-tree", x: 13, y: 8 },
+  { suffix: "tree-back-c-left", definitionId: "pine-tree", x: 5, y: 2 },
+  { suffix: "tree-back-c-right", definitionId: "broadleaf-tree", x: 10, y: 2 },
+  { suffix: "tree-front-c-left", definitionId: "broadleaf-tree", x: 5, y: 13 },
+  { suffix: "tree-front-c-right", definitionId: "pine-tree", x: 10, y: 13 },
+  { suffix: "bench-left", definitionId: "bench", x: 4, y: 7 },
+  { suffix: "bench-right", definitionId: "bench", x: 10, y: 7 },
+  { suffix: "flowers-left", definitionId: "flower-bed", x: 4, y: 10 },
+  { suffix: "flowers-right", definitionId: "flower-bed", x: 10, y: 10 },
+  { suffix: "lamp-left", definitionId: "solar-street-light", x: 5, y: 5 },
+  { suffix: "lamp-right", definitionId: "solar-street-light", x: 10, y: 5 },
+  { suffix: "shrub-back-left", definitionId: "decorative-shrub", x: 3, y: 4 },
+  { suffix: "shrub-back-right", definitionId: "decorative-shrub", x: 12, y: 4 },
+  { suffix: "shrub-front-left", definitionId: "decorative-shrub", x: 3, y: 12 },
+  { suffix: "shrub-front-right", definitionId: "decorative-shrub", x: 12, y: 12 },
+  { suffix: "sculpture", definitionId: "small-sculpture", x: 7, y: 13 },
+];
+
+// Paved axis running from the landmark entrance down to the fountain, plus a
+// short approach in front of it. All tiles sit on item-free cells so they stay
+// visible inside the larger 16x16 core.
+const gardenSeedGroundTiles: readonly EstateGroundTile[] = [
+  { x: 7, y: 6, definitionId: "bright-sidewalk-block" },
+  { x: 8, y: 6, definitionId: "bright-sidewalk-block" },
+  { x: 7, y: 7, definitionId: "bright-sidewalk-block" },
+  { x: 8, y: 7, definitionId: "bright-sidewalk-block" },
+  { x: 7, y: 8, definitionId: "bright-sidewalk-block" },
+  { x: 8, y: 8, definitionId: "bright-sidewalk-block" },
+  { x: 7, y: 9, definitionId: "bright-sidewalk-block" },
+  { x: 8, y: 9, definitionId: "bright-sidewalk-block" },
+  { x: 7, y: 12, definitionId: "stone-path" },
+  { x: 8, y: 12, definitionId: "stone-path" },
+];
+
+export function createDemoEstateSeedSnapshot(subjectId: string): EstateSnapshot {
   return {
     schemaVersion: 1,
     subjectId,
     unlockedParcelIds: ["central-campus"],
-    items,
+    items: createGardenSeedItems(subjectId),
     inventory: [],
-    groundTiles: createSeedGroundTiles(subjectId),
+    groundTiles: createGardenGroundTiles(),
     transactions: [],
     updatedAt: seedTimestamp,
   };
 }
 
-function createYuE21SeedItems(): EstateItemInstance[] {
-  return [
-    createSeedItem("yu-e21:landmark", baseEstateBuildingDefinition.id, 3, 3),
-    createSeedItem("yu-e21:tree:0", "broadleaf-tree", 1, 1),
-    createSeedItem("yu-e21:tree:1", "pine-tree", 6, 1),
-    createSeedItem("yu-e21:tree:2", "broadleaf-tree", 1, 6),
-  ];
-}
-
-function createGenericBuildingSeedItems(subjectId: string): EstateItemInstance[] {
-  const random = createDeterministicPrng(subjectId);
-  const occupied = new Set(["3:3", "3:4", "4:3", "4:4"]);
-  const items: EstateItemInstance[] = [
+function createGardenSeedItems(subjectId: string): EstateItemInstance[] {
+  return gardenSeedItems.map((placement) =>
     createSeedItem(
-      `${subjectId}:landmark`,
-      baseEstateBuildingDefinition.id,
-      3,
-      3,
+      `${subjectId}:${placement.suffix}`,
+      placement.definitionId,
+      placement.x,
+      placement.y,
     ),
-  ];
-
-  for (let index = 0; index < 3; index += 1) {
-    const position = nextOpenSeedPosition(random, occupied);
-    const definitionId = index % 2 === 0 ? "broadleaf-tree" : "pine-tree";
-    items.push(
-      createSeedItem(
-        `${subjectId}:tree:${index}`,
-        definitionId,
-        position.x,
-        position.y,
-      ),
-    );
-  }
-
-  return items;
+  );
 }
 
-function createSeedGroundTiles(subjectId: string): EstateGroundTile[] {
-  if (subjectId === "yu-e21") {
-    return [
-      { x: 3, y: 5, definitionId: "bright-sidewalk-block" },
-      { x: 4, y: 5, definitionId: "bright-sidewalk-block" },
-      { x: 3, y: 6, definitionId: "bright-sidewalk-block" },
-      { x: 4, y: 6, definitionId: "bright-sidewalk-block" },
-      { x: 3, y: 7, definitionId: "stone-path" },
-      { x: 4, y: 7, definitionId: "stone-path" },
-    ];
-  }
-
-  return [
-    { x: 3, y: 5, definitionId: "stone-path" },
-    { x: 4, y: 5, definitionId: "stone-path" },
-    { x: 3, y: 6, definitionId: "stone-path" },
-    { x: 4, y: 6, definitionId: "stone-path" },
-  ];
+function createGardenGroundTiles(): EstateGroundTile[] {
+  return gardenSeedGroundTiles.map((tile) => ({ ...tile }));
 }
 
 function createSeedItem(
@@ -105,40 +112,5 @@ function createSeedItem(
     y,
     rotation: 0,
     placedAt: seedTimestamp,
-  };
-}
-
-function nextOpenSeedPosition(
-  random: () => number,
-  occupied: Set<string>,
-): { x: number; y: number } {
-  for (let attempt = 0; attempt < 64; attempt += 1) {
-    const x = Math.floor(random() * 8);
-    const y = Math.floor(random() * 8);
-    const key = `${x}:${y}`;
-
-    if (!occupied.has(key)) {
-      occupied.add(key);
-      return { x, y };
-    }
-  }
-
-  return { x: 0, y: 0 };
-}
-
-function createDeterministicPrng(seedText: string): () => number {
-  let state = 2166136261;
-
-  for (const character of seedText) {
-    state ^= character.charCodeAt(0);
-    state = Math.imul(state, 16777619);
-  }
-
-  return () => {
-    state += 0x6d2b79f5;
-    let value = state;
-    value = Math.imul(value ^ (value >>> 15), value | 1);
-    value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
-    return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
   };
 }

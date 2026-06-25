@@ -5,9 +5,9 @@
  * world is the hero and every surface below floats above it as warm glass.
  */
 .estate {
-  --es-sky-top: #e4eef0;
-  --es-sky-mid: #eef5e7;
-  --es-sky-bot: #d9e7d3;
+  --es-sky-top: #fbf3e2;
+  --es-sky-mid: #eef4e0;
+  --es-sky-bot: #d8e8d2;
 
   --es-ink: #27332a;
   --es-ink-muted: #5c6b5e;
@@ -26,9 +26,13 @@
   --es-accent-soft: #eaf3e2;
   --es-on-accent: #ffffff;
 
-  --es-gold: #d99a2b;
-  --es-gold-soft: #f7edd6;
-  --es-gold-ink: #a9701a;
+  --es-grass: #8fc46a;
+  --es-grass-bright: #a6da7f;
+  --es-grass-edge: #6aa24e;
+
+  --es-gold: #f2b53c;
+  --es-gold-soft: #fdeecb;
+  --es-gold-ink: #8a5a12;
 
   --es-danger: #9a3b3b;
   --es-danger-soft: #f6e7e6;
@@ -212,6 +216,45 @@
 /* Mobile sheet grab handle. */
 .handle {
   background: color-mix(in srgb, var(--es-ink-subtle) 45%, transparent);
+}
+
+/*
+ * Shop / inventory item preview thumbnails. The item sprite floats, bottom
+ * anchored, over a soft grass tile; ground items fill the frame with their
+ * own tile texture. Always-light, like the rest of the garden.
+ */
+.thumb {
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid var(--es-line-soft);
+  background-color: var(--es-grass);
+  background-image:
+    radial-gradient(
+      circle at 50% 28%,
+      var(--es-grass-bright) 0%,
+      var(--es-grass) 64%,
+      var(--es-grass-edge) 100%
+    );
+}
+
+.thumbSprite {
+  position: absolute;
+  inset: 10% 9% 9%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: contain;
+  filter: drop-shadow(0 3px 4px rgb(20 40 20 / 0.22));
+}
+
+.thumbGround {
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid var(--es-line-soft);
+  background-color: var(--es-grass);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 /*

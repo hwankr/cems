@@ -120,10 +120,10 @@ export const estateAssetManifest = {
       "grass-decoration",
       "/estate-assets/tiles/grass.svg",
       {
-        fill: "#7fb466",
-        stroke: "#5b8c4b",
-        insetFill: "#9bd27b",
-        textureOpacity: 0.58,
+        fill: "#8fc46a",
+        stroke: "#6aa24e",
+        insetFill: "#a6da7f",
+        textureOpacity: 0.5,
       },
     ),
     "stone-path": ground("stone-path", "/estate-assets/tiles/stone-path.svg", {

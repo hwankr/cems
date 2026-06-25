@@ -1,4 +1,8 @@
-import { getCellKey, getParcelCells } from "../domain/expansion";
+import {
+  getCellKey,
+  getParcelCells,
+  isParcelAdjacentToUnlockedParcel,
+} from "../domain/expansion";
 import type {
   EstateAssetManifest,
   EstateGroundAssetDefinition,
@@ -42,6 +46,7 @@ export type EstateRenderParcel = {
   id: string;
   cells: EstateGridCell[];
   unlocked: boolean;
+  unlockable: boolean;
   cost: number;
 };
 
@@ -103,6 +108,13 @@ export function createEstateRenderScene({
     id: parcel.id,
     cells: getParcelCells(parcel),
     unlocked: unlockedParcelIds.has(parcel.id),
+    unlockable:
+      !unlockedParcelIds.has(parcel.id) &&
+      isParcelAdjacentToUnlockedParcel(
+        parcel.id,
+        snapshot.unlockedParcelIds,
+        parcelDefinitions,
+      ),
     cost: parcel.cost,
   }));
   const hoverCellKey = hoverCell ? getCellKey(hoverCell) : null;
@@ -194,7 +206,7 @@ export class EstateIsometricRenderer {
     );
 
     this.drawBackground(viewport);
-    this.drawParcelFloors(scene, camera, viewport, assets, loadedAssets);
+    this.drawParcelFloors(scene, camera, viewport, visibleWorldBounds);
     this.drawGroundTiles(
       scene,
       camera,
@@ -224,47 +236,85 @@ export class EstateIsometricRenderer {
     const ctx = this.context;
     const gradient = ctx.createLinearGradient(0, 0, 0, viewport.height);
 
-    gradient.addColorStop(0, "#dfe8ed");
-    gradient.addColorStop(0.58, "#edf4e8");
-    gradient.addColorStop(1, "#d8e4dc");
+    gradient.addColorStop(0, "#fbf3e2");
+    gradient.addColorStop(0.52, "#eef4e0");
+    gradient.addColorStop(1, "#d8e8d2");
 
     ctx.clearRect(0, 0, viewport.width, viewport.height);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, viewport.width, viewport.height);
+
+    // Soft, warm sun glow in the upper area so the daylight reads as sunny.
+    ctx.save();
+    ctx.globalAlpha = 0.45;
+    ctx.fillStyle = "#fff6df";
+    ctx.beginPath();
+    ctx.ellipse(
+      viewport.width * 0.8,
+      viewport.height * 0.1,
+      viewport.width * 0.36,
+      viewport.height * 0.28,
+      0,
+      0,
+      Math.PI * 2,
+    );
+    ctx.fill();
+    ctx.restore();
   }
 
   private drawParcelFloors(
     scene: EstateRenderScene,
     camera: IsometricCamera,
     viewport: ViewportSize,
-    assets: EstateAssetManifest,
-    loadedAssets?: EstateAssetLoadSnapshot,
+    visibleWorldBounds: WorldBounds,
   ) {
     for (const parcel of scene.parcels) {
+      // Skip whole parcels off-screen — the map is large (up to 48x48), so most
+      // parcels lie outside the viewport at typical zoom.
+      const parcelBounds = getCellsWorldBounds(parcel.cells, scene.metrics);
+      if (!intersectsWorldBounds(parcelBounds, visibleWorldBounds)) continue;
+
+      const floorAlpha = getParcelFloorAlpha(scene, parcel);
+
       for (const cell of parcel.cells) {
+        if (
+          !intersectsWorldBounds(
+            getCellsWorldBounds([cell], scene.metrics),
+            visibleWorldBounds,
+          )
+        ) {
+          continue;
+        }
+
+        const style = getParcelFloorStyle(parcel, cell);
         drawWorldPolygon(
           this.context,
           getCellDiamondPoints(cell, scene.metrics),
           camera,
           viewport,
           {
-            fill: parcel.unlocked ? "#76ad61" : "#7f8b78",
-            stroke: parcel.unlocked ? "#5d924b" : "#687365",
-            alpha: getParcelFloorAlpha(scene, parcel),
-            lineWidth: 1,
+            fill: style.fill,
+            stroke: style.stroke,
+            alpha: floorAlpha,
+            lineWidth: parcel.unlocked ? 1 : 0.75,
           },
         );
       }
 
-      if (!parcel.unlocked && parcel.cells.length > 0) {
-        this.drawLockedParcelLabel(
-          parcel,
-          scene.metrics,
-          camera,
-          viewport,
-          assets.items["locked-parcel-icon"],
-          loadedAssets?.items["locked-parcel-icon"]?.image ?? null,
-        );
+      if (parcel.unlocked || parcel.cells.length === 0) continue;
+
+      // Locked land reads as a warm, dashed "buildable plot" rather than dead
+      // grey. Plots you can open next get an inviting honey "+ price" badge;
+      // far-off plots stay dormant so the eye lands on what is actionable.
+      this.drawPlotOutline(parcel, scene.metrics, camera, viewport, {
+        stroke: parcel.unlockable ? "#caa23a" : "#bdb290",
+        alpha: parcel.unlockable ? 0.85 : 0.5,
+      });
+
+      if (parcel.unlockable) {
+        this.drawExpansionBadge(parcel, scene.metrics, camera, viewport);
+      } else {
+        this.drawDormantPlot(parcel, scene.metrics, camera, viewport);
       }
     }
   }
@@ -281,20 +331,15 @@ export class EstateIsometricRenderer {
     );
     if (!parcel) return;
 
-    for (const cell of parcel.cells) {
-      strokeWorldPolygon(
-        this.context,
-        getCellDiamondPoints(cell, scene.metrics),
-        camera,
-        viewport,
-        {
-          stroke: parcel.unlocked ? "#dcfce7" : "#fef3c7",
-          alpha: parcel.unlocked ? 0.55 : 0.76,
-          lineWidth: 3,
-          lineDash: [8, 6],
-        },
-      );
-    }
+    const outline = getParcelOuterDiamond(parcel.cells, scene.metrics);
+    if (!outline) return;
+
+    strokeWorldPolygon(this.context, outline, camera, viewport, {
+      stroke: parcel.unlocked ? "#ffffff" : "#f0b73e",
+      alpha: parcel.unlocked ? 0.6 : 0.9,
+      lineWidth: 2.5,
+      lineDash: [10, 7],
+    });
   }
 
   private drawUnlockAnimation(
@@ -356,56 +401,124 @@ export class EstateIsometricRenderer {
     ctx.restore();
   }
 
-  private drawLockedParcelLabel(
+  private drawPlotOutline(
     parcel: EstateRenderParcel,
     metrics: IsometricTileMetrics,
     camera: IsometricCamera,
     viewport: ViewportSize,
-    iconAsset?: EstateSpriteAssetDefinition,
-    iconImage?: HTMLImageElement | null,
+    style: { stroke: string; alpha: number },
+  ) {
+    const outline = getParcelOuterDiamond(parcel.cells, metrics);
+    if (!outline) return;
+
+    strokeWorldPolygon(this.context, outline, camera, viewport, {
+      stroke: style.stroke,
+      alpha: style.alpha,
+      lineWidth: 1.75,
+      lineDash: [9, 7],
+    });
+  }
+
+  private drawExpansionBadge(
+    parcel: EstateRenderParcel,
+    metrics: IsometricTileMetrics,
+    camera: IsometricCamera,
+    viewport: ViewportSize,
   ) {
     const center = averagePoints(
       parcel.cells.map((cell) => getCellCenterScreen(cell, metrics)),
     );
     const canvas = worldToCanvas(center, camera, viewport);
     const ctx = this.context;
-    const width = 68;
-    const height = 30;
+    const zoom = camera.zoom;
+    const radius = Math.max(13, 16 * zoom);
+    const circleY = canvas.y - radius;
 
     ctx.save();
-    ctx.globalAlpha = 0.78;
-    ctx.fillStyle = "rgba(31, 41, 55, 0.72)";
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.28)";
-    ctx.lineWidth = 1;
-    ctx.fillRect(canvas.x - width / 2, canvas.y - height / 2, width, height);
-    ctx.strokeRect(canvas.x - width / 2, canvas.y - height / 2, width, height);
+
+    // Grounding disc so the floating badge feels anchored to the plot.
+    ctx.globalAlpha = 0.2;
+    ctx.fillStyle = "#1f3a20";
+    ctx.beginPath();
+    ctx.ellipse(
+      canvas.x,
+      canvas.y + radius * 0.5,
+      radius * 0.95,
+      radius * 0.4,
+      0,
+      0,
+      Math.PI * 2,
+    );
+    ctx.fill();
     ctx.globalAlpha = 1;
-    if (iconAsset && iconImage) {
-      const iconBox = getAnchoredSpriteDrawBox(
-        { x: canvas.x - 18, y: canvas.y + 10 },
-        iconAsset,
-        0.22 * camera.zoom,
-      );
-      ctx.drawImage(
-        iconImage,
-        iconBox.x,
-        iconBox.y,
-        iconBox.width,
-        iconBox.height,
-      );
-    } else {
-      ctx.fillStyle = "#f8fafc";
-      ctx.strokeStyle = "#f8fafc";
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      ctx.arc(canvas.x - 18, canvas.y - 1, 5, Math.PI, 0);
-      ctx.stroke();
-      ctx.fillRect(canvas.x - 24, canvas.y - 1, 12, 10);
-    }
-    ctx.font = "600 12px sans-serif";
-    ctx.textAlign = "left";
+
+    // Honey circle with a white plus.
+    ctx.beginPath();
+    ctx.arc(canvas.x, circleY, radius, 0, Math.PI * 2);
+    ctx.fillStyle = "#f2b53c";
+    ctx.fill();
+    ctx.lineWidth = Math.max(1.5, 2 * zoom);
+    ctx.strokeStyle = "#d99a2b";
+    ctx.stroke();
+
+    const plus = radius * 0.5;
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = Math.max(2, 2.6 * zoom);
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(canvas.x, circleY - plus);
+    ctx.lineTo(canvas.x, circleY + plus);
+    ctx.moveTo(canvas.x - plus, circleY);
+    ctx.lineTo(canvas.x + plus, circleY);
+    ctx.stroke();
+    ctx.lineCap = "butt";
+
+    // Price pill just beneath the circle.
+    const label = formatExpansionCost(parcel.cost);
+    const fontSize = Math.max(11, Math.round(12 * zoom));
+    ctx.font = `600 ${fontSize}px sans-serif`;
+    const approxTextWidth = label.length * fontSize * 0.62;
+    const pillHeight = Math.max(18, 20 * zoom);
+    const pillWidth = approxTextWidth + pillHeight;
+    const pillX = canvas.x - pillWidth / 2;
+    const pillY = canvas.y + radius * 0.16;
+
+    fillPill(ctx, pillX, pillY, pillWidth, pillHeight, "#fffdf7", "#e4c98a");
+    ctx.fillStyle = "#8a5a12";
+    ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(`${parcel.cost}`, canvas.x - 5, canvas.y + 4);
+    ctx.fillText(label, canvas.x, pillY + pillHeight / 2 + 0.5);
+
+    ctx.restore();
+  }
+
+  private drawDormantPlot(
+    parcel: EstateRenderParcel,
+    metrics: IsometricTileMetrics,
+    camera: IsometricCamera,
+    viewport: ViewportSize,
+  ) {
+    const center = averagePoints(
+      parcel.cells.map((cell) => getCellCenterScreen(cell, metrics)),
+    );
+    const canvas = worldToCanvas(center, camera, viewport);
+    const ctx = this.context;
+    const size = Math.max(7, 9 * camera.zoom);
+
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+    ctx.strokeStyle = "#857c63";
+    ctx.fillStyle = "#857c63";
+    ctx.lineWidth = Math.max(1.4, 1.7 * camera.zoom);
+    ctx.beginPath();
+    ctx.arc(canvas.x, canvas.y - size * 0.42, size * 0.42, Math.PI, 0);
+    ctx.stroke();
+    ctx.fillRect(
+      canvas.x - size * 0.5,
+      canvas.y - size * 0.18,
+      size,
+      size * 0.78,
+    );
     ctx.restore();
   }
 
@@ -813,9 +926,9 @@ export class EstateIsometricRenderer {
     const ctx = this.context;
     const gradient = ctx.createLinearGradient(0, 0, viewport.width, viewport.height);
 
-    gradient.addColorStop(0, "rgba(255, 255, 255, 0.12)");
+    gradient.addColorStop(0, "rgba(255, 251, 235, 0.16)");
     gradient.addColorStop(0.5, "rgba(255, 255, 255, 0)");
-    gradient.addColorStop(1, "rgba(15, 23, 42, 0.1)");
+    gradient.addColorStop(1, "rgba(58, 86, 50, 0.08)");
 
     ctx.save();
     ctx.fillStyle = gradient;
@@ -828,12 +941,86 @@ function getParcelFloorAlpha(
   scene: EstateRenderScene,
   parcel: EstateRenderParcel,
 ): number {
-  if (!parcel.unlocked) return 0.58;
+  if (!parcel.unlocked) return 0.82;
 
   if (scene.recentlyUnlockedParcelId !== parcel.id) return 1;
 
   const progress = Math.min(1, Math.max(0, scene.animationProgress ?? 1));
-  return 0.58 + 0.42 * progress;
+  return 0.82 + 0.18 * progress;
+}
+
+function getParcelFloorStyle(
+  parcel: EstateRenderParcel,
+  cell: EstateGridCell,
+): { fill: string; stroke: string } {
+  if (parcel.unlocked) {
+    // Two close greens checkered by cell parity so the lawn has life without a
+    // hard grid; the stroke stays near the fill so cell seams read as soft.
+    const even = (cell.x + cell.y) % 2 === 0;
+    return {
+      fill: even ? "#8fc46a" : "#86bd63",
+      stroke: "#7eb35c",
+    };
+  }
+
+  // Locked land: warm tan "future plot". Stroke matches the fill so individual
+  // cells do not draw a grid — the dashed plot outline frames it instead.
+  if (parcel.unlockable) {
+    return { fill: "#ece1c5", stroke: "#ece1c5" };
+  }
+
+  return { fill: "#ded8c6", stroke: "#ded8c6" };
+}
+
+function getParcelOuterDiamond(
+  cells: readonly EstateGridCell[],
+  metrics: IsometricTileMetrics,
+): [ScreenPoint, ScreenPoint, ScreenPoint, ScreenPoint] | null {
+  if (cells.length === 0) return null;
+
+  const minX = Math.min(...cells.map((cell) => cell.x));
+  const maxX = Math.max(...cells.map((cell) => cell.x));
+  const minY = Math.min(...cells.map((cell) => cell.y));
+  const maxY = Math.max(...cells.map((cell) => cell.y));
+
+  return [
+    gridToScreen({ x: minX, y: minY }, metrics),
+    gridToScreen({ x: maxX + 1, y: minY }, metrics),
+    gridToScreen({ x: maxX + 1, y: maxY + 1 }, metrics),
+    gridToScreen({ x: minX, y: maxY + 1 }, metrics),
+  ];
+}
+
+function fillPill(
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  fill: string,
+  stroke?: string,
+) {
+  const radius = height / 2;
+
+  context.beginPath();
+  context.moveTo(x + radius, y);
+  context.lineTo(x + width - radius, y);
+  context.arc(x + width - radius, y + radius, radius, -Math.PI / 2, Math.PI / 2);
+  context.lineTo(x + radius, y + height);
+  context.arc(x + radius, y + radius, radius, Math.PI / 2, -Math.PI / 2);
+  context.closePath();
+  context.fillStyle = fill;
+  context.fill();
+
+  if (stroke) {
+    context.lineWidth = 1;
+    context.strokeStyle = stroke;
+    context.stroke();
+  }
+}
+
+function formatExpansionCost(cost: number): string {
+  return `+${cost.toLocaleString("en-US")}`;
 }
 
 function createRenderGroundTile(
