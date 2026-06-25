@@ -1,9 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 166">
-  <path d="M64 158 28 140 64 122 100 140Z" fill="#143126" opacity=".18"/>
-  <path d="M57 91H72L75 142Q64 149 53 142Z" fill="#745137"/>
-  <path d="M64 18 33 70H95Z" fill="#2c775c"/>
-  <path d="M64 43 24 101H104Z" fill="#24684f"/>
-  <path d="M64 71 19 129H109Z" fill="#1e5945"/>
-  <path d="M50 58 64 34 80 58Z" fill="#59a978" opacity=".48"/>
-  <path d="M43 94 64 64 88 94Z" fill="#4a9c70" opacity=".42"/>
+  <defs>
+    <linearGradient id="trunk" x1="55" y1="84" x2="74" y2="148" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8f6743"/>
+      <stop offset="1" stop-color="#4f3426"/>
+    </linearGradient>
+    <linearGradient id="pineA" x1="39" y1="22" x2="86" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7bd29a"/>
+      <stop offset=".55" stop-color="#2f8665"/>
+      <stop offset="1" stop-color="#18533f"/>
+    </linearGradient>
+    <linearGradient id="pineB" x1="37" y1="45" x2="92" y2="137" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#60b982"/>
+      <stop offset=".58" stop-color="#28765a"/>
+      <stop offset="1" stop-color="#154737"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="64" cy="143" rx="39" ry="12" fill="#0d281f" opacity=".22"/>
+  <path d="M57 81h14l6 62c-8 7-18 8-27 0Z" fill="url(#trunk)" stroke="#4e3425" stroke-width="1"/>
+  <path d="M64 15 35 67h58Z" fill="url(#pineA)" stroke="#24674f" stroke-width="1.2"/>
+  <path d="M64 39 25 98h78Z" fill="url(#pineA)" stroke="#205e49" stroke-width="1.2"/>
+  <path d="M64 67 17 132h94Z" fill="url(#pineB)" stroke="#174c3b" stroke-width="1.2"/>
+  <path d="m64 21-9 40h17ZM64 48 49 91h29ZM64 76l-18 49h38Z" fill="#a6e6b1" opacity=".18"/>
+  <path d="M44 66c11 4 25 4 39 0M35 97c17 5 38 5 58 0M29 124c21 6 45 6 70 0" fill="none" stroke="#9ee3b0" stroke-width="2" stroke-linecap="round" opacity=".26"/>
+  <circle cx="57" cy="32" r="2" fill="#d5f5d7" opacity=".35"/>
 </svg>
