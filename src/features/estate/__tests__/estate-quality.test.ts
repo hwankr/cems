@@ -50,7 +50,23 @@ describe("estate release quality gates", () => {
     };
 
     expect(enEstate.panels?.shop).toBe("Shop");
-    expect(koEstate.panels?.shop).toBe("\uc0c1\uc810");
+    expect(koEstate.panels?.shop).toBe("상점");
+  });
+
+  it("keeps the estate Canvas full-screen while desktop tools remain overlays", () => {
+    const pageSource = readProjectFile(
+      "src/app/[locale]/subjects/[subjectId]/estate/page.tsx",
+    );
+    const styleSource = readProjectFile(
+      "src/app/[locale]/subjects/[subjectId]/estate/estate-page.module.css",
+    );
+
+    expect(pageSource).toContain('import styles from "./estate-page.module.css"');
+    expect(pageSource).toContain("className={styles.shell}");
+    expect(styleSource).toContain("height: 100dvh");
+    expect(styleSource).toContain("section:last-of-type > div:first-child");
+    expect(styleSource).toContain("section:last-of-type > aside");
+    expect(styleSource).toContain("position: absolute !important");
   });
 });
 
