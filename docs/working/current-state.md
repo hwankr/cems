@@ -1,6 +1,6 @@
 # Current State - cems
 
-**Last updated:** 2026-06-23
+**Last updated:** 2026-06-25
 
 ## Current Context
 
@@ -40,6 +40,8 @@ The key abstraction is an **energy saving subject**. A subject can be a building
 - The admin campus map avoids visible app-level polygon floor fills and point circles. It uses Mapbox `dark-v11`, hides default Mapbox building layers, renders height-bearing polygon geometries as floor-count-based extrusions from official Yeungnam campus-map floor data, keeps lightweight status outlines and centered building-name labels, and only makes those extruded polygons clickable/focusable on the map.
 - Yeungnam generated geometry now contains 121 mapped campus subjects: 73 polygon footprints and 48 official point fallbacks. 69 polygons have positive extrusion height and render as map click zones. 24 of the polygon footprints come from the offline local `campus-ems` reference file, while `fallback_square` reference entries remain excluded from 3D extrusion.
 - Participant mode shows the demo user's affiliation, affiliation points, saved energy, rank, group leaderboard, and character progress.
+- An estate ("영지 꾸미기") feature lives under `src/features/estate/`, reached from a building map popup's "Open estate" action at `/[locale]/subjects/[subjectId]/estate`. It is an isometric, HTML-canvas estate builder: players spend points earned from energy saved vs forecast to buy/place items, paint ground tiles, and unlock expansion parcels, with state persisted in localStorage. Domain logic, the isometric engine, i18n, and accessibility are covered by Vitest.
+- As of 2026-06-25 the estate UI was redesigned into a full-bleed "sunny garden": the canvas world fills the viewport with floating cream-glass chrome modeled on the campus map (desktop: right-docked builder console; mobile: a slim bottom dock that opens an on-demand ~46dvh sheet so the world stays visible). The estate's self-contained warm palette and the sheet height live in `src/features/estate/components/estate-shell.module.css`; the old brittle full-screen `estate-page.module.css` `.shell` was removed.
 - The app builds without a Mapbox token. If `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` is missing, the map area shows a configuration state instead of constructing a map.
 - No real API, database, authentication, energy ingestion pipeline, ML pipeline, deployment configuration, or full RPG system has been implemented yet.
 - `.env.example` intentionally leaves `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` blank so example files do not look like real Mapbox tokens.
