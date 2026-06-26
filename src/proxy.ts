@@ -5,6 +5,7 @@ import {
   localeCookieName,
   supportedLocales,
 } from "./i18n/config";
+import { updateSupabaseSession } from "./features/account/supabase/proxy-session";
 
 function pathnameHasLocale(pathname: string) {
   return supportedLocales.some(
@@ -17,18 +18,23 @@ function getPreferredLocale(request: NextRequest) {
   return isLocale(cookieLocale) ? cookieLocale : defaultLocale;
 }
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
+  const sessionResponse = await updateSupabaseSession(request);
   const { pathname } = request.nextUrl;
 
   if (pathnameHasLocale(pathname)) {
-    return NextResponse.next();
+    return sessionResponse;
   }
 
   const locale = getPreferredLocale(request);
   const url = request.nextUrl.clone();
   url.pathname = pathname === "/" ? `/${locale}` : `/${locale}${pathname}`;
 
-  return NextResponse.redirect(url);
+  const redirect = NextResponse.redirect(url);
+  for (const cookie of sessionResponse.cookies.getAll()) {
+    redirect.cookies.set(cookie);
+  }
+  return redirect;
 }
 
 export const config = {
