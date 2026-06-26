@@ -1,0 +1,34 @@
+.scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 3px;
+  width: max-content;
+}
+
+.cell {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  background: var(--color-inset);
+}
+
+.cell[data-future="true"] {
+  background: transparent;
+}
+
+.level1 { background: color-mix(in srgb, var(--color-saving) 28%, transparent); }
+.level2 { background: color-mix(in srgb, var(--color-saving) 52%, transparent); }
+.level3 { background: color-mix(in srgb, var(--color-saving) 76%, transparent); }
+.level4 { background: var(--color-saving); }
+
+.legendCell {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+}
