@@ -11,31 +11,33 @@ import {
 
 export interface EstateTableClient {
   select(subjectId: string): Promise<{
-    data: { snapshot: unknown } | null;
+    data: { snapshot: unknown; version: number } | null;
     error: { message: string } | null;
   }>;
-  upsert(row: {
-    subject_id: string;
-    owner_group_id: string;
+  save(args: {
+    subjectId: string;
     snapshot: EstateSnapshot;
-  }): Promise<{ error: { message: string } | null }>;
-  delete(subjectId: string): Promise<{ error: { message: string } | null }>;
+    expectedVersion: number | null;
+  }): Promise<{
+    data: { version: number } | null;
+    error: { message: string; conflict?: boolean } | null;
+  }>;
+  remove(subjectId: string): Promise<{ error: { message: string } | null }>;
 }
 
 export type SupabaseEstateRepositoryOptions = {
   client: EstateTableClient;
-  ownerGroupId: string;
   seedSnapshot?: (subjectId: string) => EstateSnapshot;
 };
 
 export class SupabaseEstateRepository implements EstateRepository {
   private readonly client: EstateTableClient;
-  private readonly ownerGroupId: string;
   private readonly seedSnapshot: (subjectId: string) => EstateSnapshot;
+  // Tracks the last server version seen per subject for optimistic concurrency.
+  private readonly versions = new Map<string, number>();
 
   constructor(options: SupabaseEstateRepositoryOptions) {
     this.client = options.client;
-    this.ownerGroupId = options.ownerGroupId;
     this.seedSnapshot = options.seedSnapshot ?? createDemoEstateSeedSnapshot;
   }
 
@@ -51,8 +53,11 @@ export class SupabaseEstateRepository implements EstateRepository {
     }
 
     if (!data) {
+      this.versions.delete(subjectId);
       return { ok: true, snapshot: null, recovered: false };
     }
+
+    this.versions.set(subjectId, data.version);
 
     const migrated = migrateEstateSnapshot(data.snapshot, { subjectId });
     if (!migrated.ok) {
@@ -69,30 +74,39 @@ export class SupabaseEstateRepository implements EstateRepository {
     const migrated = migrateEstateSnapshot(snapshot, { subjectId });
     if (!migrated.ok) return { ok: false, error: migrated.error };
 
-    const { error } = await this.client.upsert({
-      subject_id: subjectId,
-      owner_group_id: this.ownerGroupId,
+    const { data, error } = await this.client.save({
+      subjectId,
       snapshot: toPersistableEstateSnapshot(migrated.snapshot),
+      expectedVersion: this.versions.get(subjectId) ?? null,
     });
 
     if (error) {
       return {
         ok: false,
-        error: { code: "write-failed", subjectId, message: error.message },
+        error: {
+          code: error.conflict ? "conflict" : "write-failed",
+          subjectId,
+          message: error.message,
+        },
       };
+    }
+
+    if (data) {
+      this.versions.set(subjectId, data.version);
     }
 
     return { ok: true };
   }
 
   async remove(subjectId: string): Promise<EstateRepositoryWriteResult> {
-    const { error } = await this.client.delete(subjectId);
+    const { error } = await this.client.remove(subjectId);
     if (error) {
       return {
         ok: false,
         error: { code: "write-failed", subjectId, message: error.message },
       };
     }
+    this.versions.delete(subjectId);
     return { ok: true };
   }
 

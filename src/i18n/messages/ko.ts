@@ -236,6 +236,7 @@ export const koMessages = {
       placedReturnView: "배치 완료. 기본값은 보기 모드로 돌아갑니다.",
       purchase: "{item}을(를) 구매했습니다.",
       recovered: "손상된 저장 데이터를 기본 영지로 복구했습니다.",
+      reloaded: "다른 참여자가 먼저 저장해 최신 영지로 새로고침했습니다.",
       removeConfirm:
         "{item}을(를) 철거할까요? 포인트는 환불되지 않습니다.",
       removed: "철거했습니다. 아이템이 인벤토리로 돌아갔습니다.",

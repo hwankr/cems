@@ -237,6 +237,7 @@ export const enMessages = {
       placedReturnView: "Placed. Returning to view mode by default.",
       purchase: "Purchased {item}.",
       recovered: "Recovered damaged save data with the default estate.",
+      reloaded: "Another member saved first — reloaded the latest estate.",
       removeConfirm: "Remove {item}? Points will not be refunded.",
       removed: "Removed. The item returned to inventory.",
     },

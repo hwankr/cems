@@ -25,7 +25,8 @@ export type EstateRepositoryErrorCode =
   | "storage-unavailable"
   | "subject-mismatch"
   | "unsupported-schema-version"
-  | "write-failed";
+  | "write-failed"
+  | "conflict";
 
 export type EstateRepositoryError = {
   code: EstateRepositoryErrorCode;

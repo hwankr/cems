@@ -12,18 +12,15 @@ function fakeClient(
 ): EstateTableClient {
   return {
     select: vi.fn().mockResolvedValue({ data: null, error: null }),
-    upsert: vi.fn().mockResolvedValue({ error: null }),
-    delete: vi.fn().mockResolvedValue({ error: null }),
+    save: vi.fn().mockResolvedValue({ data: { version: 1 }, error: null }),
+    remove: vi.fn().mockResolvedValue({ error: null }),
     ...overrides,
   };
 }
 
 describe("SupabaseEstateRepository", () => {
   it("returns a null snapshot (not recovered) when the row is absent", async () => {
-    const repo = new SupabaseEstateRepository({
-      client: fakeClient(),
-      ownerGroupId: "engineering",
-    });
+    const repo = new SupabaseEstateRepository({ client: fakeClient() });
 
     const result = await repo.load(subjectId);
     expect(result).toEqual({ ok: true, snapshot: null, recovered: false });
@@ -35,9 +32,8 @@ describe("SupabaseEstateRepository", () => {
       client: fakeClient({
         select: vi
           .fn()
-          .mockResolvedValue({ data: { snapshot: seed }, error: null }),
+          .mockResolvedValue({ data: { snapshot: seed, version: 3 }, error: null }),
       }),
-      ownerGroupId: "engineering",
     });
 
     const result = await repo.load(subjectId);
@@ -53,11 +49,10 @@ describe("SupabaseEstateRepository", () => {
     const repo = new SupabaseEstateRepository({
       client: fakeClient({
         select: vi.fn().mockResolvedValue({
-          data: { snapshot: { schemaVersion: 99 } },
+          data: { snapshot: { schemaVersion: 99 }, version: 1 },
           error: null,
         }),
       }),
-      ownerGroupId: "engineering",
     });
 
     const result = await repo.load(subjectId);
@@ -67,36 +62,51 @@ describe("SupabaseEstateRepository", () => {
     }
   });
 
-  it("upserts the owner group id and snapshot on save", async () => {
-    const upsert = vi.fn().mockResolvedValue({ error: null });
+  it("saves via the RPC and sends the last-seen version for OCC", async () => {
+    const save = vi.fn().mockResolvedValue({ data: { version: 4 }, error: null });
     const repo = new SupabaseEstateRepository({
-      client: fakeClient({ upsert }),
-      ownerGroupId: "engineering",
-    });
-    const seed = createDemoEstateSeedSnapshot(subjectId);
-
-    const result = await repo.save(subjectId, seed);
-    expect(result).toEqual({ ok: true });
-    expect(upsert).toHaveBeenCalledWith(
-      expect.objectContaining({
-        subject_id: subjectId,
-        owner_group_id: "engineering",
+      client: fakeClient({
+        select: vi.fn().mockResolvedValue({
+          data: { snapshot: createDemoEstateSeedSnapshot(subjectId), version: 3 },
+          error: null,
+        }),
+        save,
       }),
+    });
+
+    await repo.load(subjectId); // captures version 3
+    const result = await repo.save(subjectId, createDemoEstateSeedSnapshot(subjectId));
+
+    expect(result).toEqual({ ok: true });
+    expect(save).toHaveBeenCalledWith(
+      expect.objectContaining({ subjectId, expectedVersion: 3 }),
     );
   });
 
-  it("reports a write error when upsert fails", async () => {
+  it("reports a write error when the save RPC fails", async () => {
     const repo = new SupabaseEstateRepository({
       client: fakeClient({
-        upsert: vi.fn().mockResolvedValue({ error: { message: "denied" } }),
+        save: vi.fn().mockResolvedValue({ data: null, error: { message: "denied" } }),
       }),
-      ownerGroupId: "engineering",
     });
 
-    const result = await repo.save(
-      subjectId,
-      createDemoEstateSeedSnapshot(subjectId),
-    );
+    const result = await repo.save(subjectId, createDemoEstateSeedSnapshot(subjectId));
     expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe("write-failed");
+  });
+
+  it("surfaces a conflict error code when the version is stale", async () => {
+    const repo = new SupabaseEstateRepository({
+      client: fakeClient({
+        save: vi.fn().mockResolvedValue({
+          data: null,
+          error: { message: "conflict: estate was modified", conflict: true },
+        }),
+      }),
+    });
+
+    const result = await repo.save(subjectId, createDemoEstateSeedSnapshot(subjectId));
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe("conflict");
   });
 });
