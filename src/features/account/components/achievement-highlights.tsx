@@ -3,6 +3,7 @@
 import { Award, Flame, Leaf, Lock, ShieldCheck, Sparkles, Star } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import type { Achievement, AchievementKey } from "../domain/achievements";
+import styles from "./profile-surface.module.css";
 
 const ICONS: Record<AchievementKey, typeof Leaf> = {
   "campus-saver": Leaf,
@@ -30,30 +31,35 @@ export function AchievementHighlights({
   };
 
   return (
-    <section className="rounded-2xl border border-line bg-surface p-5 shadow-card">
+    <section className={styles.section}>
       <h2 className="text-sm font-semibold text-ink">{copy.title}</h2>
-      <ul className="mt-3 flex gap-4 overflow-x-auto pb-1">
+      <ul className="mt-3 flex gap-3 overflow-x-auto pb-1">
         {achievements.map((a) => {
           const Icon = a.locked ? Lock : ICONS[a.key];
           const active = a.earned && !a.locked;
+          const ring = a.locked
+            ? "border-dashed border-[var(--honey)] bg-[var(--honey-soft)] text-[var(--honey-strong)]"
+            : active
+              ? "border-saving bg-saving-soft text-saving"
+              : "border-line bg-inset text-ink-subtle";
           return (
-            <li key={a.key} className="flex w-16 shrink-0 flex-col items-center gap-1.5">
+            <li
+              key={a.key}
+              className="flex w-[4.25rem] shrink-0 flex-col items-center gap-1.5"
+            >
               <span
-                className={[
-                  "grid h-16 w-16 place-items-center rounded-full border-2",
-                  active
-                    ? "border-saving bg-saving-soft text-saving"
-                    : "border-line bg-inset text-ink-subtle",
-                ].join(" ")}
+                className={`grid h-16 w-16 place-items-center rounded-full border-2 ${ring}`}
                 aria-hidden="true"
               >
                 <Icon className="h-6 w-6" />
               </span>
-              <span className="text-center text-[11px] leading-tight text-ink-muted">
+              <span className="break-keep text-center text-[11px] leading-tight text-ink-muted">
                 {labels[a.key]}
               </span>
               {a.locked ? (
-                <span className="text-[10px] text-ink-subtle">{copy.lockedHint}</span>
+                <span className="text-[10px] font-medium text-[var(--honey-strong)]">
+                  {copy.lockedHint}
+                </span>
               ) : null}
             </li>
           );

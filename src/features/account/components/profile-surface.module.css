@@ -1,0 +1,85 @@
+/*
+ * Warm "잔디 정원" palette + unified one-sheet layout, scoped to /me.
+ * Redefining the global --color-* tokens on .surface re-themes every
+ * Tailwind token utility (bg-surface, text-ink, text-saving, ...) used by
+ * the descendant sections — without touching the map/estate/dashboard.
+ * Always light (the chosen direction), regardless of system dark mode.
+ */
+.surface {
+  --color-canvas: #ece5d6;
+  --color-surface: #fbfaf6;
+  --color-surface-2: #ffffff;
+  --color-inset: #efe8d9;
+  --color-line: rgb(26 43 34 / 0.1);
+  --color-line-strong: rgb(26 43 34 / 0.16);
+  --color-ink: #1a2b22;
+  --color-ink-muted: #51604f;
+  --color-ink-subtle: #8b9184;
+  --color-accent: #0f7a52;
+  --color-accent-strong: #0b5e3f;
+  --color-accent-soft: rgb(15 122 82 / 0.12);
+  --color-on-accent: #fbfaf6;
+  --color-saving: #2f9e6b;
+  --color-saving-soft: rgb(47 158 107 / 0.14);
+  --honey: #e8a13a;
+  --honey-strong: #b9740f;
+  --honey-soft: rgb(232 161 58 / 0.18);
+
+  min-height: 100dvh;
+  background: radial-gradient(115% 70% at 50% -10%, #f6f0e3 0%, var(--color-canvas) 58%);
+  color: var(--color-ink);
+  display: flex;
+  justify-content: center;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 30rem;
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .sheet {
+    margin-block: 2rem;
+    border-radius: 28px;
+    box-shadow: 0 30px 60px -30px rgb(26 43 34 / 0.4);
+  }
+}
+
+.cover {
+  position: relative;
+  height: 7rem;
+  background: linear-gradient(135deg, #0b5e3f 0%, #1f8a5d 48%, #6bbf93 100%);
+}
+
+/* soft top-right light bloom for depth */
+.cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(75% 120% at 88% -25%, rgb(255 255 255 / 0.3), transparent 60%);
+  pointer-events: none;
+}
+
+.section {
+  padding: 1.15rem 1.25rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.statStrip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-radius: 16px;
+  background: var(--color-inset);
+  overflow: hidden;
+}
+
+.statCell {
+  padding: 0.65rem 0.25rem;
+  text-align: center;
+}
+
+.statCell + .statCell {
+  border-left: 1px solid var(--color-line);
+}

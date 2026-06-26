@@ -5,6 +5,7 @@ import { formatPoints } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
 import type { ContributionGraph as Graph } from "../domain/contribution";
 import styles from "./contribution-graph.module.css";
+import surface from "./profile-surface.module.css";
 
 const LEVEL_CLASS = ["", styles.level1, styles.level2, styles.level3, styles.level4];
 
@@ -30,7 +31,7 @@ export function ContributionGraph({ graph }: { graph: Graph }) {
   });
 
   return (
-    <section className="rounded-2xl border border-line bg-surface p-5 shadow-card">
+    <section className={surface.section}>
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="text-sm font-semibold text-ink">{copy.title}</h2>
         <span className="text-xs text-ink-subtle">{summaryText}</span>

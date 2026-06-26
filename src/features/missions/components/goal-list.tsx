@@ -6,6 +6,7 @@ import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
 import { claimGoalRewardAction, type ClaimGoalState } from "../actions/claim-goal";
 import type { GoalProgress } from "../domain/goals";
+import surface from "@/features/account/components/profile-surface.module.css";
 
 const initialState: ClaimGoalState = { status: "idle" };
 
@@ -26,12 +27,12 @@ function GoalCard({ goal }: { goal: GoalProgress }) {
   );
 
   return (
-    <li className="rounded-xl border border-line bg-surface p-4">
+    <li className="py-3.5">
       <div className="flex items-center justify-between gap-3">
         <span className="text-sm font-medium text-ink">
           {titles[goal.id] ?? goal.id}
         </span>
-        <span className="text-xs font-semibold text-accent">
+        <span className="text-xs font-bold text-[var(--honey-strong)]">
           +{formatPoints(locale, goal.bonusPoints)}
         </span>
       </div>
@@ -46,7 +47,7 @@ function GoalCard({ goal }: { goal: GoalProgress }) {
           {goal.current}/{goal.targetCount}
         </span>
       </div>
-      <div className="mt-3">
+      <div className="mt-2.5">
         {claimed ? (
           <span className="text-xs font-semibold text-saving">
             {copy.claimed}
@@ -58,7 +59,7 @@ function GoalCard({ goal }: { goal: GoalProgress }) {
             <button
               type="submit"
               disabled={pending}
-              className="h-9 rounded-lg bg-accent px-3 text-xs font-semibold text-white disabled:opacity-60"
+              className="h-9 rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent disabled:opacity-60"
             >
               {pending ? copy.claiming : copy.claim}
             </button>
@@ -74,12 +75,12 @@ function GoalCard({ goal }: { goal: GoalProgress }) {
 export function GoalList({ goals }: { goals: GoalProgress[] }) {
   const { messages } = useI18n();
   return (
-    <section className="rounded-2xl border border-line bg-surface p-5 shadow-card">
+    <section className={surface.section}>
       <h2 className="flex items-center gap-2 text-sm font-semibold text-ink">
         <Target className="h-4 w-4 text-accent" aria-hidden="true" />
         {messages.me.goals.title}
       </h2>
-      <ul className="mt-3 grid gap-3">
+      <ul className="mt-1 divide-y divide-line">
         {goals.map((goal) => (
           <GoalCard key={goal.id} goal={goal} />
         ))}

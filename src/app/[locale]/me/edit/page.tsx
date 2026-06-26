@@ -8,6 +8,7 @@ import {
 } from "@/features/account/data/account-dal";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
+import styles from "@/features/account/components/profile-surface.module.css";
 
 type EditPageProps = { params: Promise<{ locale: string }> };
 
@@ -24,18 +25,20 @@ export default async function ProfileEditPage({ params }: EditPageProps) {
 
   return (
     <CampusEnergyProviders locale={locale} messages={messages}>
-      <main className="mx-auto grid w-full max-w-xl gap-4 px-4 py-6 sm:px-6">
-        <header className="flex items-center justify-between">
-          <Link href={`/${locale}/me`} className="text-sm font-medium text-ink-muted">
-            ← {messages.me.title}
-          </Link>
-          <h1 className="text-sm font-semibold text-ink">{messages.me.edit.title}</h1>
-        </header>
-        <ProfileEditForm
-          displayName={profile.displayName}
-          handle={profile.handle}
-          bio={profile.bio}
-        />
+      <main className={styles.surface}>
+        <div className="grid w-full max-w-md content-start gap-4 px-4 py-6">
+          <header className="flex items-center justify-between">
+            <Link href={`/${locale}/me`} className="text-sm font-medium text-ink-muted">
+              ← {messages.me.title}
+            </Link>
+            <h1 className="text-sm font-semibold text-ink">{messages.me.edit.title}</h1>
+          </header>
+          <ProfileEditForm
+            displayName={profile.displayName}
+            handle={profile.handle}
+            bio={profile.bio}
+          />
+        </div>
       </main>
     </CampusEnergyProviders>
   );

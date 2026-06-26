@@ -1,16 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import { useI18n } from "@/i18n/client";
-import { formatNumber, formatPoints } from "@/i18n/format";
+import { formatNumber } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
 import { getCharacterProgress } from "@/features/campus-energy/domain/scoring";
+import { SignOutButton } from "./sign-out-button";
+import styles from "./profile-surface.module.css";
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="flex flex-col items-center">
-      <span className="text-lg font-bold tabular-nums text-ink">{value}</span>
-      <span className="text-xs text-ink-muted">{label}</span>
+    <div className={styles.statCell}>
+      <div className="text-lg font-bold leading-none tabular-nums text-ink">
+        {value}
+      </div>
+      <div className="mt-1 text-[11px] text-ink-muted">{label}</div>
     </div>
   );
 }
@@ -35,47 +40,71 @@ export function ProfileHero({
   const ringPct = Math.round(progress.progressRate * 100);
 
   return (
-    <section className="rounded-2xl border border-line bg-surface p-5 shadow-card">
-      <div className="flex items-center gap-5">
-        {/* Avatar with level-progress ring */}
+    <header>
+      {/* Cover band with glass overlay controls + overlapping avatar */}
+      <div className={styles.cover}>
+        <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between p-3">
+          <Link
+            href={`/${locale}`}
+            aria-label={messages.me.backToMap}
+            className="grid h-9 w-9 place-items-center rounded-full bg-white/20 text-white backdrop-blur-sm transition-colors hover:bg-white/30"
+          >
+            <ArrowLeft className="h-5 w-5" aria-hidden="true" />
+          </Link>
+          <SignOutButton className="rounded-full bg-white/20 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/30" />
+        </div>
+
         <span
-          className="grid h-20 w-20 shrink-0 place-items-center rounded-full p-[3px]"
+          className="absolute -bottom-10 left-5 grid h-[84px] w-[84px] place-items-center rounded-full p-[3px] shadow-[0_0_0_4px_var(--color-surface)]"
           style={{
-            background: `conic-gradient(var(--color-saving) ${ringPct}%, var(--color-line) 0)`,
+            background: `conic-gradient(var(--honey) ${ringPct}%, rgb(255 255 255 / 0.55) 0)`,
           }}
         >
-          <span className="grid h-full w-full place-items-center rounded-full bg-accent text-2xl font-bold text-on-accent">
+          <span
+            className="grid h-full w-full place-items-center rounded-full text-2xl font-bold text-on-accent"
+            style={{ background: "linear-gradient(135deg, #2f9e6b, #0b5e3f)" }}
+          >
             {initial}
           </span>
         </span>
+      </div>
 
-        {/* Stats row */}
-        <div className="flex flex-1 justify-around">
+      {/* Identity */}
+      <div className="px-5 pt-14">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h1 className="truncate text-xl font-bold text-ink">{displayName}</h1>
+            <p className="truncate text-sm text-ink-subtle">
+              {handle ? `@${handle}` : copy.handleFallback}
+            </p>
+          </div>
+          <Link
+            href={`/${locale}/me/edit`}
+            className="shrink-0 rounded-full bg-[var(--honey)] px-4 py-2 text-xs font-bold text-[#3a2a08] shadow-sm transition-colors hover:bg-[var(--honey-strong)] hover:text-white"
+          >
+            {copy.edit}
+          </Link>
+        </div>
+
+        <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-saving-soft px-2.5 py-1 text-xs font-semibold text-saving">
+          <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+          {messages.character.titles[progress.titleKey]} ·{" "}
+          {interpolate(messages.character.level, { level: progress.level })}
+        </p>
+
+        <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+          {bio ?? copy.noBio}
+        </p>
+      </div>
+
+      {/* Stat strip */}
+      <div className="px-5 pb-5 pt-4">
+        <div className={styles.statStrip}>
           <Stat value={formatNumber(locale, personalPoints)} label={copy.statPoints} />
           <Stat value={formatNumber(locale, progress.level)} label={copy.statLevel} />
           <Stat value={formatNumber(locale, currentStreak)} label={copy.statStreak} />
         </div>
       </div>
-
-      <div className="mt-4">
-        <h1 className="text-lg font-semibold text-ink">{displayName}</h1>
-        <p className="text-sm text-ink-subtle">
-          {handle ? `@${handle}` : copy.handleFallback}
-        </p>
-        <p className="mt-1 text-sm font-medium text-saving">
-          {messages.character.titles[progress.titleKey]} ·{" "}
-          {interpolate(messages.character.level, { level: progress.level })} ·{" "}
-          {formatPoints(locale, personalPoints)}
-        </p>
-        <p className="mt-1 text-sm text-ink-muted">{bio ?? copy.noBio}</p>
-      </div>
-
-      <Link
-        href={`/${locale}/me/edit`}
-        className="mt-4 block rounded-lg border border-line py-2 text-center text-sm font-semibold text-ink"
-      >
-        {copy.edit}
-      </Link>
-    </section>
+    </header>
   );
 }

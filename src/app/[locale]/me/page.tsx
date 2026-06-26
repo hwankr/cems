@@ -1,7 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import Link from "next/link";
 import { CampusEnergyProviders } from "@/features/campus-energy/components/campus-energy-providers";
-import { SignOutButton } from "@/features/account/components/sign-out-button";
 import { ProfileHero } from "@/features/account/components/profile-hero";
 import { AchievementHighlights } from "@/features/account/components/achievement-highlights";
 import { ContributionGraph } from "@/features/account/components/contribution-graph";
@@ -26,6 +24,7 @@ import { countMissionCheckIns } from "@/features/account/domain/points";
 import { getCharacterProgress } from "@/features/campus-energy/domain/scoring";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
+import styles from "@/features/account/components/profile-surface.module.css";
 
 type MePageProps = { params: Promise<{ locale: string }> };
 
@@ -64,29 +63,25 @@ export default async function MePage({ params }: MePageProps) {
 
   return (
     <CampusEnergyProviders locale={locale} messages={messages}>
-      <main className="mx-auto grid w-full max-w-xl gap-4 px-4 py-6 sm:px-6">
-        <header className="flex items-center justify-between">
-          <Link href={`/${locale}`} className="text-sm font-medium text-ink-muted">
-            ← {messages.me.backToMap}
-          </Link>
-          <SignOutButton />
-        </header>
-        <ProfileHero
-          displayName={profile.displayName}
-          handle={profile.handle}
-          bio={profile.bio}
-          personalPoints={personalPoints}
-          currentStreak={graph.currentStreak}
-        />
-        <AchievementHighlights achievements={achievements} />
-        <ContributionGraph graph={graph} />
-        <GoalList goals={goals} />
-        <EstateContribution
-          personalPoints={personalPoints}
-          groupPoolPoints={groupPool.earnedPoints}
-          estateHref={estateHref}
-        />
-        <PointsHistory events={events} />
+      <main className={styles.surface}>
+        <div className={styles.sheet}>
+          <ProfileHero
+            displayName={profile.displayName}
+            handle={profile.handle}
+            bio={profile.bio}
+            personalPoints={personalPoints}
+            currentStreak={graph.currentStreak}
+          />
+          <AchievementHighlights achievements={achievements} />
+          <ContributionGraph graph={graph} />
+          <GoalList goals={goals} />
+          <EstateContribution
+            personalPoints={personalPoints}
+            groupPoolPoints={groupPool.earnedPoints}
+            estateHref={estateHref}
+          />
+          <PointsHistory events={events} />
+        </div>
       </main>
     </CampusEnergyProviders>
   );

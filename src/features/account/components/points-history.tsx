@@ -5,6 +5,7 @@ import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
 import type { PointEvent } from "@/features/account/domain/points";
 import { parsePointEventReason } from "@/features/account/domain/point-reason";
+import styles from "./profile-surface.module.css";
 
 export function PointsHistory({ events }: { events: PointEvent[] }) {
   const { locale, messages } = useI18n();
@@ -30,7 +31,7 @@ export function PointsHistory({ events }: { events: PointEvent[] }) {
   );
 
   return (
-    <section className="rounded-2xl border border-line bg-surface p-5 shadow-card">
+    <section className={styles.section}>
       <h2 className="flex items-center gap-2 text-sm font-semibold text-ink">
         <History className="h-4 w-4 text-accent" aria-hidden="true" />
         {me.history.title}
@@ -38,11 +39,11 @@ export function PointsHistory({ events }: { events: PointEvent[] }) {
       {events.length === 0 ? (
         <p className="mt-3 text-sm text-ink-muted">{me.history.empty}</p>
       ) : (
-        <ul className="mt-3 grid gap-2">
+        <ul className="mt-1 divide-y divide-line">
           {events.map((event) => (
             <li
               key={event.id}
-              className="flex items-center justify-between gap-3 text-sm"
+              className="flex items-center justify-between gap-3 py-2.5 text-sm"
             >
               <span className="text-ink">{label(event.reason)}</span>
               <span className="flex items-center gap-2">
