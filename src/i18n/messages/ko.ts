@@ -1,4 +1,56 @@
 export const koMessages = {
+  account: {
+    login: {
+      title: "로그인",
+      email: "이메일",
+      password: "비밀번호",
+      submit: "로그인",
+      pending: "로그인 중…",
+      noAccount: "계정이 없으신가요?",
+      signupLink: "회원가입",
+      failed: "이메일 또는 비밀번호가 올바르지 않습니다.",
+    },
+    signup: {
+      title: "회원가입",
+      email: "이메일",
+      password: "비밀번호",
+      submit: "가입하기",
+      pending: "가입 중…",
+      hasAccount: "이미 계정이 있으신가요?",
+      loginLink: "로그인",
+      failed: "가입에 실패했습니다. 다시 시도해 주세요.",
+      weakPassword: "비밀번호는 6자 이상이어야 합니다.",
+    },
+    signOut: "로그아웃",
+    onboarding: {
+      title: "소속 등록",
+      description:
+        "학교와 소속을 선택하면 절감 활동이 그룹 영지 포인트로 모입니다.",
+      displayName: "표시 이름",
+      school: "학교",
+      group: "소속",
+      submit: "등록 완료",
+      pending: "저장 중…",
+      errors: {
+        "display-name-required": "표시 이름을 입력해 주세요.",
+        "display-name-too-long": "표시 이름이 너무 깁니다.",
+        "school-required": "학교를 선택해 주세요.",
+        "group-required": "소속을 선택해 주세요.",
+        "group-school-mismatch": "선택한 소속이 학교와 일치하지 않습니다.",
+        unknown: "저장에 실패했습니다. 다시 시도해 주세요.",
+      },
+    },
+    reward: {
+      claim: "이번 주 절감 보상 받기",
+      claimed: "보상을 받았습니다!",
+      alreadyClaimed: "이번 주 보상은 이미 받았습니다.",
+      pending: "처리 중…",
+    },
+    estatePool: {
+      label: "그룹 영지 포인트",
+      memberCount: "{count}명 참여",
+    },
+  },
   admin: {
     actualForecastLine: "실제 {actual} / 예측 {forecast}",
     buildingDiagnosis: "건물 진단",

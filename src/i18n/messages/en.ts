@@ -1,6 +1,58 @@
 import type { Messages } from "./types";
 
 export const enMessages = {
+  account: {
+    login: {
+      title: "Log in",
+      email: "Email",
+      password: "Password",
+      submit: "Log in",
+      pending: "Logging in…",
+      noAccount: "Don't have an account?",
+      signupLink: "Sign up",
+      failed: "Incorrect email or password.",
+    },
+    signup: {
+      title: "Sign up",
+      email: "Email",
+      password: "Password",
+      submit: "Create account",
+      pending: "Signing up…",
+      hasAccount: "Already have an account?",
+      loginLink: "Log in",
+      failed: "Sign-up failed. Please try again.",
+      weakPassword: "Password must be at least 6 characters.",
+    },
+    signOut: "Log out",
+    onboarding: {
+      title: "Register affiliation",
+      description:
+        "Pick your school and affiliation so your savings pool into group estate points.",
+      displayName: "Display name",
+      school: "School",
+      group: "Affiliation",
+      submit: "Complete registration",
+      pending: "Saving…",
+      errors: {
+        "display-name-required": "Please enter a display name.",
+        "display-name-too-long": "Display name is too long.",
+        "school-required": "Please select a school.",
+        "group-required": "Please select an affiliation.",
+        "group-school-mismatch": "The affiliation does not match the school.",
+        unknown: "Could not save. Please try again.",
+      },
+    },
+    reward: {
+      claim: "Claim this week's saving reward",
+      claimed: "Reward claimed!",
+      alreadyClaimed: "This week's reward is already claimed.",
+      pending: "Processing…",
+    },
+    estatePool: {
+      label: "Group estate points",
+      memberCount: "{count} members",
+    },
+  },
   admin: {
     actualForecastLine: "Actual {actual} / Forecast {forecast}",
     buildingDiagnosis: "Building diagnosis",
