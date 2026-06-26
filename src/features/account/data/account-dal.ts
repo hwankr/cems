@@ -141,3 +141,31 @@ export async function getGroupPointPool(
 
   return calculateGroupPointPool(groupId, contributions);
 }
+
+export async function getMyPointEvents(userId: string): Promise<PointEvent[]> {
+  const supabase = await createServerSupabaseClient();
+  const { data, error } = await supabase
+    .from("point_events")
+    .select("id, user_id, points, reason, period_label, created_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(`Failed to load point events: ${error.message}`);
+  return toPointEvents((data ?? []) as PointEventRow[]);
+}
+
+export async function getGroupEstateSubjectId(
+  groupId: string,
+): Promise<string | null> {
+  const supabase = await createServerSupabaseClient();
+  const { data, error } = await supabase
+    .from("estate_subjects")
+    .select("subject_id")
+    .eq("owner_group_id", groupId)
+    .order("subject_id")
+    .limit(1)
+    .maybeSingle();
+  if (error) {
+    throw new Error(`Failed to load group estate subject: ${error.message}`);
+  }
+  return (data as { subject_id: string } | null)?.subject_id ?? null;
+}
