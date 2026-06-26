@@ -6,7 +6,9 @@ import {
   getCurrentProfile,
   getCurrentUser,
   getGroupPointPool,
+  getPersonalPointTotal,
 } from "@/features/account/data/account-dal";
+import { EstateContributionChip } from "@/features/account/components/estate-contribution-chip";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
 
@@ -36,8 +38,17 @@ export default async function EstatePage({ params }: EstatePageProps) {
 
   if (!data) notFound();
 
+  const [personalPoints, groupPool] = await Promise.all([
+    getPersonalPointTotal(profile.userId),
+    getGroupPointPool(profile.groupId),
+  ]);
+
   return (
     <CampusEnergyProviders locale={locale} messages={messages}>
+      <EstateContributionChip
+        personalPoints={personalPoints}
+        groupPoolPoints={groupPool.earnedPoints}
+      />
       <EstateGameClient data={data} />
     </CampusEnergyProviders>
   );
