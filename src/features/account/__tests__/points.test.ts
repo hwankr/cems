@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   calculateMemberPeriodReward,
+  countMissionCheckIns,
   sumPersonalPoints,
 } from "../domain/points";
 import type { PointEvent } from "../domain/points";
@@ -45,5 +46,21 @@ describe("calculateMemberPeriodReward", () => {
 
     // calculatePoints = round(savingsKwh * 10) = 1400
     expect(calculateMemberPeriodReward(comparison)).toBe(1400);
+  });
+});
+
+describe("countMissionCheckIns", () => {
+  it("counts only qr:<code> mission events", () => {
+    const events: PointEvent[] = [
+      { id: "1", userId: "u", points: 50, reason: "qr:stairs", periodLabel: "", createdAt: "2026-06-26T00:00:00Z" },
+      { id: "2", userId: "u", points: 30, reason: "qr:tumbler", periodLabel: "", createdAt: "2026-06-26T00:00:00Z" },
+      { id: "3", userId: "u", points: 20, reason: "goal:daily-1", periodLabel: "", createdAt: "2026-06-26T00:00:00Z" },
+      { id: "4", userId: "u", points: 10, reason: "verified-savings", periodLabel: "", createdAt: "2026-06-26T00:00:00Z" },
+    ];
+    expect(countMissionCheckIns(events)).toBe(2);
+  });
+
+  it("returns 0 for no events", () => {
+    expect(countMissionCheckIns([])).toBe(0);
   });
 });
