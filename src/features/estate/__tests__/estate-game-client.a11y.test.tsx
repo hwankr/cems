@@ -36,7 +36,10 @@ describe("EstateGameClient accessibility", () => {
   });
 
   it("traps focus in the expansion dialog, closes with Escape, and returns focus", async () => {
-    const data = getEstatePageData("en", "yu-e21");
+    const data = await getEstatePageData("en", "yu-e21", {
+      getProfileGroupId: async () => "engineering",
+      getGroupEarnedPoints: async () => 100000,
+    });
     if (!data) throw new Error("Expected estate page data.");
 
     root = createRoot(container);

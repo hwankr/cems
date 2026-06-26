@@ -70,10 +70,42 @@ import type {
   EstateSnapshot,
   QuarterTurn,
 } from "../domain/types";
-import { LocalStorageEstateRepository } from "../persistence/local-storage-estate-repository";
 import type { EstateRepository } from "../persistence/estate-repository";
+import {
+  SupabaseEstateRepository,
+  type EstateTableClient,
+} from "../persistence/supabase-estate-repository";
+import { createBrowserSupabaseClient } from "@/features/account/supabase/client";
 import type { EstateCanvasProps } from "./estate-canvas";
 import styles from "./estate-shell.module.css";
+
+function createEstateTableClient(): EstateTableClient {
+  const supabase = createBrowserSupabaseClient();
+  return {
+    async select(subjectId) {
+      const { data, error } = await supabase
+        .from("estates")
+        .select("snapshot")
+        .eq("subject_id", subjectId)
+        .maybeSingle();
+      return {
+        data: data ? { snapshot: data.snapshot } : null,
+        error: error ? { message: error.message } : null,
+      };
+    },
+    async upsert(row) {
+      const { error } = await supabase.from("estates").upsert(row);
+      return { error: error ? { message: error.message } : null };
+    },
+    async delete(subjectId) {
+      const { error } = await supabase
+        .from("estates")
+        .delete()
+        .eq("subject_id", subjectId);
+      return { error: error ? { message: error.message } : null };
+    },
+  };
+}
 
 const EstateCanvas = dynamic<EstateCanvasProps>(
   () => import("./estate-canvas").then((module) => module.default),
@@ -142,7 +174,12 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   const focusReturnRef = useRef<HTMLElement | null>(null);
 
   if (repositoryRef.current === null) {
-    repositoryRef.current = repository ?? new LocalStorageEstateRepository();
+    repositoryRef.current =
+      repository ??
+      new SupabaseEstateRepository({
+        client: createEstateTableClient(),
+        ownerGroupId: data.ownerGroupId,
+      });
   }
 
   const savedEnergyValue = data.comparison
