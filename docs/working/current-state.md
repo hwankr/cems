@@ -1,6 +1,6 @@
 # Current State - cems
 
-**Last updated:** 2026-06-25
+**Last updated:** 2026-06-26
 
 ## Current Context
 
@@ -47,7 +47,12 @@ The key abstraction is an **energy saving subject**. A subject can be a building
 - Estate verification: Vitest 87/87 (affected expansion/commands/renderer-scene/repository/placement tests updated, plus a new seed no-overlap guard), ESLint 0 errors, and `npm run build` pass. The estate canvas page cannot be screenshotted by the preview tool (it hangs on this full-bleed canvas route — pre-existing, environment-specific), so estate visuals are verified via tests, live DOM, and the build rather than a captured image.
 - A design spec for the estate redesign lives at `docs/superpowers/specs/2026-06-25-estate-redesign-design.md`.
 - The app builds without a Mapbox token. If `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` is missing, the map area shows a configuration state instead of constructing a map.
-- No real API, database, authentication, energy ingestion pipeline, ML pipeline, deployment configuration, or full RPG system has been implemented yet.
+- Authentication and a real database now exist (as of 2026-06-26), implemented on the **local, unpushed** branch `feat/affiliation-login-group-estate`. A dedicated free Supabase project `cems` (ref `zvuqmagfpdyrrzyjntue`, ap-northeast-2) holds tables `schools/groups/profiles/point_events/estates` with RLS + Yeungnam/3-group seed (migration `account_and_estate`; recorded at `docs/superpowers/migrations/2026-06-26-account-and-estate.sql`). `.env.local` (git-ignored) carries the Supabase URL + anon key. The plan is `docs/superpowers/plans/2026-06-26-affiliation-login-group-estate-economy.md`.
+- The new `src/features/account/` feature adds Supabase clients (browser/server/proxy), email+password auth (server actions + login/signup pages), affiliation onboarding writing a `profiles` row, a personal `point_events` ledger with a "claim weekly saving reward" action, and a server DAL. `src/proxy.ts` now refreshes the Supabase session (async) before locale redirect. The home page and estate page are auth-gated (→ `/login`, then `/onboarding`). The participant dashboard shows real personal points + group pool + claim button, and the character grows from personal points.
+- The estate is still keyed by `subjectId` ("building unit") but its snapshot is now server-shared via `SupabaseEstateRepository` (one `estates` row per building, `owner_group_id`), its purchase budget is the owning group's pooled points, and writes are RLS-gated to that group's members. Estate point math is unchanged — only the source of `earnedPoints` moved to the group pool.
+- Setup caveat for live browser use: the Supabase project still has email confirmation ON, and the MCP cannot toggle it — disable "Confirm email" in the dashboard (Authentication → Email) for immediate post-signup login. GoTrue also rejects `*.test`/`example.com` signups.
+- Known MVP limitation: estate spend is enforced client-side + RLS write-gating (no server-side spend re-validation; demo assumes one estate per group). No energy ingestion pipeline, ML pipeline, deployment configuration, or full RPG system yet.
+- Verification (2026-06-26): Vitest 213/213, ESLint 0 errors (2 pre-existing `game-preview.tsx` warnings), `npm run build` passes, Supabase security advisors clean; HTTP auth-gate checks and a 10/10 RLS script (test data removed afterward) all passed. The branch is not pushed.
 - `.env.example` intentionally leaves `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` blank so example files do not look like real Mapbox tokens.
 
 ## Working Docs

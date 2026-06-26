@@ -2,6 +2,20 @@
 
 User-stated decisions and verified working facts are recorded here by date. Do not treat unstated product, architecture, ML, or deployment ideas as confirmed.
 
+## 2026-06-26
+
+- 사용자는 "로그인으로 소속 등록 → 자신만의 캐릭터/포인트 적립 → 그룹 영지 포인트 획득 → 영지 물품 구매" 흐름의 구현 계획을 요청했고, 이어서 "위 계획을 새로운 브랜치에서 진행"하라고 지시했다.
+- AskUserQuestion으로 확정한 방향: (1) 백엔드는 Supabase 실제 백엔드(Auth + Postgres + RLS), (2) 로그인은 이메일+비밀번호, (3) 영지는 "건물(subjectId) 단위 유지 + 구매 예산만 그룹 공유 포인트 풀로". 기존 영지 포인트 계산식(`calculateEstatePointAccount(earnedPoints, transactions)`)은 그대로 두고 `earnedPoints`의 출처만 그룹 풀로 바꾸는 방식.
+- 계획 문서: `docs/superpowers/plans/2026-06-26-affiliation-login-group-estate-economy.md`. 마이그레이션 기록: `docs/superpowers/migrations/2026-06-26-account-and-estate.sql`.
+- 작업 브랜치 `feat/affiliation-login-group-estate`에서 구현했고 **푸시하지 않았다(로컬 전용)**. 커밋은 계획의 태스크 단위로 13개.
+- Supabase: 조직 `jzwzzsdovlztmbcvakzv`에 무료($0/월) 프로젝트 `cems`(ref `zvuqmagfpdyrrzyjntue`, ap-northeast-2)를 신규 생성(기존 fomopomo와 분리). 마이그레이션 `account_and_estate` 적용 — 테이블 `schools/groups/profiles/point_events/estates` + RLS + 시드(영남대 1, 그룹 engineering/humanities/student-services 3). `.env.local`에 URL+anon 키 추가(git-ignored, Mapbox 토큰은 유지).
+- 신규 `src/features/account/`: env 리더, 브라우저/서버/proxy용 Supabase 클라이언트, 도메인(프로필 검증·개인 포인트·그룹 풀, 전부 TDD), 서버 DAL, 서버 액션(auth/profile/claim-reward), 로그인·회원가입·온보딩 페이지/폼, 로그아웃·보상받기 버튼.
+- `src/proxy.ts`는 이제 비동기로 Supabase 세션을 먼저 갱신한 뒤 로케일 리다이렉트를 적용한다.
+- 홈(`/[locale]`)과 영지 페이지는 인증 게이트(미로그인→`/login`, 프로필 없음→`/onboarding`). 참여자 대시보드는 실제 개인 포인트·그룹 풀·"이번 주 절감 보상 받기" 버튼을 보여주고, 캐릭터는 개인 포인트로 성장. 영지 스냅샷은 `SupabaseEstateRepository`로 서버 공유(건물별 1행, owner_group_id 소유), 예산은 소유 그룹 풀, 쓰기는 RLS로 그룹원만 허용.
+- 작업 중 확인한 제약: Supabase 프로젝트는 기본값으로 이메일 확인(Confirm email)이 켜져 있고 MCP로 끌 수 없어, 브라우저 회원가입 즉시 로그인을 쓰려면 사용자가 대시보드(Authentication → Email)에서 "Confirm email"을 꺼야 한다. 또한 GoTrue 이메일 검증이 `*.test`·`example.com` 가입을 거부해, 검증용 사용자는 SQL로 직접(bcrypt·확인완료) 만들어 테스트했다.
+- 알려진 MVP 한계(문서화함): 영지 지출은 클라이언트 검증 + RLS 쓰기 차단으로 보장하고, 서버 측 재검증과 "그룹당 영지 여러 개"의 교차 지출 합산은 범위 밖(데모는 그룹당 영지 1개 가정).
+- 검증: Vitest 213/213 통과, ESLint 0 errors(기존 `game-preview.tsx` 경고 2개만 잔존), `npm run build` 통과, Supabase 보안 advisor 0건. HTTP 실측: `/`→`/ko`, `/ko`→`/ko/login`, `/ko/login`·`/ko/signup` 200, `/ko/onboarding`·`/ko/subjects/yu-e21/estate`→`/ko/login`. RLS는 일회용 스크립트로 10/10 통과(프로필·포인트·영지 insert, 보상 중복 unique 거부, 그룹 풀 조인, 타 그룹 영지 쓰기 차단, 타 그룹 포인트 격리). 검증 데이터는 모두 삭제해 테이블은 0행. `.claude/launch.json`은 계속 제외.
+
 ## 2026-06-25
 
 - The user reported that the estate experience felt uncomfortable because estate-related popups opened from very light touches.
