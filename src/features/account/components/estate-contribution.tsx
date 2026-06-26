@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Sprout } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
@@ -23,7 +24,10 @@ export function EstateContribution({
 
   return (
     <section className="rounded-2xl border border-line bg-gradient-to-br from-accent-soft to-surface p-5 shadow-card">
-      <h2 className="text-sm font-semibold text-ink">{copy.title}</h2>
+      <h2 className="flex items-center gap-2 text-sm font-semibold text-ink">
+        <Sprout className="h-4 w-4 text-saving" aria-hidden="true" />
+        {copy.title}
+      </h2>
       <p className="mt-2 text-sm text-ink-muted">
         {interpolate(copy.summary, {
           points: formatPoints(locale, personalPoints),

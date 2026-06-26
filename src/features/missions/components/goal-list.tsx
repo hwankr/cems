@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { Target } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
 import { claimGoalRewardAction, type ClaimGoalState } from "../actions/claim-goal";
@@ -74,7 +75,10 @@ export function GoalList({ goals }: { goals: GoalProgress[] }) {
   const { messages } = useI18n();
   return (
     <section className="rounded-2xl border border-line bg-surface p-5 shadow-card">
-      <h2 className="text-sm font-semibold text-ink">{messages.me.goals.title}</h2>
+      <h2 className="flex items-center gap-2 text-sm font-semibold text-ink">
+        <Target className="h-4 w-4 text-accent" aria-hidden="true" />
+        {messages.me.goals.title}
+      </h2>
       <ul className="mt-3 grid gap-3">
         {goals.map((goal) => (
           <GoalCard key={goal.id} goal={goal} />

@@ -1,5 +1,6 @@
 "use client";
 
+import { History } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
 import type { PointEvent } from "@/features/account/domain/points";
@@ -30,7 +31,10 @@ export function PointsHistory({ events }: { events: PointEvent[] }) {
 
   return (
     <section className="rounded-2xl border border-line bg-surface p-5 shadow-card">
-      <h2 className="text-sm font-semibold text-ink">{me.history.title}</h2>
+      <h2 className="flex items-center gap-2 text-sm font-semibold text-ink">
+        <History className="h-4 w-4 text-accent" aria-hidden="true" />
+        {me.history.title}
+      </h2>
       {events.length === 0 ? (
         <p className="mt-3 text-sm text-ink-muted">{me.history.empty}</p>
       ) : (
