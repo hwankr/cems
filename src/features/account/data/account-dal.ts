@@ -49,12 +49,13 @@ export const getCurrentProfile = cache(
     if (!user) return null;
 
     const supabase = await createServerSupabaseClient();
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("profiles")
       .select("id, display_name, school_id, group_id")
       .eq("id", user.id)
       .maybeSingle();
 
+    if (error) throw new Error(`Failed to load profile: ${error.message}`);
     if (!data) return null;
 
     return {
@@ -68,10 +69,12 @@ export const getCurrentProfile = cache(
 
 export async function getSchoolOptions(): Promise<SchoolOption[]> {
   const supabase = await createServerSupabaseClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("schools")
     .select("id, name, short_name")
     .order("name");
+
+  if (error) throw new Error(`Failed to load schools: ${error.message}`);
 
   return (data ?? []).map((row) => ({
     id: row.id,
@@ -82,10 +85,12 @@ export async function getSchoolOptions(): Promise<SchoolOption[]> {
 
 export async function getGroupOptions(): Promise<GroupOption[]> {
   const supabase = await createServerSupabaseClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("groups")
     .select("id, school_id, name, type")
     .order("name");
+
+  if (error) throw new Error(`Failed to load groups: ${error.message}`);
 
   return (data ?? []).map((row) => ({
     id: row.id,
@@ -97,10 +102,14 @@ export async function getGroupOptions(): Promise<GroupOption[]> {
 
 export async function getPersonalPointTotal(userId: string): Promise<number> {
   const supabase = await createServerSupabaseClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("point_events")
     .select("id, user_id, points, reason, period_label, created_at")
     .eq("user_id", userId);
+
+  if (error) {
+    throw new Error(`Failed to load personal points: ${error.message}`);
+  }
 
   return sumPersonalPoints(toPointEvents((data ?? []) as PointEventRow[]));
 }
@@ -111,12 +120,14 @@ export async function getGroupPointPool(
   const supabase = await createServerSupabaseClient();
   // RLS scopes point_events to the current user's group, so a join through
   // profiles returns exactly this group's members' events.
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("point_events")
     .select(
       "id, user_id, points, reason, period_label, created_at, profiles!inner(group_id)",
     )
     .eq("profiles.group_id", groupId);
+
+  if (error) throw new Error(`Failed to load group pool: ${error.message}`);
 
   const events = toPointEvents((data ?? []) as unknown as PointEventRow[]);
 
