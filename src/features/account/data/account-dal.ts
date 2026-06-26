@@ -148,7 +148,8 @@ export async function getMyPointEvents(userId: string): Promise<PointEvent[]> {
     .from("point_events")
     .select("id, user_id, points, reason, period_label, created_at")
     .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false });
   if (error) throw new Error(`Failed to load point events: ${error.message}`);
   return toPointEvents((data ?? []) as PointEventRow[]);
 }

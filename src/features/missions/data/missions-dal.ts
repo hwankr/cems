@@ -15,17 +15,6 @@ export type Mission = {
 
 type MissionRow = { code: string; points: number; category: string };
 
-export async function getActiveMissions(): Promise<Mission[]> {
-  const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase
-    .from("missions")
-    .select("code, points, category")
-    .eq("active", true)
-    .order("code");
-  if (error) throw new Error(`Failed to load missions: ${error.message}`);
-  return (data ?? []) as MissionRow[];
-}
-
 export async function getMission(code: string): Promise<Mission | null> {
   const supabase = await createServerSupabaseClient();
   const { data, error } = await supabase

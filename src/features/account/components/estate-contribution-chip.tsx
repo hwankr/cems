@@ -22,7 +22,7 @@ export function EstateContributionChip({
   return (
     <Link
       href={`/${locale}/me`}
-      className="pointer-events-auto fixed left-1/2 top-3 z-[60] -translate-x-1/2 rounded-full border border-line bg-surface/95 px-4 py-2 text-xs font-semibold text-ink shadow-pop backdrop-blur"
+      className="pointer-events-auto fixed left-3 top-20 z-[60] rounded-full border border-line bg-surface/95 px-4 py-2 text-xs font-semibold text-ink shadow-pop backdrop-blur sm:left-4"
     >
       {interpolate(copy.chip, {
         points: formatPoints(locale, personalPoints),
