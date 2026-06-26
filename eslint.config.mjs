@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local, git-ignored design-sync artifacts (vendored bundles + previews).
+    ".ds-sync/**",
+    "ds-bundle/**",
   ]),
 ]);
 
