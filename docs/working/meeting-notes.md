@@ -71,6 +71,17 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - 검증: Vitest 237/237, ESLint 0 errors(기존 `game-preview.tsx` 경고 2개), `npm run build` 통과. 라이브 프리뷰 실측(it@naver.com) — 모바일(390px): 요약 한 줄·줄바꿈 없음, 캠퍼스/범례 숨김, 팝업 하단 카드, 시트 0→380px(45vh, 9행), 저작권 도크 위 노출, 레일=[내 조직·프로필·설정]에 줌 없음, "내 조직"→IT관에서 중앙도서관으로 flyTo(center 이동·zoom 17.1), 프로필 href `/ko/me`, 레벨 칩 제거(/ko/me 링크 1개). 데스크탑(1280px): 요약 카드·범례·캠퍼스·레일 히트맵/라벨 유지, 줌 없음, 칩 없음. 지도 라우트는 Mapbox 지속 렌더링으로 프리뷰 스크린샷이 타임아웃돼(기존 환경 한계) DOM/지오메트리 측정으로 검증.
 - 사용자 지시로 `feat/mobile-map-ui-cleanup`(10 커밋)을 `main`에 fast-forward 머지(`8c32955→f870614`)하고 `origin/main`에 푸시 → Vercel 자동 배포. feature 브랜치 삭제, 로컬·원격 모두 단일 `main`. `.claude/launch.json`·`.superpowers/`는 계속 untracked.
 
+### 같은 날 — 개인 프로필 인스타 리디자인 + 에너지 잔디
+
+- 사용자가 "개인 프로필 페이지(`/me`) 디자인이 너무 투박하다 → 인스타그램 개인 프로필 느낌으로 전반 강화 + 깃허브 잔디 심기 기능을 가볍게" 요청(`/superpowers:writing-plans`), 이어서 "구현 진행 + 새 브랜치"를 지시.
+- AskUserQuestion으로 확정한 방향: (1) **편집 가능한 한 줄 소개·핸들** 채택(프로필 사진 업로드는 범위 밖) → `profiles`에 `handle`/`bio` 컬럼만 추가. (2) 깃허브 잔디 한 칸의 진하기 = **그날 획득 포인트** 합. (3) 인스타 헤더 스탯 = **총 포인트·레벨**(+자연스러운 3번째로 연속일/streak). 배지는 "최우수 학생 등 관리자 수여를 **나중에**" 하기로 → 지금은 보유 데이터에서 파생한 성취 메달 + 잠금된 `top-student` 슬롯만, 실제 수여 메커니즘은 범위 밖.
+- 계획 문서 `docs/superpowers/plans/2026-06-26-personal-profile-instagram-redesign.md`. 새 로컬 브랜치 `feat/profile-instagram-redesign`에서 TDD·태스크 단위로 구현(미푸시).
+- 마이그레이션 `profile_bio_handle`(기록 `docs/superpowers/migrations/2026-06-26-profile-bio-handle.sql`): `profiles`에 `handle`/`bio` text 컬럼, `handle` 부분 unique 인덱스(`where handle is not null`), CHECK(`handle ~ '^[a-z0-9_]{3,20}$'`, `char_length(bio) <= 80`). 경제·affiliation 컬럼이 아니라 기존 불변-affiliation 트리거와 무관하고, 온보딩과 동일한 own-row 직접 update로 처리.
+- 신규 도메인(순수·TDD): `contribution.ts`(서울 UTC+9 결정적 일 버킷 `seoulDayLabel`, 포인트→0~4단계 `contributionLevel`, `buildContributionGraph`=주×요일 격자+totals+current/longest streak), `achievements.ts`(`deriveAchievements`로 레벨·streak·인증횟수 임계 기반 6배지), `profile-edit.ts`(`validateProfileEdit` 핸들 정규화·형식·길이 검증), `points.ts`에 `countMissionCheckIns` 추가.
+- 신규 UI: `profile-hero.tsx`(원형 아바타+레벨 진행 링 conic-gradient, 총포인트·레벨·연속일 스탯 줄, `@handle`, 칭호·한 줄 소개, 편집 버튼), `achievement-highlights.tsx`(인스타 스토리형 원형 배지, 잠금=자물쇠+"곧 공개"), `contribution-graph.tsx`+CSS Module(절약=초록 농도 5단계, 가로 스크롤, 빈 상태, `role="img"`+셀 title a11y), `profile-edit-form.tsx`(useActionState), 신규 라우트 `/[locale]/me/edit`. `/me`를 헤더→배지→잔디→목표→영지기여→이력로 재조립하고 기존 `ProfileSummary` 삭제. 잔디는 기존 `getMyPointEvents`(전량 반환) 재사용으로 **새 DB 쿼리 0개**. 기존 카드 섹션 헤더에 lucide 아이콘 통일.
+- 부수 정리: `eslint.config.mjs` `globalIgnores`에 `.ds-sync/**`·`ds-bundle/**`(이미 git-ignored인 design-sync 산출물·벤더 번들) 추가 — ESLint가 벤더 `react.js`를 린트해 14 errors가 뜨던 것을 해소(내 코드 무관).
+- 검증: Vitest 263/263(신규 26: profile-edit 7·contribution 9·points +2·achievements 4·contribution-graph 2·profile-hero 2), ESLint 0 errors(기존 `game-preview.tsx` 경고 2개만), `npm run build` 통과(`/[locale]/me`·`/[locale]/me/edit` 라우트 생성). DB 실측(자체 롤백 DO 블록): 실계정 `it@naver.com`에 유효 update 적용·잘못된 핸들 CHECK 거부 확인 후 rollback → 잔여 0(핸들/소개 null 유지, display_name 보존). HTTP 실측(dev): 미로그인 `/ko/me`·`/ko/me/edit`·`/en/me/edit` → `/{locale}/login?next=…` 307, 임의 경로 404. 푸시는 사용자 요청 시까지 보류.
+
 ## 2026-06-25
 
 - The user reported that the estate experience felt uncomfortable because estate-related popups opened from very light touches.
