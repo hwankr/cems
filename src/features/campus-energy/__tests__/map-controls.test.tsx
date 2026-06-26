@@ -66,4 +66,37 @@ describe("MapControls", () => {
 
     await act(async () => root.unmount());
   });
+
+  it("keeps the settings button always visible but hides heat/label buttons below sm", async () => {
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <MapControls
+          onZoomIn={() => {}}
+          onZoomOut={() => {}}
+          onResetView={() => {}}
+          showHeat={false}
+          onToggleHeat={() => {}}
+          showLabels
+          onToggleLabels={() => {}}
+          onOpenSettings={() => {}}
+        />,
+      ),
+    );
+
+    const heat = container.querySelector('button[aria-label="Usage heatmap"]');
+    const labels = container.querySelector('button[aria-label="Building labels"]');
+    const settings = container.querySelector('button[aria-label="Map settings"]');
+
+    // Heat + labels sit inside a wrapper hidden below sm.
+    expect(heat?.closest(".hidden")).not.toBeNull();
+    expect(labels?.closest(".hidden")).not.toBeNull();
+    // Settings is not inside that hidden wrapper.
+    expect(settings?.closest(".hidden")).toBeNull();
+
+    await act(async () => root.unmount());
+  });
 });
