@@ -365,6 +365,8 @@ export const enMessages = {
     error: "Could not verify. Please try again.",
     toMyPage: "To my page",
     toMap: "To map",
+    cancelTest: "Test: cancel check-in",
+    cancelling: "Cancelling…",
   },
   modes: {
     admin: "Admin Dashboard",

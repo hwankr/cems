@@ -32,3 +32,32 @@ export async function completeMissionAction(
   if (data === "invalid") return { status: "invalid" };
   return { status: "error" };
 }
+
+export type CancelMissionState = {
+  status: "idle" | "cancelled" | "nothing" | "error";
+};
+
+// Demo/testing helper: undo today's check-in for this mission so it can be
+// scanned again. Authoritative via cancel_mission (deletes only the caller's
+// own rows for today; removes the points it added, so the daily cap holds).
+export async function cancelMissionAction(
+  _prevState: CancelMissionState,
+  formData: FormData,
+): Promise<CancelMissionState> {
+  const code = String(formData.get("code") ?? "");
+  const locale = normalizeLocale(formData.get("locale"));
+  const supabase = await createServerSupabaseClient();
+
+  const { data, error } = await supabase.rpc("cancel_mission", {
+    p_code: code,
+  });
+  if (error) return { status: "error" };
+
+  if (data === "cancelled") {
+    revalidatePath(`/${locale}/me`);
+    revalidatePath(`/${locale}`);
+    return { status: "cancelled" };
+  }
+  if (data === "nothing") return { status: "nothing" };
+  return { status: "error" };
+}

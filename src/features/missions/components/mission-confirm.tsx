@@ -1,16 +1,51 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
 import {
+  cancelMissionAction,
   completeMissionAction,
+  type CancelMissionState,
   type CompleteMissionState,
 } from "../actions/complete-mission";
 
 const initialState: CompleteMissionState = { status: "idle" };
+const cancelInitialState: CancelMissionState = { status: "idle" };
+
+// Demo/testing helper: undo today's check-in so the mission can be scanned
+// again. On success the page reloads to the fresh confirm form.
+function CancelCheckInButton({ code }: { code: string }) {
+  const { locale, messages } = useI18n();
+  const [state, formAction, pending] = useActionState(
+    cancelMissionAction,
+    cancelInitialState,
+  );
+
+  useEffect(() => {
+    if (state.status === "cancelled") {
+      window.location.reload();
+    }
+  }, [state.status]);
+
+  const busy = pending || state.status === "cancelled";
+
+  return (
+    <form action={formAction}>
+      <input type="hidden" name="code" value={code} />
+      <input type="hidden" name="locale" value={locale} />
+      <button
+        type="submit"
+        disabled={busy}
+        className="text-xs font-medium text-ink-subtle underline underline-offset-2 disabled:opacity-60"
+      >
+        {busy ? messages.scan.cancelling : messages.scan.cancelTest}
+      </button>
+    </form>
+  );
+}
 
 export function MissionConfirm({
   code,
@@ -54,6 +89,9 @@ export function MissionConfirm({
           >
             {scan.toMap}
           </Link>
+        </div>
+        <div className="pt-1">
+          <CancelCheckInButton code={code} />
         </div>
       </div>
     );

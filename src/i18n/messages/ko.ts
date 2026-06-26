@@ -366,6 +366,8 @@ export const koMessages = {
     error: "인증에 실패했습니다. 다시 시도해 주세요.",
     toMyPage: "내 페이지로",
     toMap: "지도로",
+    cancelTest: "테스트: 인증 취소",
+    cancelling: "취소 중…",
   },
   modes: {
     admin: "관리자 대시보드",
