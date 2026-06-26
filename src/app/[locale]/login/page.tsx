@@ -4,10 +4,17 @@ import { LoginForm } from "@/features/account/components/login-form";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
 
-type LoginPageProps = { params: Promise<{ locale: string }> };
+type LoginPageProps = {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ next?: string }>;
+};
 
-export default async function LoginPage({ params }: LoginPageProps) {
+export default async function LoginPage({
+  params,
+  searchParams,
+}: LoginPageProps) {
   const { locale } = await params;
+  const { next } = await searchParams;
   if (!isLocale(locale)) notFound();
   const messages = await getMessages(locale);
 
@@ -17,7 +24,7 @@ export default async function LoginPage({ params }: LoginPageProps) {
         <h1 className="text-2xl font-semibold">
           {messages.account.login.title}
         </h1>
-        <LoginForm />
+        <LoginForm next={next} />
       </main>
     </CampusEnergyProviders>
   );

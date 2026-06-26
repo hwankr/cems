@@ -7,7 +7,7 @@ import { signInAction, type AuthActionState } from "../actions/auth";
 
 const initialState: AuthActionState = { error: null };
 
-export function LoginForm() {
+export function LoginForm({ next }: { next?: string }) {
   const { locale, messages } = useI18n();
   const copy = messages.account.login;
   const [state, formAction, pending] = useActionState(
@@ -18,6 +18,7 @@ export function LoginForm() {
   return (
     <form action={formAction} className="grid gap-3">
       <input type="hidden" name="locale" value={locale} />
+      {next ? <input type="hidden" name="next" value={next} /> : null}
       <label className="grid gap-1 text-sm">
         <span>{copy.email}</span>
         <input

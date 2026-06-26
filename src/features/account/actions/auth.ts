@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { normalizeLocale } from "@/i18n/config";
 import { createServerSupabaseClient } from "../supabase/server";
+import { isSafeNextPath } from "../domain/safe-redirect";
 
 export type AuthActionState = { error: string | null };
 
@@ -35,6 +36,7 @@ export async function signInAction(
   formData: FormData,
 ): Promise<AuthActionState> {
   const { email, password, locale } = readCredentials(formData);
+  const next = isSafeNextPath(formData.get("next"));
   const supabase = await createServerSupabaseClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
@@ -42,7 +44,7 @@ export async function signInAction(
     return { error: error.message };
   }
 
-  redirect(`/${locale}`);
+  redirect(next ?? `/${locale}`);
 }
 
 export async function signOutAction(): Promise<void> {
