@@ -15,6 +15,7 @@ type BuildingRankPanelProps = {
   open: boolean;
   onToggle: () => void;
   query: string;
+  variant?: "floating" | "sheet";
 };
 
 function matches(subject: EnergySubject, query: string) {
@@ -33,6 +34,7 @@ export function BuildingRankPanel({
   open,
   onToggle,
   query,
+  variant = "floating",
 }: BuildingRankPanelProps) {
   const { locale, messages } = useI18n();
 
@@ -64,8 +66,21 @@ export function BuildingRankPanel({
       .map((row, index) => ({ ...row, rank: index + 1 }));
   }, [comparisons, query, subjects]);
 
+  const isSheet = variant === "sheet";
+
   return (
-    <div className="w-[19.5rem] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-line bg-surface shadow-pop">
+    <div
+      className={
+        isSheet
+          ? "w-full overflow-hidden rounded-t-2xl border-t border-line bg-surface shadow-pop"
+          : "w-[19.5rem] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-line bg-surface shadow-pop"
+      }
+    >
+      {isSheet ? (
+        <div className="flex justify-center pt-2" aria-hidden="true">
+          <span className="h-1 w-9 rounded-full bg-line-strong" />
+        </div>
+      ) : null}
       <button
         type="button"
         onClick={onToggle}
@@ -88,7 +103,7 @@ export function BuildingRankPanel({
       </button>
       <div
         className={`overflow-y-auto transition-[max-height] duration-300 ${
-          open ? "max-h-[19rem]" : "max-h-0"
+          open ? (isSheet ? "max-h-[45vh]" : "max-h-[19rem]") : "max-h-0"
         }`}
       >
         <div className="mx-4 h-px bg-line" aria-hidden="true" />

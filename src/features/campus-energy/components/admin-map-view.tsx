@@ -55,6 +55,7 @@ export function AdminMapView({
   const [showHeat, setShowHeat] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
   const [rankOpen, setRankOpen] = useState(true);
+  const [rankOpenMobile, setRankOpenMobile] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [popupPosition, setPopupPosition] = useState<ScreenPosition | null>(
     null,
@@ -140,7 +141,7 @@ export function AdminMapView({
         <MapLegend />
       </div>
 
-      <div className="absolute bottom-4 left-4">
+      <div className="absolute bottom-4 left-4 hidden sm:block">
         <BuildingRankPanel
           subjects={subjects}
           comparisons={comparisons}
@@ -149,6 +150,20 @@ export function AdminMapView({
           open={rankOpen}
           onToggle={() => setRankOpen((value) => !value)}
           query={query}
+          variant="floating"
+        />
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 sm:hidden">
+        <BuildingRankPanel
+          subjects={subjects}
+          comparisons={comparisons}
+          selectedSubjectId={selectedSubjectId}
+          onSelectSubject={onSelectSubject}
+          open={rankOpenMobile}
+          onToggle={() => setRankOpenMobile((value) => !value)}
+          query={query}
+          variant="sheet"
         />
       </div>
 

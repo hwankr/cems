@@ -131,6 +131,15 @@
   color: var(--color-ink-subtle) !important;
 }
 
+/* On phones the building-rank dock sits flush at the bottom edge; lift Mapbox's
+   logo + attribution above the collapsed dock so they stay visible (ToS). */
+@media (max-width: 639px) {
+  .mapboxgl-ctrl-bottom-left,
+  .mapboxgl-ctrl-bottom-right {
+    bottom: 3.5rem;
+  }
+}
+
 /* Building popup entrance. */
 @keyframes cems-pop {
   from {
