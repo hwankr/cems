@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Coins, Leaf, Trophy } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { formatKwh, formatPoints } from "@/i18n/format";
@@ -36,7 +37,14 @@ export function ParticipantDashboard({
   const progress = getCharacterProgress(personalPoints);
 
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-6">
+    <div className="grid gap-4">
+      <Link
+        href={`/${locale}/me`}
+        className="text-sm font-semibold text-accent"
+      >
+        {messages.me.openMyPage} →
+      </Link>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-6">
       <section className="grid content-start gap-4">
         <div className="rounded-2xl border border-line bg-gradient-to-br from-accent-soft to-surface p-5 shadow-card">
           <p className="text-[11px] font-semibold uppercase tracking-wider text-accent">
@@ -96,6 +104,7 @@ export function ParticipantDashboard({
       <aside>
         <CharacterCard progress={progress} points={personalPoints} />
       </aside>
+      </div>
     </div>
   );
 }

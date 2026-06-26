@@ -17,6 +17,7 @@ import { MapLegend } from "./map-legend";
 import { MapSettingsPopover } from "./map-settings-popover";
 import { MapSummaryChips } from "./map-summary-chips";
 import { MapTopBar } from "./map-top-bar";
+import { ProfileChip } from "./profile-chip";
 
 // Mapbox Standard gives the 3D buildings/trees + atmospheric sky; the light
 // preset is driven by the active theme (day vs night).
@@ -26,6 +27,7 @@ type Mode = "admin" | "participant";
 
 type AdminMapViewProps = {
   mapboxToken: string;
+  account: { displayName: string; personalPoints: number };
   school: School;
   subjects: EnergySubject[];
   comparisons: EnergyComparison[];
@@ -37,6 +39,7 @@ type AdminMapViewProps = {
 
 export function AdminMapView({
   mapboxToken,
+  account,
   school,
   subjects,
   comparisons,
@@ -97,8 +100,12 @@ export function AdminMapView({
             schoolName={school.name}
           />
         </div>
-        <div className="pointer-events-auto">
+        <div className="pointer-events-auto flex flex-col items-end gap-2">
           <MapSummaryChips summary={summary} />
+          <ProfileChip
+            displayName={account.displayName}
+            personalPoints={account.personalPoints}
+          />
         </div>
       </div>
 
