@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft, Sparkles, Sprout } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { formatNumber } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
@@ -26,12 +26,14 @@ export function ProfileHero({
   bio,
   personalPoints,
   currentStreak,
+  estateHref,
 }: {
   displayName: string;
   handle: string | null;
   bio: string | null;
   personalPoints: number;
   currentStreak: number;
+  estateHref: string;
 }) {
   const { locale, messages } = useI18n();
   const copy = messages.me.profile;
@@ -78,12 +80,22 @@ export function ProfileHero({
               {handle ? `@${handle}` : copy.handleFallback}
             </p>
           </div>
-          <Link
-            href={`/${locale}/me/edit`}
-            className="shrink-0 rounded-full bg-[var(--honey)] px-4 py-2 text-xs font-bold text-[#3a2a08] shadow-sm transition-colors hover:bg-[var(--honey-strong)] hover:text-white"
-          >
-            {copy.edit}
-          </Link>
+          <div className="flex shrink-0 items-center gap-2">
+            <Link
+              href={estateHref}
+              aria-label={messages.me.contribution.viewEstate}
+              title={messages.me.contribution.viewEstate}
+              className="grid h-9 w-9 place-items-center rounded-full border border-line bg-surface text-saving transition-colors hover:bg-saving-soft"
+            >
+              <Sprout className="h-[18px] w-[18px]" aria-hidden="true" />
+            </Link>
+            <Link
+              href={`/${locale}/me/edit`}
+              className="rounded-full bg-[var(--honey)] px-4 py-2 text-xs font-bold text-[#3a2a08] shadow-sm transition-colors hover:bg-[var(--honey-strong)] hover:text-white"
+            >
+              {copy.edit}
+            </Link>
+          </div>
         </div>
 
         <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-saving-soft px-2.5 py-1 text-xs font-semibold text-saving">

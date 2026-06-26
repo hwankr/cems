@@ -36,6 +36,7 @@ describe("ProfileHero", () => {
             bio="Stairs only"
             personalPoints={2500}
             currentStreak={4}
+            estateHref="/en/subjects/yu-e21/estate"
           />
         </I18nProvider>,
       );
@@ -45,6 +46,10 @@ describe("ProfileHero", () => {
     expect(container.textContent).toContain("Stairs only");
     const editLink = container.querySelector('a[href="/en/me/edit"]');
     expect(editLink).not.toBeNull();
+    const estateLink = container.querySelector(
+      'a[href="/en/subjects/yu-e21/estate"]',
+    );
+    expect(estateLink).not.toBeNull();
   });
 
   it("falls back to placeholder copy when handle and bio are missing", async () => {
@@ -58,6 +63,7 @@ describe("ProfileHero", () => {
             bio={null}
             personalPoints={0}
             currentStreak={0}
+            estateHref="/en/subjects/yu-e21/estate"
           />
         </I18nProvider>,
       );

@@ -71,6 +71,7 @@ export default async function MePage({ params }: MePageProps) {
             bio={profile.bio}
             personalPoints={personalPoints}
             currentStreak={graph.currentStreak}
+            estateHref={estateHref}
           />
           <AchievementHighlights achievements={achievements} />
           <ContributionGraph graph={graph} />
@@ -78,7 +79,6 @@ export default async function MePage({ params }: MePageProps) {
           <EstateContribution
             personalPoints={personalPoints}
             groupPoolPoints={groupPool.earnedPoints}
-            estateHref={estateHref}
           />
           <PointsHistory events={events} />
         </div>

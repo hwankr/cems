@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Sprout } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
@@ -10,11 +9,9 @@ import styles from "./profile-surface.module.css";
 export function EstateContribution({
   personalPoints,
   groupPoolPoints,
-  estateHref,
 }: {
   personalPoints: number;
   groupPoolPoints: number;
-  estateHref: string;
 }) {
   const { locale, messages } = useI18n();
   const copy = messages.me.contribution;
@@ -36,12 +33,6 @@ export function EstateContribution({
             percent,
           })}
         </p>
-        <Link
-          href={estateHref}
-          className="mt-3 inline-block text-sm font-semibold text-accent"
-        >
-          {copy.viewEstate} →
-        </Link>
       </div>
     </section>
   );
