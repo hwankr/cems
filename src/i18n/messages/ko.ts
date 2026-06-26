@@ -289,6 +289,8 @@ export const koMessages = {
     campusSelectLabel: "캠퍼스 선택",
     summaryRealtime: "캠퍼스 실시간",
     summaryNetSaving: "예측 대비 순절감",
+    summaryRealtimeShort: "실시간",
+    summaryNetSavingShort: "순절감",
     rankTitle: "건물 절감 순위",
     controls: {
       zoomIn: "확대",

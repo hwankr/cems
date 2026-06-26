@@ -288,6 +288,8 @@ export const enMessages = {
     campusSelectLabel: "Select campus",
     summaryRealtime: "Campus live",
     summaryNetSaving: "Net saved vs forecast",
+    summaryRealtimeShort: "Live",
+    summaryNetSavingShort: "Net saved",
     rankTitle: "Building savings rank",
     controls: {
       zoomIn: "Zoom in",

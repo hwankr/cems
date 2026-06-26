@@ -15,6 +15,7 @@ import {
 import { MapControls } from "./map-controls";
 import { MapLegend } from "./map-legend";
 import { MapSettingsPopover } from "./map-settings-popover";
+import { MapSummaryBar } from "./map-summary-bar";
 import { MapSummaryChips } from "./map-summary-chips";
 import { MapTopBar } from "./map-top-bar";
 import { ProfileChip } from "./profile-chip";
@@ -92,20 +93,27 @@ export function AdminMapView({
         onSelectedScreenPositionChange={setPopupPosition}
       />
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-4">
-        <div className="pointer-events-auto">
-          <MapTopBar
-            query={query}
-            onQueryChange={setQuery}
-            schoolName={school.name}
-          />
+      <div className="pointer-events-none absolute inset-x-0 top-0 p-3 sm:p-4">
+        <div className="flex items-start justify-between gap-2 sm:gap-3">
+          <div className="pointer-events-auto min-w-0 flex-1 sm:flex-none">
+            <MapTopBar
+              query={query}
+              onQueryChange={setQuery}
+              schoolName={school.name}
+            />
+          </div>
+          <div className="pointer-events-auto flex flex-col items-end gap-2">
+            <div className="hidden sm:block">
+              <MapSummaryChips summary={summary} />
+            </div>
+            <ProfileChip
+              displayName={account.displayName}
+              personalPoints={account.personalPoints}
+            />
+          </div>
         </div>
-        <div className="pointer-events-auto flex flex-col items-end gap-2">
-          <MapSummaryChips summary={summary} />
-          <ProfileChip
-            displayName={account.displayName}
-            personalPoints={account.personalPoints}
-          />
+        <div className="pointer-events-auto mt-2 sm:hidden">
+          <MapSummaryBar summary={summary} />
         </div>
       </div>
 
