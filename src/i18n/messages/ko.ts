@@ -299,6 +299,8 @@ export const koMessages = {
       heatmap: "사용량 히트맵",
       labels: "건물명 표시",
       settings: "지도 설정",
+      myOrg: "내 조직",
+      profile: "내 페이지",
     },
     settings: {
       title: "지도 설정",

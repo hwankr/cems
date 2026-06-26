@@ -25,6 +25,7 @@ export type CampusEnergyAccount = {
   personalPoints: number;
   groupPoolPoints: number;
   groupMemberCount: number;
+  orgSubjectId: string | null;
 };
 
 type CampusEnergyAppProps = {
@@ -80,6 +81,7 @@ function CampusEnergyShell({
             displayName: account.displayName,
             personalPoints: account.personalPoints,
           }}
+          orgSubjectId={account.orgSubjectId}
           school={localizedDemo.school}
           subjects={localizedDemo.subjects}
           comparisons={comparisons}

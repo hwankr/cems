@@ -298,6 +298,8 @@ export const enMessages = {
       heatmap: "Usage heatmap",
       labels: "Building labels",
       settings: "Map settings",
+      myOrg: "My organization",
+      profile: "My page",
     },
     settings: {
       title: "Map settings",

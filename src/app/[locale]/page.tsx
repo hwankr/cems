@@ -3,6 +3,7 @@ import { CampusEnergyApp } from "@/features/campus-energy/components/campus-ener
 import {
   getCurrentProfile,
   getCurrentUser,
+  getGroupEstateSubjectId,
   getGroupPointPool,
   getPersonalPointTotal,
 } from "@/features/account/data/account-dal";
@@ -23,11 +24,13 @@ export default async function Home({ params }: HomeProps) {
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/onboarding`);
 
-  const [messages, personalPoints, groupPool] = await Promise.all([
-    getMessages(locale),
-    getPersonalPointTotal(profile.userId),
-    getGroupPointPool(profile.groupId),
-  ]);
+  const [messages, personalPoints, groupPool, orgSubjectId] =
+    await Promise.all([
+      getMessages(locale),
+      getPersonalPointTotal(profile.userId),
+      getGroupPointPool(profile.groupId),
+      getGroupEstateSubjectId(profile.groupId),
+    ]);
 
   return (
     <CampusEnergyApp
@@ -40,6 +43,7 @@ export default async function Home({ params }: HomeProps) {
         personalPoints,
         groupPoolPoints: groupPool.earnedPoints,
         groupMemberCount: groupPool.memberCount,
+        orgSubjectId,
       }}
     />
   );

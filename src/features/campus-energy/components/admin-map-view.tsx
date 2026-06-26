@@ -1,17 +1,14 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTheme } from "@/features/theme/theme-provider";
+import { useI18n } from "@/i18n/client";
 import { buildBuildingDetail } from "../domain/building-detail";
 import { summarizeEnergy } from "../domain/energy";
 import type { EnergyComparison, EnergySubject, School } from "../domain/types";
 import { BuildingPopup } from "./building-popup";
 import { BuildingRankPanel } from "./building-rank-panel";
-import {
-  CampusMap,
-  type CampusMapHandle,
-  type ScreenPosition,
-} from "./campus-map";
+import { CampusMap, type ScreenPosition } from "./campus-map";
 import { MapControls } from "./map-controls";
 import { MapLegend } from "./map-legend";
 import { MapSettingsPopover } from "./map-settings-popover";
@@ -29,6 +26,7 @@ type Mode = "admin" | "participant";
 type AdminMapViewProps = {
   mapboxToken: string;
   account: { displayName: string; personalPoints: number };
+  orgSubjectId: string | null;
   school: School;
   subjects: EnergySubject[];
   comparisons: EnergyComparison[];
@@ -41,6 +39,7 @@ type AdminMapViewProps = {
 export function AdminMapView({
   mapboxToken,
   account,
+  orgSubjectId,
   school,
   subjects,
   comparisons,
@@ -50,7 +49,7 @@ export function AdminMapView({
   onModeChange,
 }: AdminMapViewProps) {
   const { resolvedTheme } = useTheme();
-  const mapHandle = useRef<CampusMapHandle>(null);
+  const { locale } = useI18n();
   const [query, setQuery] = useState("");
   const [showHeat, setShowHeat] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
@@ -79,7 +78,6 @@ export function AdminMapView({
   return (
     <div className="absolute inset-0 overflow-hidden bg-canvas">
       <CampusMap
-        ref={mapHandle}
         mapboxToken={mapboxToken}
         school={school}
         subjects={subjects}
@@ -121,13 +119,10 @@ export function AdminMapView({
       <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
         <div className="pointer-events-auto">
           <MapControls
-            onZoomIn={() => mapHandle.current?.zoomIn()}
-            onZoomOut={() => mapHandle.current?.zoomOut()}
-            onResetView={() => {
-              onSelectSubject("");
-              setPopupPosition(null);
-              mapHandle.current?.resetView();
-            }}
+            onGoToMyOrg={
+              orgSubjectId ? () => onSelectSubject(orgSubjectId) : undefined
+            }
+            profileHref={`/${locale}/me`}
             showHeat={showHeat}
             onToggleHeat={() => setShowHeat((value) => !value)}
             showLabels={showLabels}
