@@ -169,7 +169,7 @@ export function AdminMapView({
 
       {selectedSubject && selectedDetail && popupPosition ? (
         <div
-          className="pointer-events-none absolute z-[55] w-[344px]"
+          className="cems-popup-anchor pointer-events-none"
           style={{ left: popupPosition.left, top: popupPosition.top }}
         >
           <BuildingPopup

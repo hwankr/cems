@@ -140,6 +140,26 @@
   }
 }
 
+/* Building popup: anchored to the map point on desktop, a bottom card on phones.
+   The anchor's left/top are set via inline style, so the mobile override must
+   use !important to win over them. */
+.cems-popup-anchor {
+  position: absolute;
+  z-index: 55;
+  width: 21.5rem; /* 344px */
+}
+
+@media (max-width: 639px) {
+  .cems-popup-anchor {
+    position: fixed;
+    left: 0.75rem !important;
+    right: 0.75rem;
+    top: auto !important;
+    bottom: 0.75rem;
+    width: auto;
+  }
+}
+
 /* Building popup entrance. */
 @keyframes cems-pop {
   from {
