@@ -59,6 +59,18 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - 테스트 계정 정리: 검증으로 생긴 산출물 중 내가 claim한 `goal:daily-1` 보너스 1건은 삭제했고, 검증 중 사용자가 실시간으로 찍은 stairs 체크인은 사용자 데이터라 보존(동시 사용 확인됨).
 - 검증: Vitest 227/227, `npm run build` 통과, 독립 코드 리뷰(opus, 라이브 DB·동작 프로브로 실증) Critical/Important 0건(Minor 3건 수정 반영). 커밋·푸시: `dd5b403`(슬라이스)·`51cac09`(docs+QR)·`87d83ac`(취소 기능) 모두 `origin/main`.
 
+### 같은 날 — 모바일 지도 UI 정리 + 내 조직/프로필 레일
+
+- 사용자가 모바일에서 메인 지도 UI가 난잡하다고 불만(요약 카드 글자가 세로로 깨짐, 떠 있는 보조 UI 과다)이라며 수정 계획을 요청(`/superpowers:writing-plans`).
+- AskUserQuestion으로 확정한 방향: (1) 구조적 모바일 재설계(영지에서 쓴 "하단 도크+시트" 패턴과 통일), (2) 상단 요약 카드는 모바일에서 "줄바꿈 없는 한 줄 컴팩트 바", (3) 모바일에서 숨길 보조 UI = 캠퍼스 선택 드롭다운·지도 범례·브랜드 부제(로고 아이콘만)·히트맵/라벨 토글(설정 팝오버로 이동). 데스크탑(`sm`≥640px)은 불변 유지.
+- 계획 문서 `docs/superpowers/plans/2026-06-26-mobile-map-ui-cleanup.md`. 새 로컬 브랜치 `feat/mobile-map-ui-cleanup`에서 TDD·태스크 단위로 구현. 사용자 제공 테스트 계정 `it@naver.com`/`123456`.
+- 구현(태스크 1~6): 신규 `map-summary-bar.tsx`(모바일 한 줄 요약, `whitespace-nowrap`) + i18n 단축키 `summaryRealtimeShort`/`summaryNetSavingShort`(ko·en); `map-top-bar` 반응형(아이콘 브랜드·검색창 flex-1·캠퍼스 숨김); `map-controls`가 모바일에서 히트맵/라벨 버튼 숨김; 신규 `map-display-toggles.tsx`를 설정 팝오버에 모바일 전용으로 추가; `building-rank-panel`에 `variant`(floating/sheet) 추가해 모바일은 기본 접힘 하단 시트; 건물 팝업은 `globals.css` `.cems-popup-anchor`로 모바일 하단 카드화; 모바일 범례 숨김.
+- 라이브 프리뷰(390px) 실측으로 단위테스트·정적리뷰가 놓친 **실제 버그 2개를 잡아 수정**(커밋 `d83d044`): (a) Mapbox 저작권 lift가 Mapbox 자체 `bottom:0`에 소스 순서로 밀려 적용 안 됨(computed 0px) → `globals.css`에 `bottom: 4rem !important`로 도크 위 노출; (b) 하단 시트가 안 펼쳐짐 — `max-h-[45vh]` arbitrary 유틸을 Tailwind v4 JIT가 생성 안 함 + `0→vh` max-height 트랜지션이 0에 멈춤 → max-height를 인라인 스타일로 구동하고 시트만 트랜지션 제외(데스크탑 플로팅 패널은 트랜지션 유지). 독립 코드리뷰(opus)는 APPROVE(Critical/Important 0).
+- 후속 1 — 사용자가 "우측 줌 버튼(+/−/새로고침) 대신 내 조직 바로가기·프로필 아이콘"을 요청. AskUserQuestion 확정: (1) "내 조직"은 페이지 이동이 아니라 **지도에서 내 그룹 건물로 flyTo**, (2) 모바일·데스크탑 모두 교체, (3) 상단 프로필 칩은 유지. 구현(`d466462`): `page.tsx`가 `getGroupEstateSubjectId(groupId)`로 `orgSubjectId`를 해석해 `CampusEnergyApp`→`AdminMapView`로 전달. "내 조직" 클릭 = `onSelectSubject(orgSubjectId)`(선택하면 지도가 `easeTo`로 이동). "프로필" = `/{locale}/me` Link. 줌 버튼 제거(지도 줌은 스크롤·핀치로 유지). `CampusMap`의 zoom/reset imperative handle은 테스트가 있어 보존(버튼만 제거). 데모 그룹 student-services는 `estate_subjects` 시드상 `yu-b04`(중앙도서관)에 매핑.
+- 후속 2 — 사용자가 "레일에 프로필 아이콘이 생겼으니 우측 상단 레벨/점수 칩은 불필요"라고 추가 결정(앞의 '칩 유지'에서 변경). 구현(`f870614`): `AdminMapView`에서 `ProfileChip` 제거 + 단일 사용처라 컴포넌트 `profile-chip.tsx` 삭제 + 미사용이 된 `account` prop 정리. 데스크탑 요약 카드와 레일 프로필 아이콘(→/me)은 유지.
+- 검증: Vitest 237/237, ESLint 0 errors(기존 `game-preview.tsx` 경고 2개), `npm run build` 통과. 라이브 프리뷰 실측(it@naver.com) — 모바일(390px): 요약 한 줄·줄바꿈 없음, 캠퍼스/범례 숨김, 팝업 하단 카드, 시트 0→380px(45vh, 9행), 저작권 도크 위 노출, 레일=[내 조직·프로필·설정]에 줌 없음, "내 조직"→IT관에서 중앙도서관으로 flyTo(center 이동·zoom 17.1), 프로필 href `/ko/me`, 레벨 칩 제거(/ko/me 링크 1개). 데스크탑(1280px): 요약 카드·범례·캠퍼스·레일 히트맵/라벨 유지, 줌 없음, 칩 없음. 지도 라우트는 Mapbox 지속 렌더링으로 프리뷰 스크린샷이 타임아웃돼(기존 환경 한계) DOM/지오메트리 측정으로 검증.
+- 사용자 지시로 `feat/mobile-map-ui-cleanup`(10 커밋)을 `main`에 fast-forward 머지(`8c32955→f870614`)하고 `origin/main`에 푸시 → Vercel 자동 배포. feature 브랜치 삭제, 로컬·원격 모두 단일 `main`. `.claude/launch.json`·`.superpowers/`는 계속 untracked.
+
 ## 2026-06-25
 
 - The user reported that the estate experience felt uncomfortable because estate-related popups opened from very light touches.
