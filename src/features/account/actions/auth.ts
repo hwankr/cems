@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { normalizeLocale } from "@/i18n/config";
 import { createServerSupabaseClient } from "../supabase/server";
 
 export type AuthActionState = { error: string | null };
@@ -8,7 +9,9 @@ export type AuthActionState = { error: string | null };
 function readCredentials(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
-  const locale = String(formData.get("locale") ?? "ko");
+  // Validate the client-supplied locale to avoid an open redirect
+  // (e.g. locale="/evil.example" -> "//evil.example").
+  const locale = normalizeLocale(formData.get("locale"));
   return { email, password, locale };
 }
 

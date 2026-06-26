@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { normalizeLocale } from "@/i18n/config";
 import {
   demoSubjects,
   getDemoEnergyComparisons,
@@ -21,7 +22,7 @@ export async function claimPeriodRewardAction(
   _prevState: ClaimState,
   formData: FormData,
 ): Promise<ClaimState> {
-  const locale = String(formData.get("locale") ?? "ko");
+  const locale = normalizeLocale(formData.get("locale"));
   const profile = await getCurrentProfile();
   if (!profile) return { status: "error" };
 

@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { normalizeLocale } from "@/i18n/config";
 import { createServerSupabaseClient } from "../supabase/server";
 import { getCurrentUser, getGroupOptions } from "../data/account-dal";
 import { validateProfileDraft } from "../domain/profile";
@@ -14,7 +15,8 @@ export async function saveProfileAction(
   _prevState: ProfileActionState,
   formData: FormData,
 ): Promise<ProfileActionState> {
-  const locale = String(formData.get("locale") ?? "ko");
+  // Validate the client-supplied locale to avoid an open redirect.
+  const locale = normalizeLocale(formData.get("locale"));
   const user = await getCurrentUser();
   if (!user) redirect(`/${locale}/login`);
 
