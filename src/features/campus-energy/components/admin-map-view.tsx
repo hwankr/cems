@@ -15,7 +15,6 @@ import { MapSettingsPopover } from "./map-settings-popover";
 import { MapSummaryBar } from "./map-summary-bar";
 import { MapSummaryChips } from "./map-summary-chips";
 import { MapTopBar } from "./map-top-bar";
-import { ProfileChip } from "./profile-chip";
 
 // Mapbox Standard gives the 3D buildings/trees + atmospheric sky; the light
 // preset is driven by the active theme (day vs night).
@@ -25,7 +24,6 @@ type Mode = "admin" | "participant";
 
 type AdminMapViewProps = {
   mapboxToken: string;
-  account: { displayName: string; personalPoints: number };
   orgSubjectId: string | null;
   school: School;
   subjects: EnergySubject[];
@@ -38,7 +36,6 @@ type AdminMapViewProps = {
 
 export function AdminMapView({
   mapboxToken,
-  account,
   orgSubjectId,
   school,
   subjects,
@@ -101,14 +98,8 @@ export function AdminMapView({
               schoolName={school.name}
             />
           </div>
-          <div className="pointer-events-auto flex flex-col items-end gap-2">
-            <div className="hidden sm:block">
-              <MapSummaryChips summary={summary} />
-            </div>
-            <ProfileChip
-              displayName={account.displayName}
-              personalPoints={account.personalPoints}
-            />
+          <div className="pointer-events-auto hidden flex-col items-end gap-2 sm:flex">
+            <MapSummaryChips summary={summary} />
           </div>
         </div>
         <div className="pointer-events-auto mt-2 sm:hidden">

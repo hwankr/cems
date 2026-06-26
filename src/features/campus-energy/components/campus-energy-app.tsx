@@ -77,10 +77,6 @@ function CampusEnergyShell({
       <div className="fixed inset-0 bg-canvas text-ink">
         <AdminMapView
           mapboxToken={mapboxToken}
-          account={{
-            displayName: account.displayName,
-            personalPoints: account.personalPoints,
-          }}
           orgSubjectId={account.orgSubjectId}
           school={localizedDemo.school}
           subjects={localizedDemo.subjects}
