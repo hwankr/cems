@@ -349,6 +349,10 @@ export const koMessages = {
       summary: "내 적립 {points} · 그룹 풀의 {percent}%",
       chip: "내 기여 {points} · 풀의 {percent}%",
       viewEstate: "내 그룹 영지 보기",
+      mine: "내 적립",
+      pool: "그룹 풀",
+      share: "기여도",
+      caption: "우리 그룹 영지를 함께 가꾸는 비중이에요",
     },
     profile: {
       edit: "프로필 편집",

@@ -348,6 +348,10 @@ export const enMessages = {
       summary: "You earned {points} · {percent}% of the group pool",
       chip: "You: {points} · {percent}% of pool",
       viewEstate: "View my group estate",
+      mine: "You earned",
+      pool: "Group pool",
+      share: "Share",
+      caption: "Your share of the group's garden fund",
     },
     profile: {
       edit: "Edit profile",
