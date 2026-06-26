@@ -51,7 +51,7 @@ export const getCurrentProfile = cache(
     const supabase = await createServerSupabaseClient();
     const { data, error } = await supabase
       .from("profiles")
-      .select("id, display_name, school_id, group_id")
+      .select("id, display_name, school_id, group_id, handle, bio")
       .eq("id", user.id)
       .maybeSingle();
 
@@ -63,6 +63,8 @@ export const getCurrentProfile = cache(
       displayName: data.display_name,
       schoolId: data.school_id,
       groupId: data.group_id,
+      handle: data.handle ?? null,
+      bio: data.bio ?? null,
     };
   },
 );

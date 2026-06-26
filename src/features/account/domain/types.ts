@@ -18,6 +18,8 @@ export type AccountProfile = {
   displayName: string;
   schoolId: string;
   groupId: string;
+  handle: string | null;
+  bio: string | null;
 };
 
 export type ProfileDraft = {
