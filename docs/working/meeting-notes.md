@@ -39,6 +39,17 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - 검증: DB 레이어 일회용 스크립트 **14/14 통과**(직접 insert 차단, claim 권위/멱등, 소유권·예산·자기적립·OCC·소속불변 전부 강제). Vitest **214/214**, ESLint 0 errors, `npm run build` 통과. dev 부팅·인증 게이트 HTTP 실측 정상(에러 0). advisor 잔여: `current_group_id`/`claim_period_reward`/`save_estate`의 authenticated 실행 WARN 3건(권위 RPC 진입점이라 의도된 것·정책/앱이 호출하므로 필수)과 leaked-password-protection(기존 auth 토글). 트리거 함수 search_path는 핀 고정해 그 WARN은 해소. 테스트 데이터 전부 삭제(실계정 it@naver.com 보존).
 - 미수정으로 남긴 것: Codex의 Low 노트(`proxy.test.ts`가 세션 갱신을 mock해 쿠키 회귀를 못 잡음)는 테스트 커버리지 사안이라 보류. 모든 변경 푸시 안 함(로컬).
 
+### 같은 날 — 개인 페이지 + QR 미션 + 목표 설계·구현
+
+- 사용자가 "로그인에 이어 개인 페이지가 필요하다"며 설계+구현 계획을 요청. 메인 Mapbox 지도와 소속 그룹 영지에서 "내 기록"을 보는 것이 중요하고, 일간/주간 목표와 "학교 곳곳 QR 설치 → 인증 시 포인트 지급(예: 계단 이용)"을 구상 중이라고 밝힘.
+- AskUserQuestion으로 확정한 방향: (1) 범위는 "개인 페이지 + QR 핵심 루프 + 목표"를 하나의 데모 가능한 수직 슬라이스로, (2) 개인 페이지는 **전용 라우트 `/me`**, (3) QR은 **URL 딥링크**(`/scan/<code>`, 폰 기본 카메라로 스캔→서버 권위 지급), (4) 목표는 **사전정의 + 서버 재검증 완료 보너스**, (5) 참여자 대시보드는 유지하고 `/me` 링크만 추가.
+- 설계 스펙 `docs/superpowers/specs/2026-06-26-personal-page-qr-goals-design.md`, 구현 계획 `docs/superpowers/plans/2026-06-26-personal-page-qr-goals.md` 작성. 브레인스토밍 중 "표시 진행률과 지급 자격의 시간/주 경계 드리프트"를 막으려 읽기 전용 RPC `get_my_goal_progress()`를 추가해 RPC를 2개에서 3개로 늘림.
+- 새 로컬 브랜치 `feat/personal-page-qr-goals`(푸시 안 함)에서 계획대로 구현. 커밋은 태스크 단위(스펙/플랜 → DB → 도메인 → DAL → 액션 → 로그인 next → i18n → /me → /scan → 지도 칩 → 영지 칩).
+- DB: 마이그레이션 `missions_and_goals`(기록 `docs/superpowers/migrations/2026-06-26-missions-and-goals.sql`) — 테이블 `missions`/`mission_completions`/`goals`(+RLS, 시드 미션 5·목표 3), RPC `complete_mission`(미션당 1일 1회, Asia/Seoul)·`claim_goal_reward`(서버가 `mission_completions`로 자격 재계산, 멱등)·`get_my_goal_progress`(읽기). QR/목표 포인트는 모두 `point_events` 한 줄이라 개인 포인트·캐릭터·그룹 풀·영지 예산이 함께 갱신됨. 직접 쓰기는 RLS로 차단 유지.
+- 작업 중 확인한 사실: `/me`·`/scan` 인증 게이트는 미로그인 시 `/login?next=…`로 307 리다이렉트(로그인 액션이 `isSafeNextPath`로 검증해 오픈 리다이렉트 차단). 로그인 페이지가 `searchParams.next`를 읽으면서 `● SSG`에서 `ƒ Dynamic`으로 바뀜. 영지 풀블리드 캔버스 위에 개인 기여 칩은 `fixed`(z-[60]) 형제 오버레이로 얹어 큰 estate-game-client 본체는 건드리지 않음. 포트 3000에 기존 dev 서버(HMR)가 떠 있어 HTTP 실측은 그걸 재사용함.
+- 알려진 한계(문서화): 정적 QR(서명·회전·지오펜싱 없음 — URL 아는 사람은 어디서든 인증), 관리자 QR 발급 UI 없음(미션 시드). 사용자 지정 목표·영지 아이템의 사용자 귀속은 범위 밖.
+- 검증: Vitest 227/227(신규 13: goals·point-reason·safe-redirect), ESLint 0 errors(기존 `game-preview.tsx` 경고 2개), `npm run build` 통과. DB RPC 일회성 프로브(자체 롤백, 10 assert: completed/already/invalid·daily-3 지급·weekly-10 미달·포인트 합)가 두 번 통과(잔여 0행, 시드 유지, 실계정 `it@naver.com` 보존). Supabase 보안 advisor는 예상된 양성 WARN(신규 3 RPC가 authenticated 실행 권위 진입점 + 기존 leaked-password 토글). 푸시 안 함.
+
 ## 2026-06-25
 
 - The user reported that the estate experience felt uncomfortable because estate-related popups opened from very light touches.
