@@ -132,11 +132,14 @@
 }
 
 /* On phones the building-rank dock sits flush at the bottom edge; lift Mapbox's
-   logo + attribution above the collapsed dock so they stay visible (ToS). */
+   logo + attribution above the collapsed dock so they stay visible (ToS).
+   !important is required to beat Mapbox GL's own `bottom: 0` on these controls
+   (same as the .mapboxgl-ctrl-attrib overrides above); 4rem clears the ~57px
+   collapsed dock with margin to spare. */
 @media (max-width: 639px) {
   .mapboxgl-ctrl-bottom-left,
   .mapboxgl-ctrl-bottom-right {
-    bottom: 3.5rem;
+    bottom: 4rem !important;
   }
 }
 

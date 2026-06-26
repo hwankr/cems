@@ -102,9 +102,16 @@ export function BuildingRankPanel({
         />
       </button>
       <div
-        className={`overflow-y-auto transition-[max-height] duration-300 ${
-          open ? (isSheet ? "max-h-[45vh]" : "max-h-[19rem]") : "max-h-0"
+        className={`overflow-y-auto${
+          isSheet ? "" : " transition-[max-height] duration-300"
         }`}
+        // Driven via inline style: Tailwind v4 JIT does not reliably generate
+        // arbitrary viewport-unit max-heights (e.g. max-h-[45vh]) in this repo,
+        // so the value is set directly to guarantee the sheet actually expands.
+        // The sheet also skips the max-height transition (a 0→vh transition
+        // animates unreliably here and can stick at 0); the desktop floating
+        // panel keeps its original animated collapse.
+        style={{ maxHeight: open ? (isSheet ? "45vh" : "19rem") : "0px" }}
       >
         <div className="mx-4 h-px bg-line" aria-hidden="true" />
         {rows.map(({ subject, comparison, signedRate, rank }) => {
