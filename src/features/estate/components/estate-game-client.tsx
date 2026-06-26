@@ -31,19 +31,13 @@ import {
 import { useI18n } from "@/i18n/client";
 import { formatKwh, formatPoints } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
-import type { Messages } from "@/i18n/messages/types";
 import {
   baseEstateBuildingDefinition,
   estateItemCatalog,
 } from "../data/estate-item-catalog";
-import {
-  estateAssetManifest,
-  type EstateAssetManifest,
-} from "../data/estate-asset-manifest";
 import { estateExpansionCatalog } from "../data/estate-expansion-catalog";
 import type { EstatePageData } from "../data/get-estate-page-data";
 import {
-  createEstatePurchaseLock,
   getSelectedEstateInstanceId,
   isEstateShortcutEditableTarget,
   resetEstateEditorModeForSubject,
@@ -64,60 +58,23 @@ import type {
   EstateCommandContext,
   EstateExpansionParcelDefinition,
   EstateGridCell,
-  EstateItemCategory,
   EstateItemDefinition,
   EstateItemInstance,
   EstateSnapshot,
   QuarterTurn,
 } from "../domain/types";
 import type { EstateRepository } from "../persistence/estate-repository";
-import {
-  SupabaseEstateRepository,
-  type EstateTableClient,
-} from "../persistence/supabase-estate-repository";
-import { createBrowserSupabaseClient } from "@/features/account/supabase/client";
+import { createEstateTableClient } from "../persistence/estate-table-client";
+import { SupabaseEstateRepository } from "../persistence/supabase-estate-repository";
 import type { EstateCanvasProps } from "./estate-canvas";
+import {
+  createEstateId,
+  getItemName,
+  getParcelName,
+  type EstateMessages,
+} from "./estate-copy";
+import { ItemThumb } from "./estate-item-thumb";
 import styles from "./estate-shell.module.css";
-
-function createEstateTableClient(): EstateTableClient {
-  const supabase = createBrowserSupabaseClient();
-  return {
-    async select(subjectId) {
-      const { data, error } = await supabase
-        .from("estates")
-        .select("snapshot, version")
-        .eq("subject_id", subjectId)
-        .maybeSingle();
-      return {
-        data: data ? { snapshot: data.snapshot, version: data.version } : null,
-        error: error ? { message: error.message } : null,
-      };
-    },
-    async save({ subjectId, snapshot, expectedVersion }) {
-      // Server-authoritative write: owner group, budget, and concurrency are
-      // all enforced inside the save_estate SECURITY DEFINER function.
-      const { data, error } = await supabase.rpc("save_estate", {
-        p_subject_id: subjectId,
-        p_snapshot: snapshot,
-        p_expected_version: expectedVersion,
-      });
-      if (error) {
-        return {
-          data: null,
-          error: { message: error.message, conflict: /conflict/i.test(error.message) },
-        };
-      }
-      return { data: { version: data as number }, error: null };
-    },
-    async remove(subjectId) {
-      const { error } = await supabase
-        .from("estates")
-        .delete()
-        .eq("subject_id", subjectId);
-      return { error: error ? { message: error.message } : null };
-    },
-  };
-}
 
 const EstateCanvas = dynamic<EstateCanvasProps>(
   () => import("./estate-canvas").then((module) => module.default),
@@ -129,25 +86,10 @@ type EstateGameClientProps = {
   repository?: EstateRepository;
 };
 
-type ActiveEstatePanel = "shop" | "inventory" | "expansion";
-type EstateShopCategory = "all" | EstateItemCategory;
-type EstateMessages = Messages["estate"];
-
 const itemDefinitions = estateItemCatalog;
 const allItemDefinitions = [baseEstateBuildingDefinition, ...estateItemCatalog];
 const expensiveConfirmationPoint = 700;
 const saveDebounceMs = 360;
-const purchaseLockMs = 420;
-
-const categoryOrder: EstateShopCategory[] = [
-  "all",
-  "nature",
-  "furniture",
-  "energy",
-  "facility",
-  "ground",
-  "landmark",
-];
 
 export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   const { locale, messages } = useI18n();
@@ -156,9 +98,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     data.initialSnapshot,
   );
   const [mode, setMode] = useState<EstateEditorMode>({ type: "view" });
-  const [activePanel, setActivePanel] = useState<ActiveEstatePanel>("shop");
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [shopCategory, setShopCategory] = useState<EstateShopCategory>("all");
   const [message, setMessage] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<EstateSaveStatus>("saved");
   const [fitViewSignal, setFitViewSignal] = useState(0);
@@ -170,9 +110,6 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     string | null
   >(null);
   const [unlockAnimationProgress, setUnlockAnimationProgress] = useState(1);
-  const [pendingPurchaseIds, setPendingPurchaseIds] = useState<Set<string>>(
-    () => new Set(),
-  );
   const subjectIdRef = useRef(data.subject.id);
   const previousSubjectIdRef = useRef(data.subject.id);
   const snapshotRef = useRef(snapshot);
@@ -180,7 +117,6 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const expansionAnimationFrameRef = useRef<number | null>(null);
   const latestSnapshotToSaveRef = useRef<EstateSnapshot | null>(null);
-  const purchaseLockRef = useRef(createEstatePurchaseLock());
   const groundDragVisitedCellKeysRef = useRef(new Set<string>());
   const repositoryRef = useRef<EstateRepository | null>(null);
   const focusReturnRef = useRef<HTMLElement | null>(null);
@@ -212,22 +148,12 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     : null;
   const selectedIsProtected =
     selectedInstance?.definitionId === baseEstateBuildingDefinition.id;
-  const visibleShopItems = useMemo(
-    () =>
-      itemDefinitions.filter(
-        (definition) =>
-          shopCategory === "all" || definition.category === shopCategory,
-      ),
-    [shopCategory],
-  );
   const unlockedParcelCount = snapshot.unlockedParcelIds.length;
   const pendingExpansionParcel = pendingExpansionParcelId
     ? estateExpansionCatalog.find(
         (parcel) => parcel.id === pendingExpansionParcelId,
       ) ?? null
     : null;
-  const nextExpansionParcel = getNextUnlockableParcel(snapshot);
-
   const showMessage = useCallback((nextMessage: string) => {
     setMessage(nextMessage);
 
@@ -360,7 +286,6 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
           current,
         ),
       );
-      setActivePanel("shop");
       setSheetOpen(false);
       setPendingExpansionParcelId(null);
       setFocusParcelId(null);
@@ -585,50 +510,14 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [cancelEditing, removeSelectedItem, rotateActiveItem]);
 
-  function selectPanel(panel: ActiveEstatePanel) {
-    if (activePanel === panel) {
-      setSheetOpen((open) => !open);
-      return;
-    }
-
-    setActivePanel(panel);
-    setSheetOpen(true);
-  }
-
-  function handlePurchase(definition: EstateItemDefinition) {
-    if (!purchaseLockRef.current.tryAcquire(definition.id)) return;
-
-    setPendingPurchaseIds((current) => new Set(current).add(definition.id));
-
-    const result = applyCommand({
-      type: "purchase-item",
-      definitionId: definition.id,
-    });
-
-    if (result.ok) {
-      showMessage(
-        interpolate(copy.messages.purchase, {
-          item: getItemName(definition, copy),
-        }),
-      );
-    }
-
-    setTimeout(() => {
-      purchaseLockRef.current.release(definition.id);
-      setPendingPurchaseIds((current) => {
-        const next = new Set(current);
-        next.delete(definition.id);
-        return next;
-      });
-    }, purchaseLockMs);
+  function toggleInventorySheet() {
+    setSheetOpen((open) => !open);
   }
 
   function handleRequestExpansion(parcelId: string) {
     if (document.activeElement instanceof HTMLElement) {
       focusReturnRef.current = document.activeElement;
     }
-    setActivePanel("expansion");
-    setSheetOpen(true);
     setPendingExpansionParcelId(parcelId);
   }
 
@@ -917,23 +806,22 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
 
         <div className="flex gap-1 p-2">
           <TabButton
-            active={activePanel === "shop"}
-            icon={<ShoppingBag size={16} aria-hidden="true" />}
-            label={copy.panels.shop}
-            onClick={() => selectPanel("shop")}
-          />
-          <TabButton
-            active={activePanel === "inventory"}
+            active={sheetOpen}
             icon={<Package size={16} aria-hidden="true" />}
             label={copy.panels.inventory}
-            onClick={() => selectPanel("inventory")}
+            onClick={toggleInventorySheet}
           />
-          <TabButton
-            active={activePanel === "expansion"}
-            icon={<Hammer size={16} aria-hidden="true" />}
-            label={copy.panels.expansion}
-            onClick={() => selectPanel("expansion")}
-          />
+          <Link
+            href={`/${locale}/subjects/${data.subject.id}/estate/shop`}
+            onClick={() => {
+              void flushSave();
+            }}
+            className={`${styles.tab} flex h-12 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-xl text-[11px] font-medium transition sm:h-11 sm:flex-row sm:gap-1.5 sm:text-xs`}
+            title={copy.panels.shop}
+          >
+            <ShoppingBag size={16} aria-hidden="true" />
+            <span className="truncate">{copy.panels.shop}</span>
+          </Link>
           <TabButton
             icon={<Maximize2 size={16} aria-hidden="true" />}
             label={copy.panels.fit}
@@ -962,38 +850,11 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
             />
           </div>
 
-          {activePanel === "shop" ? (
-            <ShopPanel
-              category={shopCategory}
-              copy={copy}
-              items={visibleShopItems}
-              locale={locale}
-              pendingPurchaseIds={pendingPurchaseIds}
-              pointBalance={pointAccount.availablePoints}
-              snapshot={snapshot}
-              onCategoryChange={setShopCategory}
-              onPurchase={handlePurchase}
-            />
-          ) : null}
-
-          {activePanel === "inventory" ? (
-            <InventoryPanel
-              copy={copy}
-              snapshot={snapshot}
-              onUseItem={handleStartInventoryAction}
-            />
-          ) : null}
-
-          {activePanel === "expansion" ? (
-            <ExpansionPanel
-              copy={copy}
-              locale={locale}
-              nextExpansionParcel={nextExpansionParcel}
-              pointBalance={pointAccount.availablePoints}
-              snapshot={snapshot}
-              onRequestUnlock={handleRequestExpansion}
-            />
-          ) : null}
+          <InventoryPanel
+            copy={copy}
+            snapshot={snapshot}
+            onUseItem={handleStartInventoryAction}
+          />
         </div>
       </aside>
 
@@ -1185,132 +1046,6 @@ function SelectionButton({
   );
 }
 
-function ItemThumb({ definition }: { definition: EstateItemDefinition }) {
-  const sizing = "h-14 w-14 shrink-0 rounded-xl sm:h-16 sm:w-16";
-  const manifest: EstateAssetManifest = estateAssetManifest;
-  const itemAsset = manifest.items[definition.assetId];
-
-  if (itemAsset) {
-    return (
-      <div className={`${styles.thumb} ${sizing}`} aria-hidden="true">
-        <span
-          className={styles.thumbSprite}
-          style={{ backgroundImage: `url("${itemAsset.src}")` }}
-        />
-      </div>
-    );
-  }
-
-  const groundAsset = manifest.ground[definition.assetId];
-
-  if (groundAsset) {
-    return (
-      <div
-        className={`${styles.thumbGround} ${sizing}`}
-        style={{ backgroundImage: `url("${groundAsset.src}")` }}
-        aria-hidden="true"
-      />
-    );
-  }
-
-  return <div className={`${styles.thumb} ${sizing}`} aria-hidden="true" />;
-}
-
-function ShopPanel({
-  category,
-  copy,
-  items,
-  locale,
-  pendingPurchaseIds,
-  pointBalance,
-  snapshot,
-  onCategoryChange,
-  onPurchase,
-}: {
-  category: EstateShopCategory;
-  copy: EstateMessages;
-  items: readonly EstateItemDefinition[];
-  locale: "ko" | "en";
-  pendingPurchaseIds: ReadonlySet<string>;
-  pointBalance: number;
-  snapshot: EstateSnapshot;
-  onCategoryChange: (category: EstateShopCategory) => void;
-  onPurchase: (definition: EstateItemDefinition) => void;
-}) {
-  return (
-    <div className="grid gap-2.5">
-      <div className="flex gap-1.5 overflow-x-auto pb-1">
-        {categoryOrder.map((candidate) => (
-          <button
-            key={candidate}
-            type="button"
-            className={`h-9 shrink-0 rounded-full border px-3.5 text-xs font-medium transition ${
-              category === candidate
-                ? `${styles.tabActive} border-transparent`
-                : `${styles.muted} border-[var(--es-line)] hover:border-[var(--es-accent)]`
-            }`}
-            onClick={() => onCategoryChange(candidate)}
-          >
-            {copy.categories[candidate]}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid gap-2">
-        {items.map((definition) => {
-          const ownedQuantity = getInventoryQuantity(
-            snapshot.inventory,
-            definition.id,
-          );
-          const pending = pendingPurchaseIds.has(definition.id);
-          const disabled = pending || pointBalance < definition.cost;
-
-          return (
-            <div
-              key={definition.id}
-              className={`${styles.card} flex gap-3 rounded-2xl p-2.5`}
-            >
-              <ItemThumb definition={definition} />
-              <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <h2 className="truncate text-sm font-semibold">
-                      {getItemName(definition, copy)}
-                    </h2>
-                    <p className={`${styles.subtle} mt-0.5 text-xs`}>
-                      {copy.categories[definition.category]} ·{" "}
-                      {definition.footprintWidth}x{definition.footprintHeight}
-                    </p>
-                  </div>
-                  <span
-                    className={`${styles.priceTag} shrink-0 rounded-lg px-2 py-1 font-mono text-xs font-semibold`}
-                  >
-                    {formatPoints(locale, definition.cost)}
-                  </span>
-                </div>
-                <div className="mt-auto flex items-center justify-between gap-2">
-                  <span className={`${styles.muted} text-xs font-medium`}>
-                    {copy.shop.owned} {ownedQuantity}
-                  </span>
-                  <button
-                    type="button"
-                    className={`${styles.primaryBtn} inline-flex h-10 items-center gap-1.5 rounded-xl px-3.5 text-xs font-semibold`}
-                    disabled={disabled}
-                    onClick={() => onPurchase(definition)}
-                  >
-                    <ShoppingBag size={14} aria-hidden="true" />
-                    {pending ? copy.shop.pending : copy.shop.buy}
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 function InventoryPanel({
   copy,
   snapshot,
@@ -1378,112 +1113,6 @@ function InventoryPanel({
           </button>
         </div>
       ))}
-    </div>
-  );
-}
-
-function ExpansionPanel({
-  copy,
-  locale,
-  nextExpansionParcel,
-  pointBalance,
-  snapshot,
-  onRequestUnlock,
-}: {
-  copy: EstateMessages;
-  locale: "ko" | "en";
-  nextExpansionParcel: EstateExpansionParcelDefinition | null;
-  pointBalance: number;
-  snapshot: EstateSnapshot;
-  onRequestUnlock: (parcelId: string) => void;
-}) {
-  const lockedParcels = estateExpansionCatalog.filter(
-    (parcel) => !snapshot.unlockedParcelIds.includes(parcel.id),
-  );
-
-  if (lockedParcels.length === 0) {
-    return (
-      <div className={`${styles.card} ${styles.muted} rounded-2xl p-4 text-sm`}>
-        {copy.expansion.allUnlocked}
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid gap-2">
-      {nextExpansionParcel ? (
-        <div
-          className={`${styles.muted} flex items-center justify-between gap-2 rounded-xl bg-[var(--es-inset)] px-3 py-2 text-xs font-medium`}
-        >
-          <span>{copy.expansion.next}</span>
-          <span className="inline-flex items-center gap-1">
-            <Coins size={13} className={styles.coin} aria-hidden="true" />
-            <span className="font-mono tabular-nums">
-              {formatPoints(locale, nextExpansionParcel.cost)}
-            </span>
-          </span>
-        </div>
-      ) : null}
-
-      {lockedParcels.map((parcel) => {
-        const status = getParcelUnlockStatus(parcel, snapshot, pointBalance);
-
-        return (
-          <div
-            key={parcel.id}
-            className={`${styles.card} grid gap-2 rounded-2xl p-3`}
-          >
-            <div className="flex items-start justify-between gap-2">
-              <div className="min-w-0">
-                <h2 className="truncate text-sm font-semibold">
-                  {getParcelName(parcel.id, copy)}
-                </h2>
-                <p className={`${styles.subtle} mt-0.5 text-xs`}>
-                  {copy.expansion.size} {formatParcelSize(parcel)} ·{" "}
-                  {copy.expansion.cost} {formatPoints(locale, parcel.cost)}
-                </p>
-              </div>
-              <span
-                className={`shrink-0 rounded-md px-2 py-1 text-[11px] font-semibold ${
-                  status.canUnlock ? styles.badgeAvailable : styles.badgeLocked
-                }`}
-              >
-                {status.canUnlock
-                  ? copy.expansion.available
-                  : copy.expansion.locked}
-              </span>
-            </div>
-
-            <div className={`${styles.subtle} grid gap-1 text-xs`}>
-              <p>
-                {copy.expansion.adjacent}:{" "}
-                {parcel.adjacentParcelIds
-                  .map((parcelId) => getParcelName(parcelId, copy))
-                  .join(", ")}
-                {" · "}
-                <span className={status.adjacent ? styles.badgeAvailable : ""}>
-                  {status.adjacent ? copy.expansion.met : copy.expansion.notMet}
-                </span>
-              </p>
-              {!status.affordable ? (
-                <p className={`${styles.badgeDanger} font-medium`}>
-                  {interpolate(copy.expansion.missingPoints, {
-                    points: formatPoints(locale, status.missingPoints),
-                  })}
-                </p>
-              ) : null}
-            </div>
-
-            <button
-              type="button"
-              className={`${styles.primaryBtn} inline-flex h-10 items-center justify-center rounded-xl px-3 text-xs font-semibold`}
-              onClick={() => onRequestUnlock(parcel.id)}
-            >
-              {copy.expansion.review}
-            </button>
-          </div>
-        );
-      })}
     </div>
   );
 }
@@ -1667,23 +1296,6 @@ function getParcelUnlockStatus(
   };
 }
 
-function getNextUnlockableParcel(
-  snapshot: EstateSnapshot,
-): EstateExpansionParcelDefinition | null {
-  return (
-    estateExpansionCatalog
-      .filter((parcel) => !snapshot.unlockedParcelIds.includes(parcel.id))
-      .filter((parcel) =>
-        isParcelAdjacentToUnlockedParcel(
-          parcel.id,
-          snapshot.unlockedParcelIds,
-          estateExpansionCatalog,
-        ),
-      )
-      .sort((a, b) => a.cost - b.cost)[0] ?? null
-  );
-}
-
 function getExpansionBlockedMessage(
   status: ParcelUnlockStatus,
   copy: EstateMessages,
@@ -1710,38 +1322,12 @@ function formatParcelSize(parcel: EstateExpansionParcelDefinition): string {
   return `${parcel.bounds.width}x${parcel.bounds.height}`;
 }
 
-function getItemName(
-  definition: EstateItemDefinition,
-  copy: EstateMessages,
-): string {
-  return getRecordValue(copy.items, definition.id);
-}
-
-function getParcelName(parcelId: string, copy: EstateMessages): string {
-  return getRecordValue(copy.parcels, parcelId);
-}
-
-function getRecordValue(
-  record: Readonly<Record<string, string>>,
-  key: string,
-): string {
-  return record[key] ?? key;
-}
-
 function getFocusableElements(container: HTMLElement): HTMLElement[] {
   return [
     ...container.querySelectorAll<HTMLElement>(
       'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
     ),
   ].filter((element) => !element.hasAttribute("disabled"));
-}
-
-function createEstateId(): string {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return crypto.randomUUID();
-  }
-
-  return `estate-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
 function nextQuarterTurn(rotation: QuarterTurn): QuarterTurn {

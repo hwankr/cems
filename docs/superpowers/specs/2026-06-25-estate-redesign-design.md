@@ -79,8 +79,10 @@ Files: `estate-shell.module.css`, `estate-asset-manifest.ts` (ground fills), `re
 - Locked + **not** unlockable: faint dormant plot, small lock glyph, no badge — so only
   actionable land draws the eye.
 - Clicking the badge already works: it sits on a parcel cell, so the existing
-  `onLockedParcelClick` → confirm-dialog path fires unchanged. The expansion tab stays for
-  keyboard/a11y and overview.
+  `onLockedParcelClick` → confirm-dialog path fires unchanged.
+- Update (2026-06-25): the redundant expansion **tab/panel** was removed. Expansion is now
+  reached only by tapping a locked plot on the canvas; the confirm dialog (focus trap +
+  Escape) still carries keyboard/a11y. The dock is Shop / Inventory / Fit.
 - Badge position: **parcel center** (matches the approved mockup).
 
 ### 4. Fuller default estate seed (`data/demo-estate-data.ts`)

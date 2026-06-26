@@ -140,7 +140,7 @@ export const enMessages = {
     aria: {
       canvasLabel: "Isometric estate canvas decorated with saving points",
       canvasSummary:
-        "{items} placed objects, {parcels} unlocked parcels, and {tiles} ground tiles. Use the shop, inventory, and expansion buttons for keyboard control.",
+        "{items} placed objects, {parcels} unlocked parcels, and {tiles} ground tiles. Use the my-items, shop, and fit buttons for keyboard control, and tap a locked plot to expand.",
       liveSummary:
         "Current selection {selection}. Balance {balance}. Save status {saveStatus}.",
       noneSelected: "none",
@@ -183,21 +183,10 @@ export const enMessages = {
       unlock: "Unlock",
     },
     expansion: {
-      adjacent: "Adjacent",
       alreadyUnlocked: "This parcel is already unlocked.",
-      allUnlocked: "All parcels are unlocked.",
-      available: "Available",
       blocked: "This parcel cannot be unlocked right now.",
-      cost: "Cost",
-      locked: "Locked",
-      met: "Met",
       missingPoints: "{points} more needed.",
-      next: "Next",
       notAdjacent: "Unlock an adjacent parcel first.",
-      notMet: "Not met",
-      review: "Review expansion",
-      size: "Size",
-      unlocked: "Unlocked",
     },
     inventory: {
       empty: "No owned items. Buy from the shop first.",
@@ -242,9 +231,8 @@ export const enMessages = {
       removed: "Removed. The item returned to inventory.",
     },
     panels: {
-      expansion: "Expand",
       fit: "Fit view",
-      inventory: "Inventory",
+      inventory: "My items",
       shop: "Shop",
     },
     parcels: {
@@ -271,9 +259,13 @@ export const enMessages = {
       rotate: "Rotate",
     },
     shop: {
+      backToEstate: "Estate",
       buy: "Buy",
+      goPlace: "Return to estate to place",
       owned: "Owned",
       pending: "Pending",
+      subtitle: "Spend saved points on items. Place them back in your estate.",
+      title: "Shop",
     },
   },
   map: {

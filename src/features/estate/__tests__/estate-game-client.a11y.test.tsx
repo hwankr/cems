@@ -9,10 +9,21 @@ import { getEstatePageData } from "../data/get-estate-page-data";
 import { EstateGameClient } from "../components/estate-game-client";
 import { MemoryEstateRepository } from "../persistence/memory-estate-repository";
 
-vi.mock("../components/estate-canvas", () => ({
-  default: () => <div data-testid="estate-canvas" />,
-  EstateCanvas: () => <div data-testid="estate-canvas" />,
-}));
+// Expansion is reached only by tapping a locked parcel on the canvas, so the
+// mock exposes a button that fires the same `onLockedParcelClick` callback.
+vi.mock("../components/estate-canvas", () => {
+  const Canvas = (props: { onLockedParcelClick?: (parcelId: string) => void }) => (
+    <button
+      type="button"
+      data-testid="estate-locked-parcel"
+      onClick={() => props.onLockedParcelClick?.("north")}
+    >
+      Open locked parcel
+    </button>
+  );
+
+  return { default: Canvas, EstateCanvas: Canvas };
+});
 
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean })
   .IS_REACT_ACT_ENVIRONMENT = true;
@@ -57,12 +68,10 @@ describe("EstateGameClient accessibility", () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
 
-    const expansionTab = getButton("Expand");
-    await click(expansionTab);
-    const reviewButton = getButton("Review expansion");
-    reviewButton.focus();
+    const lockedParcelButton = getButton("Open locked parcel");
+    lockedParcelButton.focus();
 
-    await click(reviewButton);
+    await click(lockedParcelButton);
 
     const dialog = document.querySelector<HTMLElement>('[role="dialog"]');
     expect(dialog).not.toBeNull();
@@ -73,7 +82,7 @@ describe("EstateGameClient accessibility", () => {
 
     await pressKey("Escape");
     expect(document.querySelector('[role="dialog"]')).toBeNull();
-    expect(document.activeElement).toBe(reviewButton);
+    expect(document.activeElement).toBe(lockedParcelButton);
   });
 });
 

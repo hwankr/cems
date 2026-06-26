@@ -138,7 +138,7 @@ export const koMessages = {
     aria: {
       canvasLabel: "절감 포인트로 꾸미는 등각 투영 영지 캔버스",
       canvasSummary:
-        "배치된 오브젝트 {items}개, 해제 구역 {parcels}개, 바닥 타일 {tiles}개가 있습니다. 상점, 인벤토리, 확장 버튼으로 키보드 조작할 수 있습니다.",
+        "배치된 오브젝트 {items}개, 해제 구역 {parcels}개, 바닥 타일 {tiles}개가 있습니다. 보유 아이템, 상점, 화면 맞춤 버튼으로 키보드 조작할 수 있고, 잠긴 부지를 탭하면 확장됩니다.",
       liveSummary:
         "현재 선택 {selection}. 잔액 {balance}. 저장 상태 {saveStatus}.",
       noneSelected: "없음",
@@ -181,21 +181,10 @@ export const koMessages = {
       unlock: "확장하기",
     },
     expansion: {
-      adjacent: "인접 조건",
       alreadyUnlocked: "이미 해제된 구역입니다.",
-      allUnlocked: "모든 구역이 확장되었습니다.",
-      available: "구매 가능",
       blocked: "현재 확장할 수 없습니다.",
-      cost: "비용",
-      locked: "대기",
-      met: "충족",
       missingPoints: "{points}가 더 필요합니다.",
-      next: "다음 확장",
       notAdjacent: "먼저 인접한 구역을 해제해야 합니다.",
-      notMet: "미충족",
-      review: "확장 확인",
-      size: "크기",
-      unlocked: "해제 구역",
     },
     inventory: {
       empty: "보유한 아이템이 없습니다. 상점에서 먼저 구매하세요.",
@@ -242,9 +231,8 @@ export const koMessages = {
       removed: "철거했습니다. 아이템이 인벤토리로 돌아갔습니다.",
     },
     panels: {
-      expansion: "확장",
       fit: "화면 맞춤",
-      inventory: "인벤토리",
+      inventory: "보유 아이템",
       shop: "상점",
     },
     parcels: {
@@ -271,9 +259,13 @@ export const koMessages = {
       rotate: "회전",
     },
     shop: {
+      backToEstate: "영지로",
       buy: "구매",
+      goPlace: "영지로 돌아가 배치하기",
       owned: "보유",
       pending: "처리 중",
+      subtitle: "절감 포인트로 아이템을 구매하세요. 배치는 영지에서 합니다.",
+      title: "상점",
     },
   },
   map: {

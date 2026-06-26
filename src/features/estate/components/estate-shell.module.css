@@ -4,7 +4,13 @@
  * quality: flat tokens, no descendant overrides, no !important. The isometric
  * world is the hero and every surface below floats above it as warm glass.
  */
-.estate {
+/*
+ * Shared garden surface: the full token palette plus the daylight gradient.
+ * Both the full-bleed estate world (.estate) and the scrollable shop page
+ * (.shop) compose this so they stay visually identical without duplicating
+ * the token list.
+ */
+.surface {
   --es-sky-top: #fbf3e2;
   --es-sky-mid: #eef4e0;
   --es-sky-bot: #d8e8d2;
@@ -40,9 +46,6 @@
   --es-shadow: 0 16px 40px -18px rgb(30 50 30 / 0.5);
   --es-shadow-sm: 0 10px 26px -14px rgb(30 50 30 / 0.45);
 
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
   color: var(--es-ink);
   background: linear-gradient(
     180deg,
@@ -52,6 +55,25 @@
   );
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+.estate {
+  composes: surface;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Scrollable full-height shop page (a normal document flow, not a fixed world). */
+.shop {
+  composes: surface;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* The shop's docked "return to estate" action floats above the page. */
+.shopCta {
+  box-shadow: var(--es-shadow);
 }
 
 .muted {
@@ -284,9 +306,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .estate *,
-  .estate *::before,
-  .estate *::after {
+  .surface *,
+  .surface *::before,
+  .surface *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
