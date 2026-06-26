@@ -26,6 +26,19 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - **M7 수정**: 세 서버 액션(auth/profile/points)에서 클라이언트 locale을 기존 `normalizeLocale()`로 검증해 `//evil.example` 류 오픈 리다이렉트 차단.
 - 수정 후 재검증: Vitest 213/213, ESLint 0 errors, `npm run build` 통과. 커밋 추가(`fix(db)`, `fix(account)`). 여전히 푸시 안 함(로컬). 참고: 사용자가 직접 만든 실계정 `it@naver.com`(it1/student-services)이 DB에 남아 있어 보존함(내 테스트 데이터 아님).
 
+### 같은 날 — 나머지 Codex 지적 전체 하드닝(C1~C3·H5·H6·M8)
+
+- 사용자가 "codex가 지적한 것 전부 수정"을 지시. 핵심 방향: 경제 변형을 **서버 권위(SECURITY DEFINER RPC + 직접 쓰기 차단)** 로 전환. 마이그레이션 `harden_economy_server_authoritative`(기록 `docs/superpowers/migrations/2026-06-26-harden-economy-server-authoritative.sql`).
+- C1: `group_period_rewards` 테이블(권위 있는 그룹별 기간 보상, 실제 도메인 로직으로 계산한 값 시드: engineering 0, humanities 1400, student-services 0) + `claim_period_reward()` RPC(금액을 클라이언트가 못 정함, 멱등). `point_events` insert 정책 제거 → 직접 insert 불가.
+- C2: `enforce_profile_affiliation_immutable` BEFORE UPDATE 트리거로 `school_id/group_id` 변경 차단(표시 이름은 변경 가능).
+- C3: `estate_subjects`(subject→소유 그룹, 6개 매핑 시드) + `save_estate()` RPC가 소유 그룹을 권위 있게 결정. `estates` insert/update 정책 제거 → 직접 쓰기 불가, 남의 건물 영지 선점 불가.
+- H5(부분): `save_estate()`가 양수(자기 적립) 거래 거부 + 스냅샷 순지출이 그룹 풀을 초과하면 거부. **남은 한계(문서화)**: 아이템별 원가 정합성(거래 없는 "공짜 아이템")까지는 검증 안 함 — 카탈로그·구역별 시드를 DB로 이식해야 가능해 범위 밖. 이는 "자기 그룹 영지를 미결제 아이템으로 꾸미는" 자기 그룹 내 치팅이며, 포인트 경제나 타 그룹 침해는 아님.
+- H6: `estates.version` 컬럼 + `save_estate()` 낙관적 동시성(예상 버전 불일치 시 conflict). 클라이언트(`SupabaseEstateRepository`)가 subject별 버전을 추적해 저장 시 전달하고, conflict면 서버 스냅샷을 다시 불러와 덮어쓰기 방지(`estate.messages.reloaded` 안내). 영지 저장은 이제 `.upsert` 대신 `save_estate` RPC 경유.
+- M8: DAL(`account-dal.ts`)이 Supabase 에러를 삼키지 않고 throw하도록 변경(0/빈값 둔갑 방지).
+- 코드 변경: `points.ts`(RPC 호출로 단순화, 데모 계산 제거), `supabase-estate-repository.ts`(RPC 저장 + 버전/충돌, `ownerGroupId` 파라미터 제거), `estate-game-client.tsx`(RPC 클라이언트·충돌 리로드), `estate-repository.ts`(`conflict` 에러코드), `i18n` ko/en(reloaded), `supabase-estate-repository.test.ts` 갱신.
+- 검증: DB 레이어 일회용 스크립트 **14/14 통과**(직접 insert 차단, claim 권위/멱등, 소유권·예산·자기적립·OCC·소속불변 전부 강제). Vitest **214/214**, ESLint 0 errors, `npm run build` 통과. dev 부팅·인증 게이트 HTTP 실측 정상(에러 0). advisor 잔여: `current_group_id`/`claim_period_reward`/`save_estate`의 authenticated 실행 WARN 3건(권위 RPC 진입점이라 의도된 것·정책/앱이 호출하므로 필수)과 leaked-password-protection(기존 auth 토글). 트리거 함수 search_path는 핀 고정해 그 WARN은 해소. 테스트 데이터 전부 삭제(실계정 it@naver.com 보존).
+- 미수정으로 남긴 것: Codex의 Low 노트(`proxy.test.ts`가 세션 갱신을 mock해 쿠키 회귀를 못 잡음)는 테스트 커버리지 사안이라 보류. 모든 변경 푸시 안 함(로컬).
+
 ## 2026-06-25
 
 - The user reported that the estate experience felt uncomfortable because estate-related popups opened from very light touches.
