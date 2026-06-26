@@ -50,6 +50,15 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - 알려진 한계(문서화): 정적 QR(서명·회전·지오펜싱 없음 — URL 아는 사람은 어디서든 인증), 관리자 QR 발급 UI 없음(미션 시드). 사용자 지정 목표·영지 아이템의 사용자 귀속은 범위 밖.
 - 검증: Vitest 227/227(신규 13: goals·point-reason·safe-redirect), ESLint 0 errors(기존 `game-preview.tsx` 경고 2개), `npm run build` 통과. DB RPC 일회성 프로브(자체 롤백, 10 assert: completed/already/invalid·daily-3 지급·weekly-10 미달·포인트 합)가 두 번 통과(잔여 0행, 시드 유지, 실계정 `it@naver.com` 보존). Supabase 보안 advisor는 예상된 양성 WARN(신규 3 RPC가 authenticated 실행 권위 진입점 + 기존 leaked-password 토글). 푸시 안 함.
 
+### 같은 날 — main 머지·Vercel 배포·프로덕션 검증·데모 QR·인증 취소
+
+- 사용자 지시로 `feat/personal-page-qr-goals`를 `main`에 fast-forward 머지(`dd5b403`)하고 `origin/main`에 푸시 → Vercel(`https://cems-kappa.vercel.app`) 자동 배포. 이후 머지된 브랜치 삭제, 로컬·원격 모두 단일 `main`. (앞 항목의 "푸시 안 함(로컬)"은 이로써 갱신됨 — 머지·배포 완료.)
+- 프로덕션 검증: `gh`/Vercel CLI가 이 환경에 없어 브라우저 UI 대신 테스트 계정(`it@naver.com`)으로 프로덕션 Supabase에 직접 로그인해 전체 경제 루프를 실측 — `complete_mission('stairs')`=completed(+50), `get_my_goal_progress` today/week=1, `claim_goal_reward('daily-1')`=claimed(+20, 서버 재검증), `daily-3`=not-met, 개인 합 70. 로그아웃 라우트 게이트(`/ko`,`/ko/me`,`/ko/scan/stairs`→`/ko/login?next=…`)도 프로덕션 정상.
+- 데모 QR 생성: `docs/demo/qr-it-2f-stairs.{svg,html}`(라벨 "IT관 2층 계단", 프로덕션 URL `…/ko/scan/stairs` 인코딩, 인쇄용 스티커). 확인한 사실: QR은 URL 텍스트일 뿐이라 "WiFi 무관"은 DB 등록이 아니라 앱 호스팅(배포/터널) 문제 — 이미 배포돼 있어 셀룰러 포함 어디서든 스캔되고, 미션은 이미 시드돼 DB 추가 등록 불필요.
+- 사용자 요청 "QR 인증 수동 취소"(한 번 찍으면 일 상한 때문에 재스캔 불가): 서버 권위 RPC `cancel_mission`(마이그레이션 `cancel_mission_demo`, 기록 `docs/superpowers/migrations/2026-06-26-cancel-mission.sql`) + `/scan/[code]` 결과의 "테스트: 인증 취소" 버튼(`cancelMissionAction`, 성공 시 새로고침). 본인 오늘 체크인만 삭제하고 적립 포인트도 함께 회수해 일 상한이 유지됨(파밍 아님). 프로덕션 실측: 취소→today 1→0, −50 → 재스캔 completed. 취소는 QR 체크인만 되돌리고 목표 claim은 별개(문서화).
+- 테스트 계정 정리: 검증으로 생긴 산출물 중 내가 claim한 `goal:daily-1` 보너스 1건은 삭제했고, 검증 중 사용자가 실시간으로 찍은 stairs 체크인은 사용자 데이터라 보존(동시 사용 확인됨).
+- 검증: Vitest 227/227, `npm run build` 통과, 독립 코드 리뷰(opus, 라이브 DB·동작 프로브로 실증) Critical/Important 0건(Minor 3건 수정 반영). 커밋·푸시: `dd5b403`(슬라이스)·`51cac09`(docs+QR)·`87d83ac`(취소 기능) 모두 `origin/main`.
+
 ## 2026-06-25
 
 - The user reported that the estate experience felt uncomfortable because estate-related popups opened from very light touches.
