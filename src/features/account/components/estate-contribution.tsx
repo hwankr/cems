@@ -30,7 +30,7 @@ export function EstateContribution({
       <div className="mt-3 flex items-center gap-4 rounded-2xl bg-saving-soft p-4">
         {/* Contribution donut */}
         <div
-          className="relative grid h-[78px] w-[78px] shrink-0 place-items-center rounded-full"
+          className="relative grid h-[92px] w-[92px] shrink-0 place-items-center rounded-full"
           style={{
             background: `conic-gradient(var(--color-saving) ${percent}%, var(--honey-soft) 0)`,
           }}
@@ -40,11 +40,11 @@ export function EstateContribution({
             percent,
           })}
         >
-          <div className="grid h-[58px] w-[58px] place-items-center rounded-full bg-surface text-center">
-            <span className="text-lg font-bold leading-none tabular-nums text-saving">
+          <div className="flex h-[74px] w-[74px] flex-col items-center justify-center gap-1 rounded-full bg-surface">
+            <span className="text-xl font-bold leading-none tabular-nums text-saving">
               {percent}%
             </span>
-            <span className="mt-0.5 text-[10px] text-ink-subtle">
+            <span className="text-[10px] leading-none text-ink-subtle">
               {copy.share}
             </span>
           </div>
@@ -65,7 +65,7 @@ export function EstateContribution({
             </dd>
           </div>
           <div className="my-2.5 h-px bg-line" />
-          <p className="text-[11px] leading-snug text-ink-subtle">
+          <p className="break-keep text-[11px] leading-snug text-ink-subtle">
             {copy.caption}
           </p>
         </dl>
