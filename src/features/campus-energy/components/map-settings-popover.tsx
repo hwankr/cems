@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { ThemeSwitcher } from "@/features/theme/theme-switcher";
 import { useI18n } from "@/i18n/client";
 import { LanguageSwitcher } from "./language-switcher";
+import { MapDisplayToggles } from "./map-display-toggles";
 import { ModeTabs } from "./mode-tabs";
 
 type Mode = "admin" | "participant";
@@ -14,6 +15,10 @@ type MapSettingsPopoverProps = {
   onClose: () => void;
   mode: Mode;
   onModeChange: (mode: Mode) => void;
+  showHeat: boolean;
+  onToggleHeat: () => void;
+  showLabels: boolean;
+  onToggleLabels: () => void;
 };
 
 export function MapSettingsPopover({
@@ -21,6 +26,10 @@ export function MapSettingsPopover({
   onClose,
   mode,
   onModeChange,
+  showHeat,
+  onToggleHeat,
+  showLabels,
+  onToggleLabels,
 }: MapSettingsPopoverProps) {
   const { messages } = useI18n();
   const settings = messages.mapView.settings;
@@ -50,6 +59,15 @@ export function MapSettingsPopover({
           >
             <X size={15} aria-hidden="true" />
           </button>
+        </div>
+        <div className="sm:hidden">
+          <MapDisplayToggles
+            showHeat={showHeat}
+            onToggleHeat={onToggleHeat}
+            showLabels={showLabels}
+            onToggleLabels={onToggleLabels}
+          />
+          <div className="my-1 h-px bg-line" aria-hidden="true" />
         </div>
         <Row label={settings.mode}>
           <ModeTabs mode={mode} onModeChange={onModeChange} />

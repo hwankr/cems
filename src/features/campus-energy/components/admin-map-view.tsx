@@ -172,6 +172,10 @@ export function AdminMapView({
         onClose={() => setSettingsOpen(false)}
         mode={mode}
         onModeChange={onModeChange}
+        showHeat={showHeat}
+        onToggleHeat={() => setShowHeat((value) => !value)}
+        showLabels={showLabels}
+        onToggleLabels={() => setShowLabels((value) => !value)}
       />
     </div>
   );
