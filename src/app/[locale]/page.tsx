@@ -1,5 +1,11 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { CampusEnergyApp } from "@/features/campus-energy/components/campus-energy-app";
+import {
+  getCurrentProfile,
+  getCurrentUser,
+  getGroupPointPool,
+  getPersonalPointTotal,
+} from "@/features/account/data/account-dal";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
 
@@ -12,13 +18,29 @@ export default async function Home({ params }: HomeProps) {
 
   if (!isLocale(locale)) notFound();
 
-  const messages = await getMessages(locale);
+  const user = await getCurrentUser();
+  if (!user) redirect(`/${locale}/login`);
+  const profile = await getCurrentProfile();
+  if (!profile) redirect(`/${locale}/onboarding`);
+
+  const [messages, personalPoints, groupPool] = await Promise.all([
+    getMessages(locale),
+    getPersonalPointTotal(profile.userId),
+    getGroupPointPool(profile.groupId),
+  ]);
 
   return (
     <CampusEnergyApp
       locale={locale}
       mapboxToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN ?? ""}
       messages={messages}
+      account={{
+        displayName: profile.displayName,
+        groupId: profile.groupId,
+        personalPoints,
+        groupPoolPoints: groupPool.earnedPoints,
+        groupMemberCount: groupPool.memberCount,
+      }}
     />
   );
 }
