@@ -1,13 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { calculatePoints } from "@/features/campus-energy/domain/scoring";
-import { demoHistoricalEarnedPointsBySubjectId } from "../data/demo-estate-data";
-import {
-  getEstatePageData,
-} from "../data/get-estate-page-data";
+import { getEstatePageData } from "../data/get-estate-page-data";
+
+const deps = {
+  getProfileGroupId: async () => "engineering",
+  getGroupEarnedPoints: async () => 5000,
+};
 
 describe("getEstatePageData", () => {
-  it("returns estate page data for yu-e21", () => {
-    const data = getEstatePageData("ko", "yu-e21");
+  it("returns estate page data for yu-e21", async () => {
+    const data = await getEstatePageData("ko", "yu-e21", deps);
 
     expect(data).not.toBeNull();
     expect(data?.school.id).toBe("yeungnam");
@@ -24,34 +25,45 @@ describe("getEstatePageData", () => {
     );
   });
 
-  it("localizes subject and school names by locale", () => {
-    const koData = getEstatePageData("ko", "yu-e21");
-    const enData = getEstatePageData("en", "yu-e21");
+  it("resolves the owner group from the subject and funds from the group pool", async () => {
+    const data = await getEstatePageData("ko", "yu-e21", deps);
+
+    // yu-e21 belongs to the engineering group via demoSubjects.
+    expect(data?.ownerGroupId).toBe("engineering");
+    expect(data?.pointAccount).toEqual({
+      earnedPoints: 5000,
+      spentPoints: 0,
+      availablePoints: 5000,
+    });
+  });
+
+  it("falls back to the profile group when the subject has no group", async () => {
+    const data = await getEstatePageData("ko", "yu-a02", {
+      getProfileGroupId: async () => "humanities",
+      getGroupEarnedPoints: async () => 0,
+    });
+
+    expect(data?.ownerGroupId).toBe("humanities");
+  });
+
+  it("localizes subject and school names by locale", async () => {
+    const koData = await getEstatePageData("ko", "yu-e21", deps);
+    const enData = await getEstatePageData("en", "yu-e21", deps);
 
     expect(koData?.school.name).not.toBe(enData?.school.name);
     expect(koData?.subject.name).not.toBe(enData?.subject.name);
   });
 
-  it("returns null for an unknown subject", () => {
-    expect(getEstatePageData("ko", "missing-subject")).toBeNull();
+  it("returns null for an unknown subject", async () => {
+    expect(await getEstatePageData("ko", "missing-subject", deps)).toBeNull();
   });
 
-  it("calculates the initial point account from current savings and demo carryover", () => {
-    const data = getEstatePageData("ko", "yu-e21");
-
-    if (!data?.comparison) {
-      throw new Error("Expected yu-e21 to have a current comparison.");
-    }
-
-    const currentPoints = calculatePoints(data.comparison);
-    const historicalCarryover =
-      demoHistoricalEarnedPointsBySubjectId["yu-e21"] ?? 0;
-    const earnedPoints = currentPoints + historicalCarryover;
-
-    expect(data.pointAccount).toEqual({
-      earnedPoints,
-      spentPoints: 0,
-      availablePoints: earnedPoints,
+  it("returns null when there is no profile group", async () => {
+    const data = await getEstatePageData("ko", "yu-e21", {
+      getProfileGroupId: async () => null,
+      getGroupEarnedPoints: async () => 0,
     });
+
+    expect(data).toBeNull();
   });
 });
