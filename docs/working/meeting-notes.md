@@ -16,6 +16,16 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - 알려진 MVP 한계(문서화함): 영지 지출은 클라이언트 검증 + RLS 쓰기 차단으로 보장하고, 서버 측 재검증과 "그룹당 영지 여러 개"의 교차 지출 합산은 범위 밖(데모는 그룹당 영지 1개 가정).
 - 검증: Vitest 213/213 통과, ESLint 0 errors(기존 `game-preview.tsx` 경고 2개만 잔존), `npm run build` 통과, Supabase 보안 advisor 0건. HTTP 실측: `/`→`/ko`, `/ko`→`/ko/login`, `/ko/login`·`/ko/signup` 200, `/ko/onboarding`·`/ko/subjects/yu-e21/estate`→`/ko/login`. RLS는 일회용 스크립트로 10/10 통과(프로필·포인트·영지 insert, 보상 중복 unique 거부, 그룹 풀 조인, 타 그룹 영지 쓰기 차단, 타 그룹 포인트 격리). 검증 데이터는 모두 삭제해 테이블은 0행. `.claude/launch.json`은 계속 제외.
 
+### 같은 날 — Codex 적대적 리뷰 + 수정
+
+- 사용자 요청으로 현재 브랜치 변경분을 Codex(`codex:rescue`)로 적대적 리뷰. 결과: Critical 3, High 3, Medium 2.
+  - C1 포인트 위조: anon 키로 `point_events`에 직접 임의 insert 가능(서버 액션이 권위 없음). C2 소속 변경: 프로필 update 정책이 `id=auth.uid()`만 봐서 `group_id`를 바꿔 타 그룹 영지 쓰기 가능. C3 영지 스쿼팅: `estates.subject_id`가 자유 text라 남의 건물 영지를 자기 그룹 소유로 선점 가능. C4 **그룹 풀 붕괴**: point_events SELECT 정책 서브쿼리가 profiles RLS(본인만)에 막혀, 그룹원 2명 이상이면 풀이 "읽는 사람 본인 포인트"로만 합산됨. H5 스냅샷 검증이 경제성 아닌 형태만 검사. H6 영지 저장 last-writer-wins. M7 locale 오픈 리다이렉트. M8 DAL이 에러 삼킴.
+- C4를 직접 재현 확인: 엔지니어링 멤버 2명(1000+500)인데 한 명이 풀을 읽으면 1500이 아니라 1000. 기존 "RLS 10/10"은 그룹당 멤버 1명만 테스트해서 이 케이스를 놓쳤음.
+- 사용자 선택(AskUserQuestion): "C4 + M7만 최소 정상화". 경제 위조(C1~C3,H5)·동시성(H6)·DAL 에러(M8)는 **MVP 한계로 문서 유지**(서버 권위 변형 = SECURITY DEFINER RPC/서버 전용 쓰기 경로가 향후 과제).
+- **C4 수정**(마이그레이션 `fix_group_pool_visibility`, 기록 `docs/superpowers/migrations/2026-06-26-fix-group-pool-visibility.sql`): `current_group_id()` SECURITY DEFINER 헬퍼(자기참조 재귀 회피) + "같은 그룹 프로필 SELECT" 정책 추가, point_events SELECT 정책을 헬퍼 기반으로 재작성. 재현 검증: 2멤버 풀이 1500으로 합산되고, 타 그룹(humanities) 사용자는 엔지니어링 이벤트·프로필 0건(격리 유지). anon에는 EXECUTE revoke. 남은 advisor 2건은 양성: `current_group_id` authenticated 실행(정책이 호출하므로 필수, 본인 그룹만 반환)과 leaked-password-protection(기존 auth 설정, 무관).
+- **M7 수정**: 세 서버 액션(auth/profile/points)에서 클라이언트 locale을 기존 `normalizeLocale()`로 검증해 `//evil.example` 류 오픈 리다이렉트 차단.
+- 수정 후 재검증: Vitest 213/213, ESLint 0 errors, `npm run build` 통과. 커밋 추가(`fix(db)`, `fix(account)`). 여전히 푸시 안 함(로컬). 참고: 사용자가 직접 만든 실계정 `it@naver.com`(it1/student-services)이 DB에 남아 있어 보존함(내 테스트 데이터 아님).
+
 ## 2026-06-25
 
 - The user reported that the estate experience felt uncomfortable because estate-related popups opened from very light touches.
