@@ -324,6 +324,16 @@ export const enMessages = {
       openEstate: "Open estate",
       noData: "No data",
     },
+    contributors: {
+      tabEnergy: "Energy",
+      tabRanking: "Contributors",
+      title: "Top contributors",
+      subtitle: "By total points · preview",
+      pointsUnit: "P",
+      you: "You",
+      empty: "No contributors registered yet",
+      emptyHint: "Members of the group operating this building appear here",
+    },
   },
   me: {
     title: "My page",

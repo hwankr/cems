@@ -325,6 +325,16 @@ export const koMessages = {
       openEstate: "영지 이동",
       noData: "데이터 없음",
     },
+    contributors: {
+      tabEnergy: "에너지 진단",
+      tabRanking: "기여 랭킹",
+      title: "개인 기여 랭킹",
+      subtitle: "누적 포인트 · 미리보기",
+      pointsUnit: "P",
+      you: "나",
+      empty: "아직 등록된 기여자가 없어요",
+      emptyHint: "이 건물을 운영하는 그룹의 기여자가 표시됩니다",
+    },
   },
   me: {
     title: "내 페이지",
