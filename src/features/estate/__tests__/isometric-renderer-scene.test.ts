@@ -31,7 +31,7 @@ describe("estate isometric render scene", () => {
     expect(scene.groundTiles).toEqual([]);
     expect(scene.items.find((item) => item.id === "yu-e21:landmark"))
       .toMatchObject({
-        assetId: "base-campus-building",
+        assetId: "campus-building-lv1",
         footprintWidth: 2,
         footprintHeight: 2,
       });
@@ -68,5 +68,27 @@ describe("estate isometric render scene", () => {
     expect(cells).toContainEqual({ x: 8, y: 0 });
     expect(bounds.minX).toBeLessThan(bounds.maxX);
     expect(bounds.minY).toBeLessThan(bounds.maxY);
+  });
+
+  it("renders the main building with its level sprite and exposes the level", () => {
+    const level1 = createEstateRenderScene({
+      snapshot: createDemoEstateSeedSnapshot("yu-e21"),
+      itemDefinitions,
+      parcelDefinitions: estateExpansionCatalog,
+    });
+    expect(level1.mainBuildingLevel).toBe(1);
+    expect(
+      level1.items.find((item) => item.id === "yu-e21:landmark")?.assetId,
+    ).toBe("campus-building-lv1");
+
+    const level3 = createEstateRenderScene({
+      snapshot: { ...createDemoEstateSeedSnapshot("yu-e21"), mainBuildingLevel: 3 },
+      itemDefinitions,
+      parcelDefinitions: estateExpansionCatalog,
+    });
+    expect(level3.mainBuildingLevel).toBe(3);
+    expect(
+      level3.items.find((item) => item.id === "yu-e21:landmark")?.assetId,
+    ).toBe("campus-building-lv3");
   });
 });

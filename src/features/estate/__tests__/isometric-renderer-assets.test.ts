@@ -30,6 +30,7 @@ describe("estate isometric renderer asset placement", () => {
       hoverCell: null,
       selectedItemId: null,
       placementPreview: null,
+      mainBuildingLevel: 1,
       items: [
         {
           id: "rotated-bench",

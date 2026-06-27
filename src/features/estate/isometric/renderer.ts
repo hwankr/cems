@@ -1,8 +1,13 @@
+import { baseEstateBuildingDefinition } from "../data/estate-item-catalog";
 import {
   getCellKey,
   getParcelCells,
   isParcelAdjacentToUnlockedParcel,
 } from "../domain/expansion";
+import {
+  clampMainBuildingLevel,
+  getMainBuildingAssetId,
+} from "../domain/main-building";
 import type {
   EstateAssetManifest,
   EstateGroundAssetDefinition,
@@ -75,6 +80,7 @@ export type EstateRenderScene = {
   placementPreview?: EstateRenderPlacementPreview | null;
   recentlyUnlockedParcelId?: string | null;
   animationProgress?: number;
+  mainBuildingLevel: number;
 };
 
 export type CreateEstateRenderSceneInput = {
@@ -118,6 +124,8 @@ export function createEstateRenderScene({
     cost: parcel.cost,
   }));
   const hoverCellKey = hoverCell ? getCellKey(hoverCell) : null;
+  const mainBuildingLevel = clampMainBuildingLevel(snapshot.mainBuildingLevel);
+  const mainBuildingAssetId = getMainBuildingAssetId(mainBuildingLevel);
 
   return {
     metrics,
@@ -126,7 +134,7 @@ export function createEstateRenderScene({
       createRenderGroundTile(tile, itemDefinitionById),
     ),
     items: snapshot.items.flatMap((item) =>
-      createRenderItem(item, itemDefinitionById),
+      createRenderItem(item, itemDefinitionById, mainBuildingAssetId),
     ),
     hoverCell,
     hoverParcelId: hoverCellKey
@@ -138,6 +146,7 @@ export function createEstateRenderScene({
     placementPreview,
     recentlyUnlockedParcelId,
     animationProgress,
+    mainBuildingLevel,
   };
 }
 
@@ -227,6 +236,7 @@ export class EstateIsometricRenderer {
       loadedAssets,
       visibleWorldBounds,
     );
+    this.drawMainBuildingBadge(scene, camera, viewport);
     this.drawPlacementPreview(scene, camera, viewport, assets, loadedAssets);
     this.drawSelectionOutline(scene, camera, viewport);
     this.drawForegroundEffect(viewport);
@@ -810,6 +820,47 @@ export class EstateIsometricRenderer {
     ctx.restore();
   }
 
+  private drawMainBuildingBadge(
+    scene: EstateRenderScene,
+    camera: IsometricCamera,
+    viewport: ViewportSize,
+  ) {
+    const building = scene.items.find((item) =>
+      item.assetId.startsWith("campus-building-lv"),
+    );
+    if (!building) return;
+
+    const anchor = worldToCanvas(
+      getFootprintAnchorPoint(building, scene.metrics),
+      camera,
+      viewport,
+    );
+    const ctx = this.context;
+    const zoom = camera.zoom;
+    const label = `Lv.${scene.mainBuildingLevel}`;
+    const fontSize = Math.max(11, Math.round(12 * zoom));
+    const liftY = anchor.y - 96 * zoom;
+
+    ctx.save();
+    ctx.font = `700 ${fontSize}px sans-serif`;
+    const pillHeight = Math.max(18, 20 * zoom);
+    const pillWidth = label.length * fontSize * 0.62 + pillHeight;
+    fillPill(
+      ctx,
+      anchor.x - pillWidth / 2,
+      liftY - pillHeight / 2,
+      pillWidth,
+      pillHeight,
+      "#fffdf7",
+      "#e2a23a",
+    );
+    ctx.fillStyle = "#8a5a12";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(label, anchor.x, liftY + 0.5);
+    ctx.restore();
+  }
+
   private drawSelectionFootprintGlow(
     scene: EstateRenderScene,
     camera: IsometricCamera,
@@ -1037,15 +1088,21 @@ function createRenderGroundTile(
 function createRenderItem(
   item: EstateItemInstance,
   itemDefinitionById: ReadonlyMap<string, EstateItemDefinition>,
+  mainBuildingAssetId: string,
 ): EstateRenderItem[] {
   const definition = itemDefinitionById.get(item.definitionId);
   if (!definition) return [];
+
+  const assetId =
+    item.definitionId === baseEstateBuildingDefinition.id
+      ? mainBuildingAssetId
+      : definition.assetId;
 
   return [
     {
       id: item.id,
       definitionId: item.definitionId,
-      assetId: definition.assetId,
+      assetId,
       x: item.x,
       y: item.y,
       rotation: item.rotation,
