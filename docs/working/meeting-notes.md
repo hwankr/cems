@@ -28,6 +28,18 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - 사용자 지시로 전체 변경(PNG 17 추가·SVG 17 삭제·`estate-asset-manifest.ts`·`asset-manifest.test.ts` 수정)을 커밋(`a2b7027 feat(estate): replace shop sprites and ground tiles with optimized PNG art`)하고 `origin/main`에 푸시 → Vercel 자동 배포. 총 에셋 용량 ~2.1MB→460KB.
 - 메모: it@naver.com은 이제 데모 포인트 1,000,070 보유(실적립 아님, 영지 구매 테스트용) — 앞 2026-06-26 항목의 "70 demo points"는 이로써 갱신됨. estate 풀블리드 캔버스는 프리뷰 스크린샷이 멈추는 기존 제약이 있어 실제 합성(타일 이음새·아이템 접지)은 배포본 육안 확인 필요.
 
+### 같은 날 — 메인 지도 건물별 개인 기여도 랭킹 미리보기
+
+- 사용자가 `/superpowers:writing-plans`로 "메인 화면에서 건물 클릭 시 토글 효과 등으로 해당 건물의 개인별 기여도 랭킹도 뜨도록(미리보기 개념)"의 구현 계획을 요청했고, 이어서 "구현 진행 + 다른 브랜치"를 지시했다.
+- AskUserQuestion으로 확정한 방향: (1) 데이터 소스 = **실제 Supabase DB에 게스트 여러 명을 시드**해 "실제 돌아가는 시스템처럼"(합성 데모 데이터 대신 — 사용자가 Other로 직접 지정), (2) **팝업 내부 세그먼트 토글**(에너지 진단 ⇄ 기여 랭킹), (3) **상위 N명 인라인 미리보기만**(전체 랭킹 페이지 없음), (4) 지표 = **누적 포인트**(기존 개인 포인트·그룹 풀과 동일).
+- 작업 중 확인한 핵심 사실: 메인 지도는 건물·에너지가 전부 데모 데이터이고 실제 데이터는 현재 사용자 본인 것뿐이며, RLS상 본인 그룹 외 멤버의 포인트는 못 읽는다. 그래서 어느 건물이든 랭킹을 조회하려면 **SECURITY DEFINER RPC**가 필요(이름+점수만 노출하는 의도된 리더보드용 완화). 또 기여는 그룹 단위로 적립되므로 "건물별 랭킹"은 실제로는 **그 건물을 운영하는 그룹의 멤버 랭킹**이다(공대 4개 건물은 같은 명단 공유, `estate_subjects`에 매핑된 6개 건물만 랭킹 표시·나머지는 빈 상태).
+- 계획 문서 `docs/superpowers/plans/2026-06-27-building-contributor-ranking-preview.md`. 새 브랜치 `feat/building-contributor-ranking`에서 TDD·태스크 단위로 9커밋 구현 후 `main`에 fast-forward 머지(`818009c`)하고 브랜치 삭제, `origin/main` 푸시(Vercel 자동 배포).
+- 코드: 신규 도메인 `src/features/account/domain/contributor-ranking.ts`(`groupContributorRowsBySubject` + 타입, TDD), 신규 `src/features/campus-energy/components/building-contributor-ranking.tsx`(상위 N 리스트+빈 상태+`is_me` "나" 배지), `building-popup.tsx`에 세그먼트 토글 추가(`contributors`는 선택적 prop 기본 `[]`, 탭 리셋은 `admin-map-view.tsx`에서 `key={subject.id}` 리마운트로 처리해 `set-state-in-effect` 린트 회피), DAL `getSubjectContributorRankings()`가 RPC 호출, `page.tsx`가 서버에서 미리 받아 `CampusEnergyApp→AdminMapView→BuildingPopup`로 전달. i18n `mapView.contributors`(ko/en).
+- 작업 중 마주친 제약 2건: 기존 `building-popup.test.tsx`(영지 링크 테스트)가 이미 있어 새 토글 테스트를 합쳐 보존했고 `contributors`를 필수가 아닌 선택적 prop으로 바꿔 하위호환 유지. `campus-energy-app.test.tsx`도 새 prop을 받도록 갱신.
+- DB(라이브 `cems`, ref `zvuqmagfpdyrrzyjntue`): 마이그레이션 `contributor_ranking_rpc`(기록 `docs/superpowers/migrations/2026-06-27-contributor-ranking-rpc.sql`) — `get_subject_contributor_rankings(p_limit)`가 `estate_subjects`→소유 그룹→`point_events` 합산 상위 N을 `(subject_id,user_id,display_name,points,rank,is_me)`로 반환, authenticated EXECUTE·anon revoke. 시드(기록 `docs/superpowers/migrations/2026-06-27-seed-demo-guests.sql`): 게스트 15명(게스트 1~15)을 engineering 6·humanities 5·student-services 4로 `auth.users`+`profiles`+`point_events`(reason `seed:demo-contribution`·period `2026-W26`)에 고정 UUID+ON CONFLICT로 멱등 시드. `profiles` 1→16행.
+- 부수효과(문서화): 게스트 `point_events`가 소속 그룹 풀을 올린다. student-services 풀이 +3,470(→ it1/`it@naver.com`의 영지 예산에 반영)되지만 it1의 1,000,070점에 비해 미미해 `yu-b04`(중앙도서관) 1위는 it1 유지. 남은 한계: 건물별이 아닌 그룹별 귀속, 전체 랭킹 페이지 없음, 미매핑 건물은 빈 상태.
+- 검증: RPC 프로브 — `yu-b04`=it1(1,000,070)#1·게스트12~15, `yu-c02`=게스트7~11, `yu-e21`=게스트1~5(게스트6은 6위라 제외), 6개 건물 모두 랭킹·`is_me` 정상. Supabase 보안 advisor는 신규 RPC가 기존 6개 SECURITY DEFINER 함수와 동일한 양성 WARN만(ERROR 0). Vitest 301/301(신규 8: contributor-ranking 4·building-contributor-ranking 2·building-popup +2), ESLint 0 errors(기존 `game-preview.tsx` 경고 2개), `npm run build` 통과(`/[locale]`는 Dynamic). 지도 라우트는 프리뷰 스크린샷이 멈추는 기존 제약이 있어 브라우저 육안 캡처 대신 SQL 프로브·단위테스트·빌드로 검증.
+
 ## 2026-06-26
 
 - 사용자는 "로그인으로 소속 등록 → 자신만의 캐릭터/포인트 적립 → 그룹 영지 포인트 획득 → 영지 물품 구매" 흐름의 구현 계획을 요청했고, 이어서 "위 계획을 새로운 브랜치에서 진행"하라고 지시했다.
