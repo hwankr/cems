@@ -34,7 +34,7 @@ describe("estate asset manifest", () => {
     for (const assetId of requiredEstateGroundAssetIds) {
       expect(estateAssetManifest.ground[assetId]).toMatchObject({
         id: assetId,
-        src: expect.stringMatching(/^\/estate-assets\/tiles\/.+\.svg$/),
+        src: expect.stringMatching(/^\/estate-assets\/tiles\/.+\.(svg|png)$/),
       });
     }
   });

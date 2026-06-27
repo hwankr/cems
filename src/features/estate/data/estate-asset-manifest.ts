@@ -113,56 +113,56 @@ const smallShadow = {
 
 export const estateAssetManifest = {
   ground: {
-    grass: ground("grass", "/estate-assets/tiles/grass.svg", {
+    grass: ground("grass", "/estate-assets/tiles/grass.png", {
       fill: "#7fb466",
       stroke: "#5b8c4b",
       insetFill: "#9bd27b",
-      textureOpacity: 0.58,
+      textureOpacity: 1,
     }),
     "grass-decoration": ground(
       "grass-decoration",
-      "/estate-assets/tiles/grass.svg",
+      "/estate-assets/tiles/grass.png",
       {
         fill: "#8fc46a",
         stroke: "#6aa24e",
         insetFill: "#a6da7f",
-        textureOpacity: 0.5,
+        textureOpacity: 1,
       },
     ),
-    "stone-path": ground("stone-path", "/estate-assets/tiles/stone-path.svg", {
+    "stone-path": ground("stone-path", "/estate-assets/tiles/stone-path.png", {
       fill: "#8d9486",
       stroke: "#6f766a",
       insetFill: "#aeb6a4",
-      textureOpacity: 0.72,
+      textureOpacity: 1,
     }),
     "light-pavement": ground(
       "light-pavement",
-      "/estate-assets/tiles/light-pavement.svg",
+      "/estate-assets/tiles/light-pavement.png",
       {
         fill: "#d8d8bf",
         stroke: "#a8aa8c",
         insetFill: "#ecebd4",
-        textureOpacity: 0.62,
+        textureOpacity: 1,
       },
     ),
     "bright-sidewalk-block": ground(
       "bright-sidewalk-block",
-      "/estate-assets/tiles/light-pavement.svg",
+      "/estate-assets/tiles/light-pavement.png",
       {
         fill: "#d8d8bf",
         stroke: "#a8aa8c",
         insetFill: "#ecebd4",
-        textureOpacity: 0.62,
+        textureOpacity: 1,
       },
     ),
     "flower-soil-tile": ground(
       "flower-soil-tile",
-      "/estate-assets/tiles/flower-soil.svg",
+      "/estate-assets/tiles/flower-soil.png",
       {
         fill: "#8b6a4e",
         stroke: "#614934",
         insetFill: "#b6875c",
-        textureOpacity: 0.68,
+        textureOpacity: 1,
       },
     ),
   },
@@ -304,7 +304,7 @@ export const estateAssetManifest = {
     ),
     "it-technology-building": sprite(
       "it-technology-building",
-      "/estate-assets/it-technology-building.svg",
+      "/estate-assets/it-technology-building.png",
       256,
       232,
       {
@@ -324,7 +324,7 @@ export const estateAssetManifest = {
     ),
     "broadleaf-tree": sprite(
       "broadleaf-tree",
-      "/estate-assets/broadleaf-tree.svg",
+      "/estate-assets/broadleaf-tree.png",
       128,
       154,
       {
@@ -341,7 +341,7 @@ export const estateAssetManifest = {
         },
       },
     ),
-    "pine-tree": sprite("pine-tree", "/estate-assets/pine-tree.svg", 128, 166, {
+    "pine-tree": sprite("pine-tree", "/estate-assets/pine-tree.png", 128, 166, {
       renderLayer: 1,
       shadow: smallShadow,
       fallback: {
@@ -354,7 +354,7 @@ export const estateAssetManifest = {
         shadow: "#13211b",
       },
     }),
-    "flower-bed": sprite("flower-bed", "/estate-assets/flower-bed.svg", 168, 92, {
+    "flower-bed": sprite("flower-bed", "/estate-assets/flower-bed.png", 168, 92, {
       renderLayer: 0,
       shadow: smallShadow,
       fallback: {
@@ -366,7 +366,7 @@ export const estateAssetManifest = {
         shadow: "#231823",
       },
     }),
-    bench: sprite("bench", "/estate-assets/bench.svg", 156, 104, {
+    bench: sprite("bench", "/estate-assets/bench.png", 156, 104, {
       renderLayer: 1,
       shadow: smallShadow,
       fallback: {
@@ -380,7 +380,7 @@ export const estateAssetManifest = {
     }),
     "solar-street-light": sprite(
       "solar-street-light",
-      "/estate-assets/solar-street-light.svg",
+      "/estate-assets/solar-street-light.png",
       112,
       176,
       {
@@ -398,7 +398,7 @@ export const estateAssetManifest = {
     ),
     "campus-flag": sprite(
       "campus-flag",
-      "/estate-assets/campus-flag.svg",
+      "/estate-assets/campus-flag.png",
       124,
       172,
       {
@@ -414,7 +414,7 @@ export const estateAssetManifest = {
         },
       },
     ),
-    fountain: sprite("fountain", "/estate-assets/fountain.svg", 176, 132, {
+    fountain: sprite("fountain", "/estate-assets/fountain.png", 176, 132, {
       renderLayer: 1,
       shadow: {
         ...smallShadow,
@@ -429,7 +429,7 @@ export const estateAssetManifest = {
         shadow: "#14303a",
       },
     }),
-    greenhouse: sprite("greenhouse", "/estate-assets/greenhouse.svg", 210, 174, {
+    greenhouse: sprite("greenhouse", "/estate-assets/greenhouse.png", 210, 174, {
       renderLayer: 2,
       shadow: buildingShadow,
       fallback: {
@@ -445,7 +445,7 @@ export const estateAssetManifest = {
     }),
     "small-greenhouse": sprite(
       "small-greenhouse",
-      "/estate-assets/greenhouse.svg",
+      "/estate-assets/greenhouse.png",
       210,
       174,
       {
@@ -465,7 +465,7 @@ export const estateAssetManifest = {
     ),
     "solar-pavilion": sprite(
       "solar-pavilion",
-      "/estate-assets/solar-pavilion.svg",
+      "/estate-assets/solar-pavilion.png",
       242,
       174,
       {
@@ -485,7 +485,7 @@ export const estateAssetManifest = {
     ),
     "recycling-station": sprite(
       "recycling-station",
-      "/estate-assets/recycling-station.svg",
+      "/estate-assets/recycling-station.png",
       168,
       118,
       {
@@ -503,7 +503,7 @@ export const estateAssetManifest = {
     ),
     "small-sculpture": sprite(
       "small-sculpture",
-      "/estate-assets/small-sculpture.svg",
+      "/estate-assets/small-sculpture.png",
       122,
       134,
       {
@@ -521,7 +521,7 @@ export const estateAssetManifest = {
     ),
     "decorative-shrub": sprite(
       "decorative-shrub",
-      "/estate-assets/decorative-shrub.svg",
+      "/estate-assets/decorative-shrub.png",
       124,
       96,
       {

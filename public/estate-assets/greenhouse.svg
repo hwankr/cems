@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 174">
-  <path d="M105 168 35 132 105 96 175 132Z" fill="#123522" opacity=".18"/>
-  <path d="M45 74 105 43 165 74 105 106Z" fill="#d7f3df" fill-opacity=".82" stroke="#3a6a51" stroke-width="1.5"/>
-  <path d="M45 74 105 106 105 152 45 120Z" fill="#91c9a2" fill-opacity=".7" stroke="#3a6a51" stroke-width="1.1"/>
-  <path d="M165 74 105 106 105 152 165 120Z" fill="#6fa985" fill-opacity=".72" stroke="#3a6a51" stroke-width="1.1"/>
-  <path d="M65 84 105 62 145 84M78 91 118 68 154 88M105 106V151M75 90V136M136 90V136" fill="none" stroke="#f2fff7" stroke-width="2" opacity=".66"/>
-  <path d="M57 114 79 103 99 113 77 124Z" fill="#5aa85b"/>
-  <path d="M112 113 137 100 154 110 128 124Z" fill="#77bd63"/>
-</svg>
