@@ -103,6 +103,7 @@ const itemDefinitions = [...baseEstateItemDefinitions, ...estateItemCatalog];
 const minZoom = 0.25;
 const maxZoom = 1.6;
 const tapMovementTolerancePx = 10;
+const estateDragPanSensitivity = 0.75;
 
 export function EstateCanvas({
   snapshot,
@@ -485,10 +486,14 @@ export function EstateCanvas({
         touchPanRef.current = nextPoint;
 
         setCamera((current) =>
-          panCameraByCanvasDelta(current, {
-            x: nextPoint.x - previousPoint.x,
-            y: nextPoint.y - previousPoint.y,
-          }),
+          panCameraByCanvasDelta(
+            current,
+            {
+              x: nextPoint.x - previousPoint.x,
+              y: nextPoint.y - previousPoint.y,
+            },
+            { sensitivity: estateDragPanSensitivity },
+          ),
         );
         return;
       }
@@ -643,10 +648,14 @@ export function EstateCanvas({
           last: point,
         };
         setCamera((current) =>
-          panCameraByCanvasDelta(current, {
-            x: point.x - pendingPress.start.x,
-            y: point.y - pendingPress.start.y,
-          }),
+          panCameraByCanvasDelta(
+            current,
+            {
+              x: point.x - pendingPress.start.x,
+              y: point.y - pendingPress.start.y,
+            },
+            { sensitivity: estateDragPanSensitivity },
+          ),
         );
       }
 
@@ -666,7 +675,11 @@ export function EstateCanvas({
         y: point.y - pan.last.y,
       };
       pan.last = point;
-      setCamera((current) => panCameraByCanvasDelta(current, delta));
+      setCamera((current) =>
+        panCameraByCanvasDelta(current, delta, {
+          sensitivity: estateDragPanSensitivity,
+        }),
+      );
       return;
     }
 

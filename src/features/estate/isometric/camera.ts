@@ -17,6 +17,10 @@ export type FitCameraOptions = {
   maxZoom?: number;
 };
 
+export type PanCameraOptions = {
+  sensitivity?: number;
+};
+
 export const DEFAULT_MIN_ZOOM = 0.65;
 export const DEFAULT_MAX_ZOOM = 1.6;
 
@@ -70,11 +74,14 @@ export function zoomCameraAtCanvasPoint(
 export function panCameraByCanvasDelta(
   camera: IsometricCamera,
   delta: ScreenPoint,
+  options: PanCameraOptions = {},
 ): IsometricCamera {
+  const sensitivity = options.sensitivity ?? 1;
+
   return {
     ...camera,
-    x: camera.x - delta.x / camera.zoom,
-    y: camera.y - delta.y / camera.zoom,
+    x: camera.x - (delta.x * sensitivity) / camera.zoom,
+    y: camera.y - (delta.y * sensitivity) / camera.zoom,
   };
 }
 

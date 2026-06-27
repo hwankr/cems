@@ -45,6 +45,18 @@ describe("isometric camera", () => {
     });
   });
 
+  it("can tune drag pan sensitivity without changing zoom math", () => {
+    const camera = { x: 100, y: 50, zoom: 2 };
+
+    expect(
+      panCameraByCanvasDelta(camera, { x: 40, y: -20 }, { sensitivity: 0.75 }),
+    ).toEqual({
+      x: 85,
+      y: 57.5,
+      zoom: 2,
+    });
+  });
+
   it("fits world bounds inside the viewport with padding", () => {
     const viewport = { width: 512, height: 384 };
     const bounds = { minX: -256, minY: -128, maxX: 768, maxY: 640 };
