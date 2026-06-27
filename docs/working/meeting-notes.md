@@ -14,6 +14,20 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - The user then asked to remove the shadow. The level-building sprites no longer define soft asset shadows, and the renderer skips decorative grounding for the main building while keeping ordinary building grounding behavior unchanged.
 - Follow-up verification passed: estate Vitest `src/features/estate/__tests__` -> 24 files / 123 tests; full `npm run test` -> 60 files / 293 tests; `npm run lint` -> 0 errors with the existing 2 `game-preview.tsx` warnings; `npm run build` -> pass.
 
+### 같은 날 — 영지 상점/타일 아트 고화질 PNG 교체·최적화, 테스트 계정 포인트, main 푸시
+
+- 사용자가 "영지 꾸미기 디자인 강화용 이미지 생성 프롬프트"를 요청(메인 건물 `campus-building-lv1~5.png`는 고화질, 상점 아이템 아트가 부족 → 새로 제작). AskUserQuestion으로 (1) 도구 = ChatGPT/GPT-image(DALL·E), (2) 범위 = 상점 입체 배치 아이템(평면 바닥 타일 3종 제외)을 확정 → 메인 건물 화풍(2:1 아이소메트릭, 크림 석조+황금+녹색+빛나는 창, 투명 PNG)에 맞춘 GPT-image 프롬프트(공통 스타일 블록 + 아이템 12종)를 작성.
+- 사용자가 결과 PNG를 `public/estate-assets/generated/`에 넣고 "확인 후 교체 + it@naver.com 돈 많이"를 요청.
+  - 확인한 사실: 생성 PNG 13개(상점 12종 + it-technology-building)가 전부 알파 투명 + 매니페스트 logical 크기의 정확히 2배(종횡비 일치) → `estate-asset-manifest.ts`의 `src`만 svg→png로 바꾸고 logical 크기/앵커는 유지(왜곡 없음).
+  - 포인트: Supabase MCP `execute_sql`로 `point_events`에 +1,000,000 직접 insert(관리자 직권, RLS 우회, reason `manual:demo-topup`). it@naver.com(it1/student-services) 개인 합 70→1,000,070. `profiles`가 1행뿐이라 그룹 풀(=영지 구매 예산)도 동일. 이 그룹 소유 영지는 `yu-b04`(중앙도서관) 1개.
+- 사용자가 "안 쓰는 옛 SVG 삭제 + PNG 용량 최적화 + 파일명 정리"를 요청 → 옛 스프라이트 SVG 13개 + `generated/` 폴더 삭제(타 참조 없음 확인), sharp(0.34.5) 팔레트 양자화로 최상위 `<id>.png` 출력: 1.30MB→408KB(69%↓), 투명·2× 해상도 유지, 그라데이션(온실·IT·분수) 밴딩 없음 확인. 매니페스트 경로를 `/estate-assets/<id>.png`로 갱신.
+- 사용자가 (커밋 전) "타일 프롬프트도"를 요청 → 렌더링 방식 확인(2:1 다이아몬드 셀에 평면 `fill`→`insetFill`→다이아몬드로 클립한 텍스처를 `textureOpacity`로 오버레이; 같은 이미지가 모든 셀에 반복이라 균일·심리스 필요. `renderer.ts` drawGroundTiles/drawGroundTextureImage). 타일 4종(grass·stone-path·light-pavement·flower-soil-tile) 프롬프트 작성.
+- 사용자가 타일 PNG 4개를 `tiles/`에 넣고 "확인 후 적용"을 요청.
+  - 확인한 사실: 4개 512×256 정확히 2:1·모서리 투명이나 다이아몬드가 프레임을 꽉 안 채우고 여백 있음 → sharp `.trim()`으로 여백 제거 후 256×128(2× 셀)로 정규화(다이아몬드가 변 중앙까지 채워 렌더러 클립과 정렬 → 셀 간 베이스색 틈 제거) + 팔레트 최적화: 826KB→52KB(94%↓). 풀 페인팅 타일이라 ground 6개 `src`→png + `textureOpacity`를 1로 변경(베이스색은 폴백; `grass-decoration`·`bright-sidewalk-block`은 grass·light-pavement 이미지 공유). `asset-manifest.test.ts`의 ground src 정규식을 `\.(svg|png)$`로 확장. 옛 타일 SVG 4개 + `-painterly` 원본 삭제.
+- 각 단계 검증 동일 통과: estate Vitest 24파일/123, ESLint 0 errors(기존 `game-preview.tsx` 경고 2개), `npm run build` 통과.
+- 사용자 지시로 전체 변경(PNG 17 추가·SVG 17 삭제·`estate-asset-manifest.ts`·`asset-manifest.test.ts` 수정)을 커밋(`a2b7027 feat(estate): replace shop sprites and ground tiles with optimized PNG art`)하고 `origin/main`에 푸시 → Vercel 자동 배포. 총 에셋 용량 ~2.1MB→460KB.
+- 메모: it@naver.com은 이제 데모 포인트 1,000,070 보유(실적립 아님, 영지 구매 테스트용) — 앞 2026-06-26 항목의 "70 demo points"는 이로써 갱신됨. estate 풀블리드 캔버스는 프리뷰 스크린샷이 멈추는 기존 제약이 있어 실제 합성(타일 이음새·아이템 접지)은 배포본 육안 확인 필요.
+
 ## 2026-06-26
 
 - 사용자는 "로그인으로 소속 등록 → 자신만의 캐릭터/포인트 적립 → 그룹 영지 포인트 획득 → 영지 물품 구매" 흐름의 구현 계획을 요청했고, 이어서 "위 계획을 새로운 브랜치에서 진행"하라고 지시했다.
