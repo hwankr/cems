@@ -49,6 +49,11 @@ import {
   isParcelAdjacentToUnlockedParcel,
 } from "../domain/expansion";
 import { getInventoryQuantity } from "../domain/inventory";
+import {
+  MAIN_BUILDING_MAX_LEVEL,
+  clampMainBuildingLevel,
+  getMainBuildingUpgradeCost,
+} from "../domain/main-building";
 import { findEstateItemDefinition } from "../domain/placement";
 import { calculateEstatePointAccount } from "../domain/point-account";
 import { paintEstateGroundCells } from "../domain/commands";
@@ -73,6 +78,7 @@ import {
   getParcelName,
   type EstateMessages,
 } from "./estate-copy";
+import { EstateBuildingCard } from "./estate-building-card";
 import { ItemThumb } from "./estate-item-thumb";
 import styles from "./estate-shell.module.css";
 
@@ -149,6 +155,8 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   const selectedIsProtected =
     selectedInstance?.definitionId === baseEstateBuildingDefinition.id;
   const unlockedParcelCount = snapshot.unlockedParcelIds.length;
+  const mainBuildingLevel = clampMainBuildingLevel(snapshot.mainBuildingLevel);
+  const nextUpgradeCost = getMainBuildingUpgradeCost(mainBuildingLevel);
   const pendingExpansionParcel = pendingExpansionParcelId
     ? estateExpansionCatalog.find(
         (parcel) => parcel.id === pendingExpansionParcelId,
@@ -478,6 +486,17 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     }
   }, [applyCommand, copy, mode, showMessage]);
 
+  const handleUpgradeBuilding = useCallback(() => {
+    const result = applyCommand({ type: "upgrade-main-building" });
+    if (result.ok) {
+      showMessage(
+        interpolate(copy.messages.upgraded, {
+          level: result.snapshot.mainBuildingLevel,
+        }),
+      );
+    }
+  }, [applyCommand, copy.messages.upgraded, showMessage]);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (isEstateShortcutEditableTarget(event.target)) return;
@@ -764,6 +783,18 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
           </div>
           <SaveChip status={saveStatus} label={copy.saveStatus[saveStatus]} />
         </div>
+      </div>
+
+      <div className="pointer-events-none absolute left-2 top-[4.25rem] z-30 sm:left-3">
+        <EstateBuildingCard
+          copy={copy}
+          locale={locale}
+          level={mainBuildingLevel}
+          maxLevel={MAIN_BUILDING_MAX_LEVEL}
+          nextCost={nextUpgradeCost}
+          availablePoints={pointAccount.availablePoints}
+          onUpgrade={handleUpgradeBuilding}
+        />
       </div>
 
       {message ? (
