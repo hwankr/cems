@@ -1,4 +1,5 @@
 import type { EstateParseResult, EstateSnapshot } from "./types";
+import { clampMainBuildingLevel } from "./main-building";
 
 export function serializeEstateSnapshot(snapshot: EstateSnapshot): string {
   return JSON.stringify(snapshot);
@@ -17,20 +18,45 @@ export function parseEstateSnapshot(serialized: string): EstateParseResult {
     return { ok: false, reason: "invalid-shape" };
   }
 
-  if (value.schemaVersion !== 1) {
+  if (value.schemaVersion !== 1 && value.schemaVersion !== 2) {
     return { ok: false, reason: "unsupported-schema-version" };
   }
 
-  if (!isEstateSnapshot(value)) {
+  if (!hasEstateSnapshotShape(value)) {
     return { ok: false, reason: "invalid-shape" };
   }
 
-  return { ok: true, snapshot: value };
+  return {
+    ok: true,
+    snapshot: {
+      schemaVersion: 2,
+      subjectId: value.subjectId,
+      mainBuildingLevel: clampMainBuildingLevel(value.mainBuildingLevel),
+      unlockedParcelIds: value.unlockedParcelIds,
+      items: value.items,
+      inventory: value.inventory,
+      groundTiles: value.groundTiles,
+      transactions: value.transactions,
+      updatedAt: value.updatedAt,
+    } as EstateSnapshot,
+  };
 }
 
-function isEstateSnapshot(value: Record<string, unknown>): value is EstateSnapshot {
+type EstateSnapshotShape = {
+  subjectId: string;
+  mainBuildingLevel?: unknown;
+  unlockedParcelIds: unknown[];
+  items: unknown[];
+  inventory: unknown[];
+  groundTiles: unknown[];
+  transactions: unknown[];
+  updatedAt: string;
+};
+
+function hasEstateSnapshotShape(
+  value: Record<string, unknown>,
+): value is Record<string, unknown> & EstateSnapshotShape {
   return (
-    value.schemaVersion === 1 &&
     typeof value.subjectId === "string" &&
     Array.isArray(value.unlockedParcelIds) &&
     Array.isArray(value.items) &&

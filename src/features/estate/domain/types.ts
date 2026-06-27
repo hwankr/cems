@@ -51,7 +51,7 @@ export type EstateGroundTile = {
 
 export type EstateTransaction = {
   id: string;
-  kind: "purchase-item" | "purchase-ground" | "unlock-parcel";
+  kind: "purchase-item" | "purchase-ground" | "unlock-parcel" | "upgrade-building";
   pointDelta: number;
   itemDefinitionId?: string;
   parcelId?: string;
@@ -59,8 +59,9 @@ export type EstateTransaction = {
 };
 
 export type EstateSnapshot = {
-  schemaVersion: 1;
+  schemaVersion: 2;
   subjectId: string;
+  mainBuildingLevel: number;
   unlockedParcelIds: string[];
   items: EstateItemInstance[];
   inventory: EstateInventoryEntry[];
@@ -78,7 +79,8 @@ export type EstateCommandFailureReason =
   | "parcel-not-adjacent"
   | "already-unlocked"
   | "protected-item"
-  | "invalid-definition";
+  | "invalid-definition"
+  | "building-max-level";
 
 export type EstateCommandResult =
   | { ok: true; snapshot: EstateSnapshot }
@@ -174,6 +176,10 @@ export type EstateUnlockParcelCommand = {
   parcelId: string;
 };
 
+export type EstateUpgradeMainBuildingCommand = {
+  type: "upgrade-main-building";
+};
+
 export type EstateCommand =
   | EstatePurchaseItemCommand
   | EstatePlaceItemCommand
@@ -181,7 +187,8 @@ export type EstateCommand =
   | EstatePaintGroundCellsCommand
   | EstateMoveItemCommand
   | EstateRemoveItemCommand
-  | EstateUnlockParcelCommand;
+  | EstateUnlockParcelCommand
+  | EstateUpgradeMainBuildingCommand;
 
 export type EstateGroundPaintCommandResult =
   | {

@@ -73,8 +73,9 @@ const gardenSeedGroundTiles: readonly EstateGroundTile[] = [
 
 export function createDemoEstateSeedSnapshot(subjectId: string): EstateSnapshot {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     subjectId,
+    mainBuildingLevel: 1,
     unlockedParcelIds: ["central-campus"],
     items: createGardenSeedItems(subjectId),
     inventory: [],

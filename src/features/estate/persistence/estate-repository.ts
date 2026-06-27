@@ -4,6 +4,7 @@ import {
   estateItemCatalog,
 } from "../data/estate-item-catalog";
 import { getCellKey, getUnlockedEstateCellKeys } from "../domain/expansion";
+import { clampMainBuildingLevel } from "../domain/main-building";
 import {
   findEstateItemDefinition,
   getFootprintCells,
@@ -88,7 +89,9 @@ export function migrateEstateSnapshot(
 
   switch (raw.schemaVersion) {
     case 1:
-      return validateEstateSnapshotV1(raw, subjectId, options.subjectId);
+      return validateEstateSnapshot(raw, subjectId, options.subjectId, 1);
+    case 2:
+      return validateEstateSnapshot(raw, subjectId, options.subjectId, 2);
     default:
       return {
         ok: false,
@@ -107,8 +110,9 @@ export function toPersistableEstateSnapshot(
   snapshot: EstateSnapshot,
 ): EstateSnapshot {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     subjectId: snapshot.subjectId,
+    mainBuildingLevel: clampMainBuildingLevel(snapshot.mainBuildingLevel),
     unlockedParcelIds: snapshot.unlockedParcelIds.map((parcelId) => parcelId),
     items: snapshot.items.map((item) => ({ ...item })),
     inventory: snapshot.inventory.map((entry) => ({ ...entry })),
@@ -180,10 +184,11 @@ export function createDebouncedEstateSaver(
   return { schedule, flush, cancel };
 }
 
-function validateEstateSnapshotV1(
+function validateEstateSnapshot(
   raw: Record<string, unknown>,
   subjectId: string,
-  expectedSubjectId?: string,
+  expectedSubjectId: string | undefined,
+  sourceVersion: 1 | 2,
 ): EstateMigrationResult {
   if (typeof raw.subjectId !== "string" || raw.subjectId.length === 0) {
     return invalidShape(subjectId);
@@ -227,11 +232,16 @@ function validateEstateSnapshotV1(
   const transactions = validateTransactions(raw.transactions, itemDefinitions);
   if (!transactions) return invalidShape(raw.subjectId);
 
+  // v1 rows have no level field; default to 1. v2 rows clamp to the legal range.
+  const mainBuildingLevel =
+    sourceVersion === 1 ? 1 : clampMainBuildingLevel(raw.mainBuildingLevel);
+
   return {
     ok: true,
     snapshot: {
-      schemaVersion: 1,
+      schemaVersion: 2,
       subjectId: raw.subjectId,
+      mainBuildingLevel,
       unlockedParcelIds,
       items,
       inventory,
@@ -429,6 +439,11 @@ function validateTransactions(
       continue;
     }
 
+    if (kind === "upgrade-building") {
+      transactions.push({ id, kind, pointDelta, createdAt });
+      continue;
+    }
+
     if (
       typeof itemDefinitionId !== "string" ||
       !findEstateItemDefinition(itemDefinitions, itemDefinitionId)
@@ -469,7 +484,8 @@ function isEstateTransactionKind(
   return (
     value === "purchase-item" ||
     value === "purchase-ground" ||
-    value === "unlock-parcel"
+    value === "unlock-parcel" ||
+    value === "upgrade-building"
   );
 }
 

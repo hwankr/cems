@@ -11,6 +11,7 @@ import {
   createDebouncedEstateSaver,
   getEstateStorageKey,
   migrateEstateSnapshot,
+  toPersistableEstateSnapshot,
   type EstateRepositoryLoadResult,
 } from "../persistence/estate-repository";
 import { LocalStorageEstateRepository } from "../persistence/local-storage-estate-repository";
@@ -417,5 +418,66 @@ describe("estate persistence", () => {
 
     expect(expectLoadedSnapshot(await repository.load("yu-e21"))).toEqual(last);
     vi.useRealTimers();
+  });
+
+  it("migrates a v1 snapshot to v2 with a default main building level of 1", () => {
+    const v1 = {
+      schemaVersion: 1,
+      subjectId: "yu-e21",
+      unlockedParcelIds: ["central-campus"],
+      items: [],
+      inventory: [],
+      groundTiles: [],
+      transactions: [],
+      updatedAt: "2026-06-24T00:00:00.000Z",
+    };
+
+    const result = migrateEstateSnapshot(v1, { subjectId: "yu-e21" });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.snapshot.schemaVersion).toBe(2);
+    expect(result.snapshot.mainBuildingLevel).toBe(1);
+  });
+
+  it("accepts a v2 snapshot and clamps an out-of-range main building level", () => {
+    const v2 = {
+      schemaVersion: 2,
+      subjectId: "yu-e21",
+      mainBuildingLevel: 99,
+      unlockedParcelIds: ["central-campus"],
+      items: [],
+      inventory: [],
+      groundTiles: [],
+      transactions: [
+        {
+          id: "tx-1",
+          kind: "upgrade-building",
+          pointDelta: -800,
+          createdAt: "2026-06-24T00:00:00.000Z",
+        },
+      ],
+      updatedAt: "2026-06-24T00:00:00.000Z",
+    };
+
+    const result = migrateEstateSnapshot(v2, { subjectId: "yu-e21" });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.snapshot.mainBuildingLevel).toBe(5);
+    expect(result.snapshot.transactions[0]).toMatchObject({
+      kind: "upgrade-building",
+      pointDelta: -800,
+    });
+  });
+
+  it("persists the schema version and main building level for the wire format", () => {
+    const persisted = toPersistableEstateSnapshot({
+      ...createDemoEstateSeedSnapshot("yu-e21"),
+      mainBuildingLevel: 3,
+    });
+
+    expect(persisted.schemaVersion).toBe(2);
+    expect(persisted.mainBuildingLevel).toBe(3);
   });
 });
