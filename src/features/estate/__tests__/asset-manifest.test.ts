@@ -50,4 +50,22 @@ describe("estate asset manifest", () => {
       expect(renderableAssetIds.has(definition.assetId)).toBe(true);
     }
   });
+
+  it("scales level building sprites to read as 3x3 buildings", () => {
+    const threeByThreeFloorWidth = 128 * 3;
+
+    for (let level = 1; level <= 5; level += 1) {
+      const asset = estateAssetManifest.items[`campus-building-lv${level}`];
+      expect(asset.logicalWidth).toBeGreaterThanOrEqual(
+        threeByThreeFloorWidth * 0.9,
+      );
+    }
+  });
+
+  it("keeps level building sprites free of soft asset shadows", () => {
+    for (let level = 1; level <= 5; level += 1) {
+      const asset = estateAssetManifest.items[`campus-building-lv${level}`];
+      expect(asset.shadow).toBeUndefined();
+    }
+  });
 });

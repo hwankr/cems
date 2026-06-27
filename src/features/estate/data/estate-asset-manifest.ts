@@ -170,11 +170,10 @@ export const estateAssetManifest = {
     "campus-building-lv1": sprite(
       "campus-building-lv1",
       "/estate-assets/campus-building-lv1.png",
-      290,
-      275,
+      360,
+      341,
       {
         renderLayer: 2,
-        shadow: buildingShadow,
         fallback: {
           kind: "building",
           height: 70,
@@ -190,11 +189,10 @@ export const estateAssetManifest = {
     "campus-building-lv2": sprite(
       "campus-building-lv2",
       "/estate-assets/campus-building-lv2.png",
-      302,
-      353,
+      375,
+      438,
       {
         renderLayer: 2,
-        shadow: buildingShadow,
         fallback: {
           kind: "building",
           height: 88,
@@ -210,11 +208,10 @@ export const estateAssetManifest = {
     "campus-building-lv3": sprite(
       "campus-building-lv3",
       "/estate-assets/campus-building-lv3.png",
-      312,
-      494,
+      387,
+      613,
       {
         renderLayer: 2,
-        shadow: buildingShadow,
         fallback: {
           kind: "building",
           height: 108,
@@ -230,11 +227,10 @@ export const estateAssetManifest = {
     "campus-building-lv4": sprite(
       "campus-building-lv4",
       "/estate-assets/campus-building-lv4.png",
-      338,
-      531,
+      420,
+      659,
       {
         renderLayer: 2,
-        shadow: buildingShadow,
         fallback: {
           kind: "building",
           height: 128,
@@ -250,11 +246,10 @@ export const estateAssetManifest = {
     "campus-building-lv5": sprite(
       "campus-building-lv5",
       "/estate-assets/campus-building-lv5.png",
-      373,
-      617,
+      463,
+      766,
       {
         renderLayer: 2,
-        shadow: buildingShadow,
         fallback: {
           kind: "building",
           height: 150,

@@ -4,7 +4,10 @@ import { createEstateAssetLoadSnapshot } from "../isometric/asset-loader";
 import {
   EstateIsometricRenderer,
   getAnchoredSpriteDrawBox,
+  getDisplayFootprintDiamond,
   getSpriteGroundingDiamond,
+  getSpriteAnchorPoint,
+  shouldDrawSpriteGrounding,
   type EstateRenderScene,
 } from "../isometric/renderer";
 
@@ -21,7 +24,7 @@ describe("estate isometric renderer asset placement", () => {
     });
   });
 
-  it("derives building grounding from the occupied footprint", () => {
+  it("keeps the main building display footprint at the full 3x3 floor", () => {
     const diamond = getSpriteGroundingDiamond(
       {
         id: "main-building",
@@ -36,11 +39,124 @@ describe("estate isometric renderer asset placement", () => {
       { tileWidth: 128, tileHeight: 64 },
     );
 
-    expect(diamond).toHaveLength(4);
-    expect(Math.min(...diamond.map((point) => point.x))).toBeLessThan(-130);
-    expect(Math.max(...diamond.map((point) => point.x))).toBeGreaterThan(130);
-    expect(Math.min(...diamond.map((point) => point.y))).toBeLessThan(420);
-    expect(Math.max(...diamond.map((point) => point.y))).toBeGreaterThan(535);
+    expect(diamond).toEqual([
+      { x: 0, y: 384 },
+      { x: 192, y: 480 },
+      { x: 0, y: 576 },
+      { x: -192, y: 480 },
+    ]);
+  });
+
+  it("anchors the main building sprite onto the visible 3x3 floor", () => {
+    const anchor = getSpriteAnchorPoint(
+      {
+        id: "main-building",
+        definitionId: "base-campus-building",
+        assetId: "campus-building-lv1",
+        x: 6,
+        y: 6,
+        rotation: 0,
+        footprintWidth: 3,
+        footprintHeight: 3,
+      },
+      { tileWidth: 128, tileHeight: 64 },
+    );
+
+    expect(anchor).toEqual({ x: 0, y: 520 });
+  });
+
+  it("keeps ordinary sprite anchors at the footprint center", () => {
+    const anchor = getSpriteAnchorPoint(
+      {
+        id: "bench",
+        definitionId: "bench",
+        assetId: "bench",
+        x: 2,
+        y: 3,
+        rotation: 0,
+        footprintWidth: 2,
+        footprintHeight: 1,
+      },
+      { tileWidth: 128, tileHeight: 64 },
+    );
+
+    expect(anchor).toEqual({ x: -32, y: 208 });
+  });
+
+  it("keeps ordinary item display footprints on their occupied cells", () => {
+    const diamond = getDisplayFootprintDiamond(
+      {
+        id: "bench",
+        definitionId: "bench",
+        assetId: "bench",
+        x: 2,
+        y: 3,
+        rotation: 0,
+        footprintWidth: 2,
+        footprintHeight: 1,
+      },
+      { tileWidth: 128, tileHeight: 64 },
+    );
+
+    expect(diamond).toEqual([
+      { x: -64, y: 160 },
+      { x: 64, y: 224 },
+      { x: 0, y: 256 },
+      { x: -128, y: 192 },
+    ]);
+  });
+
+  it("keeps ordinary building grounding inset within the occupied footprint", () => {
+    const diamond = getSpriteGroundingDiamond(
+      {
+        id: "greenhouse",
+        definitionId: "small-greenhouse",
+        assetId: "small-greenhouse",
+        x: 0,
+        y: 0,
+        rotation: 0,
+        footprintWidth: 2,
+        footprintHeight: 2,
+      },
+      { tileWidth: 128, tileHeight: 64 },
+    );
+
+    expect(diamond[0]).toMatchObject({ x: 0 });
+    expect(diamond[0].y).toBeCloseTo(14.08);
+    expect(diamond[1].x).toBeCloseTo(99.84);
+    expect(diamond[1].y).toBe(64);
+    expect(diamond[2]).toMatchObject({ x: 0 });
+    expect(diamond[2].y).toBeCloseTo(113.92);
+    expect(diamond[3].x).toBeCloseTo(-99.84);
+    expect(diamond[3].y).toBe(64);
+  });
+
+  it("skips decorative grounding for the main building sprite", () => {
+    expect(
+      shouldDrawSpriteGrounding({
+        id: "main-building",
+        definitionId: "base-campus-building",
+        assetId: "campus-building-lv1",
+        x: 6,
+        y: 6,
+        rotation: 0,
+        footprintWidth: 3,
+        footprintHeight: 3,
+      }),
+    ).toBe(false);
+
+    expect(
+      shouldDrawSpriteGrounding({
+        id: "greenhouse",
+        definitionId: "small-greenhouse",
+        assetId: "small-greenhouse",
+        x: 0,
+        y: 0,
+        rotation: 0,
+        footprintWidth: 2,
+        footprintHeight: 2,
+      }),
+    ).toBe(true);
   });
 
   it("rotates loaded sprite images when the render item is rotated", () => {

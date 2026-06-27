@@ -69,6 +69,13 @@ export type EstateRenderPlacementPreview = RenderFootprintItem & {
   valid: boolean;
 };
 
+type DisplayFootprintItem = RenderFootprintItem & {
+  definitionId?: string;
+  assetId?: string;
+};
+
+const MAIN_BUILDING_SPRITE_ANCHOR_Y_OFFSET_TILES = 0.625;
+
 export type EstateRenderScene = {
   metrics: IsometricTileMetrics;
   parcels: EstateRenderParcel[];
@@ -228,6 +235,7 @@ export class EstateIsometricRenderer {
     this.drawUnlockAnimation(scene, camera, viewport);
     this.drawHoverOverlay(scene, camera, viewport);
     this.drawSelectionFootprintGlow(scene, camera, viewport);
+    this.drawSelectionOutline(scene, camera, viewport, "underlay");
     this.drawItems(
       scene,
       camera,
@@ -238,7 +246,7 @@ export class EstateIsometricRenderer {
     );
     this.drawMainBuildingBadge(scene, camera, viewport);
     this.drawPlacementPreview(scene, camera, viewport, assets, loadedAssets);
-    this.drawSelectionOutline(scene, camera, viewport);
+    this.drawSelectionOutline(scene, camera, viewport, "overlay");
     this.drawForegroundEffect(viewport);
   }
 
@@ -662,11 +670,14 @@ export class EstateIsometricRenderer {
     image: HTMLImageElement,
     alpha = 1,
   ) {
-    const anchor = worldToCanvas(getFootprintAnchorPoint(item, metrics), camera, viewport);
+    const anchor = worldToCanvas(getSpriteAnchorPoint(item, metrics), camera, viewport);
     const box = getAnchoredSpriteDrawBox(anchor, asset, camera.zoom);
     const ctx = this.context;
 
-    if (asset.fallback.kind === "building") {
+    if (
+      asset.fallback.kind === "building" &&
+      shouldDrawSpriteGrounding(item)
+    ) {
       this.drawSpriteGrounding(item, metrics, camera, viewport, alpha);
     }
 
@@ -856,7 +867,7 @@ export class EstateIsometricRenderer {
     if (!building) return;
 
     const anchor = worldToCanvas(
-      getFootprintAnchorPoint(building, scene.metrics),
+      getSpriteAnchorPoint(building, scene.metrics),
       camera,
       viewport,
     );
@@ -898,7 +909,7 @@ export class EstateIsometricRenderer {
 
     drawWorldPolygon(
       this.context,
-      getFootprintDiamondPoints(item, scene.metrics),
+      getDisplayFootprintDiamond(item, scene.metrics),
       camera,
       viewport,
       {
@@ -978,15 +989,20 @@ export class EstateIsometricRenderer {
     scene: EstateRenderScene,
     camera: IsometricCamera,
     viewport: ViewportSize,
+    layer: "underlay" | "overlay",
   ) {
     const item = scene.items.find(
       (candidate) => candidate.id === scene.selectedItemId,
     );
     if (!item) return;
 
+    const isMainBuilding = isMainBuildingDisplayItem(item);
+    if (layer === "underlay" && !isMainBuilding) return;
+    if (layer === "overlay" && isMainBuilding) return;
+
     strokeWorldPolygon(
       this.context,
-      getFootprintDiamondPoints(item, scene.metrics),
+      getDisplayFootprintDiamond(item, scene.metrics),
       camera,
       viewport,
       {
@@ -1334,10 +1350,41 @@ export function getAnchoredSpriteDrawBox(
 }
 
 export function getSpriteGroundingDiamond(
-  item: RenderFootprintItem,
+  item: DisplayFootprintItem,
   metrics: IsometricTileMetrics,
 ): ScreenPoint[] {
+  if (isMainBuildingDisplayItem(item)) {
+    return getDisplayFootprintDiamond(item, metrics);
+  }
+
   return shrinkDiamondPoints(getFootprintDiamondPoints(item, metrics), 0.78);
+}
+
+export function getDisplayFootprintDiamond(
+  item: DisplayFootprintItem,
+  metrics: IsometricTileMetrics,
+): ScreenPoint[] {
+  return getFootprintDiamondPoints(item, metrics);
+}
+
+export function getSpriteAnchorPoint(
+  item: DisplayFootprintItem,
+  metrics: IsometricTileMetrics,
+): ScreenPoint {
+  const anchor = getFootprintAnchorPoint(item, metrics);
+
+  if (!isMainBuildingDisplayItem(item)) {
+    return anchor;
+  }
+
+  return {
+    x: anchor.x,
+    y: anchor.y + metrics.tileHeight * MAIN_BUILDING_SPRITE_ANCHOR_Y_OFFSET_TILES,
+  };
+}
+
+export function shouldDrawSpriteGrounding(item: DisplayFootprintItem): boolean {
+  return !isMainBuildingDisplayItem(item);
 }
 
 function getFootprintAnchorPoint(
@@ -1366,6 +1413,13 @@ function shrinkDiamondPoints(
     x: center.x + (point.x - center.x) * ratio,
     y: center.y + (point.y - center.y) * ratio,
   }));
+}
+
+function isMainBuildingDisplayItem(item: DisplayFootprintItem): boolean {
+  return (
+    item.definitionId === baseEstateBuildingDefinition.id ||
+    item.assetId?.startsWith("campus-building-lv") === true
+  );
 }
 
 function averagePoints(points: readonly ScreenPoint[]): ScreenPoint {
