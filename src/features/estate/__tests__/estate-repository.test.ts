@@ -315,27 +315,24 @@ describe("estate persistence", () => {
     expect(createDemoEstateSeedSnapshot("yu-e22").subjectId).toBe("yu-e22");
   });
 
-  it("seeds yu-e21 with a central landmark, paved axis, and framing trees", () => {
+  it("seeds a subject with only a centered level-1 main building on clean grass", () => {
     const snapshot = createDemoEstateSeedSnapshot("yu-e21");
 
-    expect(snapshot.items).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: "yu-e21:landmark",
-          definitionId: "base-campus-building",
-          x: 7,
-          y: 4,
-        }),
-        expect.objectContaining({ definitionId: "broadleaf-tree" }),
-        expect.objectContaining({ definitionId: "pine-tree" }),
-      ]),
-    );
-    expect(snapshot.groundTiles).toEqual(
-      expect.arrayContaining([
-        { x: 7, y: 7, definitionId: "bright-sidewalk-block" },
-        { x: 8, y: 7, definitionId: "bright-sidewalk-block" },
-      ]),
-    );
+    expect(snapshot.schemaVersion).toBe(2);
+    expect(snapshot.mainBuildingLevel).toBe(1);
+    expect(snapshot.unlockedParcelIds).toEqual(["central-campus"]);
+    expect(snapshot.items).toEqual([
+      expect.objectContaining({
+        id: "yu-e21:landmark",
+        definitionId: "base-campus-building",
+        x: 7,
+        y: 7,
+        rotation: 0,
+      }),
+    ]);
+    expect(snapshot.groundTiles).toEqual([]);
+    expect(snapshot.inventory).toEqual([]);
+    expect(snapshot.transactions).toEqual([]);
   });
 
   it("places every seed item inside the central parcel without overlaps", () => {

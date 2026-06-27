@@ -28,11 +28,7 @@ describe("estate isometric render scene", () => {
       .toMatchObject({ unlocked: true, cells: expect.any(Array) });
     expect(scene.parcels.find((parcel) => parcel.id === "east"))
       .toMatchObject({ unlocked: false, cost: 4_000 });
-    expect(scene.groundTiles).toEqual(
-      expect.arrayContaining([
-        { x: 7, y: 7, assetId: "bright-sidewalk-block" },
-      ]),
-    );
+    expect(scene.groundTiles).toEqual([]);
     expect(scene.items.find((item) => item.id === "yu-e21:landmark"))
       .toMatchObject({
         assetId: "base-campus-building",

@@ -262,7 +262,7 @@ describe("EstateCanvas", () => {
         <EstateCanvas
           snapshot={snapshot}
           ariaLabel="Interactive isometric estate canvas"
-          ariaSummary="23 placed objects, 1 unlocked parcel, and 10 ground tiles."
+          ariaSummary="1 placed object, 1 unlocked parcel, and 0 ground tiles."
           controls={{
             assetsLoading: "Estate assets loading",
             fitView: "Fit view",
@@ -276,7 +276,7 @@ describe("EstateCanvas", () => {
     await flushAnimationFrames();
 
     const canvas = getCanvas();
-    const itemPoint = getInitialCanvasPointForCell(snapshot, { x: 7, y: 4 });
+    const itemPoint = getInitialCanvasPointForCell(snapshot, { x: 7, y: 7 });
 
     await dispatchPointer(canvas, "pointerdown", itemPoint);
     expect(onItemSelect).not.toHaveBeenCalled();
