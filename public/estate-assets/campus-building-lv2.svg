@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 252">
+  <ellipse cx="128" cy="226" rx="94" ry="22" fill="#3a2f1d" opacity=".16"/>
+  <path d="M44 198 128 154 212 198 128 242Z" fill="#d9c8a2"/>
+  <path d="M44 198 128 242 128 250 44 206Z" fill="#b89e72"/>
+  <path d="M212 198 128 242 128 250 212 206Z" fill="#a78d63"/>
+  <!-- taller walls -->
+  <path d="M62 186 128 154 194 186 128 218Z" fill="#f6ecd6"/>
+  <path d="M62 186 128 218 128 132 62 100Z" fill="#e7d3a8"/>
+  <path d="M194 186 128 218 128 132 194 100Z" fill="#d3b888"/>
+  <!-- roof -->
+  <path d="M62 100 128 132 194 100 128 68Z" fill="#f0d9a6"/>
+  <path d="M62 100 128 68 128 38 54 84Z" fill="#e6a93c"/>
+  <path d="M194 100 128 68 128 38 202 84Z" fill="#cf8a26"/>
+  <path d="M54 84 128 38 202 84 128 52Z" fill="#b5741d"/>
+  <!-- banner flag -->
+  <path d="M128 38 128 12" stroke="#7c5430" stroke-width="2"/>
+  <path d="M128 14 150 20 128 28Z" fill="#3fa86a"/>
+  <!-- windows (two rows) + door -->
+  <path d="M118 214 128 209 138 214 138 186 118 181Z" fill="#9a6b3c"/>
+  <path d="M92 196 102 191 102 176 92 180Z" fill="#bfe3ea"/>
+  <path d="M154 191 164 196 164 180 154 176Z" fill="#bfe3ea"/>
+  <path d="M96 168 106 163 106 150 96 154Z" fill="#bfe3ea"/>
+  <path d="M150 163 160 168 160 154 150 150Z" fill="#bfe3ea"/>
+</svg>

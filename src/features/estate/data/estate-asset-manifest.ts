@@ -1,3 +1,5 @@
+import { MAIN_BUILDING_LEVEL_ASSET_IDS } from "../domain/main-building";
+
 export type EstateAssetShadowDefinition = {
   offsetX: number;
   offsetY: number;
@@ -66,6 +68,7 @@ export type EstateAssetManifest = {
 };
 
 export const requiredEstateSpriteAssetIds = [
+  ...MAIN_BUILDING_LEVEL_ASSET_IDS,
   "generic-campus-building",
   "it-technology-building",
   "broadleaf-tree",
@@ -164,6 +167,106 @@ export const estateAssetManifest = {
     ),
   },
   items: {
+    "campus-building-lv1": sprite(
+      "campus-building-lv1",
+      "/estate-assets/campus-building-lv1.svg",
+      256,
+      232,
+      {
+        renderLayer: 2,
+        shadow: buildingShadow,
+        fallback: {
+          kind: "building",
+          height: 70,
+          renderLayer: 2,
+          top: "#f4e7cd",
+          left: "#dcc08a",
+          right: "#c39a5e",
+          stroke: "#8a6a3c",
+          shadow: "#5e4427",
+        },
+      },
+    ),
+    "campus-building-lv2": sprite(
+      "campus-building-lv2",
+      "/estate-assets/campus-building-lv2.svg",
+      256,
+      252,
+      {
+        renderLayer: 2,
+        shadow: buildingShadow,
+        fallback: {
+          kind: "building",
+          height: 88,
+          renderLayer: 2,
+          top: "#f4e7cd",
+          left: "#dcc08a",
+          right: "#c39a5e",
+          stroke: "#8a6a3c",
+          shadow: "#5e4427",
+        },
+      },
+    ),
+    "campus-building-lv3": sprite(
+      "campus-building-lv3",
+      "/estate-assets/campus-building-lv3.svg",
+      256,
+      280,
+      {
+        renderLayer: 2,
+        shadow: buildingShadow,
+        fallback: {
+          kind: "building",
+          height: 108,
+          renderLayer: 2,
+          top: "#f4e7cd",
+          left: "#dcc08a",
+          right: "#c39a5e",
+          stroke: "#8a6a3c",
+          shadow: "#5e4427",
+        },
+      },
+    ),
+    "campus-building-lv4": sprite(
+      "campus-building-lv4",
+      "/estate-assets/campus-building-lv4.svg",
+      256,
+      312,
+      {
+        renderLayer: 2,
+        shadow: buildingShadow,
+        fallback: {
+          kind: "building",
+          height: 128,
+          renderLayer: 2,
+          top: "#f4e7cd",
+          left: "#dcc08a",
+          right: "#c39a5e",
+          stroke: "#8a6a3c",
+          shadow: "#5e4427",
+        },
+      },
+    ),
+    "campus-building-lv5": sprite(
+      "campus-building-lv5",
+      "/estate-assets/campus-building-lv5.svg",
+      256,
+      348,
+      {
+        renderLayer: 2,
+        shadow: buildingShadow,
+        fallback: {
+          kind: "building",
+          height: 150,
+          renderLayer: 2,
+          top: "#f6ecd6",
+          left: "#e0c694",
+          right: "#caa066",
+          stroke: "#8a6a3c",
+          shadow: "#5e4427",
+        },
+      },
+    ),
     "base-campus-building": sprite(
       "base-campus-building",
       "/estate-assets/generic-campus-building.svg",

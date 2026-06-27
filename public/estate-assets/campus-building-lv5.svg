@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 348">
+  <ellipse cx="128" cy="322" rx="112" ry="26" fill="#3a2f1d" opacity=".18"/>
+  <path d="M26 294 128 244 230 294 128 344Z" fill="#d9c8a2"/>
+  <path d="M26 294 128 344 128 352 26 302Z" fill="#b89e72"/>
+  <path d="M230 294 128 344 128 352 230 302Z" fill="#a78d63"/>
+  <!-- gold trim band on plinth -->
+  <path d="M26 294 128 244 230 294 128 304 26 304Z" fill="#f3cd6a" opacity=".5"/>
+  <!-- grand main mass -->
+  <path d="M50 282 128 244 206 282 128 320Z" fill="#f6ecd6"/>
+  <path d="M50 282 128 320 128 214 50 176Z" fill="#e7d3a8"/>
+  <path d="M206 282 128 320 128 214 206 176Z" fill="#d3b888"/>
+  <!-- columns hint on left face -->
+  <path d="M70 250 70 300M90 260 90 310M110 270 110 318" stroke="#d3b888" stroke-width="3" opacity=".7"/>
+  <!-- twin wing turrets -->
+  <path d="M40 268 40 200 58 192 58 260Z" fill="#e7d3a8"/>
+  <path d="M40 200 49 188 58 192 49 196Z" fill="#cf8a26"/>
+  <path d="M198 260 198 192 216 200 216 268Z" fill="#d3b888"/>
+  <path d="M198 192 207 188 216 200 207 196Z" fill="#cf8a26"/>
+  <!-- central tower -->
+  <path d="M98 214 128 198 158 214 128 230Z" fill="#f6ecd6"/>
+  <path d="M98 214 128 230 128 150 98 134Z" fill="#e7d3a8"/>
+  <path d="M158 214 128 230 128 150 158 134Z" fill="#d3b888"/>
+  <!-- dome -->
+  <path d="M98 134 128 150 158 134 128 118Z" fill="#f3cd6a"/>
+  <path d="M104 132 C104 104 152 104 152 132 Z" fill="#e6a93c" stroke="#b5741d"/>
+  <path d="M104 132 C108 112 148 112 152 132" fill="#f0d9a6" opacity=".6"/>
+  <circle cx="128" cy="98" r="6" fill="#fff3c4" stroke="#cf8a26"/>
+  <path d="M128 92 128 66" stroke="#7c5430" stroke-width="2"/>
+  <path d="M128 68 154 74 128 82Z" fill="#f2b53c"/>
+  <!-- glowing entrance emblem -->
+  <circle cx="128" cy="292" r="13" fill="#fff3c4" stroke="#cf8a26" stroke-width="2"/>
+  <path d="M128 284 128 300M120 292 136 292" stroke="#cf8a26" stroke-width="2" stroke-linecap="round"/>
+  <!-- grand windows -->
+  <path d="M80 286 92 280 92 250 80 256Z" fill="#bfe3ea"/>
+  <path d="M164 280 176 286 176 256 164 250Z" fill="#bfe3ea"/>
+</svg>
