@@ -11,14 +11,24 @@ import {
 
 vi.mock("../components/admin-map-view", () => ({
   AdminMapView: ({
+    onSelectSubject,
     selectedSubjectId,
   }: {
+    onSelectSubject: (subjectId: string) => void;
     selectedSubjectId: string;
   }) => (
     <div
       data-testid="admin-map-view"
       data-selected-subject-id={selectedSubjectId}
-    />
+    >
+      <button
+        type="button"
+        data-testid="clear-selection"
+        onClick={() => onSelectSubject("")}
+      >
+        clear
+      </button>
+    </div>
   ),
 }));
 
@@ -71,6 +81,15 @@ async function renderApp(orgSubjectId: string | null) {
   const root: Root = createRoot(container);
   document.body.append(container);
 
+  await renderCampusEnergyApp(root, orgSubjectId);
+
+  return { container, root };
+}
+
+async function renderCampusEnergyApp(
+  root: Root,
+  orgSubjectId: string | null,
+) {
   await act(async () =>
     root.render(
       <CampusEnergyApp
@@ -81,8 +100,12 @@ async function renderApp(orgSubjectId: string | null) {
       />,
     ),
   );
+}
 
-  return { container, root };
+function selectedSubjectId(container: HTMLElement) {
+  return container
+    .querySelector('[data-testid="admin-map-view"]')
+    ?.getAttribute("data-selected-subject-id");
 }
 
 describe("CampusEnergyApp", () => {
@@ -93,11 +116,7 @@ describe("CampusEnergyApp", () => {
   it("starts the admin map on the account organization building", async () => {
     const { container, root } = await renderApp("yu-b04");
 
-    expect(
-      container
-        .querySelector('[data-testid="admin-map-view"]')
-        ?.getAttribute("data-selected-subject-id"),
-    ).toBe("yu-b04");
+    expect(selectedSubjectId(container)).toBe("yu-b04");
 
     await act(async () => root.unmount());
   });
@@ -105,11 +124,27 @@ describe("CampusEnergyApp", () => {
   it("does not auto-select a demo building when the account has no organization building", async () => {
     const { container, root } = await renderApp(null);
 
-    expect(
-      container
-        .querySelector('[data-testid="admin-map-view"]')
-        ?.getAttribute("data-selected-subject-id"),
-    ).toBe("");
+    expect(selectedSubjectId(container)).toBe("");
+
+    await act(async () => root.unmount());
+  });
+
+  it("does not reset a user-cleared selection when the organization building changes after mount", async () => {
+    const { container, root } = await renderApp("yu-b04");
+
+    expect(selectedSubjectId(container)).toBe("yu-b04");
+
+    await act(async () => {
+      container.querySelector<HTMLButtonElement>(
+        '[data-testid="clear-selection"]',
+      )?.click();
+    });
+
+    expect(selectedSubjectId(container)).toBe("");
+
+    await renderCampusEnergyApp(root, "yu-c02");
+
+    expect(selectedSubjectId(container)).toBe("");
 
     await act(async () => root.unmount());
   });
