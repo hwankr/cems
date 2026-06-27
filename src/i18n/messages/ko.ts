@@ -143,6 +143,15 @@ export const koMessages = {
         "현재 선택 {selection}. 잔액 {balance}. 저장 상태 {saveStatus}.",
       noneSelected: "없음",
     },
+    building: {
+      cardTitle: "메인 건물",
+      level: "Lv.{level}",
+      levelProgress: "{level} / {max}",
+      nextLevel: "다음 레벨",
+      upgrade: "레벨업",
+      maxLevel: "최고 레벨 달성",
+      insufficient: "포인트가 부족합니다",
+    },
     categories: {
       all: "전체",
       landmark: "상징",
@@ -162,6 +171,7 @@ export const koMessages = {
       "already-unlocked": "이미 확장된 구역입니다.",
       "protected-item": "중앙 랜드마크는 이동, 회전, 철거할 수 없습니다.",
       "invalid-definition": "이 작업을 수행할 수 없는 아이템입니다.",
+      "building-max-level": "이미 최고 레벨입니다.",
     },
     controls: {
       assetsLoading: "영지 에셋을 불러오는 중",
@@ -229,6 +239,7 @@ export const koMessages = {
       removeConfirm:
         "{item}을(를) 철거할까요? 포인트는 환불되지 않습니다.",
       removed: "철거했습니다. 아이템이 인벤토리로 돌아갔습니다.",
+      upgraded: "메인 건물을 Lv.{level}로 올렸습니다.",
     },
     panels: {
       fit: "화면 맞춤",

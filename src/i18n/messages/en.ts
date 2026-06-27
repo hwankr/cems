@@ -145,6 +145,15 @@ export const enMessages = {
         "Current selection {selection}. Balance {balance}. Save status {saveStatus}.",
       noneSelected: "none",
     },
+    building: {
+      cardTitle: "Main building",
+      level: "Lv.{level}",
+      levelProgress: "{level} / {max}",
+      nextLevel: "Next level",
+      upgrade: "Upgrade",
+      maxLevel: "Max level reached",
+      insufficient: "Not enough points",
+    },
     categories: {
       all: "All",
       landmark: "Landmark",
@@ -165,6 +174,7 @@ export const enMessages = {
       "protected-item":
         "The central landmark cannot be moved, rotated, or removed.",
       "invalid-definition": "This item cannot be used for that action.",
+      "building-max-level": "The building is already at its highest level.",
     },
     controls: {
       assetsLoading: "Estate assets loading",
@@ -229,6 +239,7 @@ export const enMessages = {
       reloaded: "Another member saved first — reloaded the latest estate.",
       removeConfirm: "Remove {item}? Points will not be refunded.",
       removed: "Removed. The item returned to inventory.",
+      upgraded: "Upgraded the main building to Lv.{level}.",
     },
     panels: {
       fit: "Fit view",
