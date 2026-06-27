@@ -10,6 +10,7 @@ import {
   purchaseEstateItem,
   removeEstateItem,
   unlockEstateParcel,
+  upgradeMainBuilding,
 } from "../domain/commands";
 import type { EstateCommandContext, EstateSnapshot } from "../domain/types";
 
@@ -518,5 +519,55 @@ describe("estate commands", () => {
       reason: "missing-inventory",
     });
     expect(result.snapshot).toBe(snapshot);
+  });
+
+  it("upgrades the main building and records a spend transaction", () => {
+    const context = createContext(5_000, ["tx-upgrade"]);
+    const seed = createInitialEstateSnapshot("yu-e21", {
+      now: () => "2026-06-24T00:00:00.000Z",
+    });
+
+    const result = upgradeMainBuilding(
+      seed,
+      { type: "upgrade-main-building" },
+      context,
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.snapshot.mainBuildingLevel).toBe(2);
+    expect(result.snapshot.transactions).toEqual([
+      {
+        id: "tx-upgrade",
+        kind: "upgrade-building",
+        pointDelta: -800,
+        createdAt: "2026-06-24T00:00:00.000Z",
+      },
+    ]);
+  });
+
+  it("rejects an upgrade when points are insufficient", () => {
+    const context = createContext(100);
+    const seed = createInitialEstateSnapshot("yu-e21", {
+      now: () => "2026-06-24T00:00:00.000Z",
+    });
+
+    expect(
+      upgradeMainBuilding(seed, { type: "upgrade-main-building" }, context),
+    ).toEqual({ ok: false, snapshot: seed, reason: "insufficient-points" });
+  });
+
+  it("rejects an upgrade once the building is at the max level", () => {
+    const context = createContext(1_000_000);
+    const maxed = {
+      ...createInitialEstateSnapshot("yu-e21", {
+        now: () => "2026-06-24T00:00:00.000Z",
+      }),
+      mainBuildingLevel: 5,
+    };
+
+    expect(
+      upgradeMainBuilding(maxed, { type: "upgrade-main-building" }, context),
+    ).toEqual({ ok: false, snapshot: maxed, reason: "building-max-level" });
   });
 });

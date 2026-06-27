@@ -11,6 +11,10 @@ import {
   getInventoryQuantity,
   increaseInventory,
 } from "./inventory";
+import {
+  clampMainBuildingLevel,
+  getMainBuildingUpgradeCost,
+} from "./main-building";
 import { canPlaceEstateItem, findEstateItemDefinition } from "./placement";
 import {
   calculateEstatePointAccount,
@@ -442,6 +446,42 @@ export function unlockEstateParcel(
   });
 }
 
+export function upgradeMainBuilding(
+  snapshot: EstateSnapshot,
+  _command: { type: "upgrade-main-building" },
+  context: EstateCommandContext,
+): EstateCommandResult {
+  const currentLevel = clampMainBuildingLevel(snapshot.mainBuildingLevel);
+  const cost = getMainBuildingUpgradeCost(currentLevel);
+
+  if (cost === null) {
+    return fail(snapshot, "building-max-level");
+  }
+
+  if (
+    !hasEnoughEstatePoints(context.earnedPoints, snapshot.transactions, cost)
+  ) {
+    return fail(snapshot, "insufficient-points");
+  }
+
+  const now = context.now();
+
+  return succeed({
+    ...snapshot,
+    mainBuildingLevel: currentLevel + 1,
+    transactions: [
+      ...snapshot.transactions,
+      {
+        id: context.createId(),
+        kind: "upgrade-building",
+        pointDelta: -cost,
+        createdAt: now,
+      },
+    ],
+    updatedAt: now,
+  });
+}
+
 export function reduceEstateCommand(
   snapshot: EstateSnapshot,
   command: EstateCommand,
@@ -462,6 +502,8 @@ export function reduceEstateCommand(
       return removeEstateItem(snapshot, command, context);
     case "unlock-parcel":
       return unlockEstateParcel(snapshot, command, context);
+    case "upgrade-main-building":
+      return upgradeMainBuilding(snapshot, command, context);
   }
 }
 
