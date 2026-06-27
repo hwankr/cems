@@ -96,6 +96,7 @@ async function renderCampusEnergyApp(
         locale="ko"
         mapboxToken=""
         messages={koMessages}
+        contributorRankings={{}}
         account={account(orgSubjectId)}
       />,
     ),

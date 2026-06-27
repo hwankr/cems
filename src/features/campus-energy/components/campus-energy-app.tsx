@@ -5,6 +5,7 @@ import { useI18n } from "@/i18n/client";
 import type { Locale } from "@/i18n/config";
 import type { Messages } from "@/i18n/messages/types";
 import { SignOutButton } from "@/features/account/components/sign-out-button";
+import type { SubjectContributorRankings } from "@/features/account/domain/contributor-ranking";
 import { getDemoEnergyComparisons } from "../data/demo-campus";
 import { localizeDemoCampus } from "../data/localized-demo-campus";
 import { resolveInitialMainSubjectId } from "../domain/initial-subject";
@@ -30,6 +31,7 @@ type CampusEnergyAppProps = {
   locale: Locale;
   mapboxToken: string;
   messages: Messages;
+  contributorRankings: SubjectContributorRankings;
   account: CampusEnergyAccount;
 };
 
@@ -37,20 +39,27 @@ export function CampusEnergyApp({
   locale,
   mapboxToken,
   messages,
+  contributorRankings,
   account,
 }: CampusEnergyAppProps) {
   return (
     <CampusEnergyProviders locale={locale} messages={messages}>
-      <CampusEnergyShell mapboxToken={mapboxToken} account={account} />
+      <CampusEnergyShell
+        mapboxToken={mapboxToken}
+        contributorRankings={contributorRankings}
+        account={account}
+      />
     </CampusEnergyProviders>
   );
 }
 
 function CampusEnergyShell({
   mapboxToken,
+  contributorRankings,
   account,
 }: {
   mapboxToken: string;
+  contributorRankings: SubjectContributorRankings;
   account: CampusEnergyAccount;
 }) {
   const { locale, messages } = useI18n();
@@ -80,6 +89,7 @@ function CampusEnergyShell({
           school={localizedDemo.school}
           subjects={localizedDemo.subjects}
           comparisons={comparisons}
+          contributorRankings={contributorRankings}
           selectedSubjectId={selectedSubjectId}
           onSelectSubject={setSelectedSubjectId}
           mode={mode}

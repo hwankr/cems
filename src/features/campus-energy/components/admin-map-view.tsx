@@ -5,6 +5,7 @@ import { useTheme } from "@/features/theme/theme-provider";
 import { useI18n } from "@/i18n/client";
 import { buildBuildingDetail } from "../domain/building-detail";
 import { summarizeEnergy } from "../domain/energy";
+import type { SubjectContributorRankings } from "@/features/account/domain/contributor-ranking";
 import type { EnergyComparison, EnergySubject, School } from "../domain/types";
 import { BuildingPopup } from "./building-popup";
 import { BuildingRankPanel } from "./building-rank-panel";
@@ -28,6 +29,7 @@ type AdminMapViewProps = {
   school: School;
   subjects: EnergySubject[];
   comparisons: EnergyComparison[];
+  contributorRankings: SubjectContributorRankings;
   selectedSubjectId: string;
   onSelectSubject: (subjectId: string) => void;
   mode: Mode;
@@ -40,6 +42,7 @@ export function AdminMapView({
   school,
   subjects,
   comparisons,
+  contributorRankings,
   selectedSubjectId,
   onSelectSubject,
   mode,
@@ -71,6 +74,8 @@ export function AdminMapView({
         : null,
     [selectedSubject, selectedComparison],
   );
+
+  const selectedContributors = contributorRankings[selectedSubjectId] ?? [];
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-canvas">
@@ -159,10 +164,12 @@ export function AdminMapView({
           style={{ left: popupPosition.left, top: popupPosition.top }}
         >
           <BuildingPopup
+            key={selectedSubject.id}
             subject={selectedSubject}
             comparison={selectedComparison}
             detail={selectedDetail}
             campusName={school.name}
+            contributors={selectedContributors}
             onClose={() => onSelectSubject("")}
           />
         </div>

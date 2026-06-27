@@ -44,10 +44,8 @@ export function BuildingPopup({
     return () => clearInterval(timer);
   }, []);
 
-  // Reset to the energy view whenever a different building is selected.
-  useEffect(() => {
-    setTab("energy");
-  }, [subject.id]);
+  // Tab resets to the energy view when a different building is selected: the
+  // parent gives this popup a `key={subject.id}`, so it remounts per building.
 
   const status = comparison?.status ?? "neutral";
   const { base: color, soft, bar } = STATUS_COLOR[status];
