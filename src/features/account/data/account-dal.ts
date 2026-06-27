@@ -12,6 +12,11 @@ import {
   type GroupContribution,
   type GroupPointPool,
 } from "../domain/group-pool";
+import {
+  groupContributorRowsBySubject,
+  type ContributorRow,
+  type SubjectContributorRankings,
+} from "../domain/contributor-ranking";
 
 type PointEventRow = {
   id: string;
@@ -171,4 +176,18 @@ export async function getGroupEstateSubjectId(
     throw new Error(`Failed to load group estate subject: ${error.message}`);
   }
   return (data as { subject_id: string } | null)?.subject_id ?? null;
+}
+
+export async function getSubjectContributorRankings(
+  limit = 5,
+): Promise<SubjectContributorRankings> {
+  const supabase = await createServerSupabaseClient();
+  const { data, error } = await supabase.rpc(
+    "get_subject_contributor_rankings",
+    { p_limit: limit },
+  );
+  if (error) {
+    throw new Error(`Failed to load contributor rankings: ${error.message}`);
+  }
+  return groupContributorRowsBySubject((data ?? []) as ContributorRow[]);
 }
