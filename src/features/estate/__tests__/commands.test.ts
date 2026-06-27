@@ -345,7 +345,7 @@ describe("estate commands", () => {
           { x: 0, y: 0 },
           { x: 0, y: 0 },
           { x: 1, y: 0 },
-          { x: 16, y: 0 },
+          { x: 15, y: 0 },
         ],
       },
       createContext(1_000, ["tx-ground"]),
@@ -358,7 +358,7 @@ describe("estate commands", () => {
       { x: 0, y: 0 },
       { x: 1, y: 0 },
     ]);
-    expect(result.skippedCells).toEqual([{ x: 16, y: 0 }]);
+    expect(result.skippedCells).toEqual([{ x: 15, y: 0 }]);
     expect(result.snapshot.transactions).toContainEqual({
       id: "tx-ground",
       kind: "purchase-ground",

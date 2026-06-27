@@ -325,8 +325,8 @@ describe("estate persistence", () => {
       expect.objectContaining({
         id: "yu-e21:landmark",
         definitionId: "base-campus-building",
-        x: 7,
-        y: 7,
+        x: 6,
+        y: 6,
         rotation: 0,
       }),
     ]);

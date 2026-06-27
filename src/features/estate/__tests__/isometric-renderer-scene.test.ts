@@ -32,8 +32,8 @@ describe("estate isometric render scene", () => {
     expect(scene.items.find((item) => item.id === "yu-e21:landmark"))
       .toMatchObject({
         assetId: "campus-building-lv1",
-        footprintWidth: 2,
-        footprintHeight: 2,
+        footprintWidth: 3,
+        footprintHeight: 3,
       });
     expect(scene.selectedItemId).toBe("yu-e21:landmark");
   });
@@ -44,7 +44,7 @@ describe("estate isometric render scene", () => {
       snapshot,
       itemDefinitions,
       parcelDefinitions: estateExpansionCatalog,
-      hoverCell: { x: 16, y: 0 },
+      hoverCell: { x: 15, y: 0 },
       recentlyUnlockedParcelId: "east",
       animationProgress: 0.4,
     });

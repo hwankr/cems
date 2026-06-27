@@ -313,7 +313,7 @@ describe("EstateCanvas", () => {
     await flushAnimationFrames();
 
     const canvas = getCanvas();
-    const parcelPoint = getInitialCanvasPointForCell(snapshot, { x: 16, y: 0 });
+    const parcelPoint = getInitialCanvasPointForCell(snapshot, { x: 15, y: 0 });
 
     await dispatchPointer(canvas, "pointerdown", parcelPoint);
     await dispatchPointer(canvas, "pointermove", {

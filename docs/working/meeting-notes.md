@@ -2,6 +2,15 @@
 
 User-stated decisions and verified working facts are recorded here by date. Do not treat unstated product, architecture, ML, or deployment ideas as confirmed.
 
+## 2026-06-27
+
+- The user asked to change the estate size from 16x16 to 15x15 and adjust the main building to 3x3.
+- A focused implementation plan was saved at `docs/superpowers/plans/2026-06-27-estate-15-grid-main-building-3x3.md`.
+- Implementation changed the estate expansion catalog to 15x15 parcels forming a 45x45 map (`-15..29`), changed the fixed base campus building footprint to 3x3, and centered fresh seed snapshots at `(6,6)`.
+- Targeted estate verification passed: `npx vitest run src/features/estate/__tests__/expansion.test.ts src/features/estate/__tests__/placement.test.ts src/features/estate/__tests__/commands.test.ts src/features/estate/__tests__/estate-canvas.test.tsx src/features/estate/__tests__/estate-repository.test.ts src/features/estate/__tests__/isometric-renderer-scene.test.ts` -> 6 files / 55 tests passed.
+- Full verification passed: `npm run test` -> 60 files / 286 tests passed; `npm run lint` -> 0 errors with the existing 2 `game-preview.tsx` warnings; `npm run build` -> pass.
+- The user then reported the main building felt visually detached from the background, as if floating. The renderer now draws a warm grounding shadow from the building footprint before the sprite, and the sprite shadow color was adjusted from cool slate to olive so the building reads as planted on the garden floor.
+
 ## 2026-06-26
 
 - 사용자는 "로그인으로 소속 등록 → 자신만의 캐릭터/포인트 적립 → 그룹 영지 포인트 획득 → 영지 물품 구매" 흐름의 구현 계획을 요청했고, 이어서 "위 계획을 새로운 브랜치에서 진행"하라고 지시했다.

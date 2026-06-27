@@ -279,7 +279,7 @@ export class EstateIsometricRenderer {
     visibleWorldBounds: WorldBounds,
   ) {
     for (const parcel of scene.parcels) {
-      // Skip whole parcels off-screen — the map is large (up to 48x48), so most
+      // Skip whole parcels off-screen — the map is large (up to 45x45), so most
       // parcels lie outside the viewport at typical zoom.
       const parcelBounds = getCellsWorldBounds(parcel.cells, scene.metrics);
       if (!intersectsWorldBounds(parcelBounds, visibleWorldBounds)) continue;
@@ -666,10 +666,14 @@ export class EstateIsometricRenderer {
     const box = getAnchoredSpriteDrawBox(anchor, asset, camera.zoom);
     const ctx = this.context;
 
+    if (asset.fallback.kind === "building") {
+      this.drawSpriteGrounding(item, metrics, camera, viewport, alpha);
+    }
+
     if (asset.shadow) {
       ctx.save();
       ctx.globalAlpha = asset.shadow.opacity * alpha;
-      ctx.fillStyle = "rgba(15, 23, 42, 0.72)";
+      ctx.fillStyle = "rgba(61, 79, 38, 0.62)";
       ctx.beginPath();
       ctx.ellipse(
         anchor.x + asset.shadow.offsetX * camera.zoom,
@@ -702,6 +706,27 @@ export class EstateIsometricRenderer {
       );
     }
     ctx.restore();
+  }
+
+  private drawSpriteGrounding(
+    item: EstateRenderItem,
+    metrics: IsometricTileMetrics,
+    camera: IsometricCamera,
+    viewport: ViewportSize,
+    alpha: number,
+  ) {
+    drawWorldPolygon(
+      this.context,
+      getSpriteGroundingDiamond(item, metrics),
+      camera,
+      viewport,
+      {
+        fill: "#536f37",
+        stroke: "#f7e4a8",
+        alpha: 0.2 * alpha,
+        lineWidth: 1,
+      },
+    );
   }
 
   private drawBuilding(
@@ -1306,6 +1331,13 @@ export function getAnchoredSpriteDrawBox(
     width: asset.logicalWidth * scale,
     height: asset.logicalHeight * scale,
   };
+}
+
+export function getSpriteGroundingDiamond(
+  item: RenderFootprintItem,
+  metrics: IsometricTileMetrics,
+): ScreenPoint[] {
+  return shrinkDiamondPoints(getFootprintDiamondPoints(item, metrics), 0.78);
 }
 
 function getFootprintAnchorPoint(

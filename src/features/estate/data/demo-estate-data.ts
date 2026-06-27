@@ -14,9 +14,9 @@ export const demoHistoricalEarnedPointsBySubjectId: DemoHistoricalEarnedPointsBy
 const seedTimestamp = "2026-06-24T00:00:00.000Z";
 
 // A fresh estate starts clean: a single level-1 main building centered in the
-// 16x16 core, on bare grass. Players grow the estate by upgrading the building
-// and buying decorations from the shop. The 2x2 footprint at (7,7) covers
-// cells (7..8, 7..8), centered in the 0..15 core.
+// 15x15 core, on bare grass. Players grow the estate by upgrading the building
+// and buying decorations from the shop. The 3x3 footprint at (6,6) covers
+// cells (6..8, 6..8), centered in the 0..14 core.
 export function createDemoEstateSeedSnapshot(subjectId: string): EstateSnapshot {
   return {
     schemaVersion: 2,
@@ -27,8 +27,8 @@ export function createDemoEstateSeedSnapshot(subjectId: string): EstateSnapshot 
       {
         id: `${subjectId}:landmark`,
         definitionId: baseEstateBuildingDefinition.id,
-        x: 7,
-        y: 7,
+        x: 6,
+        y: 6,
         rotation: 0,
         placedAt: seedTimestamp,
       },

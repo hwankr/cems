@@ -18,7 +18,7 @@ describe("estate expansion catalog", () => {
       {
         id: "central-campus",
         cost: 0,
-        bounds: { minX: 0, minY: 0, width: 16, height: 16 },
+        bounds: { minX: 0, minY: 0, width: 15, height: 15 },
       },
     );
   });
@@ -54,10 +54,10 @@ describe("estate expansion catalog", () => {
     );
     const cellKeys = new Set(cells.map((cell) => `${cell.x}:${cell.y}`));
 
-    expect(cells).toHaveLength(512);
+    expect(cells).toHaveLength(450);
     expect(cellKeys.size).toBe(cells.length);
     expect(cells).toContainEqual({ x: 0, y: 0 });
-    expect(cells).toContainEqual({ x: 16, y: 0 });
+    expect(cells).toContainEqual({ x: 15, y: 0 });
   });
 
   it("validates parcel catalog adjacency and rejects overlapping bounds", () => {
@@ -93,6 +93,6 @@ describe("estate expansion catalog", () => {
       (candidate) => candidate.id === "south",
     );
 
-    expect(parcel ? getParcelCells(parcel) : []).toContainEqual({ x: 0, y: 16 });
+    expect(parcel ? getParcelCells(parcel) : []).toContainEqual({ x: 0, y: 15 });
   });
 });

@@ -4,6 +4,7 @@ import { createEstateAssetLoadSnapshot } from "../isometric/asset-loader";
 import {
   EstateIsometricRenderer,
   getAnchoredSpriteDrawBox,
+  getSpriteGroundingDiamond,
   type EstateRenderScene,
 } from "../isometric/renderer";
 
@@ -18,6 +19,28 @@ describe("estate isometric renderer asset placement", () => {
       width: asset.logicalWidth * 0.5,
       height: asset.logicalHeight * 0.5,
     });
+  });
+
+  it("derives building grounding from the occupied footprint", () => {
+    const diamond = getSpriteGroundingDiamond(
+      {
+        id: "main-building",
+        definitionId: "base-campus-building",
+        assetId: "campus-building-lv1",
+        x: 6,
+        y: 6,
+        rotation: 0,
+        footprintWidth: 3,
+        footprintHeight: 3,
+      },
+      { tileWidth: 128, tileHeight: 64 },
+    );
+
+    expect(diamond).toHaveLength(4);
+    expect(Math.min(...diamond.map((point) => point.x))).toBeLessThan(-130);
+    expect(Math.max(...diamond.map((point) => point.x))).toBeGreaterThan(130);
+    expect(Math.min(...diamond.map((point) => point.y))).toBeLessThan(420);
+    expect(Math.max(...diamond.map((point) => point.y))).toBeGreaterThan(535);
   });
 
   it("rotates loaded sprite images when the render item is rotated", () => {
