@@ -18,7 +18,7 @@ describe("estate asset manifest", () => {
     for (const assetId of requiredEstateSpriteAssetIds) {
       const asset = estateAssetManifest.items[assetId];
       expect(asset).toBeDefined();
-      expect(asset.src).toMatch(/^\/estate-assets\/.+\.svg$/);
+      expect(asset.src).toMatch(/^\/estate-assets\/.+\.(svg|png)$/);
       expect(asset.logicalWidth).toBeGreaterThan(0);
       expect(asset.logicalHeight).toBeGreaterThan(0);
       expect(asset.anchorX).toBe(asset.logicalWidth / 2);

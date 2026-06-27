@@ -169,9 +169,9 @@ export const estateAssetManifest = {
   items: {
     "campus-building-lv1": sprite(
       "campus-building-lv1",
-      "/estate-assets/campus-building-lv1.svg",
-      256,
-      232,
+      "/estate-assets/campus-building-lv1.png",
+      290,
+      275,
       {
         renderLayer: 2,
         shadow: buildingShadow,
@@ -189,9 +189,9 @@ export const estateAssetManifest = {
     ),
     "campus-building-lv2": sprite(
       "campus-building-lv2",
-      "/estate-assets/campus-building-lv2.svg",
-      256,
-      252,
+      "/estate-assets/campus-building-lv2.png",
+      302,
+      353,
       {
         renderLayer: 2,
         shadow: buildingShadow,
@@ -209,9 +209,9 @@ export const estateAssetManifest = {
     ),
     "campus-building-lv3": sprite(
       "campus-building-lv3",
-      "/estate-assets/campus-building-lv3.svg",
-      256,
-      280,
+      "/estate-assets/campus-building-lv3.png",
+      312,
+      494,
       {
         renderLayer: 2,
         shadow: buildingShadow,
@@ -229,9 +229,9 @@ export const estateAssetManifest = {
     ),
     "campus-building-lv4": sprite(
       "campus-building-lv4",
-      "/estate-assets/campus-building-lv4.svg",
-      256,
-      312,
+      "/estate-assets/campus-building-lv4.png",
+      338,
+      531,
       {
         renderLayer: 2,
         shadow: buildingShadow,
@@ -249,9 +249,9 @@ export const estateAssetManifest = {
     ),
     "campus-building-lv5": sprite(
       "campus-building-lv5",
-      "/estate-assets/campus-building-lv5.svg",
-      256,
-      348,
+      "/estate-assets/campus-building-lv5.png",
+      373,
+      617,
       {
         renderLayer: 2,
         shadow: buildingShadow,
