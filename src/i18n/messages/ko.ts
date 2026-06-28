@@ -52,6 +52,32 @@ export const koMessages = {
       label: "그룹 영지 포인트",
       memberCount: "{count}명 참여",
     },
+    demoGuest: {
+      title: "데모로 바로 입장",
+      description: "발표 시연용 계정으로 입력 없이 시작합니다.",
+      enter: "입장",
+      entering: "입장 중…",
+      personas: {
+        "engineering-leader": {
+          title: "공과대학 1위",
+          meta: "기여 랭킹 · 공학관",
+        },
+        "humanities-leader": {
+          title: "문과대학 1위",
+          meta: "기여 랭킹 · 인문관",
+        },
+        "estate-builder": {
+          title: "영지 꾸미기 체험",
+          meta: "학생지원 · 중앙도서관 영지",
+        },
+      },
+      errors: {
+        disabled: "현재 데모 입장이 꺼져 있습니다.",
+        "missing-password": "데모 계정 비밀번호 환경 변수가 없습니다.",
+        "invalid-guest": "사용할 수 없는 데모 계정입니다.",
+        failed: "데모 계정 입장에 실패했습니다.",
+      },
+    },
   },
   admin: {
     actualForecastLine: "실제 {actual} / 예측 {forecast}",

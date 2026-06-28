@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { AuthShell } from "@/features/account/components/auth-shell";
+import { DemoGuestEntry } from "@/features/account/components/demo-guest-entry";
 import { LoginForm } from "@/features/account/components/login-form";
 import { CampusEnergyProviders } from "@/features/campus-energy/components/campus-energy-providers";
 import { isLocale } from "@/i18n/config";
@@ -27,6 +28,7 @@ export default async function LoginPage({
         subtitle={messages.account.login.subtitle}
       >
         <LoginForm next={next} />
+        <DemoGuestEntry next={next} />
       </AuthShell>
     </CampusEnergyProviders>
   );

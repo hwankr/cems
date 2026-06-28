@@ -1,5 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { AuthShell } from "@/features/account/components/auth-shell";
+import { DemoGuestEntry } from "@/features/account/components/demo-guest-entry";
 import { OnboardingForm } from "@/features/account/components/onboarding-form";
 import {
   getCurrentProfile,
@@ -37,6 +38,7 @@ export default async function OnboardingPage({ params }: OnboardingPageProps) {
         subtitle={messages.account.onboarding.description}
       >
         <OnboardingForm schools={schools} groups={groups} />
+        <DemoGuestEntry />
       </AuthShell>
     </CampusEnergyProviders>
   );
