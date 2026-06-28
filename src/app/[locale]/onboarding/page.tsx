@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { CampusEnergyProviders } from "@/features/campus-energy/components/campus-energy-providers";
+import { AuthShell } from "@/features/account/components/auth-shell";
 import { OnboardingForm } from "@/features/account/components/onboarding-form";
 import {
   getCurrentProfile,
@@ -7,6 +7,7 @@ import {
   getGroupOptions,
   getSchoolOptions,
 } from "@/features/account/data/account-dal";
+import { CampusEnergyProviders } from "@/features/campus-energy/components/campus-energy-providers";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
 
@@ -30,17 +31,16 @@ export default async function OnboardingPage({ params }: OnboardingPageProps) {
 
   return (
     <CampusEnergyProviders locale={locale} messages={messages}>
-      <main className="mx-auto grid min-h-dvh max-w-sm content-center gap-5 px-5">
-        <div className="grid gap-1">
-          <h1 className="text-2xl font-semibold">
-            {messages.account.onboarding.title}
-          </h1>
-          <p className="text-sm text-ink-muted">
-            {messages.account.onboarding.description}
-          </p>
-        </div>
+      <AuthShell
+        brandName={messages.app.brandName}
+        eyebrow={messages.app.eyebrow}
+        tagline={messages.account.brand.tagline}
+        values={messages.account.brand.values}
+        title={messages.account.onboarding.title}
+        subtitle={messages.account.onboarding.description}
+      >
         <OnboardingForm schools={schools} groups={groups} />
-      </main>
+      </AuthShell>
     </CampusEnergyProviders>
   );
 }
