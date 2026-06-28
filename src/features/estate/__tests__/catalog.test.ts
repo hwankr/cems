@@ -36,4 +36,13 @@ describe("estate item catalog", () => {
       ),
     ).toBe(false);
   });
+
+  it("keeps street lights placeable on land while flags remain edge-only", () => {
+    const placementRules = new Map(
+      estateItemCatalog.map((item) => [item.id, item.placementRule]),
+    );
+
+    expect(placementRules.get("solar-street-light")).toBe("land");
+    expect(placementRules.get("campus-flag")).toBe("edge");
+  });
 });

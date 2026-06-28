@@ -80,7 +80,8 @@ export type EstateCommandFailureReason =
   | "already-unlocked"
   | "protected-item"
   | "invalid-definition"
-  | "building-max-level";
+  | "building-max-level"
+  | "edge-required";
 
 export type EstateCommandResult =
   | { ok: true; snapshot: EstateSnapshot }

@@ -133,7 +133,7 @@ export function canPlaceEstateItem(
     definition.placementRule === "edge" &&
     !touchesUnlockedParcelEdge(occupiedCells, unlockedCells)
   ) {
-    return { ok: false, reason: "out-of-bounds" };
+    return { ok: false, reason: "edge-required" };
   }
 
   const existingCells = getOccupiedNonGroundCellKeys(

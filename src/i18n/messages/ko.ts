@@ -204,6 +204,7 @@ export const koMessages = {
       "protected-item": "중앙 랜드마크는 이동, 회전, 철거할 수 없습니다.",
       "invalid-definition": "이 작업을 수행할 수 없는 아이템입니다.",
       "building-max-level": "이미 최고 레벨입니다.",
+      "edge-required": "외곽선에 닿는 칸에만 배치할 수 있습니다.",
     },
     controls: {
       assetsLoading: "영지 에셋을 불러오는 중",

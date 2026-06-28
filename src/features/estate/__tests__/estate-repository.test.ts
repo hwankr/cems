@@ -149,6 +149,32 @@ describe("estate persistence", () => {
     );
   });
 
+  it("keeps a placed solar street light after save and reload", async () => {
+    const repository = new LocalStorageEstateRepository({
+      storage: new TestStorage(),
+    });
+    const snapshot: EstateSnapshot = {
+      ...createSnapshot("yu-e21"),
+      items: [
+        ...createSnapshot("yu-e21").items,
+        {
+          id: "instance-light",
+          definitionId: "solar-street-light",
+          x: 1,
+          y: 1,
+          rotation: 0,
+          placedAt: "2026-06-24T00:00:00.000Z",
+        },
+      ],
+    };
+
+    await repository.save("yu-e21", snapshot);
+
+    expect(expectLoadedSnapshot(await repository.load("yu-e21"))).toEqual(
+      snapshot,
+    );
+  });
+
   it("returns a write failure without mutating the submitted snapshot", async () => {
     const repository = new LocalStorageEstateRepository({
       storage: new ThrowingWriteStorage(),

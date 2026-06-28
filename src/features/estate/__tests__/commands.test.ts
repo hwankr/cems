@@ -261,6 +261,53 @@ describe("estate commands", () => {
     expect(result.snapshot.items[0]).toMatchObject({ rotation: 1 });
   });
 
+  it("places and moves solar street lights on interior land cells", () => {
+    const seed = withInventory(
+      createInitialEstateSnapshot("yu-e21", {
+        now: () => "2026-06-24T00:00:00.000Z",
+      }),
+      "solar-street-light",
+      1,
+    );
+
+    const placed = placeEstateItem(
+      seed,
+      {
+        definitionId: "solar-street-light",
+        x: 1,
+        y: 1,
+        rotation: 0,
+      },
+      createContext(1_000, ["instance-light"]),
+    );
+
+    expect(placed.ok).toBe(true);
+    if (!placed.ok) return;
+
+    const moved = moveEstateItem(
+      placed.snapshot,
+      {
+        instanceId: "instance-light",
+        x: 2,
+        y: 1,
+        rotation: 0,
+      },
+      createContext(1_000),
+    );
+
+    expect(moved.ok).toBe(true);
+    if (!moved.ok) return;
+    expect(moved.snapshot.items).toContainEqual(
+      expect.objectContaining({
+        id: "instance-light",
+        definitionId: "solar-street-light",
+        x: 2,
+        y: 1,
+        rotation: 0,
+      }),
+    );
+  });
+
   it("protects the central landmark from move, rotate, and remove commands", () => {
     const snapshot = createInitialEstateSnapshot("yu-e21", {
       now: () => "2026-06-24T00:00:00.000Z",

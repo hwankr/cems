@@ -72,7 +72,7 @@ export const estateItemCatalog: readonly EstateItemDefinition[] = [
     footprintHeight: 1,
     canRotate: false,
     assetId: "solar-street-light",
-    placementRule: "edge",
+    placementRule: "land",
   },
   {
     id: "campus-flag",

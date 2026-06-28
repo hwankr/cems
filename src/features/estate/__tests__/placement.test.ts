@@ -9,8 +9,9 @@ import {
 import type { EstateItemInstance, EstateSnapshot } from "../domain/types";
 
 const baseSnapshot: EstateSnapshot = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   subjectId: "yu-e21",
+  mainBuildingLevel: 1,
   unlockedParcelIds: ["central-campus"],
   items: [],
   inventory: [],
@@ -97,5 +98,79 @@ describe("estate placement", () => {
         estateExpansionCatalog,
       ),
     ).toEqual({ ok: false, reason: "collision" });
+  });
+
+  it("allows solar street lights on ordinary unlocked land cells", () => {
+    expect(
+      canPlaceEstateItem(
+        baseSnapshot,
+        {
+          definitionId: "solar-street-light",
+          x: 1,
+          y: 1,
+          rotation: 0,
+        },
+        estateItemCatalog,
+        estateExpansionCatalog,
+      ),
+    ).toEqual({
+      ok: true,
+      occupiedCells: [{ x: 1, y: 1 }],
+    });
+  });
+
+  it("keeps campus flags constrained to unlocked parcel edges", () => {
+    expect(
+      canPlaceEstateItem(
+        baseSnapshot,
+        {
+          definitionId: "campus-flag",
+          x: 1,
+          y: 1,
+          rotation: 0,
+        },
+        estateItemCatalog,
+        estateExpansionCatalog,
+      ),
+    ).toEqual({ ok: false, reason: "edge-required" });
+
+    expect(
+      canPlaceEstateItem(
+        baseSnapshot,
+        {
+          definitionId: "campus-flag",
+          x: 0,
+          y: 1,
+          rotation: 0,
+        },
+        estateItemCatalog,
+        estateExpansionCatalog,
+      ),
+    ).toEqual({
+      ok: true,
+      occupiedCells: [{ x: 0, y: 1 }],
+    });
+  });
+
+  it("allows non-ground items on cells that already have painted ground", () => {
+    expect(
+      canPlaceEstateItem(
+        {
+          ...baseSnapshot,
+          groundTiles: [{ x: 1, y: 1, definitionId: "bright-sidewalk-block" }],
+        },
+        {
+          definitionId: "solar-street-light",
+          x: 1,
+          y: 1,
+          rotation: 0,
+        },
+        estateItemCatalog,
+        estateExpansionCatalog,
+      ),
+    ).toEqual({
+      ok: true,
+      occupiedCells: [{ x: 1, y: 1 }],
+    });
   });
 });

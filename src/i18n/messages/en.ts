@@ -207,6 +207,7 @@ export const enMessages = {
         "The central landmark cannot be moved, rotated, or removed.",
       "invalid-definition": "This item cannot be used for that action.",
       "building-max-level": "The building is already at its highest level.",
+      "edge-required": "Place this item on a cell touching the estate edge.",
     },
     controls: {
       assetsLoading: "Estate assets loading",
