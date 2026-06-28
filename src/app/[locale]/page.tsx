@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { CampusEnergyApp } from "@/features/campus-energy/components/campus-energy-app";
 import {
@@ -14,6 +15,15 @@ import { getMessages } from "@/i18n/dictionaries";
 type HomeProps = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({
+  params,
+}: HomeProps): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const messages = await getMessages(locale);
+  return { title: messages.mapView.title };
+}
 
 export default async function Home({ params }: HomeProps) {
   const { locale } = await params;

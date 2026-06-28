@@ -323,6 +323,7 @@ export const koMessages = {
     missingTokenTitle: "Mapbox 토큰이 필요합니다",
   },
   mapView: {
+    title: "캠퍼스 지도",
     brandTitle: "캠퍼스 에너지",
     brandSubtitle: "실시간 전력 모니터링",
     searchPlaceholder: "건물 검색",

@@ -6,6 +6,7 @@ describe("messages", () => {
   it("keeps Korean as the source/default language", () => {
     expect(koMessages.app.eyebrow).toBe("캠퍼스 에너지 관리 시스템");
     expect(koMessages.mapView.settings.title).toBe("설정");
+    expect(koMessages.mapView.title).toBe("캠퍼스 지도");
   });
 
   it("provides matching English message groups", () => {
@@ -24,5 +25,6 @@ describe("messages", () => {
     );
     expect(enMessages.app.eyebrow).toBe("Campus Energy Management System");
     expect(enMessages.mapView.controls.resetView).toBe("Reset view");
+    expect(enMessages.mapView.title).toBe("Campus map");
   });
 });

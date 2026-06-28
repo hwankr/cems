@@ -322,6 +322,7 @@ export const enMessages = {
     missingTokenTitle: "Mapbox token required",
   },
   mapView: {
+    title: "Campus map",
     brandTitle: "Campus Energy",
     brandSubtitle: "Live power monitoring",
     searchPlaceholder: "Search buildings",
