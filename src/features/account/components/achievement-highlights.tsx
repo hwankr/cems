@@ -37,11 +37,15 @@ export function AchievementHighlights({
         {achievements.map((a) => {
           const Icon = a.locked ? Lock : ICONS[a.key];
           const active = a.earned && !a.locked;
+          const isEarnedTopStudent =
+            a.key === "top-student" && a.earned && !a.locked;
           const ring = a.locked
             ? "border-dashed border-[var(--honey)] bg-[var(--honey-soft)] text-[var(--honey-strong)]"
-            : active
-              ? "border-saving bg-saving-soft text-saving"
-              : "border-line bg-inset text-ink-subtle";
+            : isEarnedTopStudent
+              ? "border-[#f5c518] bg-[#fdf3cf] text-[#a07a00]"
+              : active
+                ? "border-saving bg-saving-soft text-saving"
+                : "border-line bg-inset text-ink-subtle";
           return (
             <li
               key={a.key}

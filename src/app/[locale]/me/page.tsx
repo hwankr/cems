@@ -17,6 +17,7 @@ import {
   getMyPointEvents,
   getPersonalPointTotal,
 } from "@/features/account/data/account-dal";
+import { getMyLeagueAwards } from "@/features/leagues/data/leagues-dal";
 import { getGoalsWithProgress } from "@/features/missions/data/missions-dal";
 import {
   buildContributionGraph,
@@ -42,22 +43,33 @@ export default async function MePage({ params }: MePageProps) {
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/onboarding`);
 
-  const [messages, personalPoints, groupPool, events, goals, estateSubjectId] =
-    await Promise.all([
-      getMessages(locale),
-      getPersonalPointTotal(profile.userId),
-      getGroupPointPool(profile.groupId),
-      getMyPointEvents(profile.userId),
-      getGoalsWithProgress(profile.userId),
-      getGroupEstateSubjectId(profile.groupId),
-    ]);
+  const [
+    messages,
+    personalPoints,
+    groupPool,
+    events,
+    goals,
+    estateSubjectId,
+    myLeagueAwards,
+  ] = await Promise.all([
+    getMessages(locale),
+    getPersonalPointTotal(profile.userId),
+    getGroupPointPool(profile.groupId),
+    getMyPointEvents(profile.userId),
+    getGoalsWithProgress(profile.userId),
+    getGroupEstateSubjectId(profile.groupId),
+    getMyLeagueAwards(profile.userId),
+  ]);
 
   const todayLabel = seoulDayLabel(new Date().toISOString());
   const graph = buildContributionGraph(events, { todayLabel, weeks: GRAPH_WEEKS });
+  const topStudentAward = myLeagueAwards[0] ?? null;
   const achievements = deriveAchievements({
     level: getCharacterProgress(personalPoints).level,
     longestStreak: graph.longestStreak,
     totalCheckIns: countMissionCheckIns(events),
+    hasTopStudentAward: Boolean(topStudentAward),
+    ...(topStudentAward ? { topStudentTier: topStudentAward.tier } : {}),
   });
 
   const estateHref = estateSubjectId
