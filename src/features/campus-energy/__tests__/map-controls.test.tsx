@@ -42,8 +42,6 @@ vi.mock("@/i18n/client", () => ({
 function baseProps() {
   return {
     profileHref: "/ko/me",
-    showHeat: false,
-    onToggleHeat: () => {},
     showLabels: true,
     onToggleLabels: () => {},
     onOpenSettings: () => {},
@@ -115,7 +113,7 @@ describe("MapControls", () => {
     await act(async () => root.unmount());
   });
 
-  it("keeps the settings button visible but hides heat/label buttons below sm", async () => {
+  it("keeps label and settings controls but does not render the usage heatmap flame toggle", async () => {
     const container = document.createElement("div");
     const root: Root = createRoot(container);
     document.body.append(container);
@@ -128,7 +126,7 @@ describe("MapControls", () => {
     const labels = container.querySelector('button[aria-label="Building labels"]');
     const settings = container.querySelector('button[aria-label="Map settings"]');
 
-    expect(heat?.closest(".hidden")).not.toBeNull();
+    expect(heat).toBeNull();
     expect(labels?.closest(".hidden")).not.toBeNull();
     expect(settings?.closest(".hidden")).toBeNull();
 

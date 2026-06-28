@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, Flame, Settings, Tag, User } from "lucide-react";
+import { Building2, Settings, Tag, User } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useI18n } from "@/i18n/client";
@@ -8,8 +8,6 @@ import { useI18n } from "@/i18n/client";
 type MapControlsProps = {
   onGoToMyOrg?: () => void;
   profileHref: string;
-  showHeat: boolean;
-  onToggleHeat: () => void;
   showLabels: boolean;
   onToggleLabels: () => void;
   onOpenSettings: () => void;
@@ -18,8 +16,6 @@ type MapControlsProps = {
 export function MapControls({
   onGoToMyOrg,
   profileHref,
-  showHeat,
-  onToggleHeat,
   showLabels,
   onToggleLabels,
   onOpenSettings,
@@ -45,14 +41,6 @@ export function MapControls({
 
       <div className="flex flex-col overflow-hidden rounded-xl border border-line bg-surface/95 shadow-pop backdrop-blur">
         <div className="hidden flex-col sm:flex">
-          <ControlButton
-            label={controls.heatmap}
-            active={showHeat}
-            onClick={onToggleHeat}
-          >
-            <Flame size={18} aria-hidden="true" />
-          </ControlButton>
-          <span className="h-px bg-line" aria-hidden="true" />
           <ControlButton
             label={controls.labels}
             active={showLabels}

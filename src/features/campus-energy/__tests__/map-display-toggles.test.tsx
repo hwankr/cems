@@ -23,18 +23,15 @@ describe("MapDisplayToggles", () => {
     document.body.replaceChildren();
   });
 
-  it("reflects active state and calls the handlers", async () => {
+  it("reflects label state without rendering the usage heatmap flame toggle", async () => {
     const container = document.createElement("div");
     const root: Root = createRoot(container);
     document.body.append(container);
-    const onToggleHeat = vi.fn();
     const onToggleLabels = vi.fn();
 
     await act(async () =>
       root.render(
         <MapDisplayToggles
-          showHeat
-          onToggleHeat={onToggleHeat}
           showLabels={false}
           onToggleLabels={onToggleLabels}
         />,
@@ -48,13 +45,11 @@ describe("MapDisplayToggles", () => {
       'button[aria-label="Building labels"]',
     ) as HTMLButtonElement;
 
-    expect(heat.getAttribute("aria-pressed")).toBe("true");
+    expect(heat).toBeNull();
     expect(labels.getAttribute("aria-pressed")).toBe("false");
 
-    await act(async () => heat.click());
     await act(async () => labels.click());
 
-    expect(onToggleHeat).toHaveBeenCalledTimes(1);
     expect(onToggleLabels).toHaveBeenCalledTimes(1);
 
     await act(async () => root.unmount());

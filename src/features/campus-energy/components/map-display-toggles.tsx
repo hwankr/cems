@@ -1,21 +1,17 @@
 "use client";
 
-import { Flame, Tag } from "lucide-react";
+import { Tag } from "lucide-react";
 import type { ReactNode } from "react";
 import { useI18n } from "@/i18n/client";
 
 type MapDisplayTogglesProps = {
-  showHeat: boolean;
-  onToggleHeat: () => void;
   showLabels: boolean;
   onToggleLabels: () => void;
 };
 
-// The heatmap/label toggles surfaced inside the settings popover on mobile,
-// where they are removed from the always-on map rail to cut clutter.
+// The label toggle is surfaced inside the settings popover on mobile, where it
+// is removed from the always-on map rail to cut clutter.
 export function MapDisplayToggles({
-  showHeat,
-  onToggleHeat,
   showLabels,
   onToggleLabels,
 }: MapDisplayTogglesProps) {
@@ -24,9 +20,6 @@ export function MapDisplayToggles({
 
   return (
     <div className="flex flex-col">
-      <ToggleRow label={controls.heatmap} active={showHeat} onClick={onToggleHeat}>
-        <Flame size={16} aria-hidden="true" />
-      </ToggleRow>
       <ToggleRow
         label={controls.labels}
         active={showLabels}

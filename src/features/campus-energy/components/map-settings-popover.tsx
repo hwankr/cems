@@ -15,8 +15,6 @@ type MapSettingsPopoverProps = {
   onClose: () => void;
   mode: Mode;
   onModeChange: (mode: Mode) => void;
-  showHeat: boolean;
-  onToggleHeat: () => void;
   showLabels: boolean;
   onToggleLabels: () => void;
 };
@@ -26,8 +24,6 @@ export function MapSettingsPopover({
   onClose,
   mode,
   onModeChange,
-  showHeat,
-  onToggleHeat,
   showLabels,
   onToggleLabels,
 }: MapSettingsPopoverProps) {
@@ -62,8 +58,6 @@ export function MapSettingsPopover({
         </div>
         <div className="sm:hidden">
           <MapDisplayToggles
-            showHeat={showHeat}
-            onToggleHeat={onToggleHeat}
             showLabels={showLabels}
             onToggleLabels={onToggleLabels}
           />

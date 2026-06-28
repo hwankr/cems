@@ -51,7 +51,6 @@ export function AdminMapView({
   const { resolvedTheme } = useTheme();
   const { locale } = useI18n();
   const [query, setQuery] = useState("");
-  const [showHeat, setShowHeat] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
   const [rankOpen, setRankOpen] = useState(true);
   const [rankOpenMobile, setRankOpenMobile] = useState(false);
@@ -88,7 +87,6 @@ export function AdminMapView({
         onSelectSubject={onSelectSubject}
         mapStyleUrl={STANDARD_MAP_STYLE}
         mapTheme={resolvedTheme}
-        showHeat={showHeat}
         showLabels={showLabels}
         query={query}
         onSelectedScreenPositionChange={setPopupPosition}
@@ -119,8 +117,6 @@ export function AdminMapView({
               orgSubjectId ? () => onSelectSubject(orgSubjectId) : undefined
             }
             profileHref={`/${locale}/me`}
-            showHeat={showHeat}
-            onToggleHeat={() => setShowHeat((value) => !value)}
             showLabels={showLabels}
             onToggleLabels={() => setShowLabels((value) => !value)}
             onOpenSettings={() => setSettingsOpen(true)}
@@ -180,8 +176,6 @@ export function AdminMapView({
         onClose={() => setSettingsOpen(false)}
         mode={mode}
         onModeChange={onModeChange}
-        showHeat={showHeat}
-        onToggleHeat={() => setShowHeat((value) => !value)}
         showLabels={showLabels}
         onToggleLabels={() => setShowLabels((value) => !value)}
       />
