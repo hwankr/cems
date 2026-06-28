@@ -2,6 +2,7 @@ export const koMessages = {
   account: {
     login: {
       title: "로그인",
+      subtitle: "다시 오신 걸 환영해요. 계정으로 이어서 시작하세요.",
       email: "이메일",
       password: "비밀번호",
       submit: "로그인",
@@ -12,6 +13,7 @@ export const koMessages = {
     },
     signup: {
       title: "회원가입",
+      subtitle: "이메일로 가입하고 우리 캠퍼스 절약에 함께해요.",
       email: "이메일",
       password: "비밀번호",
       submit: "가입하기",
@@ -49,6 +51,14 @@ export const koMessages = {
     estatePool: {
       label: "그룹 영지 포인트",
       memberCount: "{count}명 참여",
+    },
+    brand: {
+      tagline: "예측보다 아낀 만큼 포인트로. 함께 절약하고 우리 영지를 키워요.",
+      values: {
+        measure: "절감 측정",
+        earn: "포인트 적립",
+        grow: "영지 성장",
+      },
     },
   },
   admin: {

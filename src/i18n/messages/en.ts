@@ -4,6 +4,7 @@ export const enMessages = {
   account: {
     login: {
       title: "Log in",
+      subtitle: "Welcome back. Pick up right where you left off.",
       email: "Email",
       password: "Password",
       submit: "Log in",
@@ -14,6 +15,7 @@ export const enMessages = {
     },
     signup: {
       title: "Sign up",
+      subtitle: "Sign up with your email and join your campus.",
       email: "Email",
       password: "Password",
       submit: "Create account",
@@ -51,6 +53,14 @@ export const enMessages = {
     estatePool: {
       label: "Group estate points",
       memberCount: "{count} members",
+    },
+    brand: {
+      tagline: "Save more than forecast, earn points for it — grow your estate together.",
+      values: {
+        measure: "Measure savings",
+        earn: "Earn points",
+        grow: "Grow estate",
+      },
     },
   },
   admin: {
