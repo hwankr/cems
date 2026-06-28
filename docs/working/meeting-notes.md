@@ -2,6 +2,25 @@
 
 User-stated decisions and verified working facts are recorded here by date. Do not treat unstated product, architecture, ML, or deployment ideas as confirmed.
 
+## 2026-06-28
+
+### 로그인·온보딩 화면 잔디 정원 리디자인 (+ main 머지·푸시)
+
+- 사용자가 `/superpowers:write-plan`(deprecated — 앞으로 "superpowers writing-plans" 스킬 사용으로 안내함)로 "로그인(온보딩) 페이지를 깔끔하게 우리 테마에 맞게" 만드는 구현 계획을 요청. 계획 `docs/superpowers/plans/2026-06-28-auth-onboarding-warm-redesign.md`, 스펙 `docs/superpowers/specs/2026-06-28-auth-onboarding-redesign-design.md`.
+- AskUserQuestion으로 확정: (1) 테마 = 잔디 정원 웜(=/me·영지 팔레트, 항상 라이트), (2) 레이아웃 = 브랜드 스플릿, (3) 범위 = 로그인·회원가입·온보딩 3개 모두. 이후 `/goal`로 "구현 진행" 지시 → 새 브랜치 `feat/auth-onboarding-warm-redesign`.
+- 1차 구현(5 Task, TDD·태스크별 커밋): i18n 카피+스펙(`2b85d54`) → AuthShell+CSS+jsdom 테스트(`7bf7043`) → 3개 페이지 배선(`72f49b7`) → 폼 3종 다듬기(`85c9bee`). 공유 `AuthShell`이 `profile-surface`와 동일한 토큰 재정의 기법으로 웜 팔레트를 스코프(지도/대시보드 불변). AGENTS.md대로 `next/image` 로컬 문서 확인(Next 16에서 `priority` deprecated → 미사용).
+- 사용자가 라이브(자체 dev 서버)에서 보고 피드백: "디자인적으로 별로 + 모바일 공백이 크다"며 레퍼런스(일러스트 헤더 + 언더라인 입력 + 알약 버튼의 컴팩트 중앙 카드)를 제시하고 "이 느낌에 우리 테마로"를 요청. 1차 브랜드 스플릿의 모바일 레이아웃이 상단 브랜드 밴드 후 폼을 남은 공간 중앙 정렬해 큰 세로 공백이 생긴 것이 핵심 불만.
+- 2차 리디자인(`e681137`): 브랜드 스플릿 폐기 → **일러스트 중앙 카드**. 정원 헤더(그린 그라데이션 + 햇살 블룸 + `campus-building-lv3.png` 아이소메트릭 건물·미세 플로트 + 크림 SVG 웨이브로 본문 연결) + 좌상단 `🌿 CEMS` 태그, **언더라인 입력 + 원형 아이콘**(placeholder를 라벨로 쓰되 `.srOnly` 라벨 보존), **알약(pill) 버튼**, 배경은 부드러운 정원 언덕(인라인 SVG). 콘텐츠 크기 카드를 중앙 정렬해 모바일 공백 해소. 브랜드 칩·태그라인 제거, `AuthShell` props를 `brandName/title/subtitle`로 단순화, 미사용 `account.brand` 카피(ko/en) 삭제. 스펙 문서를 일러스트 카드 방향으로 갱신.
+- 검증(각 단계): Vitest 303/303(신규 AuthShell 테스트 2), ESLint 0 errors(기존 `game-preview.tsx` 경고 2개), `npm run build` 통과. 라이브 SSR 실측 — `/ko·/en/login`·`/ko/signup` 200(브랜드·일러스트·웨이브·건물 아트·필드 렌더), `/ko/onboarding` 로그아웃 시 307(가드 정상). 토큰 격리: `auth-shell.module.css`는 인증 4개 파일(AuthShell + 폼 3종)만 import → 지도/`me`/영지 구조적 불변.
+- 사용자 지시로 `feat/auth-onboarding-warm-redesign`(5 커밋)을 `main`에 fast-forward 머지(`e681137`)하고 `origin/main` 푸시 → Vercel 자동 배포. 브랜치 삭제, 로컬·원격 단일 `main`.
+- 도구 제약(문서화): 이 환경엔 브라우저/스크린샷 도구가 없어 픽셀 스크린샷은 못 떴고, 검증은 SSR HTML·테스트·빌드·토큰 격리로 갈음. 실제 모양은 사용자가 자체 dev 서버(`localhost:3000`, HMR)로 확인.
+
+### 같은 날 — 테마 초기화 스크립트 하이드레이션 이슈 수정
+
+- 사용자가 dev 오버레이의 "2 Issues" 정리를 요청. 확인한 원인: 루트 레이아웃(`src/app/[locale]/layout.tsx`)이 `<body>`에 테마 플래시 방지용 **원시 `<script dangerouslySetInnerHTML>`**(테마 초기화)를 렌더 → React 19가 (1) "Encountered a script tag while rendering React component" 경고, (2) 원시 body 스크립트를 `<head>`로 호이스트하며 "Hydration failed(서버/클라이언트 불일치)"를 발생. 인증 리디자인과 무관한 **앱 전역(모든 페이지) 기존 이슈**.
+- 수정(`5e49f0d`, AGENTS.md대로 `node_modules/next/dist/docs`의 Script 문서 확인 후): 레이아웃의 원시 `<script>`를 `next/script`의 `<Script id="cems-theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={...} />`로 교체. beforeInteractive는 Next가 스크립트를 추출·주입하고 React 트리에 원시 `<script>`를 렌더하지 않으므로 두 증상이 모두 해소된다. `themeInitScript` 로직과 `<html data-theme="light" suppressHydrationWarning>`은 유지.
+- 검증: `tsc --noEmit`에 레이아웃 신규 오류 0(기존 테스트 오류만 잔존), ESLint 0 errors, Vitest 303/303, `npm run build` 통과. dev SSR 실측으로 테마 스크립트가 이제 Next beforeInteractive 로더(`__next_s` push, `id:"cems-theme-init"`)로 직렬화돼 **원시 React 트리 스크립트가 아님**을 확인. 브라우저 오버레이의 "0 Issues" 최종 확인은 사용자 새로고침 몫.
+
 ## 2026-06-27
 
 - The user asked to change the estate size from 16x16 to 15x15 and adjust the main building to 3x3.
