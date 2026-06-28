@@ -37,8 +37,20 @@ type ContextualSelectionCopy = EstateMessages["selection"] & {
   moveTargetSelected?: string;
 };
 
-const contextMenuWidth = 272;
-const contextMenuHeight = 76;
+type ContextualAction = {
+  key: string;
+  label: string;
+  icon: ReactNode;
+  disabled: boolean;
+  onClick: () => void;
+};
+
+// Compact icon-cluster geometry, used to keep the anchored menu inside the
+// viewport. Each control is a 40px icon button, 4px apart, in a 6px-padded pill.
+const actionButtonSize = 40;
+const actionGap = 4;
+const clusterPadding = 6;
+const clusterHeight = actionButtonSize + clusterPadding * 2;
 const topReserved = 72;
 const bottomReserved = 92;
 const edgePadding = 12;
@@ -56,113 +68,107 @@ export function ContextualItemActions({
   onRotate,
   onCollect,
 }: ContextualItemActionsProps) {
-  if (!anchor) return null;
-
-  const position = getContextualActionMenuPosition({
-    anchor,
-    menuWidth: contextMenuWidth,
-    menuHeight: contextMenuHeight,
-    topReserved,
-    bottomReserved,
-  });
   const moving = mode.type === "moving" && mode.instanceId === instance.id;
   const targetCell = moving ? mode.targetCell : undefined;
-  const itemName = getItemName(definition, copy);
   const selectionCopy = copy.selection as ContextualSelectionCopy;
   const confirmLabel = selectionCopy.confirm ?? "Confirm";
   const collectLabel = selectionCopy.collect ?? copy.selection.remove;
-  const visibleActionLabels = moving
+
+  const cancelAction: ContextualAction = {
+    key: "cancel",
+    label: copy.selection.cancel,
+    icon: <X size={18} aria-hidden="true" />,
+    disabled: false,
+    onClick: onCancel,
+  };
+  const rotateAction: ContextualAction = {
+    key: "rotate",
+    label: copy.selection.rotate,
+    icon: <RotateCw size={18} aria-hidden="true" />,
+    disabled: protectedItem || !definition.canRotate,
+    onClick: onRotate,
+  };
+
+  const actions: ContextualAction[] = moving
     ? [
-        ...(targetCell ? [confirmLabel] : []),
-        copy.selection.rotate,
-        copy.selection.cancel,
+        ...(targetCell
+          ? [
+              {
+                key: "confirm",
+                label: confirmLabel,
+                icon: <Check size={18} aria-hidden="true" />,
+                disabled: protectedItem,
+                onClick: onConfirmMove,
+              },
+            ]
+          : []),
+        rotateAction,
+        cancelAction,
       ]
     : [
-        copy.selection.move,
-        copy.selection.rotate,
-        collectLabel,
-        copy.selection.cancel,
+        {
+          key: "move",
+          label: copy.selection.move,
+          icon: <Move size={18} aria-hidden="true" />,
+          disabled: protectedItem,
+          onClick: onMove,
+        },
+        rotateAction,
+        {
+          key: "collect",
+          label: collectLabel,
+          icon: <PackageCheck size={18} aria-hidden="true" />,
+          disabled: protectedItem,
+          onClick: onCollect,
+        },
+        cancelAction,
       ];
-  const toolbarLabel =
-    selectionCopy.itemActions ?? visibleActionLabels.join(", ");
 
+  const itemName = getItemName(definition, copy);
+  const toolbarLabel =
+    selectionCopy.itemActions ??
+    actions.map((action) => action.label).join(", ");
+
+  if (!anchor) return null;
+
+  const menuWidth =
+    actions.length * actionButtonSize +
+    Math.max(0, actions.length - 1) * actionGap +
+    clusterPadding * 2;
+
+  const position = getContextualActionMenuPosition({
+    anchor,
+    menuWidth,
+    menuHeight: clusterHeight,
+    topReserved,
+    bottomReserved,
+  });
+
+  // A small, semi-transparent icon cluster anchored just above the item. It is
+  // deliberately compact and see-through so it barely covers the world while a
+  // move target is being picked; taps outside its icons pass straight to the
+  // canvas, and it fades to full opacity on hover/focus.
   return (
     <div
       role="toolbar"
       aria-label={toolbarLabel}
-      className={`${styles.contextMenu} ${
-        moving ? styles.contextMenuMoving : ""
-      } rounded-lg p-1.5`}
+      title={itemName}
+      className={`${styles.contextCluster} ${
+        moving ? styles.contextClusterMoving : ""
+      } flex items-center gap-1 rounded-full p-1.5`}
       style={{ left: position.left, top: position.top }}
     >
-      <div className="flex items-center gap-2 px-1">
-        <div className="min-w-0 flex-1">
-          <p
-            className={`${styles.contextMenuTitle} truncate text-[13px] font-semibold`}
-          >
-            {itemName}
-          </p>
-          <p className={`${styles.contextMenuMeta} truncate text-[11px]`}>
-            {moving ? getMovingMeta(selectionCopy, targetCell) : `${instance.x}, ${instance.y}`}
-          </p>
-        </div>
-        <button
-          type="button"
-          className={`${styles.contextAction} grid h-8 w-8 shrink-0 place-items-center rounded-lg`}
-          aria-label={copy.selection.cancel}
-          title={copy.selection.cancel}
-          onClick={onCancel}
-        >
-          <X size={16} aria-hidden="true" />
-        </button>
-      </div>
-      <div
-        className={`mt-1 grid gap-1 ${
-          moving ? (targetCell ? "grid-cols-2" : "grid-cols-1") : "grid-cols-3"
-        }`}
-      >
-        {!moving ? (
-          <ContextActionButton
-            disabled={protectedItem}
-            icon={<Move size={14} aria-hidden="true" />}
-            label={copy.selection.move}
-            onClick={onMove}
-          />
-        ) : null}
-        {moving && targetCell ? (
-          <ContextActionButton
-            disabled={protectedItem}
-            icon={<Check size={14} aria-hidden="true" />}
-            label={confirmLabel}
-            onClick={onConfirmMove}
-          />
-        ) : null}
+      {actions.map((action) => (
         <ContextActionButton
-          disabled={protectedItem || !definition.canRotate}
-          icon={<RotateCw size={14} aria-hidden="true" />}
-          label={copy.selection.rotate}
-          onClick={onRotate}
+          key={action.key}
+          disabled={action.disabled}
+          icon={action.icon}
+          label={action.label}
+          onClick={action.onClick}
         />
-        {!moving ? (
-          <ContextActionButton
-            disabled={protectedItem}
-            icon={<PackageCheck size={14} aria-hidden="true" />}
-            label={collectLabel}
-            onClick={onCollect}
-          />
-        ) : null}
-      </div>
+      ))}
     </div>
   );
-}
-
-function getMovingMeta(
-  selectionCopy: ContextualSelectionCopy,
-  targetCell: { x: number; y: number } | undefined,
-): string {
-  if (!targetCell) return selectionCopy.choosingMoveTarget;
-
-  return `${selectionCopy.moveTargetSelected ?? "Move target"}: ${targetCell.x}, ${targetCell.y}`;
 }
 
 export function getContextualActionMenuPosition({
@@ -203,12 +209,13 @@ function ContextActionButton({
   return (
     <button
       type="button"
-      className={`${styles.contextAction} inline-flex h-8 items-center justify-center gap-1 rounded-lg px-1.5 text-[11px] font-semibold`}
+      className={`${styles.contextAction} grid h-10 w-10 shrink-0 place-items-center rounded-full`}
       disabled={disabled}
+      aria-label={label}
+      title={label}
       onClick={onClick}
     >
       {icon}
-      <span className="truncate">{label}</span>
     </button>
   );
 }

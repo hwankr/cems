@@ -330,6 +330,92 @@ describe("EstateCanvas", () => {
     await act(async () => root.unmount());
   });
 
+  it("requests a background tap on an unmoved empty-ground release", async () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const onBackgroundTap = vi.fn();
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="23 placed objects, 1 unlocked parcel, and 10 ground tiles."
+          controls={{
+            assetsLoading: "Estate assets loading",
+            fitView: "Fit view",
+            zoomIn: "Zoom in",
+            zoomOut: "Zoom out",
+          }}
+          onBackgroundTap={onBackgroundTap}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+
+    const canvas = getCanvas();
+    const backgroundPoint = getInitialCanvasPointForCell(snapshot, {
+      x: 100,
+      y: 100,
+    });
+
+    await dispatchPointer(canvas, "pointerdown", backgroundPoint);
+    expect(onBackgroundTap).not.toHaveBeenCalled();
+
+    await dispatchPointer(canvas, "pointerup", backgroundPoint);
+    expect(onBackgroundTap).toHaveBeenCalledTimes(1);
+
+    await act(async () => root.unmount());
+  });
+
+  it("does not request a background tap when the pointer pans", async () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const onBackgroundTap = vi.fn();
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="23 placed objects, 1 unlocked parcel, and 10 ground tiles."
+          controls={{
+            assetsLoading: "Estate assets loading",
+            fitView: "Fit view",
+            zoomIn: "Zoom in",
+            zoomOut: "Zoom out",
+          }}
+          onBackgroundTap={onBackgroundTap}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+
+    const canvas = getCanvas();
+    const backgroundPoint = getInitialCanvasPointForCell(snapshot, {
+      x: 100,
+      y: 100,
+    });
+
+    await dispatchPointer(canvas, "pointerdown", backgroundPoint);
+    await dispatchPointer(canvas, "pointermove", {
+      x: backgroundPoint.x + 24,
+      y: backgroundPoint.y,
+    });
+    await dispatchPointer(canvas, "pointerup", {
+      x: backgroundPoint.x + 24,
+      y: backgroundPoint.y,
+    });
+
+    expect(onBackgroundTap).not.toHaveBeenCalled();
+
+    await act(async () => root.unmount());
+  });
+
   it("emits a screen anchor for the selected estate item", async () => {
     const snapshot = createDemoEstateSeedSnapshot("yu-e21");
     const onSelectedItemAnchorChange = vi.fn();
@@ -369,6 +455,64 @@ describe("EstateCanvas", () => {
       viewportWidth: 720,
       viewportHeight: 360,
     });
+
+    await act(async () => root.unmount());
+  });
+
+  it("moves the action anchor to the move preview while moving", async () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const onSelectedItemAnchorChange = vi.fn();
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+    const controls = {
+      assetsLoading: "Estate assets loading",
+      fitView: "Fit view",
+      zoomIn: "Zoom in",
+      zoomOut: "Zoom out",
+    };
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          selectedItemId="yu-e21:landmark"
+          mode={{ type: "selected", instanceId: "yu-e21:landmark" }}
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="4 placed objects, 1 unlocked parcel, and 6 ground tiles."
+          controls={controls}
+          onSelectedItemAnchorChange={onSelectedItemAnchorChange}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+    const selectedAnchor = onSelectedItemAnchorChange.mock.lastCall?.[0];
+    expect(selectedAnchor).not.toBeNull();
+
+    onSelectedItemAnchorChange.mockClear();
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          selectedItemId="yu-e21:landmark"
+          mode={{
+            type: "moving",
+            instanceId: "yu-e21:landmark",
+            rotation: 0,
+            targetCell: { x: 20, y: 20 },
+          }}
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="4 placed objects, 1 unlocked parcel, and 6 ground tiles."
+          controls={controls}
+          onSelectedItemAnchorChange={onSelectedItemAnchorChange}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+    const movingAnchor = onSelectedItemAnchorChange.mock.lastCall?.[0];
+    expect(movingAnchor).not.toBeNull();
+    expect(movingAnchor).not.toEqual(selectedAnchor);
 
     await act(async () => root.unmount());
   });

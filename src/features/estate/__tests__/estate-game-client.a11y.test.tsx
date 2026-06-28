@@ -33,12 +33,14 @@ vi.mock("../components/estate-canvas", async () => {
     selectedItemId?: string | null;
     onCellClick?: (cell: EstateGridCell) => void;
     onItemSelect?: (instanceId: string) => void;
+    onBackgroundTap?: () => void;
     onLockedParcelClick?: (parcelId: string) => void;
     onSelectedItemAnchorChange?: (
       anchor: EstateItemActionAnchor | null,
     ) => void;
   }) => {
     const {
+      onBackgroundTap,
       onItemSelect,
       onLockedParcelClick,
       onSelectedItemAnchorChange,
@@ -79,6 +81,13 @@ vi.mock("../components/estate-canvas", async () => {
           }}
         >
           Choose move target
+        </button>
+        <button
+          type="button"
+          data-testid="estate-background"
+          onClick={() => onBackgroundTap?.()}
+        >
+          Tap background
         </button>
         <span data-testid="bench-position">
           {bench ? `${bench.x},${bench.y}` : "missing"}
@@ -196,11 +205,61 @@ describe("EstateGameClient accessibility", () => {
     await flushEffects();
 
     const toolbar = getToolbar();
-    expect(toolbar.textContent).toContain("Bench");
-    expect(getButton("Move")).toBeInstanceOf(HTMLButtonElement);
-    expect(getButton("Collect")).toBeInstanceOf(HTMLButtonElement);
+    expect(toolbar.getAttribute("title")).toBe("Bench");
+    expect(getButtonByAriaLabel(toolbar, "Move")).toBeInstanceOf(
+      HTMLButtonElement,
+    );
+    expect(getButtonByAriaLabel(toolbar, "Collect")).toBeInstanceOf(
+      HTMLButtonElement,
+    );
 
     await click(getButtonByAriaLabel(toolbar, "Cancel"));
+    await flushEffects();
+
+    expect(queryToolbar()).toBeNull();
+  });
+
+  it("clears the selection when the background is tapped", async () => {
+    const data = await getEstatePageData("en", "yu-e21", {
+      getProfileGroupId: async () => "engineering",
+      getGroupEarnedPoints: async () => 100000,
+    });
+    if (!data) throw new Error("Expected estate page data.");
+
+    const movableItem: EstateItemInstance = {
+      id: "bench-1",
+      definitionId: "bench",
+      x: 4,
+      y: 8,
+      rotation: 0,
+      placedAt: "2026-06-28T00:00:00.000Z",
+    };
+    const dataWithMovableItem = {
+      ...data,
+      initialSnapshot: {
+        ...data.initialSnapshot,
+        items: [...data.initialSnapshot.items, movableItem],
+      },
+    };
+
+    root = createRoot(container);
+    await act(async () => {
+      root?.render(
+        <I18nProvider locale="en" messages={enMessages}>
+          <EstateGameClient
+            data={dataWithMovableItem}
+            repository={new MemoryEstateRepository()}
+          />
+        </I18nProvider>,
+      );
+    });
+    await flushEffects();
+
+    await click(getButton("Select movable item"));
+    await flushEffects();
+    expect(queryToolbar()).not.toBeNull();
+
+    await click(getButton("Tap background"));
     await flushEffects();
 
     expect(queryToolbar()).toBeNull();
@@ -244,16 +303,18 @@ describe("EstateGameClient accessibility", () => {
 
     await click(getButton("Select movable item"));
     await flushEffects();
-    await click(getButton("Move"));
+    await click(getButtonByAriaLabel(document.body, "Move"));
     await flushEffects();
     await click(getButton("Choose move target"));
     await flushEffects();
 
     expect(getByTestId("bench-position").textContent).toBe("4,8");
     expect(getByTestId("estate-mode").textContent).toBe("moving");
-    expect(getButton("Confirm")).toBeInstanceOf(HTMLButtonElement);
+    expect(getButtonByAriaLabel(document.body, "Confirm")).toBeInstanceOf(
+      HTMLButtonElement,
+    );
 
-    await click(getButton("Confirm"));
+    await click(getButtonByAriaLabel(document.body, "Confirm"));
     await flushEffects();
 
     expect(getByTestId("bench-position").textContent).toBe("10,12");

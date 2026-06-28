@@ -1,7 +1,8 @@
 import type { ViewportSize, IsometricCamera } from "./camera";
 import { worldToCanvas } from "./camera";
+import type { IsometricTileMetrics } from "./projection";
 import { getCellsWorldBounds } from "./projection";
-import { getRenderFootprintCells } from "./render-order";
+import { getRenderFootprintCells, type RenderFootprintItem } from "./render-order";
 import type { EstateRenderScene } from "./renderer";
 
 export type EstateItemActionAnchor = {
@@ -17,6 +18,36 @@ type SelectedItemActionAnchorInput = {
   viewport: ViewportSize;
 };
 
+// Compute the screen anchor (top-center, viewport-relative) of any footprint
+// host — a placed item or a placement/move preview. Used so the contextual
+// controls can ride along with whatever the player is positioning.
+export function getFootprintActionAnchor(
+  footprintHost: RenderFootprintItem,
+  metrics: IsometricTileMetrics,
+  camera: IsometricCamera,
+  viewport: ViewportSize,
+): EstateItemActionAnchor {
+  const bounds = getCellsWorldBounds(
+    getRenderFootprintCells(footprintHost),
+    metrics,
+  );
+  const canvas = worldToCanvas(
+    {
+      x: bounds.minX + (bounds.maxX - bounds.minX) / 2,
+      y: bounds.minY,
+    },
+    camera,
+    viewport,
+  );
+
+  return {
+    x: canvas.x,
+    y: canvas.y,
+    viewportWidth: viewport.width,
+    viewportHeight: viewport.height,
+  };
+}
+
 export function getSelectedItemActionAnchor(
   scene: EstateRenderScene,
   input: SelectedItemActionAnchorInput,
@@ -26,23 +57,10 @@ export function getSelectedItemActionAnchor(
   const item = scene.items.find((candidate) => candidate.id === input.itemId);
   if (!item) return null;
 
-  const bounds = getCellsWorldBounds(
-    getRenderFootprintCells(item),
+  return getFootprintActionAnchor(
+    item,
     scene.metrics,
-  );
-  const canvas = worldToCanvas(
-    {
-      x: bounds.minX + (bounds.maxX - bounds.minX) / 2,
-      y: bounds.minY,
-    },
     input.camera,
     input.viewport,
   );
-
-  return {
-    x: canvas.x,
-    y: canvas.y,
-    viewportWidth: input.viewport.width,
-    viewportHeight: input.viewport.height,
-  };
 }

@@ -69,13 +69,15 @@ describe("ContextualItemActions", () => {
     document.body.replaceChildren();
   });
 
-  it("renders selected item actions near the provided anchor", async () => {
+  it("anchors the selected controls near the item", async () => {
     await renderActions();
 
     const toolbar = getToolbar();
 
-    expect(toolbar.style.left).toBe("184px");
-    expect(toolbar.style.top).toBe("112px");
+    // The cluster is anchored to the item, so it carries inline positioning
+    // derived from the anchor.
+    expect(toolbar.style.left).not.toBe("");
+    expect(toolbar.style.top).not.toBe("");
     expect(toolbar.getAttribute("aria-label")).toBe(
       estateCopy.selection.itemActions,
     );
@@ -104,23 +106,26 @@ describe("ContextualItemActions", () => {
     expect(queryToolbar()).toBeNull();
   });
 
-  it("shows the selected item name and current selection actions", async () => {
+  it("shows the selected item's actions as icon-only buttons", async () => {
     await renderActions();
 
     const toolbar = getToolbar();
 
-    expect(toolbar.textContent).toContain("Bench");
-    expect(toolbar.textContent).toContain("5, 7");
-    expect(toolbar.textContent).toContain("Move");
-    expect(toolbar.textContent).toContain("Collect");
-    expect(toolbar.textContent).not.toContain("Remove");
+    // Simplified to icons: the item name is a tooltip, not visible body text,
+    // and the coordinate readout is gone.
+    expect(toolbar.getAttribute("title")).toBe("Bench");
+    expect(toolbar.textContent).toBe("");
+    expect(getButtonByAriaLabel("Move")).toBeInstanceOf(HTMLButtonElement);
+    expect(getButtonByAriaLabel("Rotate")).toBeInstanceOf(HTMLButtonElement);
+    expect(getButtonByAriaLabel("Collect")).toBeInstanceOf(HTMLButtonElement);
+    expect(getButtonByAriaLabel("Cancel")).toBeInstanceOf(HTMLButtonElement);
   });
 
   it("invokes the move handler from the Move action", async () => {
     const onMove = vi.fn();
     await renderActions({ onMove });
 
-    await click(getButton("Move"));
+    await click(getButtonByAriaLabel("Move"));
 
     expect(onMove).toHaveBeenCalledTimes(1);
   });
@@ -128,25 +133,20 @@ describe("ContextualItemActions", () => {
   it("disables item-changing actions for protected items", async () => {
     await renderActions({ protectedItem: true });
 
-    expect(getButton("Move").disabled).toBe(true);
-    expect(getButton("Collect").disabled).toBe(true);
+    expect(getButtonByAriaLabel("Move").disabled).toBe(true);
+    expect(getButtonByAriaLabel("Collect").disabled).toBe(true);
   });
 
-  it("shows move-target status and only rotate/cancel actions while moving", async () => {
+  it("shows only rotate and cancel while choosing a move target", async () => {
     await renderActions({
       mode: { type: "moving", instanceId: "bench-1", rotation: 0 },
     });
 
-    const toolbar = getToolbar();
-
-    expect(toolbar.textContent).toContain(
-      estateCopy.selection.choosingMoveTarget,
-    );
-    expect(toolbar.textContent).not.toContain("Move");
-    expect(toolbar.textContent).not.toContain("Collect");
-    expect(toolbar.textContent).not.toContain("Confirm");
-    expect(getButton("Rotate")).toBeInstanceOf(HTMLButtonElement);
+    expect(getButtonByAriaLabel("Rotate")).toBeInstanceOf(HTMLButtonElement);
     expect(getButtonByAriaLabel("Cancel")).toBeInstanceOf(HTMLButtonElement);
+    expect(queryButtonByAriaLabel("Move")).toBeNull();
+    expect(queryButtonByAriaLabel("Collect")).toBeNull();
+    expect(queryButtonByAriaLabel("Confirm")).toBeNull();
   });
 
   it("shows a confirm action after a move target is selected", async () => {
@@ -161,16 +161,33 @@ describe("ContextualItemActions", () => {
       onConfirmMove,
     });
 
-    const toolbar = getToolbar();
+    expect(getButtonByAriaLabel("Confirm")).toBeInstanceOf(HTMLButtonElement);
+    expect(getButtonByAriaLabel("Rotate")).toBeInstanceOf(HTMLButtonElement);
+    expect(queryButtonByAriaLabel("Collect")).toBeNull();
 
-    expect(toolbar.textContent).toContain("Move target: 9, 11");
-    expect(getButton("Confirm")).toBeInstanceOf(HTMLButtonElement);
-    expect(getButton("Rotate")).toBeInstanceOf(HTMLButtonElement);
-    expect(toolbar.textContent).not.toContain("Collect");
-
-    await click(getButton("Confirm"));
+    await click(getButtonByAriaLabel("Confirm"));
 
     expect(onConfirmMove).toHaveBeenCalledTimes(1);
+  });
+
+  it("anchors the moving controls near the item, not a bottom bar", async () => {
+    await renderActions({
+      mode: { type: "moving", instanceId: "bench-1", rotation: 0 },
+    });
+
+    const toolbar = getToolbar();
+
+    expect(toolbar.style.left).not.toBe("");
+    expect(toolbar.style.top).not.toBe("");
+  });
+
+  it("renders no moving controls without an anchor", async () => {
+    await renderActions({
+      anchor: null,
+      mode: { type: "moving", instanceId: "bench-1", rotation: 0 },
+    });
+
+    expect(queryToolbar()).toBeNull();
   });
 });
 
@@ -236,10 +253,8 @@ function queryToolbar(): HTMLElement | null {
   return container.querySelector<HTMLElement>('[role="toolbar"]');
 }
 
-function getButton(label: string): HTMLButtonElement {
-  const button = [...container.querySelectorAll("button")].find(
-    (candidate) => candidate.textContent?.includes(label),
-  );
+function getButtonByAriaLabel(label: string): HTMLButtonElement {
+  const button = queryButtonByAriaLabel(label);
 
   if (!(button instanceof HTMLButtonElement)) {
     throw new Error(`Expected ${label} button.`);
@@ -248,16 +263,10 @@ function getButton(label: string): HTMLButtonElement {
   return button;
 }
 
-function getButtonByAriaLabel(label: string): HTMLButtonElement {
-  const button = container.querySelector<HTMLButtonElement>(
+function queryButtonByAriaLabel(label: string): HTMLButtonElement | null {
+  return container.querySelector<HTMLButtonElement>(
     `button[aria-label="${label}"]`,
   );
-
-  if (!(button instanceof HTMLButtonElement)) {
-    throw new Error(`Expected ${label} button.`);
-  }
-
-  return button;
 }
 
 async function click(element: HTMLElement) {

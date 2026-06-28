@@ -6,7 +6,10 @@ import {
 import { estateExpansionCatalog } from "../data/estate-expansion-catalog";
 import { createInitialEstateSnapshot } from "../domain/commands";
 import type { EstateSnapshot } from "../domain/types";
-import { getSelectedItemActionAnchor } from "../isometric/action-anchor";
+import {
+  getFootprintActionAnchor,
+  getSelectedItemActionAnchor,
+} from "../isometric/action-anchor";
 import { createEstateRenderScene } from "../isometric/renderer";
 
 describe("selected estate item action anchor", () => {
@@ -54,6 +57,37 @@ describe("selected estate item action anchor", () => {
         viewport: { width: 720, height: 360 },
       }),
     ).toBeNull();
+  });
+
+  it("anchors to a footprint host such as a move preview", () => {
+    const camera = { x: 0, y: 0, zoom: 1 };
+    const viewport = { width: 720, height: 360 };
+
+    // A host occupying the same cell/footprint as the selected item resolves to
+    // the same anchor.
+    const itemAnchor = getSelectedItemActionAnchor(scene, {
+      itemId: "bench-1",
+      camera,
+      viewport,
+    });
+    const matchingPreviewAnchor = getFootprintActionAnchor(
+      { id: "__move-preview__", x: 2, y: 3, rotation: 0, footprintWidth: 2, footprintHeight: 1 },
+      scene.metrics,
+      camera,
+      viewport,
+    );
+    expect(matchingPreviewAnchor).toEqual(itemAnchor);
+
+    // A preview at a different cell follows that cell (different anchor).
+    const movedPreviewAnchor = getFootprintActionAnchor(
+      { id: "__move-preview__", x: 8, y: 9, rotation: 0, footprintWidth: 2, footprintHeight: 1 },
+      scene.metrics,
+      camera,
+      viewport,
+    );
+    expect(movedPreviewAnchor).not.toEqual(itemAnchor);
+    expect(movedPreviewAnchor.viewportWidth).toBe(720);
+    expect(movedPreviewAnchor.viewportHeight).toBe(360);
   });
 
   it("returns null when no selected item id is provided", () => {

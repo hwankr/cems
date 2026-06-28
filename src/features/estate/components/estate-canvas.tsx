@@ -46,6 +46,7 @@ import {
   type EstateRenderScene,
 } from "../isometric/renderer";
 import {
+  getFootprintActionAnchor,
   getSelectedItemActionAnchor,
   type EstateItemActionAnchor,
 } from "../isometric/action-anchor";
@@ -72,6 +73,7 @@ export type EstateCanvasProps = {
   onGroundPaintCell?: (cell: EstateGridCell) => void;
   onGroundPaintEnd?: () => void;
   onItemSelect?: (instanceId: string) => void;
+  onBackgroundTap?: () => void;
   onSelectedItemAnchorChange?: (anchor: EstateItemActionAnchor | null) => void;
 };
 
@@ -102,6 +104,14 @@ type PendingCanvasPress =
         type: "open-locked-parcel";
         parcelId: string;
       };
+    }
+  | {
+      pointerId: number;
+      start: TouchPoint;
+      last: TouchPoint;
+      action: {
+        type: "clear-selection";
+      };
     };
 
 const itemDefinitions = [...baseEstateItemDefinitions, ...estateItemCatalog];
@@ -127,6 +137,7 @@ export function EstateCanvas({
   onGroundPaintCell,
   onGroundPaintEnd,
   onItemSelect,
+  onBackgroundTap,
   onSelectedItemAnchorChange,
 }: EstateCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -307,13 +318,25 @@ export function EstateCanvas({
 
     if (!hasFitInitialViewportRef.current) return;
 
-    const nextAnchor = selectedItemId
-      ? getSelectedItemActionAnchor(scene, {
-          itemId: selectedItemId,
+    // While moving, ride along with the move preview (the ghost at the target
+    // or hovered cell) instead of the item's original spot, so the controls sit
+    // where the item is being placed.
+    const movePreviewHost =
+      mode.type === "moving" && placementPreview ? placementPreview : null;
+    const nextAnchor = movePreviewHost
+      ? getFootprintActionAnchor(
+          movePreviewHost,
+          scene.metrics,
           camera,
           viewport,
-        })
-      : null;
+        )
+      : selectedItemId
+        ? getSelectedItemActionAnchor(scene, {
+            itemId: selectedItemId,
+            camera,
+            viewport,
+          })
+        : null;
     const lastEmission = lastSelectedItemAnchorRef.current;
 
     if (
@@ -331,7 +354,9 @@ export function EstateCanvas({
     onSelectedItemAnchorChange(nextAnchor);
   }, [
     camera,
+    mode,
     onSelectedItemAnchorChange,
+    placementPreview,
     scene,
     selectedItemId,
     viewport,
@@ -678,7 +703,22 @@ export function EstateCanvas({
       return;
     }
 
-    if (event.button === 0 || event.button === 1) {
+    if (event.button === 0) {
+      // An unmoved tap on empty ground/background clears the current selection;
+      // a drag from here converts to a pan (handlePointerMove).
+      event.currentTarget.setPointerCapture(event.pointerId);
+      pendingCanvasPressRef.current = {
+        pointerId: event.pointerId,
+        start: point,
+        last: point,
+        action: {
+          type: "clear-selection",
+        },
+      };
+      return;
+    }
+
+    if (event.button === 1) {
       event.currentTarget.setPointerCapture(event.pointerId);
       pointerPanRef.current = {
         pointerId: event.pointerId,
@@ -905,7 +945,12 @@ export function EstateCanvas({
       return;
     }
 
-    onLockedParcelClick?.(pendingPress.action.parcelId);
+    if (pendingPress.action.type === "open-locked-parcel") {
+      onLockedParcelClick?.(pendingPress.action.parcelId);
+      return;
+    }
+
+    onBackgroundTap?.();
   }
 }
 

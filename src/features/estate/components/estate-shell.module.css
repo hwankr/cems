@@ -125,26 +125,33 @@
   background: var(--es-accent-soft);
 }
 
-.contextMenu {
+/*
+ * Contextual item controls: a small icon cluster anchored just above the
+ * selected/moving item. The selected (pre-move) state is fully opaque; only
+ * while moving does it turn semi-transparent (fading back to full opacity on
+ * hover/focus) so it barely covers the spot where the item is being placed.
+ * Taps land only on its icons; the rest of the canvas stays interactive.
+ */
+.contextCluster {
   position: absolute;
   z-index: 45;
-  width: min(17rem, calc(100vw - 1rem));
   border: 1px solid var(--es-line);
-  background: var(--es-panel-strong);
-  box-shadow: var(--es-shadow);
-  backdrop-filter: blur(14px) saturate(130%);
+  background: var(--es-panel);
+  box-shadow: var(--es-shadow-sm);
+  backdrop-filter: blur(10px) saturate(120%);
+  opacity: 1;
+  transition: opacity 150ms ease;
 }
 
-.contextMenuMoving {
-  border-color: color-mix(in srgb, var(--es-gold) 42%, var(--es-line));
+.contextCluster:hover,
+.contextCluster:focus-within {
+  opacity: 1;
 }
 
-.contextMenuTitle {
-  color: var(--es-ink);
-}
-
-.contextMenuMeta {
-  color: var(--es-ink-subtle);
+.contextClusterMoving {
+  border-color: color-mix(in srgb, var(--es-gold) 50%, var(--es-line));
+  background: color-mix(in srgb, var(--es-gold-soft) 65%, var(--es-panel));
+  opacity: 0.62;
 }
 
 .contextAction {

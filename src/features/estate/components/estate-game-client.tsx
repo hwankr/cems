@@ -678,6 +678,12 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     setMode({ type: "selected", instanceId });
   }
 
+  function handleClearSelection() {
+    setMode((current) =>
+      current.type === "selected" ? { type: "view" } : current,
+    );
+  }
+
   function handleMoveSelected() {
     if (!selectedInstance || !selectedDefinition || selectedIsProtected) {
       showMessage(copy.commandFailures["protected-item"]);
@@ -728,6 +734,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
           onGroundPaintStart={handleGroundPaintStart}
           onGroundPaintCell={handleGroundPaintCell}
           onItemSelect={handleItemSelect}
+          onBackgroundTap={handleClearSelection}
           onSelectedItemAnchorChange={setSelectedActionAnchor}
         />
       </div>
