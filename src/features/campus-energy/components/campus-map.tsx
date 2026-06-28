@@ -17,6 +17,7 @@ import {
   getEnergySubjectCenter,
 } from "../domain/geojson";
 import type { EnergyComparison, EnergySubject, School } from "../domain/types";
+import type { SubjectAwardTiers } from "@/features/leagues/domain/types";
 import {
   ENERGY_HEAT_PAINT,
   ENERGY_SUBJECT_EXTRUSION_PAINT,
@@ -101,6 +102,7 @@ type CampusMapProps = {
   school: School;
   subjects: EnergySubject[];
   comparisons: EnergyComparison[];
+  subjectAwardTiers?: SubjectAwardTiers;
   selectedSubjectId: string;
   onSelectSubject: (subjectId: string) => void;
   mapStyleUrl?: string;
@@ -159,6 +161,7 @@ export const CampusMap = forwardRef<CampusMapHandle, CampusMapProps>(
       school,
       subjects,
       comparisons,
+      subjectAwardTiers,
       selectedSubjectId,
       onSelectSubject,
       mapStyleUrl = DEFAULT_MAP_STYLE,
@@ -180,8 +183,9 @@ export const CampusMap = forwardRef<CampusMapHandle, CampusMapProps>(
           subjects,
           comparisons,
           selectedSubjectId,
+          subjectAwardTiers,
         ),
-      [comparisons, selectedSubjectId, subjects],
+      [comparisons, selectedSubjectId, subjects, subjectAwardTiers],
     );
     const heatCollection = useMemo(
       () => buildHeatPointCollection(subjects, comparisons),

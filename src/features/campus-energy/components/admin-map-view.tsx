@@ -6,6 +6,7 @@ import { useI18n } from "@/i18n/client";
 import { buildBuildingDetail } from "../domain/building-detail";
 import { summarizeEnergy } from "../domain/energy";
 import type { SubjectContributorRankings } from "@/features/account/domain/contributor-ranking";
+import type { SubjectAwardTiers } from "@/features/leagues/domain/types";
 import type { EnergyComparison, EnergySubject, School } from "../domain/types";
 import { BuildingPopup } from "./building-popup";
 import { BuildingRankPanel } from "./building-rank-panel";
@@ -28,6 +29,7 @@ type AdminMapViewProps = {
   subjects: EnergySubject[];
   comparisons: EnergyComparison[];
   contributorRankings: SubjectContributorRankings;
+  subjectAwardTiers: SubjectAwardTiers;
   selectedSubjectId: string;
   onSelectSubject: (subjectId: string) => void;
 };
@@ -39,6 +41,7 @@ export function AdminMapView({
   subjects,
   comparisons,
   contributorRankings,
+  subjectAwardTiers,
   selectedSubjectId,
   onSelectSubject,
 }: AdminMapViewProps) {
@@ -77,6 +80,7 @@ export function AdminMapView({
         school={school}
         subjects={subjects}
         comparisons={comparisons}
+        subjectAwardTiers={subjectAwardTiers}
         selectedSubjectId={selectedSubjectId}
         onSelectSubject={onSelectSubject}
         mapStyleUrl={STANDARD_MAP_STYLE}

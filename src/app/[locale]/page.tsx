@@ -7,6 +7,7 @@ import {
   getGroupEstateSubjectId,
   getSubjectContributorRankings,
 } from "@/features/account/data/account-dal";
+import { getSubjectAwardTiers } from "@/features/leagues/data/leagues-dal";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
 
@@ -33,11 +34,13 @@ export default async function Home({ params }: HomeProps) {
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/onboarding`);
 
-  const [messages, orgSubjectId, contributorRankings] = await Promise.all([
-    getMessages(locale),
-    getGroupEstateSubjectId(profile.groupId),
-    getSubjectContributorRankings(),
-  ]);
+  const [messages, orgSubjectId, contributorRankings, subjectAwardTiers] =
+    await Promise.all([
+      getMessages(locale),
+      getGroupEstateSubjectId(profile.groupId),
+      getSubjectContributorRankings(),
+      getSubjectAwardTiers(),
+    ]);
 
   return (
     <CampusEnergyApp
@@ -45,6 +48,7 @@ export default async function Home({ params }: HomeProps) {
       mapboxToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN ?? ""}
       messages={messages}
       contributorRankings={contributorRankings}
+      subjectAwardTiers={subjectAwardTiers}
       account={{ orgSubjectId }}
     />
   );

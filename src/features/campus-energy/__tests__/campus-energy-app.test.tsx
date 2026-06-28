@@ -75,6 +75,7 @@ async function renderCampusEnergyApp(
         mapboxToken=""
         messages={koMessages}
         contributorRankings={{}}
+        subjectAwardTiers={{}}
         account={account(orgSubjectId)}
       />,
     ),

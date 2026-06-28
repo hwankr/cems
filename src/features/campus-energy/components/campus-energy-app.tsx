@@ -5,6 +5,7 @@ import { useI18n } from "@/i18n/client";
 import type { Locale } from "@/i18n/config";
 import type { Messages } from "@/i18n/messages/types";
 import type { SubjectContributorRankings } from "@/features/account/domain/contributor-ranking";
+import type { SubjectAwardTiers } from "@/features/leagues/domain/types";
 import { getDemoEnergyComparisons } from "../data/demo-campus";
 import { localizeDemoCampus } from "../data/localized-demo-campus";
 import { resolveInitialMainSubjectId } from "../domain/initial-subject";
@@ -20,6 +21,7 @@ type CampusEnergyAppProps = {
   mapboxToken: string;
   messages: Messages;
   contributorRankings: SubjectContributorRankings;
+  subjectAwardTiers: SubjectAwardTiers;
   account: CampusEnergyAccount;
 };
 
@@ -28,6 +30,7 @@ export function CampusEnergyApp({
   mapboxToken,
   messages,
   contributorRankings,
+  subjectAwardTiers,
   account,
 }: CampusEnergyAppProps) {
   return (
@@ -35,6 +38,7 @@ export function CampusEnergyApp({
       <CampusEnergyShell
         mapboxToken={mapboxToken}
         contributorRankings={contributorRankings}
+        subjectAwardTiers={subjectAwardTiers}
         account={account}
       />
     </CampusEnergyProviders>
@@ -44,10 +48,12 @@ export function CampusEnergyApp({
 function CampusEnergyShell({
   mapboxToken,
   contributorRankings,
+  subjectAwardTiers,
   account,
 }: {
   mapboxToken: string;
   contributorRankings: SubjectContributorRankings;
+  subjectAwardTiers: SubjectAwardTiers;
   account: CampusEnergyAccount;
 }) {
   const { locale, messages } = useI18n();
@@ -69,6 +75,7 @@ function CampusEnergyShell({
         subjects={localizedDemo.subjects}
         comparisons={comparisons}
         contributorRankings={contributorRankings}
+        subjectAwardTiers={subjectAwardTiers}
         selectedSubjectId={selectedSubjectId}
         onSelectSubject={setSelectedSubjectId}
       />
