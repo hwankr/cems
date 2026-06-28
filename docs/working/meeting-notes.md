@@ -2,6 +2,17 @@
 
 User-stated decisions and verified working facts are recorded here by date. Do not treat unstated product, architecture, ML, or deployment ideas as confirmed.
 
+## 2026-06-29
+
+### Representative demo account reset
+
+- The user said the demo password was forgotten and asked to remove the multiple demo accounts, then recreate one clean representative demo account.
+- App code now exposes one demo entry card only: `complete-demo` / "대표 데모 계정". The old scenario keys `engineering-leader`, `humanities-leader`, and `estate-builder` are no longer accepted.
+- Demo runtime config was first simplified, then removed after the user clarified this is for presentation deployment rather than real production. The server-only demo credential is now hardcoded to `demo@cems.kr` / `CemsDemo!2026`.
+- Live Supabase project `cems` now has only `demo@cems.kr` among the demo/test emails checked. The old `guest*@cems.demo` accounts and `it@naver.com` test/demo account were removed.
+- The representative account has profile `대표 데모`, group `student-services`, 1,000,000 demo points, and gold demo awards for the student and student-services team surfaces. Auth login was verified by direct Supabase password-token API.
+- The operational SQL record is `docs/superpowers/migrations/2026-06-29-reset-representative-demo-account.sql`; it intentionally does not contain the real password.
+
 ## 2026-06-28
 
 ### 로그인·온보딩 화면 잔디 정원 리디자인 (+ main 머지·푸시)

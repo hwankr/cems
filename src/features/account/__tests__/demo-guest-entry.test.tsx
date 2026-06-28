@@ -30,8 +30,8 @@ describe("DemoGuestEntry", () => {
     document.body.replaceChildren();
   });
 
-  it("renders three guest scenario buttons without exposing emails", async () => {
-    const guests = getDemoGuestDisplayPersonas({ singleAccount: false });
+  it("renders one representative demo account without exposing old demo emails", async () => {
+    const guests = getDemoGuestDisplayPersonas();
 
     root = createRoot(container);
     await act(async () => {
@@ -42,30 +42,13 @@ describe("DemoGuestEntry", () => {
       );
     });
 
-    expect(container.textContent).toContain("데모로 바로 입장");
-    expect(container.textContent).toContain("공과대학 1위");
-    expect(container.textContent).toContain("문과대학 1위");
-    expect(container.textContent).toContain("영지 꾸미기 체험");
-    expect(container.textContent).not.toContain("@cems.demo");
-    expect(container.querySelectorAll("form")).toHaveLength(3);
-    expect(container.querySelectorAll('input[name="next"]')).toHaveLength(3);
-  });
-
-  it("can render a single complete demo account when configured", async () => {
-    const guests = getDemoGuestDisplayPersonas({ singleAccount: true });
-
-    root = createRoot(container);
-    await act(async () => {
-      root!.render(
-        <I18nProvider locale="ko" messages={koMessages}>
-          <DemoGuestEntryClient guests={guests} />
-        </I18nProvider>,
-      );
-    });
-
-    expect(container.textContent).toContain("완성 데모 계정");
+    expect(container.textContent).toContain("대표 데모 계정");
+    expect(container.textContent).not.toContain("공과대");
+    expect(container.textContent).not.toContain("인문대");
+    expect(container.textContent).not.toContain("@cems");
     expect(container.textContent).not.toContain("@cems.demo");
     expect(container.textContent).not.toContain("it@naver.com");
     expect(container.querySelectorAll("form")).toHaveLength(1);
+    expect(container.querySelectorAll('input[name="next"]')).toHaveLength(1);
   });
 });

@@ -11,12 +11,7 @@ import { createServerSupabaseClient } from "../supabase/server";
 
 export type AuthActionState = { error: string | null };
 export type DemoGuestActionState = {
-  error:
-    | null
-    | "disabled"
-    | "missing-password"
-    | "invalid-guest"
-    | "failed";
+  error: null | "invalid-guest" | "failed";
 };
 
 function readCredentials(formData: FormData) {

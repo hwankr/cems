@@ -55,31 +55,18 @@ export const enMessages = {
       memberCount: "{count} members",
     },
     demoGuest: {
-      title: "Enter demo instantly",
-      description: "Use a presentation account without typing credentials.",
+      title: "Enter demo",
+      description:
+        "Start with the representative demo account without typing credentials.",
       enter: "Enter",
       entering: "Entering…",
       personas: {
-        "engineering-leader": {
-          title: "Engineering #1",
-          meta: "Contribution ranking · Engineering Hall",
-        },
-        "humanities-leader": {
-          title: "Humanities #1",
-          meta: "Contribution ranking · Humanities Hall",
-        },
-        "estate-builder": {
-          title: "Estate builder",
-          meta: "Student Services · Central Library estate",
-        },
         "complete-demo": {
-          title: "Complete demo account",
-          meta: "Full presentation flow",
+          title: "Representative demo account",
+          meta: "Student Services · Central Library estate",
         },
       },
       errors: {
-        disabled: "Demo entry is currently disabled.",
-        "missing-password": "The demo password environment variable is missing.",
         "invalid-guest": "This demo account is not available.",
         failed: "Failed to enter with the demo account.",
       },

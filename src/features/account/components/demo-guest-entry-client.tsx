@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, Sparkles, Trophy } from "lucide-react";
+import { Building2 } from "lucide-react";
 import { useActionState } from "react";
 import { useI18n } from "@/i18n/client";
 import {
@@ -13,8 +13,7 @@ import styles from "./auth-shell.module.css";
 const initialState: DemoGuestActionState = { error: null };
 
 function DemoIcon({ guest }: { guest: DemoGuestPersona }) {
-  if (guest.icon === "trophy") return <Trophy aria-hidden="true" />;
-  if (guest.icon === "sparkles") return <Sparkles aria-hidden="true" />;
+  void guest;
   return <Building2 aria-hidden="true" />;
 }
 
