@@ -1,6 +1,7 @@
 "use client";
 
 import { Sprout } from "lucide-react";
+import type { ReactNode } from "react";
 import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
@@ -9,9 +10,11 @@ import styles from "./profile-surface.module.css";
 export function EstateContribution({
   personalPoints,
   groupPoolPoints,
+  action,
 }: {
   personalPoints: number;
   groupPoolPoints: number;
+  action?: ReactNode;
 }) {
   const { locale, messages } = useI18n();
   const copy = messages.me.contribution;
@@ -70,6 +73,7 @@ export function EstateContribution({
           </p>
         </dl>
       </div>
+      {action ? <div className="mt-3">{action}</div> : null}
     </section>
   );
 }
