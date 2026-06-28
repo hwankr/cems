@@ -1,10 +1,15 @@
-import type { QuarterTurn } from "./types";
+import type { EstateGridCell, QuarterTurn } from "./types";
 
 export type EstateEditorMode =
   | { type: "view" }
   | { type: "placing"; definitionId: string; rotation: QuarterTurn }
   | { type: "selected"; instanceId: string }
-  | { type: "moving"; instanceId: string; rotation: QuarterTurn }
+  | {
+      type: "moving";
+      instanceId: string;
+      rotation: QuarterTurn;
+      targetCell?: EstateGridCell;
+    }
   | { type: "painting-ground"; definitionId: string }
   | { type: "expanding"; parcelId?: string };
 

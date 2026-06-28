@@ -125,6 +125,47 @@
   background: var(--es-accent-soft);
 }
 
+.contextMenu {
+  position: absolute;
+  z-index: 45;
+  width: min(17rem, calc(100vw - 1rem));
+  border: 1px solid var(--es-line);
+  background: var(--es-panel-strong);
+  box-shadow: var(--es-shadow);
+  backdrop-filter: blur(14px) saturate(130%);
+}
+
+.contextMenuMoving {
+  border-color: color-mix(in srgb, var(--es-gold) 42%, var(--es-line));
+}
+
+.contextMenuTitle {
+  color: var(--es-ink);
+}
+
+.contextMenuMeta {
+  color: var(--es-ink-subtle);
+}
+
+.contextAction {
+  color: var(--es-ink-muted);
+  transition:
+    background 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.contextAction:hover:not(:disabled) {
+  background: var(--es-accent-soft);
+  color: var(--es-accent-strong);
+  transform: translateY(-1px);
+}
+
+.contextAction:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
 /* Buttons. */
 .primaryBtn {
   background: var(--es-accent);

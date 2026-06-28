@@ -329,6 +329,180 @@ describe("EstateCanvas", () => {
 
     await act(async () => root.unmount());
   });
+
+  it("emits a screen anchor for the selected estate item", async () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const onSelectedItemAnchorChange = vi.fn();
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          selectedItemId="yu-e21:landmark"
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="4 placed objects, 1 unlocked parcel, and 6 ground tiles."
+          controls={{
+            assetsLoading: "Estate assets loading",
+            fitView: "Fit view",
+            zoomIn: "Zoom in",
+            zoomOut: "Zoom out",
+          }}
+          onSelectedItemAnchorChange={onSelectedItemAnchorChange}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+
+    expect(onSelectedItemAnchorChange).toHaveBeenCalledTimes(1);
+    expect(onSelectedItemAnchorChange).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        viewportWidth: 1,
+        viewportHeight: 1,
+      }),
+    );
+    expect(onSelectedItemAnchorChange).toHaveBeenLastCalledWith({
+      x: expect.any(Number),
+      y: expect.any(Number),
+      viewportWidth: 720,
+      viewportHeight: 360,
+    });
+
+    await act(async () => root.unmount());
+  });
+
+  it("emits null once when no estate item is selected", async () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const onSelectedItemAnchorChange = vi.fn();
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="4 placed objects, 1 unlocked parcel, and 6 ground tiles."
+          controls={{
+            assetsLoading: "Estate assets loading",
+            fitView: "Fit view",
+            zoomIn: "Zoom in",
+            zoomOut: "Zoom out",
+          }}
+          onSelectedItemAnchorChange={onSelectedItemAnchorChange}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+
+    expect(onSelectedItemAnchorChange).toHaveBeenCalledTimes(1);
+    expect(onSelectedItemAnchorChange).toHaveBeenLastCalledWith(null);
+
+    await flushAnimationFrames();
+    expect(onSelectedItemAnchorChange).toHaveBeenCalledTimes(1);
+
+    await act(async () => root.unmount());
+  });
+
+  it("emits null when the selected estate item is cleared", async () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const onSelectedItemAnchorChange = vi.fn();
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+    const controls = {
+      assetsLoading: "Estate assets loading",
+      fitView: "Fit view",
+      zoomIn: "Zoom in",
+      zoomOut: "Zoom out",
+    };
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          selectedItemId="yu-e21:landmark"
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="4 placed objects, 1 unlocked parcel, and 6 ground tiles."
+          controls={controls}
+          onSelectedItemAnchorChange={onSelectedItemAnchorChange}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+    expect(onSelectedItemAnchorChange).toHaveBeenLastCalledWith({
+      x: expect.any(Number),
+      y: expect.any(Number),
+      viewportWidth: 720,
+      viewportHeight: 360,
+    });
+
+    onSelectedItemAnchorChange.mockClear();
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          selectedItemId={null}
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="4 placed objects, 1 unlocked parcel, and 6 ground tiles."
+          controls={controls}
+          onSelectedItemAnchorChange={onSelectedItemAnchorChange}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+
+    expect(onSelectedItemAnchorChange).toHaveBeenCalledTimes(1);
+    expect(onSelectedItemAnchorChange).toHaveBeenLastCalledWith(null);
+
+    await flushAnimationFrames();
+    expect(onSelectedItemAnchorChange).toHaveBeenCalledTimes(1);
+
+    await act(async () => root.unmount());
+  });
+
+  it("does not re-emit an unchanged selected item anchor for hover-only scene changes", async () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const onSelectedItemAnchorChange = vi.fn();
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          selectedItemId="yu-e21:landmark"
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="4 placed objects, 1 unlocked parcel, and 6 ground tiles."
+          controls={{
+            assetsLoading: "Estate assets loading",
+            fitView: "Fit view",
+            zoomIn: "Zoom in",
+            zoomOut: "Zoom out",
+          }}
+          onSelectedItemAnchorChange={onSelectedItemAnchorChange}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+    onSelectedItemAnchorChange.mockClear();
+
+    await dispatchPointer(
+      getCanvas(),
+      "pointermove",
+      getInitialCanvasPointForCell(snapshot, { x: 0, y: 0 }),
+    );
+    await flushAnimationFrames();
+
+    expect(onSelectedItemAnchorChange).not.toHaveBeenCalled();
+
+    await act(async () => root.unmount());
+  });
 });
 
 async function flushAnimationFrames() {

@@ -45,6 +45,10 @@ import {
   getSceneUnlockedWorldBounds,
   type EstateRenderScene,
 } from "../isometric/renderer";
+import {
+  getSelectedItemActionAnchor,
+  type EstateItemActionAnchor,
+} from "../isometric/action-anchor";
 
 export type EstateCanvasProps = {
   snapshot: EstateSnapshot;
@@ -68,6 +72,7 @@ export type EstateCanvasProps = {
   onGroundPaintCell?: (cell: EstateGridCell) => void;
   onGroundPaintEnd?: () => void;
   onItemSelect?: (instanceId: string) => void;
+  onSelectedItemAnchorChange?: (anchor: EstateItemActionAnchor | null) => void;
 };
 
 type CanvasViewport = ViewportSize & {
@@ -122,6 +127,7 @@ export function EstateCanvas({
   onGroundPaintCell,
   onGroundPaintEnd,
   onItemSelect,
+  onSelectedItemAnchorChange,
 }: EstateCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -156,9 +162,9 @@ export function EstateCanvas({
     );
 
   const placementPreview = useMemo(() => {
-    if (!hoverCell) return null;
-
     if (mode.type === "placing") {
+      if (!hoverCell) return null;
+
       const definition = itemDefinitions.find(
         (candidate) => candidate.id === mode.definitionId,
       );
@@ -189,6 +195,9 @@ export function EstateCanvas({
     }
 
     if (mode.type === "moving") {
+      const previewCell = mode.targetCell ?? hoverCell;
+      if (!previewCell) return null;
+
       const item = snapshot.items.find(
         (candidate) => candidate.id === mode.instanceId,
       );
@@ -201,8 +210,8 @@ export function EstateCanvas({
         snapshot,
         {
           definitionId: definition.id,
-          x: hoverCell.x,
-          y: hoverCell.y,
+          x: previewCell.x,
+          y: previewCell.y,
           rotation: mode.rotation,
         },
         itemDefinitions,
@@ -213,8 +222,8 @@ export function EstateCanvas({
       return {
         id: "__move-preview__",
         assetId: definition.assetId,
-        x: hoverCell.x,
-        y: hoverCell.y,
+        x: previewCell.x,
+        y: previewCell.y,
         rotation: mode.rotation,
         footprintWidth: definition.footprintWidth,
         footprintHeight: definition.footprintHeight,
@@ -252,6 +261,15 @@ export function EstateCanvas({
   const viewportRef = useRef<CanvasViewport>(viewport);
   const assetLoadSnapshotRef =
     useRef<EstateAssetLoadSnapshot>(assetLoadSnapshot);
+  const lastSelectedItemAnchorRef = useRef<{
+    anchor: EstateItemActionAnchor | null;
+    hasEmitted: boolean;
+    onChange: ((anchor: EstateItemActionAnchor | null) => void) | null;
+  }>({
+    anchor: null,
+    hasEmitted: false,
+    onChange: null,
+  });
 
   useEffect(() => {
     sceneRef.current = scene;
@@ -268,6 +286,56 @@ export function EstateCanvas({
   useEffect(() => {
     assetLoadSnapshotRef.current = assetLoadSnapshot;
   }, [assetLoadSnapshot]);
+
+  useEffect(() => {
+    if (!onSelectedItemAnchorChange) {
+      lastSelectedItemAnchorRef.current = {
+        anchor: null,
+        hasEmitted: false,
+        onChange: null,
+      };
+      return;
+    }
+
+    if (lastSelectedItemAnchorRef.current.onChange !== onSelectedItemAnchorChange) {
+      lastSelectedItemAnchorRef.current = {
+        anchor: null,
+        hasEmitted: false,
+        onChange: onSelectedItemAnchorChange,
+      };
+    }
+
+    if (!hasFitInitialViewportRef.current) return;
+
+    const nextAnchor = selectedItemId
+      ? getSelectedItemActionAnchor(scene, {
+          itemId: selectedItemId,
+          camera,
+          viewport,
+        })
+      : null;
+    const lastEmission = lastSelectedItemAnchorRef.current;
+
+    if (
+      lastEmission.hasEmitted &&
+      areEstateItemActionAnchorsEqual(lastEmission.anchor, nextAnchor)
+    ) {
+      return;
+    }
+
+    lastSelectedItemAnchorRef.current = {
+      anchor: nextAnchor,
+      hasEmitted: true,
+      onChange: onSelectedItemAnchorChange,
+    };
+    onSelectedItemAnchorChange(nextAnchor);
+  }, [
+    camera,
+    onSelectedItemAnchorChange,
+    scene,
+    selectedItemId,
+    viewport,
+  ]);
 
   const drawLatest = useCallback(() => {
     frameRef.current = null;
@@ -938,6 +1006,21 @@ function getPinchGesture(
 
 function isPastTapMovementTolerance(start: TouchPoint, end: TouchPoint) {
   return Math.hypot(end.x - start.x, end.y - start.y) > tapMovementTolerancePx;
+}
+
+function areEstateItemActionAnchorsEqual(
+  left: EstateItemActionAnchor | null,
+  right: EstateItemActionAnchor | null,
+) {
+  if (left === right) return true;
+  if (!left || !right) return false;
+
+  return (
+    Object.is(left.x, right.x) &&
+    Object.is(left.y, right.y) &&
+    Object.is(left.viewportWidth, right.viewportWidth) &&
+    Object.is(left.viewportHeight, right.viewportHeight)
+  );
 }
 
 export default EstateCanvas;

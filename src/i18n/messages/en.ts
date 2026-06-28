@@ -204,7 +204,7 @@ export const enMessages = {
       "parcel-not-adjacent": "Expand from a connected parcel first.",
       "already-unlocked": "This parcel is already unlocked.",
       "protected-item":
-        "The central landmark cannot be moved, rotated, or removed.",
+        "The central landmark cannot be moved, rotated, or collected.",
       "invalid-definition": "This item cannot be used for that action.",
       "building-max-level": "The building is already at its highest level.",
       "edge-required": "Place this item on a cell touching the estate edge.",
@@ -270,8 +270,8 @@ export const enMessages = {
       purchase: "Purchased {item}.",
       recovered: "Recovered damaged save data with the default estate.",
       reloaded: "Another member saved first — reloaded the latest estate.",
-      removeConfirm: "Remove {item}? Points will not be refunded.",
-      removed: "Removed. The item returned to inventory.",
+      removeConfirm: "Collect {item}? Points will not be refunded.",
+      removed: "Collected. The item returned to inventory.",
       upgraded: "Upgraded the main building to Lv.{level}.",
     },
     panels: {
@@ -298,8 +298,12 @@ export const enMessages = {
     selection: {
       cancel: "Cancel",
       choosingMoveTarget: "Choosing move target",
+      collect: "Collect",
+      confirm: "Confirm",
+      itemActions: "Item actions",
       move: "Move",
-      remove: "Remove",
+      moveTargetSelected: "Move target",
+      remove: "Collect",
       rotate: "Rotate",
     },
     shop: {

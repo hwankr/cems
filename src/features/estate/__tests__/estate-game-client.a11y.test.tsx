@@ -7,20 +7,86 @@ import { I18nProvider } from "@/i18n/client";
 import { enMessages } from "@/i18n/messages/en";
 import { getEstatePageData } from "../data/get-estate-page-data";
 import { EstateGameClient } from "../components/estate-game-client";
+import type { EstateEditorMode } from "../domain/editor";
+import type {
+  EstateGridCell,
+  EstateItemInstance,
+  EstateSnapshot,
+} from "../domain/types";
+import type { EstateItemActionAnchor } from "../isometric/action-anchor";
 import { MemoryEstateRepository } from "../persistence/memory-estate-repository";
 
 // Expansion is reached only by tapping a locked parcel on the canvas, so the
-// mock exposes a button that fires the same `onLockedParcelClick` callback.
-vi.mock("../components/estate-canvas", () => {
-  const Canvas = (props: { onLockedParcelClick?: (parcelId: string) => void }) => (
-    <button
-      type="button"
-      data-testid="estate-locked-parcel"
-      onClick={() => props.onLockedParcelClick?.("north")}
-    >
-      Open locked parcel
-    </button>
-  );
+// mock exposes buttons that fire the same canvas callbacks used by the client.
+vi.mock("../components/estate-canvas", async () => {
+  const React = await import("react");
+  const selectedItemAnchor: EstateItemActionAnchor = {
+    x: 240,
+    y: 180,
+    viewportWidth: 640,
+    viewportHeight: 480,
+  };
+
+  const Canvas = (props: {
+    mode: EstateEditorMode;
+    snapshot: EstateSnapshot;
+    selectedItemId?: string | null;
+    onCellClick?: (cell: EstateGridCell) => void;
+    onItemSelect?: (instanceId: string) => void;
+    onLockedParcelClick?: (parcelId: string) => void;
+    onSelectedItemAnchorChange?: (
+      anchor: EstateItemActionAnchor | null,
+    ) => void;
+  }) => {
+    const {
+      onItemSelect,
+      onLockedParcelClick,
+      onSelectedItemAnchorChange,
+      selectedItemId,
+      snapshot,
+    } = props;
+    const bench = snapshot.items.find((item) => item.id === "bench-1");
+
+    React.useEffect(() => {
+      onSelectedItemAnchorChange?.(
+        selectedItemId === "bench-1" ? selectedItemAnchor : null,
+      );
+    }, [onSelectedItemAnchorChange, selectedItemId]);
+
+    return (
+      <>
+        <button
+          type="button"
+          data-testid="estate-locked-parcel"
+          onClick={() => onLockedParcelClick?.("north")}
+        >
+          Open locked parcel
+        </button>
+        <button
+          type="button"
+          data-testid="estate-movable-item"
+          onClick={() => {
+            onItemSelect?.("bench-1");
+          }}
+        >
+          Select movable item
+        </button>
+        <button
+          type="button"
+          data-testid="estate-move-target"
+          onClick={() => {
+            props.onCellClick?.({ x: 10, y: 12 });
+          }}
+        >
+          Choose move target
+        </button>
+        <span data-testid="bench-position">
+          {bench ? `${bench.x},${bench.y}` : "missing"}
+        </span>
+        <span data-testid="estate-mode">{props.mode.type}</span>
+      </>
+    );
+  };
 
   return { default: Canvas, EstateCanvas: Canvas };
 });
@@ -84,6 +150,115 @@ describe("EstateGameClient accessibility", () => {
     expect(document.querySelector('[role="dialog"]')).toBeNull();
     expect(document.activeElement).toBe(lockedParcelButton);
   });
+
+  it("opens contextual item actions for a selected movable item", async () => {
+    const data = await getEstatePageData("en", "yu-e21", {
+      getProfileGroupId: async () => "engineering",
+      getGroupEarnedPoints: async () => 100000,
+    });
+    if (!data) throw new Error("Expected estate page data.");
+
+    const movableItem: EstateItemInstance = {
+      id: "bench-1",
+      definitionId: "bench",
+      x: 4,
+      y: 8,
+      rotation: 0,
+      placedAt: "2026-06-28T00:00:00.000Z",
+    };
+
+    const dataWithMovableItem = {
+      ...data,
+      initialSnapshot: {
+        ...data.initialSnapshot,
+        items: [...data.initialSnapshot.items, movableItem],
+      },
+    };
+
+    root = createRoot(container);
+    await act(async () => {
+      root?.render(
+        <I18nProvider locale="en" messages={enMessages}>
+          <EstateGameClient
+            data={dataWithMovableItem}
+            repository={new MemoryEstateRepository()}
+          />
+        </I18nProvider>,
+      );
+    });
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+
+    expect(queryToolbar()).toBeNull();
+
+    await click(getButton("Select movable item"));
+    await flushEffects();
+
+    const toolbar = getToolbar();
+    expect(toolbar.textContent).toContain("Bench");
+    expect(getButton("Move")).toBeInstanceOf(HTMLButtonElement);
+    expect(getButton("Collect")).toBeInstanceOf(HTMLButtonElement);
+
+    await click(getButtonByAriaLabel(toolbar, "Cancel"));
+    await flushEffects();
+
+    expect(queryToolbar()).toBeNull();
+  });
+
+  it("keeps move mode until the selected move target is confirmed", async () => {
+    const data = await getEstatePageData("en", "yu-e21", {
+      getProfileGroupId: async () => "engineering",
+      getGroupEarnedPoints: async () => 100000,
+    });
+    if (!data) throw new Error("Expected estate page data.");
+
+    const movableItem: EstateItemInstance = {
+      id: "bench-1",
+      definitionId: "bench",
+      x: 4,
+      y: 8,
+      rotation: 0,
+      placedAt: "2026-06-28T00:00:00.000Z",
+    };
+    const dataWithMovableItem = {
+      ...data,
+      initialSnapshot: {
+        ...data.initialSnapshot,
+        items: [...data.initialSnapshot.items, movableItem],
+      },
+    };
+
+    root = createRoot(container);
+    await act(async () => {
+      root?.render(
+        <I18nProvider locale="en" messages={enMessages}>
+          <EstateGameClient
+            data={dataWithMovableItem}
+            repository={new MemoryEstateRepository()}
+          />
+        </I18nProvider>,
+      );
+    });
+    await flushEffects();
+
+    await click(getButton("Select movable item"));
+    await flushEffects();
+    await click(getButton("Move"));
+    await flushEffects();
+    await click(getButton("Choose move target"));
+    await flushEffects();
+
+    expect(getByTestId("bench-position").textContent).toBe("4,8");
+    expect(getByTestId("estate-mode").textContent).toBe("moving");
+    expect(getButton("Confirm")).toBeInstanceOf(HTMLButtonElement);
+
+    await click(getButton("Confirm"));
+    await flushEffects();
+
+    expect(getByTestId("bench-position").textContent).toBe("10,12");
+    expect(getByTestId("estate-mode").textContent).toBe("selected");
+  });
 });
 
 function getButton(name: string): HTMLButtonElement {
@@ -98,9 +273,56 @@ function getButton(name: string): HTMLButtonElement {
   return button;
 }
 
+function getToolbar(): HTMLElement {
+  const toolbar = queryToolbar();
+
+  if (!toolbar) {
+    throw new Error("Expected contextual item toolbar.");
+  }
+
+  return toolbar;
+}
+
+function queryToolbar(): HTMLElement | null {
+  return document.querySelector<HTMLElement>('[role="toolbar"]');
+}
+
+function getByTestId(testId: string): HTMLElement {
+  const element = document.querySelector<HTMLElement>(
+    `[data-testid="${testId}"]`,
+  );
+
+  if (!element) {
+    throw new Error(`Expected element ${testId}.`);
+  }
+
+  return element;
+}
+
+function getButtonByAriaLabel(
+  rootElement: HTMLElement,
+  name: string,
+): HTMLButtonElement {
+  const button = rootElement.querySelector<HTMLButtonElement>(
+    `button[aria-label="${name}"]`,
+  );
+
+  if (!(button instanceof HTMLButtonElement)) {
+    throw new Error(`Expected button ${name}.`);
+  }
+
+  return button;
+}
+
 async function click(element: HTMLElement) {
   await act(async () => {
     element.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  });
+}
+
+async function flushEffects() {
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 }
 

@@ -201,7 +201,7 @@ export const koMessages = {
       "missing-inventory": "인벤토리에 보유 수량이 없습니다.",
       "parcel-not-adjacent": "연결된 구역부터 확장할 수 있습니다.",
       "already-unlocked": "이미 확장된 구역입니다.",
-      "protected-item": "중앙 랜드마크는 이동, 회전, 철거할 수 없습니다.",
+      "protected-item": "중앙 랜드마크는 이동, 회전, 회수할 수 없습니다.",
       "invalid-definition": "이 작업을 수행할 수 없는 아이템입니다.",
       "building-max-level": "이미 최고 레벨입니다.",
       "edge-required": "외곽선에 닿는 칸에만 배치할 수 있습니다.",
@@ -270,8 +270,8 @@ export const koMessages = {
       recovered: "손상된 저장 데이터를 기본 영지로 복구했습니다.",
       reloaded: "다른 참여자가 먼저 저장해 최신 영지로 새로고침했습니다.",
       removeConfirm:
-        "{item}을(를) 철거할까요? 포인트는 환불되지 않습니다.",
-      removed: "철거했습니다. 아이템이 인벤토리로 돌아갔습니다.",
+        "{item}을(를) 회수할까요? 포인트는 환불되지 않습니다.",
+      removed: "회수했습니다. 아이템이 인벤토리로 돌아갔습니다.",
       upgraded: "메인 건물을 Lv.{level}로 올렸습니다.",
     },
     panels: {
@@ -298,8 +298,12 @@ export const koMessages = {
     selection: {
       cancel: "취소",
       choosingMoveTarget: "이동 위치 선택 중",
+      collect: "회수",
+      confirm: "확인",
+      itemActions: "아이템 작업",
       move: "이동",
-      remove: "철거",
+      moveTargetSelected: "이동 위치",
+      remove: "회수",
       rotate: "회전",
     },
     shop: {

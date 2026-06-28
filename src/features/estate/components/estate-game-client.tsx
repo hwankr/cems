@@ -12,12 +12,9 @@ import {
   Leaf,
   Loader2,
   Maximize2,
-  Move,
   Package,
   Paintbrush,
-  RotateCw,
   ShoppingBag,
-  Trash2,
   X,
 } from "lucide-react";
 import {
@@ -64,14 +61,15 @@ import type {
   EstateExpansionParcelDefinition,
   EstateGridCell,
   EstateItemDefinition,
-  EstateItemInstance,
   EstateSnapshot,
   QuarterTurn,
 } from "../domain/types";
+import type { EstateItemActionAnchor } from "../isometric/action-anchor";
 import type { EstateRepository } from "../persistence/estate-repository";
 import { createEstateTableClient } from "../persistence/estate-table-client";
 import { SupabaseEstateRepository } from "../persistence/supabase-estate-repository";
 import type { EstateCanvasProps } from "./estate-canvas";
+import { ContextualItemActions } from "./contextual-item-actions";
 import {
   createEstateId,
   getItemName,
@@ -109,6 +107,8 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   const [saveStatus, setSaveStatus] = useState<EstateSaveStatus>("saved");
   const [fitViewSignal, setFitViewSignal] = useState(0);
   const [focusParcelId, setFocusParcelId] = useState<string | null>(null);
+  const [selectedActionAnchor, setSelectedActionAnchor] =
+    useState<EstateItemActionAnchor | null>(null);
   const [pendingExpansionParcelId, setPendingExpansionParcelId] = useState<
     string | null
   >(null);
@@ -614,18 +614,24 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     }
 
     if (mode.type === "moving") {
-      const result = applyCommand({
-        type: "move-item",
-        instanceId: mode.instanceId,
-        x: cell.x,
-        y: cell.y,
-        rotation: mode.rotation,
-      });
+      setMode({ ...mode, targetCell: cell });
+    }
+  }
 
-      if (result.ok) {
-        setMode({ type: "selected", instanceId: mode.instanceId });
-        showMessage(copy.messages.moved);
-      }
+  function confirmMoveSelected() {
+    if (mode.type !== "moving" || !mode.targetCell) return;
+
+    const result = applyCommand({
+      type: "move-item",
+      instanceId: mode.instanceId,
+      x: mode.targetCell.x,
+      y: mode.targetCell.y,
+      rotation: mode.rotation,
+    });
+
+    if (result.ok) {
+      setMode({ type: "selected", instanceId: mode.instanceId });
+      showMessage(copy.messages.moved);
     }
   }
 
@@ -722,6 +728,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
           onGroundPaintStart={handleGroundPaintStart}
           onGroundPaintCell={handleGroundPaintCell}
           onItemSelect={handleItemSelect}
+          onSelectedItemAnchorChange={setSelectedActionAnchor}
         />
       </div>
 
@@ -806,18 +813,20 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       ) : null}
 
       {selectedInstance && selectedDefinition ? (
-        <SelectionBar
+        <ContextualItemActions
           copy={copy}
           definition={selectedDefinition}
           instance={selectedInstance}
           mode={mode}
           protectedItem={selectedIsProtected}
+          anchor={selectedActionAnchor}
           onCancel={cancelEditing}
+          onConfirmMove={confirmMoveSelected}
           onMove={handleMoveSelected}
           onRotate={
             mode.type === "placing" ? handleRotatePlacing : rotateActiveItem
           }
-          onRemove={removeSelectedItem}
+          onCollect={removeSelectedItem}
         />
       ) : null}
 
@@ -978,102 +987,6 @@ function MiniMetric({
         {value}
       </span>
     </div>
-  );
-}
-
-function SelectionBar({
-  copy,
-  definition,
-  instance,
-  mode,
-  protectedItem,
-  onCancel,
-  onMove,
-  onRotate,
-  onRemove,
-}: {
-  copy: EstateMessages;
-  definition: EstateItemDefinition;
-  instance: EstateItemInstance;
-  mode: EstateEditorMode;
-  protectedItem: boolean;
-  onCancel: () => void;
-  onMove: () => void;
-  onRotate: () => void;
-  onRemove: () => void;
-}) {
-  return (
-    <div
-      className={`${styles.panelStrong} absolute bottom-[4.75rem] left-1/2 z-40 flex max-w-[calc(100vw_-_1rem)] -translate-x-1/2 items-center gap-1 rounded-2xl p-1.5 lg:bottom-5`}
-    >
-      <div className="min-w-0 px-2">
-        <p className="truncate text-[13px] font-semibold">
-          {getItemName(definition, copy)}
-        </p>
-        <p className={`${styles.muted} truncate text-[11px]`}>
-          {mode.type === "moving"
-            ? copy.selection.choosingMoveTarget
-            : `${instance.x}, ${instance.y}`}
-        </p>
-      </div>
-      <span className={`${styles.divider} mx-0.5 h-7 w-px`} aria-hidden="true" />
-      <SelectionButton
-        disabled={protectedItem}
-        icon={<Move size={15} aria-hidden="true" />}
-        label={copy.selection.move}
-        onClick={onMove}
-      />
-      <SelectionButton
-        disabled={protectedItem || !definition.canRotate}
-        icon={<RotateCw size={15} aria-hidden="true" />}
-        label={copy.selection.rotate}
-        onClick={onRotate}
-      />
-      <SelectionButton
-        danger
-        disabled={protectedItem}
-        icon={<Trash2 size={15} aria-hidden="true" />}
-        label={copy.selection.remove}
-        onClick={onRemove}
-      />
-      <button
-        type="button"
-        className={`${styles.ghostBtn} grid h-10 w-10 shrink-0 place-items-center rounded-xl`}
-        aria-label={copy.selection.cancel}
-        title={copy.selection.cancel}
-        onClick={onCancel}
-      >
-        <X size={16} aria-hidden="true" />
-      </button>
-    </div>
-  );
-}
-
-function SelectionButton({
-  danger = false,
-  disabled = false,
-  icon,
-  label,
-  onClick,
-}: {
-  danger?: boolean;
-  disabled?: boolean;
-  icon: ReactNode;
-  label: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      className={`inline-flex h-10 items-center justify-center gap-1.5 rounded-xl px-2.5 text-xs font-medium sm:px-3 ${
-        danger ? styles.dangerBtn : styles.ghostBtn
-      }`}
-      disabled={disabled}
-      onClick={onClick}
-    >
-      {icon}
-      <span className="hidden sm:inline">{label}</span>
-    </button>
   );
 }
 
