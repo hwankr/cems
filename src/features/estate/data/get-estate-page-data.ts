@@ -19,6 +19,8 @@ import { enMessages } from "@/i18n/messages/en";
 import { koMessages } from "@/i18n/messages/ko";
 import type { Messages } from "@/i18n/messages/types";
 import { createDemoEstateSeedSnapshot } from "./demo-estate-data";
+import type { AwardTier } from "@/features/leagues/domain/types";
+import { awardEmblemDefinitionId } from "@/features/estate/domain/award-emblem";
 
 export type EstatePageSchool = Pick<School, "id" | "name" | "shortName">;
 
@@ -34,11 +36,13 @@ export type EstatePageData = {
   pointAccount: EstatePointAccount;
   initialSnapshot: EstateSnapshot;
   ownerGroupId: string;
+  grantedEmblemDefinitionId: string | null;
 };
 
 export type EstatePageDataDeps = {
   getProfileGroupId: () => Promise<string | null>;
   getGroupEarnedPoints: (groupId: string) => Promise<number>;
+  getSubjectAwardTier: (subjectId: string) => Promise<AwardTier | null>;
 };
 
 const messagesByLocale = {
@@ -74,6 +78,11 @@ export async function getEstatePageData(
       (candidate) => candidate.subjectId === subjectId,
     ) ?? null;
 
+  const awardTier = await deps.getSubjectAwardTier(subjectId);
+  const grantedEmblemDefinitionId = awardTier
+    ? awardEmblemDefinitionId(awardTier)
+    : null;
+
   return {
     school: {
       id: demoSchool.id,
@@ -93,5 +102,6 @@ export async function getEstatePageData(
     pointAccount: calculateEstatePointAccount(earnedPoints, []),
     initialSnapshot: createDemoEstateSeedSnapshot(subjectId),
     ownerGroupId,
+    grantedEmblemDefinitionId,
   };
 }

@@ -8,6 +8,7 @@ import {
   getGroupPointPool,
   getPersonalPointTotal,
 } from "@/features/account/data/account-dal";
+import { getSubjectAwardTiers } from "@/features/leagues/data/leagues-dal";
 import { EstateContributionChip } from "@/features/account/components/estate-contribution-chip";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
@@ -34,6 +35,8 @@ export default async function EstatePage({ params }: EstatePageProps) {
     getProfileGroupId: async () => profile.groupId,
     getGroupEarnedPoints: async (groupId) =>
       (await getGroupPointPool(groupId)).earnedPoints,
+    getSubjectAwardTier: async (sid) =>
+      (await getSubjectAwardTiers())[sid]?.tier ?? null,
   });
 
   if (!data) notFound();

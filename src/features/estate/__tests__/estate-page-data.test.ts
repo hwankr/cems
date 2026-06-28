@@ -4,6 +4,7 @@ import { getEstatePageData } from "../data/get-estate-page-data";
 const deps = {
   getProfileGroupId: async () => "engineering",
   getGroupEarnedPoints: async () => 5000,
+  getSubjectAwardTier: async () => null,
 };
 
 describe("getEstatePageData", () => {
@@ -41,6 +42,7 @@ describe("getEstatePageData", () => {
     const data = await getEstatePageData("ko", "yu-a02", {
       getProfileGroupId: async () => "humanities",
       getGroupEarnedPoints: async () => 0,
+      getSubjectAwardTier: async () => null,
     });
 
     expect(data?.ownerGroupId).toBe("humanities");
@@ -62,8 +64,25 @@ describe("getEstatePageData", () => {
     const data = await getEstatePageData("ko", "yu-e21", {
       getProfileGroupId: async () => null,
       getGroupEarnedPoints: async () => 0,
+      getSubjectAwardTier: async () => null,
     });
 
     expect(data).toBeNull();
+  });
+
+  it("grants the matching emblem when the subject's group is awarded", async () => {
+    const data = await getEstatePageData("ko", "yu-e21", {
+      getProfileGroupId: async () => "engineering",
+      getGroupEarnedPoints: async () => 0,
+      getSubjectAwardTier: async () => "gold",
+    });
+
+    expect(data?.grantedEmblemDefinitionId).toBe("award-emblem-gold");
+  });
+
+  it("grants no emblem when the subject's group is not awarded", async () => {
+    const data = await getEstatePageData("ko", "yu-e21", deps);
+
+    expect(data?.grantedEmblemDefinitionId).toBeNull();
   });
 });
