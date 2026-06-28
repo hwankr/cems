@@ -1,9 +1,11 @@
 "use client";
 
+import { Building2, User, Users } from "lucide-react";
 import { useActionState, useState } from "react";
 import { useI18n } from "@/i18n/client";
 import { saveProfileAction, type ProfileActionState } from "../actions/profile";
 import type { GroupOption, SchoolOption } from "../domain/types";
+import styles from "./auth-shell.module.css";
 
 const initialState: ProfileActionState = { error: null };
 
@@ -24,59 +26,64 @@ export function OnboardingForm({
   const visibleGroups = groups.filter((group) => group.schoolId === schoolId);
 
   return (
-    <form action={formAction} className="grid gap-3">
+    <form action={formAction} className="grid gap-4">
       <input type="hidden" name="locale" value={locale} />
-      <label className="grid gap-1 text-sm">
-        <span>{copy.displayName}</span>
-        <input
-          name="displayName"
-          type="text"
-          required
-          maxLength={40}
-          className="h-11 rounded-xl border border-line bg-surface px-3"
-        />
+      <label className={styles.fieldGroup}>
+        <span className={styles.label}>{copy.displayName}</span>
+        <span className={styles.fieldWrap}>
+          <User className={styles.fieldIcon} aria-hidden="true" />
+          <input
+            name="displayName"
+            type="text"
+            required
+            maxLength={40}
+            className={`${styles.field} ${styles.fieldWithIcon}`}
+          />
+        </span>
       </label>
-      <label className="grid gap-1 text-sm">
-        <span>{copy.school}</span>
-        <select
-          name="schoolId"
-          value={schoolId}
-          onChange={(event) => setSchoolId(event.target.value)}
-          className="h-11 rounded-xl border border-line bg-surface px-3"
-        >
-          {schools.map((school) => (
-            <option key={school.id} value={school.id}>
-              {school.name}
-            </option>
-          ))}
-        </select>
+      <label className={styles.fieldGroup}>
+        <span className={styles.label}>{copy.school}</span>
+        <span className={styles.fieldWrap}>
+          <Building2 className={styles.fieldIcon} aria-hidden="true" />
+          <select
+            name="schoolId"
+            value={schoolId}
+            onChange={(event) => setSchoolId(event.target.value)}
+            className={`${styles.field} ${styles.fieldWithIcon}`}
+          >
+            {schools.map((school) => (
+              <option key={school.id} value={school.id}>
+                {school.name}
+              </option>
+            ))}
+          </select>
+        </span>
       </label>
-      <label className="grid gap-1 text-sm">
-        <span>{copy.group}</span>
-        <select
-          name="groupId"
-          required
-          defaultValue=""
-          className="h-11 rounded-xl border border-line bg-surface px-3"
-        >
-          <option value="" disabled>
-            —
-          </option>
-          {visibleGroups.map((group) => (
-            <option key={group.id} value={group.id}>
-              {group.name}
+      <label className={styles.fieldGroup}>
+        <span className={styles.label}>{copy.group}</span>
+        <span className={styles.fieldWrap}>
+          <Users className={styles.fieldIcon} aria-hidden="true" />
+          <select
+            name="groupId"
+            required
+            defaultValue=""
+            className={`${styles.field} ${styles.fieldWithIcon}`}
+          >
+            <option value="" disabled>
+              —
             </option>
-          ))}
-        </select>
+            {visibleGroups.map((group) => (
+              <option key={group.id} value={group.id}>
+                {group.name}
+              </option>
+            ))}
+          </select>
+        </span>
       </label>
       {state.error ? (
-        <p className="text-sm text-overuse">{copy.errors[state.error]}</p>
+        <p className={styles.errorText}>{copy.errors[state.error]}</p>
       ) : null}
-      <button
-        type="submit"
-        disabled={pending}
-        className="h-11 rounded-xl bg-accent font-semibold text-white disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className={styles.primaryButton}>
         {pending ? copy.pending : copy.submit}
       </button>
     </form>

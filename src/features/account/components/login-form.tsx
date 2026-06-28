@@ -1,9 +1,11 @@
 "use client";
 
+import { Lock, Mail } from "lucide-react";
 import Link from "next/link";
 import { useActionState } from "react";
 import { useI18n } from "@/i18n/client";
 import { signInAction, type AuthActionState } from "../actions/auth";
+import styles from "./auth-shell.module.css";
 
 const initialState: AuthActionState = { error: null };
 
@@ -16,42 +18,42 @@ export function LoginForm({ next }: { next?: string }) {
   );
 
   return (
-    <form action={formAction} className="grid gap-3">
+    <form action={formAction} className="grid gap-4">
       <input type="hidden" name="locale" value={locale} />
       {next ? <input type="hidden" name="next" value={next} /> : null}
-      <label className="grid gap-1 text-sm">
-        <span>{copy.email}</span>
-        <input
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          className="h-11 rounded-xl border border-line bg-surface px-3"
-        />
+      <label className={styles.fieldGroup}>
+        <span className={styles.label}>{copy.email}</span>
+        <span className={styles.fieldWrap}>
+          <Mail className={styles.fieldIcon} aria-hidden="true" />
+          <input
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            className={`${styles.field} ${styles.fieldWithIcon}`}
+          />
+        </span>
       </label>
-      <label className="grid gap-1 text-sm">
-        <span>{copy.password}</span>
-        <input
-          name="password"
-          type="password"
-          required
-          autoComplete="current-password"
-          className="h-11 rounded-xl border border-line bg-surface px-3"
-        />
+      <label className={styles.fieldGroup}>
+        <span className={styles.label}>{copy.password}</span>
+        <span className={styles.fieldWrap}>
+          <Lock className={styles.fieldIcon} aria-hidden="true" />
+          <input
+            name="password"
+            type="password"
+            required
+            autoComplete="current-password"
+            className={`${styles.field} ${styles.fieldWithIcon}`}
+          />
+        </span>
       </label>
-      {state.error ? (
-        <p className="text-sm text-overuse">{copy.failed}</p>
-      ) : null}
-      <button
-        type="submit"
-        disabled={pending}
-        className="h-11 rounded-xl bg-accent font-semibold text-white disabled:opacity-60"
-      >
+      {state.error ? <p className={styles.errorText}>{copy.failed}</p> : null}
+      <button type="submit" disabled={pending} className={styles.primaryButton}>
         {pending ? copy.pending : copy.submit}
       </button>
-      <p className="text-sm text-ink-muted">
+      <p className={styles.altText}>
         {copy.noAccount}{" "}
-        <Link href={`/${locale}/signup`} className="font-semibold text-accent">
+        <Link href={`/${locale}/signup`} className={styles.altLink}>
           {copy.signupLink}
         </Link>
       </p>
