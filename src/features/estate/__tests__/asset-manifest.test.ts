@@ -8,11 +8,12 @@ import {
   baseEstateItemDefinitions,
   estateItemCatalog,
 } from "../data/estate-item-catalog";
+import { awardEmblemDefinitions } from "../domain/award-emblem";
 
 describe("estate asset manifest", () => {
   it("contains the required original sprite assets with bottom-center anchors", () => {
     expect(Object.keys(estateAssetManifest.items)).toEqual(
-      expect.arrayContaining(requiredEstateSpriteAssetIds),
+      expect.arrayContaining([...requiredEstateSpriteAssetIds]),
     );
 
     for (const assetId of requiredEstateSpriteAssetIds) {
@@ -28,7 +29,7 @@ describe("estate asset manifest", () => {
 
   it("contains textured ground assets for all required tile kinds", () => {
     expect(Object.keys(estateAssetManifest.ground)).toEqual(
-      expect.arrayContaining(requiredEstateGroundAssetIds),
+      expect.arrayContaining([...requiredEstateGroundAssetIds]),
     );
 
     for (const assetId of requiredEstateGroundAssetIds) {
@@ -66,6 +67,15 @@ describe("estate asset manifest", () => {
     for (let level = 1; level <= 5; level += 1) {
       const asset = estateAssetManifest.items[`campus-building-lv${level}`];
       expect(asset.shadow).toBeUndefined();
+    }
+  });
+
+  it("defines a render asset for every award emblem", () => {
+    for (const def of awardEmblemDefinitions) {
+      const asset = estateAssetManifest.items[def.assetId];
+      expect(asset).toBeDefined();
+      expect(asset.src).toMatch(/^\/estate-assets\/award-emblem-.+\.png$/);
+      expect(asset.anchorX).toBe(asset.logicalWidth / 2);
     }
   });
 });
