@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { deriveAchievements } from "../domain/achievements";
+import type { AwardTier } from "@/features/leagues/domain/types";
 
 describe("deriveAchievements", () => {
   it("returns the fixed 6-badge set in order", () => {
@@ -37,5 +38,41 @@ describe("deriveAchievements", () => {
     expect(byKey["grid-guardian"]).toBe(false);
     expect(byKey["streak-7"]).toBe(false);
     expect(byKey["check-in-10"]).toBe(false);
+  });
+});
+
+describe("deriveAchievements top-student award", () => {
+  const base = { level: 1, longestStreak: 0, totalCheckIns: 0 };
+
+  it("keeps top-student locked when there is no award", () => {
+    const achievements = deriveAchievements(base);
+    const top = achievements.find((a) => a.key === "top-student");
+    expect(top).toEqual({ key: "top-student", earned: false, locked: true });
+  });
+
+  it("unlocks top-student when a student award exists", () => {
+    const achievements = deriveAchievements({
+      ...base,
+      hasTopStudentAward: true,
+      topStudentTier: "gold" as AwardTier,
+    });
+    const top = achievements.find((a) => a.key === "top-student");
+    expect(top).toEqual({
+      key: "top-student",
+      earned: true,
+      locked: false,
+      tier: "gold",
+    });
+  });
+
+  it("does not affect the other achievements", () => {
+    const achievements = deriveAchievements({
+      ...base,
+      hasTopStudentAward: true,
+    });
+    expect(achievements.find((a) => a.key === "campus-saver")?.earned).toBe(
+      true,
+    );
+    expect(achievements).toHaveLength(6);
   });
 });
