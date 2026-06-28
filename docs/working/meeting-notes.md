@@ -21,6 +21,19 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - 수정(`5e49f0d`, AGENTS.md대로 `node_modules/next/dist/docs`의 Script 문서 확인 후): 레이아웃의 원시 `<script>`를 `next/script`의 `<Script id="cems-theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={...} />`로 교체. beforeInteractive는 Next가 스크립트를 추출·주입하고 React 트리에 원시 `<script>`를 렌더하지 않으므로 두 증상이 모두 해소된다. `themeInitScript` 로직과 `<html data-theme="light" suppressHydrationWarning>`은 유지.
 - 검증: `tsc --noEmit`에 레이아웃 신규 오류 0(기존 테스트 오류만 잔존), ESLint 0 errors, Vitest 303/303, `npm run build` 통과. dev SSR 실측으로 테마 스크립트가 이제 Next beforeInteractive 로더(`__next_s` push, `id:"cems-theme-init"`)로 직렬화돼 **원시 React 트리 스크립트가 아님**을 확인. 브라우저 오버레이의 "0 Issues" 최종 확인은 사용자 새로고침 몫.
 
+### 같은 날 — 영지 아이템 컨텍스트 컨트롤 재설계(이동 팝업 가림 해결) · main 머지·푸시
+
+- 사용자가 `/superpowers:writing-plans`로 "영지에 설치된 아이템 위치 이동 시 아이템 표시 팝업이 화면을 가려 움직이기 어렵다"는 문제의 구현 계획을 요청. 확인한 근본 원인: 이동(moving) 모드에서 `ContextualItemActions` 팝업이 **이동 전 원래 아이템 위치**(앵커를 `scene.items`의 현재 셀에서 계산) 위에 떠 있어, 보통 가까운 칸으로 옮기는 목적지 셀을 가리고 탭까지 가로챔. (컨텍스트 컨트롤 자체는 직전 커밋 `0ecdbdb`에서 추가됨.)
+- AskUserQuestion으로 1차 방향 확정: "이동 중 컨트롤을 화면 하단 고정 바로 분리"(추천 선택). 계획 문서 `docs/superpowers/plans/2026-06-28-estate-move-controls-bottom-bar.md` 작성 후 `/goal "구현 진행"` 지시 → 새 브랜치 `fix/estate-move-controls-bottom-bar`에서 TDD로 하단 고정 바 구현·커밋.
+- 사용자가 라이브로 보고 방향 변경: "아이템 근처에 반투명 + 아이콘 형태로 간단화"를 원함 → **하단 바 폐기**. 선택·이동 두 상태 모두 아이템 위 작은 **아이콘 전용 클러스터**(이름은 `title` 툴팁, 버튼은 `aria-label`)로 재작성. 작고 반투명이라 시야를 거의 안 가리고 아이콘 밖 탭은 캔버스로 통과(타이틀/좌표 텍스트 제거).
+- 사용자 추가 요청 3건을 순차 반영:
+  1. "배치(이동) 시 반투명 박스도 미리보기 설치 위치로 같이 이동" → 이동 중 클러스터 앵커를 **미리보기 고스트(목표/호버 셀)** 기준으로 계산(없으면 아이템 기준). 신규 `getFootprintActionAnchor`(아이템·미리보기 공용 풋프린트 앵커) 추가, `getSelectedItemActionAnchor`가 위임, 캔버스 앵커 effect가 moving일 때 미리보기로 추종(deps에 `mode`·`placementPreview` 추가).
+  2. "이동 버튼 누르기 전(선택 상태)에는 반투명일 필요 없음" → `.contextCluster` 기본 불투명, `.contextClusterMoving`에만 `opacity:0.62`(호버/포커스 시 또렷).
+  3. "특정 물건 focus 상태에서 배경/바닥을 누르면 focus 해제" → 캔버스에 `onBackgroundTap` 콜백 + `clear-selection` 펜딩 프레스(아이템/구역과 동일한 탭 vs 드래그 판정: 탭=해제, 드래그=팬), 게임 클라이언트가 `handleClearSelection`(selected→view)로 배선.
+- 작업 중 처리한 사실: `.moveBar`·구 `.contextMenu*`(타이틀/좌표 텍스트 포함) 제거(아이콘 클러스터로 대체). 테스트를 아이콘 전용 API에 맞춰 `aria-label` 기준으로 갱신(`contextual-item-actions.test.tsx`)하고, 미리보기 추종·배경 탭 해제 케이스를 `estate-canvas.test.tsx`·`action-anchor.test.ts`·`estate-game-client.a11y.test.tsx`에 추가.
+- 검증(각 단계 및 최종): Vitest **340/340**, ESLint **0 errors**(기존 `game-preview.tsx` 경고 2개), `npm run build` 통과. 도구 제약(문서화): estate 풀블리드 캔버스 라우트는 프리뷰 스크린샷이 멈추는 기존 한계가 있어 픽셀 육안 확인 대신 테스트·빌드로 검증(실제 투명도·추종·탭 해제 느낌은 사용자 dev/배포 확인 몫).
+- 사용자 지시로 브랜치의 4개 작업 커밋(하단 바 → 아이콘 클러스터 → 미리보기 추종 → 선택 불투명+배경탭)을 **하나로 스쿼시**해 `main`에 머지하고 `origin/main` 푸시(`0ecdbdb..ebc8dd5`, 폐기된 하단 바 커밋은 히스토리에서 제외, 계획 문서 포함) → Vercel 자동 배포. 이어서 `fix/estate-move-controls-bottom-bar` 삭제, 로컬·원격 모두 단일 `main`.
+
 ## 2026-06-27
 
 - The user asked to change the estate size from 16x16 to 15x15 and adjust the main building to 3x3.
