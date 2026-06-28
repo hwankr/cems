@@ -7,6 +7,7 @@ import {
   getGeometryCenter,
 } from "../domain/geojson";
 import type { EnergySubject } from "../domain/types";
+import type { SubjectAwardTiers } from "@/features/leagues/domain/types";
 
 const baseSubject: EnergySubject = {
   id: "subject-a",
@@ -222,5 +223,43 @@ describe("createEnergySubjectFeatureCollection", () => {
     expect(
       collection.features.some((feature) => feature.geometry.type === "Polygon"),
     ).toBe(true);
+  });
+});
+
+describe("createEnergySubjectFeatureCollection award tiers", () => {
+  const awardedSubject: EnergySubject = {
+    ...baseSubject,
+    id: "yu-b04",
+    name: "중앙도서관",
+    shortName: "B04",
+  };
+  const plainSubject: EnergySubject = {
+    ...baseSubject,
+    id: "yu-x99",
+    name: "기타",
+    shortName: "X99",
+    lng: 128.2,
+    lat: 35.2,
+  };
+
+  it("attaches awardTier to subjects present in the tiers map", () => {
+    const tiers: SubjectAwardTiers = {
+      "yu-b04": { tier: "gold", leagueId: "L", leagueName: "리그" },
+    };
+    const fc = createEnergySubjectFeatureCollection(
+      [awardedSubject, plainSubject],
+      [],
+      "",
+      tiers,
+    );
+    const b04 = fc.features.find((f) => f.properties.id === "yu-b04");
+    const x99 = fc.features.find((f) => f.properties.id === "yu-x99");
+    expect(b04?.properties.awardTier).toBe("gold");
+    expect(x99?.properties.awardTier).toBeUndefined();
+  });
+
+  it("omits awardTier entirely when no tiers map is passed", () => {
+    const fc = createEnergySubjectFeatureCollection([awardedSubject], [], "");
+    expect(fc.features[0]?.properties.awardTier).toBeUndefined();
   });
 });

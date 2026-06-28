@@ -9,6 +9,10 @@ import type {
   FloorCountSource,
   SubjectGeometry,
 } from "./types";
+import type {
+  AwardTier,
+  SubjectAwardTiers,
+} from "@/features/leagues/domain/types";
 
 type EnergySubjectFeatureGeometry = Pick<
   SubjectGeometry,
@@ -23,6 +27,7 @@ export type EnergySubjectFeatureProperties = {
   status: EnergyStatus;
   deltaKwh: number;
   selected: boolean;
+  awardTier?: AwardTier;
   officialCode?: string;
   displayHeightMeters?: number;
   aboveGroundFloors?: number;
@@ -70,6 +75,7 @@ export function createEnergySubjectFeatureCollection(
   subjects: EnergySubject[],
   comparisons: EnergyComparison[],
   selectedSubjectId: string,
+  awardTiers?: SubjectAwardTiers,
 ): EnergySubjectFeatureCollection {
   const comparisonsBySubjectId = new Map(
     comparisons.map((comparison) => [comparison.subjectId, comparison]),
@@ -94,6 +100,11 @@ export function createEnergySubjectFeatureCollection(
         deltaKwh: comparison?.deltaKwh ?? 0,
         selected: subject.id === selectedSubjectId,
       };
+
+      const awardTier = awardTiers?.[subject.id]?.tier;
+      if (awardTier) {
+        properties.awardTier = awardTier;
+      }
 
       if (subject.officialCode !== undefined) {
         properties.officialCode = subject.officialCode;
