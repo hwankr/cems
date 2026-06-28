@@ -34,6 +34,24 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - 검증(각 단계 및 최종): Vitest **340/340**, ESLint **0 errors**(기존 `game-preview.tsx` 경고 2개), `npm run build` 통과. 도구 제약(문서화): estate 풀블리드 캔버스 라우트는 프리뷰 스크린샷이 멈추는 기존 한계가 있어 픽셀 육안 확인 대신 테스트·빌드로 검증(실제 투명도·추종·탭 해제 느낌은 사용자 dev/배포 확인 몫).
 - 사용자 지시로 브랜치의 4개 작업 커밋(하단 바 → 아이콘 클러스터 → 미리보기 추종 → 선택 불투명+배경탭)을 **하나로 스쿼시**해 `main`에 머지하고 `origin/main` 푸시(`0ecdbdb..ebc8dd5`, 폐기된 하단 바 커밋은 히스토리에서 제외, 계획 문서 포함) → Vercel 자동 배포. 이어서 `fix/estate-move-controls-bottom-bar` 삭제, 로컬·원격 모두 단일 `main`.
 
+### 같은 날 — 메인 설정 팝업 정리·모드(관리자 대시보드/참여자 모드) 제거 · main 머지·푸시
+
+- 사용자가 `/superpowers:writing-plans`로 "메인 페이지 설정 버튼 팝업이 구현된 부분과 맞지 않는다"는 문제의 구현 계획을 요청. 구체적 불만 3가지: (1) 팝업 내용이 실제 구현과 불일치, (2) "관리자 대시보드" 용어를 다른 용어로, (3) "참여자 모드"는 /me 프로필 기능과 겹쳐 불필요해 보임(제거 고려).
+- 확인한 핵심 사실: 설정 팝업의 "모드" 토글이 `AdminMapView`(지도)와 `ParticipantDashboard`(참여자 대시보드)를 전환하는데, 참여자 대시보드(소속·그룹 풀·주간 보상·내 포인트·절감량·순위·그룹 랭킹·캐릭터)가 이미 `/me` 프로필(포인트·레벨·연속일·성취·에너지 잔디·목표·영지 기여·내역)과 대부분 겹쳐 사실상 중복.
+- AskUserQuestion으로 방향 확정: (1) **모드 개념 자체 제거** — 지도를 단일 홈으로, 개인 데이터는 /me로 일원화, 참여자 대시보드의 유일 고유 기능 "주간 절감 보상 받기"는 /me로 이전해 기능 보존, (2) 메인 화면 명칭 **"캠퍼스 지도"**.
+- 계획 문서 `docs/superpowers/plans/2026-06-28-main-settings-popover-mode-cleanup.md`. 이어서 `/goal "구현 진행"` → 새 브랜치 `feat/main-settings-mode-cleanup`에서 **subagent-driven**(구현 서브에이전트 → 태스크별 spec+품질 리뷰 → 최종 전체 브랜치 리뷰)으로 진행.
+- 구현(태스크 단위 TDD 커밋):
+  - `1c9527d` — `EstateContribution`에 `action?: ReactNode` 슬롯 추가, /me에서 `<ClaimRewardButton />` 주입(주간 절감 보상 기능 보존).
+  - `d3b31af` — 모드 토글 제거: `CampusEnergyApp`이 항상 지도 렌더, `AdminMapView`·`MapSettingsPopover`의 `mode`/`onModeChange` 제거, 팝업 제목 "지도 설정"→"설정"(ko/en).
+  - `2c815b5` — 고아 컴포넌트 7개(`mode-tabs`·`app-header`·`bottom-nav`·`participant-dashboard`·`group-rank-table`·`character-card`·`metric-card`) + `bottom-nav.test.tsx` 삭제, 죽은 i18n(`modes`·`participant`·`me.openMyPage`·`mapView.settings.mode`) ko·en 대칭 제거, `messages.test.ts` 단언 교체.
+  - `1a663e8` — 메인 화면 명칭 "캠퍼스 지도"/"Campus map": `mapView.title` i18n + 홈 라우트 `generateMetadata`로 탭 제목 오버라이드(AGENTS.md대로 next metadata 로컬 문서 확인).
+  - `854d307` — 모드 제거로 미사용이 된 홈 로더의 개인포인트·그룹풀 조회 제거, `CampusEnergyAccount`를 `{ orgSubjectId }`로 축소(/me가 자체 조회하므로 무손실).
+- 보존(grep 확인): `app.eyebrow`(layout 메타), `getCharacterProgress`(/me·ProfileHero), `getDemoGroupRankings`(energy.test) 유지. `Messages` 타입이 `koMessages` 파생이라 키 제거 시 빌드가 잔존 참조를 잡는 안전망 역할.
+- 검증(각 태스크 + 최종): Vitest **340/340**(`bottom-nav.test` 2개 삭제로 342→340), ESLint **0 errors**(기존 `game-preview.tsx` 경고 2개), `npm run build` 통과. 최종 전체 브랜치 리뷰(opus)가 독립 재확인 후 **"머지 가능"**(Critical/Important 0), 삭제된 컴포넌트·i18n 키 잔존 참조 0건(grep).
+- 도구 제약(문서화): 지도 라우트는 Mapbox 지속 렌더로 프리뷰 스크린샷이 멈추는 기존 제약 → 실제 화면은 사용자 dev/배포 확인 몫. 검증은 테스트·빌드·grep으로 갈음.
+- 남은 한계(문서화): 참여자 대시보드 제거로 `account.estatePool`(label/memberCount) i18n이 미사용이 됐으나 공용 `account` 네임스페이스라 무해, 정리는 범위 밖으로 남김.
+- 사용자 지시로 회의록 정리 후 `feat/main-settings-mode-cleanup`(계획 1 + 구현 5 + docs 1 커밋)을 `main`에 fast-forward 머지하고 `origin/main` 푸시 → Vercel 자동 배포. 이어서 feature 브랜치 삭제, 로컬·원격 모두 단일 `main`.
+
 ## 2026-06-27
 
 - The user asked to change the estate size from 16x16 to 15x15 and adjust the main building to 3x3.
