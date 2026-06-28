@@ -33,9 +33,6 @@ export default async function OnboardingPage({ params }: OnboardingPageProps) {
     <CampusEnergyProviders locale={locale} messages={messages}>
       <AuthShell
         brandName={messages.app.brandName}
-        eyebrow={messages.app.eyebrow}
-        tagline={messages.account.brand.tagline}
-        values={messages.account.brand.values}
         title={messages.account.onboarding.title}
         subtitle={messages.account.onboarding.description}
       >

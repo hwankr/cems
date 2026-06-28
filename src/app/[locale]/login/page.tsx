@@ -23,9 +23,6 @@ export default async function LoginPage({
     <CampusEnergyProviders locale={locale} messages={messages}>
       <AuthShell
         brandName={messages.app.brandName}
-        eyebrow={messages.app.eyebrow}
-        tagline={messages.account.brand.tagline}
-        values={messages.account.brand.values}
         title={messages.account.login.title}
         subtitle={messages.account.login.subtitle}
       >

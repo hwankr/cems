@@ -16,9 +16,6 @@ export default async function SignupPage({ params }: SignupPageProps) {
     <CampusEnergyProviders locale={locale} messages={messages}>
       <AuthShell
         brandName={messages.app.brandName}
-        eyebrow={messages.app.eyebrow}
-        tagline={messages.account.brand.tagline}
-        values={messages.account.brand.values}
         title={messages.account.signup.title}
         subtitle={messages.account.signup.subtitle}
       >

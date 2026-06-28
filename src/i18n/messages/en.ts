@@ -54,14 +54,6 @@ export const enMessages = {
       label: "Group estate points",
       memberCount: "{count} members",
     },
-    brand: {
-      tagline: "Save more than forecast, earn points for it — grow your estate together.",
-      values: {
-        measure: "Measure savings",
-        earn: "Earn points",
-        grow: "Grow estate",
-      },
-    },
   },
   admin: {
     actualForecastLine: "Actual {actual} / Forecast {forecast}",

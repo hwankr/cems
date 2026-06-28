@@ -1,95 +1,80 @@
-import { Leaf, Sprout, Star, Zap } from "lucide-react";
+import { Leaf } from "lucide-react";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import styles from "./auth-shell.module.css";
 
 type AuthShellProps = {
   brandName: string;
-  eyebrow: string;
-  tagline: string;
-  values: { measure: string; earn: string; grow: string };
   title: string;
   subtitle?: string;
   children: ReactNode;
 };
 
 /**
- * Brand-split shell for the auth flow (/login, /signup, /onboarding).
- * Left: warm garden brand panel (desktop) / compact band (mobile).
- * Right: cream form column that slots a form via `children`.
- * Pure presentation — copy comes in as props, so this stays a server
- * component and the slotted form keeps its own client boundary.
+ * Illustrated centered card for the auth flow (/login, /signup, /onboarding).
+ * A warm garden header (gradient sky, sun bloom, the campus building art, a
+ * cream wave) curves into a cream card body that slots a form via `children`.
+ * Pure presentation — copy comes in as props, so this stays a server component
+ * and the slotted form keeps its own client boundary.
  */
 export function AuthShell({
   brandName,
-  eyebrow,
-  tagline,
-  values,
   title,
   subtitle,
   children,
 }: AuthShellProps) {
   return (
-    <div className={styles.shell}>
-      <aside className={styles.brand}>
-        <div className={styles.brandInner}>
-          <div className={`${styles.brandTop} ${styles.reveal} ${styles.reveal1}`}>
-            <span className={styles.brandMark}>
-              <span className={styles.brandIcon}>
-                <Leaf strokeWidth={2.2} />
-              </span>
-              <span className={styles.wordmark}>{brandName}</span>
-            </span>
-            <p className={styles.eyebrow}>{eyebrow}</p>
-          </div>
+    <div className={styles.page}>
+      <svg
+        className={styles.pageWaves}
+        viewBox="0 0 400 240"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M0,92 C90,44 150,120 240,82 C320,48 360,98 400,72 L400,240 L0,240 Z"
+          fill="#dfe7d2"
+          opacity="0.7"
+        />
+        <path
+          d="M0,142 C80,104 170,166 260,132 C330,106 372,142 400,126 L400,240 L0,240 Z"
+          fill="#ccd8bc"
+          opacity="0.75"
+        />
+      </svg>
 
-          <div className={`${styles.brandBody} ${styles.reveal} ${styles.reveal2}`}>
-            <p className={styles.tagline}>{tagline}</p>
-            <ul className={styles.values}>
-              <li className={styles.valueChip}>
-                <Zap aria-hidden="true" />
-                {values.measure}
-              </li>
-              <li className={styles.valueChip}>
-                <Star aria-hidden="true" />
-                {values.earn}
-              </li>
-              <li className={styles.valueChip}>
-                <Sprout aria-hidden="true" />
-                {values.grow}
-              </li>
-            </ul>
-          </div>
-
-          <div className={`${styles.art} ${styles.reveal} ${styles.reveal3}`}>
+      <div className={`${styles.card} ${styles.reveal}`}>
+        <div className={styles.illu}>
+          <span className={styles.brandTag}>
+            <Leaf strokeWidth={2.2} aria-hidden="true" />
+            {brandName}
+          </span>
+          <span className={styles.illuShadow} aria-hidden="true" />
+          <div className={styles.illuArt}>
             <Image
               src="/estate-assets/campus-building-lv3.png"
               alt=""
               fill
-              sizes="(max-width: 767px) 0px, 460px"
-              className={styles.artImg}
+              sizes="160px"
+              className={styles.illuArtImg}
             />
           </div>
+          <svg
+            className={styles.illuWave}
+            viewBox="0 0 400 60"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path d="M0,30 C110,55 250,6 400,33 L400,60 L0,60 Z" />
+          </svg>
         </div>
-      </aside>
 
-      <main className={styles.formCol}>
-        <div className={styles.formInner}>
-          <header>
-            <h1 className={`${styles.title} ${styles.reveal} ${styles.reveal1}`}>
-              {title}
-            </h1>
-            {subtitle ? (
-              <p className={`${styles.subtitle} ${styles.reveal} ${styles.reveal2}`}>
-                {subtitle}
-              </p>
-            ) : null}
-          </header>
-          <div className={`${styles.formSlot} ${styles.reveal} ${styles.reveal3}`}>
-            {children}
-          </div>
+        <div className={styles.body}>
+          <h1 className={styles.title}>{title}</h1>
+          {subtitle ? <p className={styles.subtitle}>{subtitle}</p> : null}
+          {children}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

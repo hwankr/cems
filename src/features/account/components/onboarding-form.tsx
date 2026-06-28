@@ -26,59 +26,60 @@ export function OnboardingForm({
   const visibleGroups = groups.filter((group) => group.schoolId === schoolId);
 
   return (
-    <form action={formAction} className="grid gap-4">
+    <form action={formAction} className={styles.form}>
       <input type="hidden" name="locale" value={locale} />
-      <label className={styles.fieldGroup}>
-        <span className={styles.label}>{copy.displayName}</span>
-        <span className={styles.fieldWrap}>
-          <User className={styles.fieldIcon} aria-hidden="true" />
-          <input
-            name="displayName"
-            type="text"
-            required
-            maxLength={40}
-            className={`${styles.field} ${styles.fieldWithIcon}`}
-          />
+      <label className={styles.fieldRow}>
+        <span className={styles.srOnly}>{copy.displayName}</span>
+        <span className={styles.fieldIcon}>
+          <User aria-hidden="true" />
         </span>
+        <input
+          name="displayName"
+          type="text"
+          required
+          maxLength={40}
+          placeholder={copy.displayName}
+          className={styles.field}
+        />
       </label>
-      <label className={styles.fieldGroup}>
-        <span className={styles.label}>{copy.school}</span>
-        <span className={styles.fieldWrap}>
-          <Building2 className={styles.fieldIcon} aria-hidden="true" />
-          <select
-            name="schoolId"
-            value={schoolId}
-            onChange={(event) => setSchoolId(event.target.value)}
-            className={`${styles.field} ${styles.fieldWithIcon}`}
-          >
-            {schools.map((school) => (
-              <option key={school.id} value={school.id}>
-                {school.name}
-              </option>
-            ))}
-          </select>
+      <label className={styles.fieldRow}>
+        <span className={styles.srOnly}>{copy.school}</span>
+        <span className={styles.fieldIcon}>
+          <Building2 aria-hidden="true" />
         </span>
-      </label>
-      <label className={styles.fieldGroup}>
-        <span className={styles.label}>{copy.group}</span>
-        <span className={styles.fieldWrap}>
-          <Users className={styles.fieldIcon} aria-hidden="true" />
-          <select
-            name="groupId"
-            required
-            defaultValue=""
-            className={`${styles.field} ${styles.fieldWithIcon}`}
-          >
-            <option value="" disabled>
-              —
+        <select
+          name="schoolId"
+          value={schoolId}
+          onChange={(event) => setSchoolId(event.target.value)}
+          className={styles.field}
+        >
+          {schools.map((school) => (
+            <option key={school.id} value={school.id}>
+              {school.name}
             </option>
-            {visibleGroups.map((group) => (
-              <option key={group.id} value={group.id}>
-                {group.name}
-              </option>
-            ))}
-          </select>
+          ))}
+        </select>
+      </label>
+      <label className={styles.fieldRow}>
+        <span className={styles.srOnly}>{copy.group}</span>
+        <span className={styles.fieldIcon}>
+          <Users aria-hidden="true" />
         </span>
+        <select
+          name="groupId"
+          required
+          defaultValue=""
+          className={styles.field}
+        >
+          <option value="" disabled>
+            {copy.group}
+          </option>
+          {visibleGroups.map((group) => (
+            <option key={group.id} value={group.id}>
+              {group.name}
+            </option>
+          ))}
+        </select>
       </label>
       {state.error ? (
         <p className={styles.errorText}>{copy.errors[state.error]}</p>

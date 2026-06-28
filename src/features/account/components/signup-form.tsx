@@ -18,34 +18,36 @@ export function SignupForm() {
   );
 
   return (
-    <form action={formAction} className="grid gap-4">
+    <form action={formAction} className={styles.form}>
       <input type="hidden" name="locale" value={locale} />
-      <label className={styles.fieldGroup}>
-        <span className={styles.label}>{copy.email}</span>
-        <span className={styles.fieldWrap}>
-          <Mail className={styles.fieldIcon} aria-hidden="true" />
-          <input
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            className={`${styles.field} ${styles.fieldWithIcon}`}
-          />
+      <label className={styles.fieldRow}>
+        <span className={styles.srOnly}>{copy.email}</span>
+        <span className={styles.fieldIcon}>
+          <Mail aria-hidden="true" />
         </span>
+        <input
+          name="email"
+          type="email"
+          required
+          autoComplete="email"
+          placeholder={copy.email}
+          className={styles.field}
+        />
       </label>
-      <label className={styles.fieldGroup}>
-        <span className={styles.label}>{copy.password}</span>
-        <span className={styles.fieldWrap}>
-          <Lock className={styles.fieldIcon} aria-hidden="true" />
-          <input
-            name="password"
-            type="password"
-            required
-            minLength={6}
-            autoComplete="new-password"
-            className={`${styles.field} ${styles.fieldWithIcon}`}
-          />
+      <label className={styles.fieldRow}>
+        <span className={styles.srOnly}>{copy.password}</span>
+        <span className={styles.fieldIcon}>
+          <Lock aria-hidden="true" />
         </span>
+        <input
+          name="password"
+          type="password"
+          required
+          minLength={6}
+          autoComplete="new-password"
+          placeholder={copy.password}
+          className={styles.field}
+        />
       </label>
       {state.error ? <p className={styles.errorText}>{copy.failed}</p> : null}
       <button type="submit" disabled={pending} className={styles.primaryButton}>

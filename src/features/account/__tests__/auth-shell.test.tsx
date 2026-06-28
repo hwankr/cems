@@ -30,15 +30,12 @@ describe("AuthShell", () => {
     document.body.replaceChildren();
   });
 
-  it("renders brand, single h1 title, subtitle, value chips, and the form slot", async () => {
+  it("renders the brand tag, a single h1 title, the subtitle, and the form slot", async () => {
     root = createRoot(container);
     await act(async () => {
       root!.render(
         <AuthShell
           brandName="CEMS"
-          eyebrow="캠퍼스 에너지 관리 시스템"
-          tagline="함께 절약하고 우리 영지를 키워요"
-          values={{ measure: "절감 측정", earn: "포인트 적립", grow: "영지 성장" }}
           title="로그인"
           subtitle="다시 오신 걸 환영해요"
         >
@@ -50,10 +47,6 @@ describe("AuthShell", () => {
     });
 
     expect(container.textContent).toContain("CEMS");
-    expect(container.textContent).toContain("함께 절약하고 우리 영지를 키워요");
-    expect(container.textContent).toContain("절감 측정");
-    expect(container.textContent).toContain("포인트 적립");
-    expect(container.textContent).toContain("영지 성장");
     expect(container.textContent).toContain("다시 오신 걸 환영해요");
 
     const headings = container.querySelectorAll("h1");
@@ -63,25 +56,17 @@ describe("AuthShell", () => {
     expect(container.querySelector('[data-testid="slot"]')).not.toBeNull();
   });
 
-  it("omits the subtitle node when no subtitle is given", async () => {
+  it("omits the subtitle when none is given", async () => {
     root = createRoot(container);
     await act(async () => {
       root!.render(
-        <AuthShell
-          brandName="CEMS"
-          eyebrow="Campus Energy"
-          tagline="Save together"
-          values={{ measure: "Measure", earn: "Earn", grow: "Grow" }}
-          title="소속 등록"
-        >
+        <AuthShell brandName="CEMS" title="소속 등록">
           <div>form</div>
         </AuthShell>,
       );
     });
 
-    const main = container.querySelector("main");
-    expect(main?.querySelector("h1")?.textContent).toBe("소속 등록");
-    // header has only the h1 (no subtitle paragraph)
-    expect(main?.querySelector("header p")).toBeNull();
+    expect(container.querySelector("h1")?.textContent).toBe("소속 등록");
+    expect(container.textContent).not.toContain("다시 오신 걸 환영해요");
   });
 });

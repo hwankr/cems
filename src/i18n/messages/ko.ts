@@ -52,14 +52,6 @@ export const koMessages = {
       label: "그룹 영지 포인트",
       memberCount: "{count}명 참여",
     },
-    brand: {
-      tagline: "예측보다 아낀 만큼 포인트로. 함께 절약하고 우리 영지를 키워요.",
-      values: {
-        measure: "절감 측정",
-        earn: "포인트 적립",
-        grow: "영지 성장",
-      },
-    },
   },
   admin: {
     actualForecastLine: "실제 {actual} / 예측 {forecast}",
