@@ -1,0 +1,398 @@
+/*
+ * Warm "잔디 정원" auth shell — brand split layout, scoped to the auth routes.
+ * Redefining the global --color-* tokens on .shell re-themes every Tailwind
+ * token utility used by the slotted forms (bg-surface, text-ink, ...) without
+ * touching the map/dashboard/estate. Always light (the chosen direction),
+ * regardless of the system/app theme. Same self-contained technique as
+ * profile-surface.module.css (/me) and estate-shell.module.css.
+ */
+.shell {
+  --color-canvas: #ece5d6;
+  --color-surface: #fbfaf6;
+  --color-surface-2: #ffffff;
+  --color-inset: #efe8d9;
+  --color-line: rgb(26 43 34 / 0.1);
+  --color-line-strong: rgb(26 43 34 / 0.16);
+  --color-ink: #1a2b22;
+  --color-ink-muted: #51604f;
+  --color-ink-subtle: #8b9184;
+  --color-accent: #0f7a52;
+  --color-accent-strong: #0b5e3f;
+  --color-accent-soft: rgb(15 122 82 / 0.12);
+  --color-on-accent: #fbfaf6;
+  --color-saving: #2f9e6b;
+  --color-saving-soft: rgb(47 158 107 / 0.14);
+  /* keep error red constant so it reads on cream even under an OS dark theme */
+  --color-overuse: #be123c;
+  --honey: #e8a13a;
+  --honey-strong: #b9740f;
+  --honey-soft: rgb(232 161 58 / 0.18);
+
+  min-height: 100dvh;
+  background: radial-gradient(120% 80% at 50% -10%, #f6f0e3 0%, var(--color-canvas) 60%);
+  color: var(--color-ink);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+@media (min-width: 768px) {
+  .shell {
+    grid-template-columns: 1.05fr 1fr;
+    grid-template-rows: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------- brand panel */
+.brand {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  color: #f4f9f0;
+  background: linear-gradient(135deg, #0b5e3f 0%, #1f8a5d 48%, #6bbf93 100%);
+}
+
+/* soft top-right light bloom for depth */
+.brand::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70% 95% at 85% -10%, rgb(255 255 255 / 0.3), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* faint dotted texture so the panel is not a flat fill */
+.brand::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1.4px);
+  background-size: 18px 18px;
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.brandInner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1.4rem 1.4rem 1.2rem;
+}
+
+@media (min-width: 768px) {
+  .brandInner {
+    padding: 2.5rem 2.5rem 0;
+  }
+}
+
+.brandTop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.brandMark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.brandIcon {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 0.7rem;
+  background: rgb(255 255 255 / 0.16);
+  border: 1px solid rgb(255 255 255 / 0.22);
+  color: #f4f9f0;
+}
+
+.brandIcon svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.wordmark {
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(244 249 240 / 0.82);
+}
+
+.brandBody {
+  margin-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .brandBody {
+    margin-top: 2rem;
+  }
+}
+
+.tagline {
+  font-size: 1.15rem;
+  line-height: 1.4;
+  font-weight: 600;
+  max-width: 26ch;
+  text-wrap: balance;
+}
+
+@media (min-width: 768px) {
+  .tagline {
+    font-size: 1.7rem;
+    line-height: 1.32;
+    max-width: 16ch;
+  }
+}
+
+.values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.valueChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 550;
+  color: #f4f9f0;
+  background: rgb(255 255 255 / 0.14);
+  border: 1px solid rgb(255 255 255 / 0.2);
+}
+
+.valueChip svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+/* isometric building art, grounded with a soft shadow; desktop only */
+.art {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .art {
+    display: block;
+    position: relative;
+    margin-top: auto;
+    width: 100%;
+    height: 17rem;
+  }
+
+  .art::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 1.6rem;
+    width: 66%;
+    height: 2.6rem;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, rgb(7 40 27 / 0.4), transparent 70%);
+    filter: blur(3px);
+    z-index: 0;
+  }
+}
+
+.artImg {
+  object-fit: contain;
+  object-position: center bottom;
+  z-index: 1;
+}
+
+/* ----------------------------------------------------------------- form panel */
+.formCol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  padding: 2rem 1.25rem 2.75rem;
+}
+
+@media (min-width: 768px) {
+  .formCol {
+    padding: 2rem;
+  }
+}
+
+.formInner {
+  width: 100%;
+  max-width: 26rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.title {
+  font-size: 1.65rem;
+  font-weight: 680;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.subtitle {
+  margin-top: 0.4rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+}
+
+.formSlot {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------------------------------------------------- shared form field styles
+   Imported by login/signup/onboarding forms so every input matches. Defined
+   here (not Tailwind arbitrary values) because the v4 JIT has repeatedly
+   failed to emit arbitrary utilities in this project. */
+.fieldGroup {
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+}
+
+.label {
+  font-weight: 550;
+  color: var(--color-ink-muted);
+}
+
+.fieldWrap {
+  position: relative;
+}
+
+.fieldIcon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.05rem;
+  height: 1.05rem;
+  color: var(--color-ink-subtle);
+  pointer-events: none;
+}
+
+.field {
+  width: 100%;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface-2);
+  color: var(--color-ink);
+  padding: 0 0.9rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.fieldWithIcon {
+  padding-left: 2.5rem;
+}
+
+.field::placeholder {
+  color: var(--color-ink-subtle);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+.primaryButton {
+  height: 2.75rem;
+  width: 100%;
+  border-radius: 0.75rem;
+  border: none;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: 0 10px 22px -14px rgb(11 94 63 / 0.7);
+  transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: var(--color-accent-strong);
+}
+
+.primaryButton:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.primaryButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.errorText {
+  color: var(--color-overuse);
+  font-size: 0.85rem;
+}
+
+.altText {
+  font-size: 0.88rem;
+  color: var(--color-ink-muted);
+}
+
+.altLink {
+  color: var(--color-accent);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.altLink:hover {
+  text-decoration: underline;
+}
+
+/* -------------------------------------------------- one staggered load reveal */
+@keyframes authFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal {
+  animation: authFade 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.reveal1 {
+  animation-delay: 0.04s;
+}
+
+.reveal2 {
+  animation-delay: 0.1s;
+}
+
+.reveal3 {
+  animation-delay: 0.18s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
+  }
+}
