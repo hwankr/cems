@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 import { themeInitScript } from "@/features/theme/theme";
 import { isLocale, supportedLocales } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
@@ -68,7 +69,11 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-dvh">
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <Script
+          id="cems-theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
         {children}
       </body>
     </html>
