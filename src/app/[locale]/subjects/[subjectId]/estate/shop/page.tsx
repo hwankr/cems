@@ -7,6 +7,7 @@ import {
   getCurrentUser,
   getGroupPointPool,
 } from "@/features/account/data/account-dal";
+import { getSubjectAwardTiers } from "@/features/leagues/data/leagues-dal";
 import { isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
 
@@ -32,6 +33,8 @@ export default async function EstateShopPage({ params }: EstateShopPageProps) {
     getProfileGroupId: async () => profile.groupId,
     getGroupEarnedPoints: async (groupId) =>
       (await getGroupPointPool(groupId)).earnedPoints,
+    getSubjectAwardTier: async (sid) =>
+      (await getSubjectAwardTiers())[sid]?.tier ?? null,
   });
 
   if (!data) notFound();

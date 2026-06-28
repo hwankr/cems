@@ -125,6 +125,7 @@ describe("EstateGameClient accessibility", () => {
     const data = await getEstatePageData("en", "yu-e21", {
       getProfileGroupId: async () => "engineering",
       getGroupEarnedPoints: async () => 100000,
+      getSubjectAwardTier: async () => null,
     });
     if (!data) throw new Error("Expected estate page data.");
 
@@ -164,6 +165,7 @@ describe("EstateGameClient accessibility", () => {
     const data = await getEstatePageData("en", "yu-e21", {
       getProfileGroupId: async () => "engineering",
       getGroupEarnedPoints: async () => 100000,
+      getSubjectAwardTier: async () => null,
     });
     if (!data) throw new Error("Expected estate page data.");
 
@@ -223,6 +225,7 @@ describe("EstateGameClient accessibility", () => {
     const data = await getEstatePageData("en", "yu-e21", {
       getProfileGroupId: async () => "engineering",
       getGroupEarnedPoints: async () => 100000,
+      getSubjectAwardTier: async () => null,
     });
     if (!data) throw new Error("Expected estate page data.");
 
@@ -269,6 +272,7 @@ describe("EstateGameClient accessibility", () => {
     const data = await getEstatePageData("en", "yu-e21", {
       getProfileGroupId: async () => "engineering",
       getGroupEarnedPoints: async () => 100000,
+      getSubjectAwardTier: async () => null,
     });
     if (!data) throw new Error("Expected estate page data.");
 

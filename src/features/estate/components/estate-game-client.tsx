@@ -32,6 +32,10 @@ import {
   baseEstateBuildingDefinition,
   estateItemCatalog,
 } from "../data/estate-item-catalog";
+import {
+  applyEmblemGrant,
+  awardEmblemDefinitionById,
+} from "../domain/award-emblem";
 import { estateExpansionCatalog } from "../data/estate-expansion-catalog";
 import type { EstatePageData } from "../data/get-estate-page-data";
 import {
@@ -90,14 +94,30 @@ type EstateGameClientProps = {
   repository?: EstateRepository;
 };
 
-const itemDefinitions = estateItemCatalog;
-const allItemDefinitions = [baseEstateBuildingDefinition, ...estateItemCatalog];
 const expensiveConfirmationPoint = 700;
 const saveDebounceMs = 360;
 
 export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   const { locale, messages } = useI18n();
   const copy = messages.estate;
+  const grantedEmblemDefinition = useMemo(
+    () =>
+      data.grantedEmblemDefinitionId
+        ? awardEmblemDefinitionById(data.grantedEmblemDefinitionId)
+        : null,
+    [data.grantedEmblemDefinitionId],
+  );
+  const itemDefinitions = useMemo(
+    () =>
+      grantedEmblemDefinition
+        ? [...estateItemCatalog, grantedEmblemDefinition]
+        : [...estateItemCatalog],
+    [grantedEmblemDefinition],
+  );
+  const allItemDefinitions = useMemo(
+    () => [baseEstateBuildingDefinition, ...itemDefinitions],
+    [itemDefinitions],
+  );
   const [snapshot, setSnapshot] = useState<EstateSnapshot>(
     data.initialSnapshot,
   );
@@ -182,7 +202,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       createId: createEstateId,
       now: () => new Date().toISOString(),
     }),
-    [data.pointAccount.earnedPoints],
+    [data.pointAccount.earnedPoints, itemDefinitions],
   );
 
   const flushSave = useCallback(async () => {
@@ -313,10 +333,13 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
           return;
         }
 
-        if (result.snapshot) {
-          snapshotRef.current = result.snapshot;
-          setSnapshot(result.snapshot);
-        }
+        const loaded = result.snapshot ?? snapshotRef.current;
+        const granted = applyEmblemGrant(
+          loaded,
+          data.grantedEmblemDefinitionId,
+        );
+        snapshotRef.current = granted;
+        setSnapshot(granted);
 
         if (result.recovered) {
           showMessage(copy.messages.recovered);
@@ -328,7 +351,14 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       cancelled = true;
       clearTimeout(resetTimer);
     };
-  }, [copy.messages, data.initialSnapshot, data.subject.id, flushSave, showMessage]);
+  }, [
+    copy.messages,
+    data.grantedEmblemDefinitionId,
+    data.initialSnapshot,
+    data.subject.id,
+    flushSave,
+    showMessage,
+  ]);
 
   useEffect(() => {
     const flush = () => {
@@ -453,7 +483,13 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     if (result.ok) {
       setMode({ type: "selected", instanceId: instance.id });
     }
-  }, [applyCommand, copy.messages.cannotRotate, mode, showMessage]);
+  }, [
+    allItemDefinitions,
+    applyCommand,
+    copy.messages.cannotRotate,
+    mode,
+    showMessage,
+  ]);
 
   const removeSelectedItem = useCallback(() => {
     const instanceId = getSelectedEstateInstanceId(mode);
@@ -484,7 +520,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
       setMode({ type: "view" });
       showMessage(copy.messages.removed);
     }
-  }, [applyCommand, copy, mode, showMessage]);
+  }, [allItemDefinitions, applyCommand, copy, mode, showMessage]);
 
   const handleUpgradeBuilding = useCallback(() => {
     const result = applyCommand({ type: "upgrade-main-building" });
@@ -900,6 +936,7 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
           <InventoryPanel
             copy={copy}
             snapshot={snapshot}
+            itemDefinitions={itemDefinitions}
             onUseItem={handleStartInventoryAction}
           />
         </div>
@@ -1000,10 +1037,12 @@ function MiniMetric({
 function InventoryPanel({
   copy,
   snapshot,
+  itemDefinitions,
   onUseItem,
 }: {
   copy: EstateMessages;
   snapshot: EstateSnapshot;
+  itemDefinitions: readonly EstateItemDefinition[];
   onUseItem: (definitionId: string) => void;
 }) {
   const entries = snapshot.inventory
