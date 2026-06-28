@@ -346,7 +346,6 @@ export const koMessages = {
       title: "설정",
       theme: "테마",
       language: "언어",
-      mode: "모드",
     },
     popup: {
       realtimeUsage: "실시간 사용량",
@@ -376,7 +375,6 @@ export const koMessages = {
   me: {
     title: "내 페이지",
     backToMap: "지도로",
-    openMyPage: "내 페이지",
     goals: {
       title: "목표",
       claim: "보너스 받기",
@@ -470,20 +468,6 @@ export const koMessages = {
     toMap: "지도로",
     cancelTest: "테스트: 인증 취소",
     cancelling: "취소 중…",
-  },
-  modes: {
-    admin: "관리자 대시보드",
-    participant: "참여자 모드",
-  },
-  participant: {
-    affiliationRanking: "소속 순위",
-    myAffiliation: "내 소속",
-    myPoints: "내 포인트",
-    pointsDescription: "예측 기준선보다 절감한 전력량이 포인트로 전환됩니다.",
-    rank: "순위",
-    savedEnergy: "절감 에너지",
-    savedLine: "{value} 절감",
-    unassigned: "소속 없음",
   },
   status: {
     neutral: "보통",

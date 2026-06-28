@@ -5,7 +5,7 @@ import { koMessages } from "../messages/ko";
 describe("messages", () => {
   it("keeps Korean as the source/default language", () => {
     expect(koMessages.app.eyebrow).toBe("캠퍼스 에너지 관리 시스템");
-    expect(koMessages.modes.admin).toBe("관리자 대시보드");
+    expect(koMessages.mapView.settings.title).toBe("설정");
   });
 
   it("provides matching English message groups", () => {

@@ -345,7 +345,6 @@ export const enMessages = {
       title: "Settings",
       theme: "Theme",
       language: "Language",
-      mode: "Mode",
     },
     popup: {
       realtimeUsage: "Live usage",
@@ -375,7 +374,6 @@ export const enMessages = {
   me: {
     title: "My page",
     backToMap: "To map",
-    openMyPage: "My page",
     goals: {
       title: "Goals",
       claim: "Claim bonus",
@@ -469,21 +467,6 @@ export const enMessages = {
     toMap: "To map",
     cancelTest: "Test: cancel check-in",
     cancelling: "Cancelling…",
-  },
-  modes: {
-    admin: "Admin Dashboard",
-    participant: "Participant Mode",
-  },
-  participant: {
-    affiliationRanking: "Affiliation ranking",
-    myAffiliation: "My affiliation",
-    myPoints: "My points",
-    pointsDescription:
-      "Points come from electricity saved against the forecast baseline.",
-    rank: "Rank",
-    savedEnergy: "Saved energy",
-    savedLine: "{value} saved",
-    unassigned: "Unassigned",
   },
   status: {
     neutral: "neutral",
