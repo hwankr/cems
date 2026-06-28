@@ -151,3 +151,43 @@ revoke all on function public.finalize_league(text) from public;
 revoke execute on function public.finalize_league(text) from anon, authenticated;
 comment on function public.finalize_league(text) is
   'OPERATOR-ONLY (service_role/MCP). Writes podium team awards + top-N gold-team student awards for a league, then marks it finalized. Idempotent. EXECUTE revoked from anon and authenticated.';
+
+-- Hall of fame read: a league's full award set (team podium + students) with
+-- names. SECURITY DEFINER because winners' display_name spans groups (profiles
+-- RLS is own-group only). Leaderboard projection: name + tier + rank only.
+create or replace function public.get_league_awards(p_league_id text)
+returns table (
+  award_type text,
+  tier text,
+  rank int,
+  competitor_id text,
+  competitor_name text,
+  user_id uuid,
+  display_name text,
+  metric_value numeric
+)
+language sql
+security definer
+stable
+set search_path = public
+as $$
+  select
+    la.award_type,
+    la.tier,
+    la.rank,
+    la.competitor_id,
+    coalesce(g.name, la.competitor_id) as competitor_name,
+    la.user_id,
+    pr.display_name,
+    la.metric_value
+  from public.league_awards la
+  left join public.groups g on la.competitor_id = g.id
+  left join public.profiles pr on la.user_id = pr.id
+  where la.league_id = p_league_id
+  order by la.award_type desc, la.rank;  -- 'team' before 'student'
+$$;
+revoke all on function public.get_league_awards(text) from public;
+revoke execute on function public.get_league_awards(text) from anon;
+grant execute on function public.get_league_awards(text) to authenticated;
+comment on function public.get_league_awards(text) is
+  'Returns a league''s team podium + student winners with names (leaderboard projection). SECURITY DEFINER crosses profiles RLS for cross-group winner names. EXECUTE revoked from anon.';
