@@ -28,14 +28,20 @@ Final decision: expose three curated personas backed by existing seeded guest ac
 
 Do not expose `it@naver.com` as a one-click demo account. It remains useful for manual testing, but it is a real test account with an intentionally inflated balance.
 
+Implementation addendum (2026-06-28): live password auth for the seeded `guest*@cems.demo` rows originally returned Supabase Auth `500 Database error querying schema`, while the existing manual test account authenticated successfully. The root cause was that the manual seed created `auth.users` rows for ranking display but did not create matching `auth.identities` rows or normalize Auth token fields required for password login. `docs/superpowers/migrations/2026-06-28-repair-demo-guest-auth-identities.sql` was applied to the live `cems` project on 2026-06-28; all 15 guest rows are now confirmed and have email identities. The code still supports a server-only single-account fallback with `CEMS_DEMO_GUEST_SINGLE_EMAIL`, but local demo mode is currently back on the three seeded personas.
+
+Verification addendum (2026-06-28): `guest1@cems.demo`, `guest7@cems.demo`, and `guest12@cems.demo` authenticate successfully with the configured demo password. Browser smoke against `http://127.0.0.1:3001/ko/login` confirmed that the three demo cards land on `/ko`, create Supabase auth cookies, and emit no browser page errors.
+
 ## Files
 
 - Create: `src/features/account/demo/demo-guest-personas.ts`
 - Create: `src/features/account/demo/demo-guest-credentials.ts`
 - Create: `src/features/account/components/demo-guest-entry.tsx`
+- Create: `src/features/account/components/demo-guest-entry-client.tsx`
 - Create: `src/features/account/__tests__/demo-guest-personas.test.ts`
 - Create: `src/features/account/__tests__/demo-guest-entry.test.tsx`
 - Create: `docs/superpowers/migrations/2026-06-28-rotate-demo-guest-passwords.sql`
+- Create: `docs/superpowers/migrations/2026-06-28-repair-demo-guest-auth-identities.sql`
 - Modify: `src/features/account/actions/auth.ts`
 - Modify: `src/features/account/components/auth-shell.module.css`
 - Modify: `src/app/[locale]/login/page.tsx`
@@ -51,9 +57,12 @@ Runtime env vars:
 ```env
 CEMS_DEMO_GUEST_LOGIN_ENABLED=false
 CEMS_DEMO_GUEST_PASSWORD=
+CEMS_DEMO_GUEST_SINGLE_EMAIL=
 ```
 
 For local/demo deployment, set `CEMS_DEMO_GUEST_LOGIN_ENABLED=true` and set `CEMS_DEMO_GUEST_PASSWORD` to the generated password in `.env.local` and in the deployment environment. The SQL file records the operational rotation step, but the real password must not be committed. Generate one locally:
+
+If the seeded `guest*@cems.demo` auth rows ever regress or a separate demo environment has not run the repair SQL, set `CEMS_DEMO_GUEST_SINGLE_EMAIL` to a working presentation account. The client still sees only the complete-account persona label; the email remains server-only.
 
 ```powershell
 $bytes = New-Object byte[] 32

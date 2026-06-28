@@ -72,6 +72,10 @@ export const enMessages = {
           title: "Estate builder",
           meta: "Student Services · Central Library estate",
         },
+        "complete-demo": {
+          title: "Complete demo account",
+          meta: "Full presentation flow",
+        },
       },
       errors: {
         disabled: "Demo entry is currently disabled.",

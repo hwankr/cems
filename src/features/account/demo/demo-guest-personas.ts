@@ -1,4 +1,4 @@
-export const demoGuestPersonas = [
+export const seededDemoGuestPersonas = [
   {
     key: "engineering-leader",
     icon: "trophy",
@@ -16,6 +16,17 @@ export const demoGuestPersonas = [
   },
 ] as const;
 
+export const singleDemoGuestPersona = {
+  key: "complete-demo",
+  icon: "building",
+  accent: "grass",
+} as const;
+
+export const demoGuestPersonas = [
+  ...seededDemoGuestPersonas,
+  singleDemoGuestPersona,
+] as const;
+
 export type DemoGuestPersona = (typeof demoGuestPersonas)[number];
 export type DemoGuestKey = DemoGuestPersona["key"];
 
@@ -25,4 +36,12 @@ const demoGuestKeys = new Set<string>(
 
 export function isDemoGuestKey(value: unknown): value is DemoGuestKey {
   return typeof value === "string" && demoGuestKeys.has(value);
+}
+
+export function getDemoGuestDisplayPersonas({
+  singleAccount,
+}: {
+  singleAccount: boolean;
+}): readonly DemoGuestPersona[] {
+  return singleAccount ? [singleDemoGuestPersona] : seededDemoGuestPersonas;
 }

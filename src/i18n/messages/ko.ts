@@ -70,6 +70,10 @@ export const koMessages = {
           title: "영지 꾸미기 체험",
           meta: "학생지원 · 중앙도서관 영지",
         },
+        "complete-demo": {
+          title: "완성 데모 계정",
+          meta: "발표용 전체 흐름 확인",
+        },
       },
       errors: {
         disabled: "현재 데모 입장이 꺼져 있습니다.",

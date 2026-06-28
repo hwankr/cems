@@ -5,7 +5,8 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { I18nProvider } from "@/i18n/client";
 import { koMessages } from "@/i18n/messages/ko";
-import { DemoGuestEntry } from "../components/demo-guest-entry";
+import { DemoGuestEntryClient } from "../components/demo-guest-entry-client";
+import { getDemoGuestDisplayPersonas } from "../demo/demo-guest-personas";
 
 vi.mock("../actions/auth", () => ({
   signInDemoGuestAction: async () => ({ error: null }),
@@ -30,11 +31,13 @@ describe("DemoGuestEntry", () => {
   });
 
   it("renders three guest scenario buttons without exposing emails", async () => {
+    const guests = getDemoGuestDisplayPersonas({ singleAccount: false });
+
     root = createRoot(container);
     await act(async () => {
       root!.render(
         <I18nProvider locale="ko" messages={koMessages}>
-          <DemoGuestEntry next="/ko/me" />
+          <DemoGuestEntryClient guests={guests} next="/ko/me" />
         </I18nProvider>,
       );
     });
@@ -46,5 +49,23 @@ describe("DemoGuestEntry", () => {
     expect(container.textContent).not.toContain("@cems.demo");
     expect(container.querySelectorAll("form")).toHaveLength(3);
     expect(container.querySelectorAll('input[name="next"]')).toHaveLength(3);
+  });
+
+  it("can render a single complete demo account when configured", async () => {
+    const guests = getDemoGuestDisplayPersonas({ singleAccount: true });
+
+    root = createRoot(container);
+    await act(async () => {
+      root!.render(
+        <I18nProvider locale="ko" messages={koMessages}>
+          <DemoGuestEntryClient guests={guests} />
+        </I18nProvider>,
+      );
+    });
+
+    expect(container.textContent).toContain("완성 데모 계정");
+    expect(container.textContent).not.toContain("@cems.demo");
+    expect(container.textContent).not.toContain("it@naver.com");
+    expect(container.querySelectorAll("form")).toHaveLength(1);
   });
 });
