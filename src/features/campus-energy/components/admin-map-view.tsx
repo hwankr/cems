@@ -21,8 +21,6 @@ import { MapTopBar } from "./map-top-bar";
 // preset is driven by the active theme (day vs night).
 const STANDARD_MAP_STYLE = "mapbox://styles/mapbox/standard";
 
-type Mode = "admin" | "participant";
-
 type AdminMapViewProps = {
   mapboxToken: string;
   orgSubjectId: string | null;
@@ -32,8 +30,6 @@ type AdminMapViewProps = {
   contributorRankings: SubjectContributorRankings;
   selectedSubjectId: string;
   onSelectSubject: (subjectId: string) => void;
-  mode: Mode;
-  onModeChange: (mode: Mode) => void;
 };
 
 export function AdminMapView({
@@ -45,8 +41,6 @@ export function AdminMapView({
   contributorRankings,
   selectedSubjectId,
   onSelectSubject,
-  mode,
-  onModeChange,
 }: AdminMapViewProps) {
   const { resolvedTheme } = useTheme();
   const { locale } = useI18n();
@@ -174,8 +168,6 @@ export function AdminMapView({
       <MapSettingsPopover
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}
-        mode={mode}
-        onModeChange={onModeChange}
         showLabels={showLabels}
         onToggleLabels={() => setShowLabels((value) => !value)}
       />

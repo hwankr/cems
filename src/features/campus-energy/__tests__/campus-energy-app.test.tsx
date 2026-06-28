@@ -32,21 +32,6 @@ vi.mock("../components/admin-map-view", () => ({
   ),
 }));
 
-vi.mock("../components/participant-dashboard", () => ({
-  ParticipantDashboard: () => <div data-testid="participant-dashboard" />,
-}));
-
-vi.mock("../components/bottom-nav", () => ({
-  BottomNav: () => <nav data-testid="bottom-nav" />,
-}));
-
-vi.mock("../components/app-header", () => ({
-  AppHeader: () => <header data-testid="app-header" />,
-}));
-
-vi.mock("@/features/account/components/sign-out-button", () => ({
-  SignOutButton: () => <button type="button">Sign out</button>,
-}));
 
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean })
   .IS_REACT_ACT_ENVIRONMENT = true;

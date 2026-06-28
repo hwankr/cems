@@ -6,15 +6,10 @@ import { ThemeSwitcher } from "@/features/theme/theme-switcher";
 import { useI18n } from "@/i18n/client";
 import { LanguageSwitcher } from "./language-switcher";
 import { MapDisplayToggles } from "./map-display-toggles";
-import { ModeTabs } from "./mode-tabs";
-
-type Mode = "admin" | "participant";
 
 type MapSettingsPopoverProps = {
   open: boolean;
   onClose: () => void;
-  mode: Mode;
-  onModeChange: (mode: Mode) => void;
   showLabels: boolean;
   onToggleLabels: () => void;
 };
@@ -22,8 +17,6 @@ type MapSettingsPopoverProps = {
 export function MapSettingsPopover({
   open,
   onClose,
-  mode,
-  onModeChange,
   showLabels,
   onToggleLabels,
 }: MapSettingsPopoverProps) {
@@ -63,9 +56,6 @@ export function MapSettingsPopover({
           />
           <div className="my-1 h-px bg-line" aria-hidden="true" />
         </div>
-        <Row label={settings.mode}>
-          <ModeTabs mode={mode} onModeChange={onModeChange} />
-        </Row>
         <Row label={settings.theme}>
           <ThemeSwitcher />
         </Row>
