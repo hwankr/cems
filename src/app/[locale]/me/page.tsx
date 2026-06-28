@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { Trophy } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
 import { CampusEnergyProviders } from "@/features/campus-energy/components/campus-energy-providers";
 import { ProfileHero } from "@/features/account/components/profile-hero";
@@ -75,6 +77,16 @@ export default async function MePage({ params }: MePageProps) {
             estateHref={estateHref}
           />
           <AchievementHighlights achievements={achievements} />
+          <Link
+            href={`/${locale}/hall-of-fame`}
+            className="mx-4 flex items-center justify-between rounded-xl border border-line bg-surface px-3 py-2.5 text-sm font-semibold text-ink transition hover:bg-surface-3"
+          >
+            <span className="flex items-center gap-2">
+              <Trophy className="h-4 w-4 text-[#a07a00]" aria-hidden="true" />
+              {messages.hallOfFame.title}
+            </span>
+            <span className="text-ink-subtle">→</span>
+          </Link>
           <ContributionGraph graph={graph} />
           <GoalList goals={goals} />
           <EstateContribution

@@ -85,7 +85,12 @@ export async function getMyLeagueAwards(
       };
     })
     .sort((a, b) => (a.endsAt < b.endsAt ? 1 : a.endsAt > b.endsAt ? -1 : 0))
-    .map(({ endsAt: _endsAt, ...rest }) => rest);
+    .map((row) => ({
+      leagueId: row.leagueId,
+      leagueName: row.leagueName,
+      tier: row.tier,
+      rank: row.rank,
+    }));
 }
 
 export async function getSubjectAwardTiers(): Promise<SubjectAwardTiers> {

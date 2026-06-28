@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, Settings, Tag, User } from "lucide-react";
+import { Building2, Settings, Tag, Trophy, User } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useI18n } from "@/i18n/client";
@@ -8,6 +8,7 @@ import { useI18n } from "@/i18n/client";
 type MapControlsProps = {
   onGoToMyOrg?: () => void;
   profileHref: string;
+  hallOfFameHref?: string;
   showLabels: boolean;
   onToggleLabels: () => void;
   onOpenSettings: () => void;
@@ -16,6 +17,7 @@ type MapControlsProps = {
 export function MapControls({
   onGoToMyOrg,
   profileHref,
+  hallOfFameHref,
   showLabels,
   onToggleLabels,
   onOpenSettings,
@@ -37,6 +39,14 @@ export function MapControls({
         <ControlLink label={controls.profile} href={profileHref}>
           <User size={18} aria-hidden="true" />
         </ControlLink>
+        {hallOfFameHref ? (
+          <>
+            <span className="h-px bg-line" aria-hidden="true" />
+            <ControlLink label={controls.hallOfFame} href={hallOfFameHref}>
+              <Trophy size={18} aria-hidden="true" />
+            </ControlLink>
+          </>
+        ) : null}
       </div>
 
       <div className="flex flex-col overflow-hidden rounded-xl border border-line bg-surface/95 shadow-pop backdrop-blur">
