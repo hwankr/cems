@@ -7,7 +7,6 @@ import {
   isDemoGuestKey,
   type DemoGuestKey,
 } from "../demo/demo-guest-personas";
-import { resolveDemoGuestCredential } from "../demo/demo-guest-credentials";
 import { createServerSupabaseClient } from "../supabase/server";
 
 export type AuthActionState = { error: string | null };
@@ -72,6 +71,9 @@ export async function signInDemoGuestAction(
     return { error: "invalid-guest" };
   }
 
+  const { resolveDemoGuestCredential } = await import(
+    "../demo/demo-guest-credentials"
+  );
   const credential = resolveDemoGuestCredential(guestKey);
   if ("error" in credential) {
     return { error: credential.error };
