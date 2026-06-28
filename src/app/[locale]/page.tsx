@@ -5,8 +5,6 @@ import {
   getCurrentProfile,
   getCurrentUser,
   getGroupEstateSubjectId,
-  getGroupPointPool,
-  getPersonalPointTotal,
   getSubjectContributorRankings,
 } from "@/features/account/data/account-dal";
 import { isLocale } from "@/i18n/config";
@@ -35,16 +33,8 @@ export default async function Home({ params }: HomeProps) {
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/onboarding`);
 
-  const [
-    messages,
-    personalPoints,
-    groupPool,
-    orgSubjectId,
-    contributorRankings,
-  ] = await Promise.all([
+  const [messages, orgSubjectId, contributorRankings] = await Promise.all([
     getMessages(locale),
-    getPersonalPointTotal(profile.userId),
-    getGroupPointPool(profile.groupId),
     getGroupEstateSubjectId(profile.groupId),
     getSubjectContributorRankings(),
   ]);
@@ -55,14 +45,7 @@ export default async function Home({ params }: HomeProps) {
       mapboxToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN ?? ""}
       messages={messages}
       contributorRankings={contributorRankings}
-      account={{
-        displayName: profile.displayName,
-        groupId: profile.groupId,
-        personalPoints,
-        groupPoolPoints: groupPool.earnedPoints,
-        groupMemberCount: groupPool.memberCount,
-        orgSubjectId,
-      }}
+      account={{ orgSubjectId }}
     />
   );
 }

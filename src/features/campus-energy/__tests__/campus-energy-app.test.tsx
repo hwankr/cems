@@ -51,14 +51,7 @@ Object.defineProperty(window, "matchMedia", {
 });
 
 function account(orgSubjectId: string | null): CampusEnergyAccount {
-  return {
-    displayName: "Test User",
-    groupId: "student-services",
-    personalPoints: 0,
-    groupPoolPoints: 0,
-    groupMemberCount: 1,
-    orgSubjectId,
-  };
+  return { orgSubjectId };
 }
 
 async function renderApp(orgSubjectId: string | null) {

@@ -12,11 +12,6 @@ import { AdminMapView } from "./admin-map-view";
 import { CampusEnergyProviders } from "./campus-energy-providers";
 
 export type CampusEnergyAccount = {
-  displayName: string;
-  groupId: string;
-  personalPoints: number;
-  groupPoolPoints: number;
-  groupMemberCount: number;
   orgSubjectId: string | null;
 };
 
