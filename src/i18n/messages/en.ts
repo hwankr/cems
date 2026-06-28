@@ -341,6 +341,7 @@ export const enMessages = {
       settings: "Settings",
       myOrg: "My organization",
       profile: "My page",
+      hallOfFame: "Hall of Fame",
     },
     settings: {
       title: "Settings",
@@ -372,9 +373,25 @@ export const enMessages = {
       emptyHint: "Members of the group operating this building appear here",
     },
   },
+  hallOfFame: {
+    title: "Hall of Fame",
+    subtitle: "League award records",
+    empty: "No finalized leagues yet",
+    emptyHint: "Award-winning teams and top students appear here once a league ends",
+    teamSectionTitle: "Winning teams",
+    studentSectionTitle: "Top students",
+    tierGold: "Gold",
+    tierSilver: "Silver",
+    tierBronze: "Bronze",
+    rankUnit: "",
+    avgPointsLabel: "{points}P avg / member",
+    periodFormat: "{start} – {end}",
+    back: "To map",
+  },
   me: {
     title: "My page",
     backToMap: "To map",
+    hallOfFameLink: "Hall of Fame",
     goals: {
       title: "Goals",
       claim: "Claim bonus",

@@ -342,6 +342,7 @@ export const koMessages = {
       settings: "설정",
       myOrg: "내 조직",
       profile: "내 페이지",
+      hallOfFame: "명예의 전당",
     },
     settings: {
       title: "설정",
@@ -373,9 +374,25 @@ export const koMessages = {
       emptyHint: "이 건물을 운영하는 그룹의 기여자가 표시됩니다",
     },
   },
+  hallOfFame: {
+    title: "명예의 전당",
+    subtitle: "리그 수상 기록",
+    empty: "아직 확정된 리그가 없어요",
+    emptyHint: "리그가 종료되면 수상 팀과 우수 학생이 여기 표시됩니다",
+    teamSectionTitle: "수상 팀",
+    studentSectionTitle: "우수 학생",
+    tierGold: "금상",
+    tierSilver: "은상",
+    tierBronze: "동상",
+    rankUnit: "위",
+    avgPointsLabel: "1인당 평균 {points}P",
+    periodFormat: "{start} – {end}",
+    back: "지도로",
+  },
   me: {
     title: "내 페이지",
     backToMap: "지도로",
+    hallOfFameLink: "명예의 전당",
     goals: {
       title: "목표",
       claim: "보너스 받기",
