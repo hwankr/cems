@@ -11,13 +11,10 @@ vi.mock("@/i18n/client", () => ({
     locale: "ko",
     messages: {
       hallOfFame: {
-        tierGold: "금상",
-        tierSilver: "은상",
-        tierBronze: "동상",
-        rankUnit: "위",
-        avgPointsLabel: "1인당 평균 {points}P",
-        teamSectionTitle: "수상 팀",
+        tierGold: "금상", tierSilver: "은상", tierBronze: "동상",
+        rankUnit: "위", avgPointsLabel: "1인당 평균 {points}P", teamSectionTitle: "수상 팀",
       },
+      demo: { groups: { engineering: "공과대학", humanities: "문과대학", "student-services": "학생지원" } },
     },
   }),
 }));
@@ -27,27 +24,9 @@ vi.mock("@/i18n/client", () => ({
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
 const teams: TeamAward[] = [
-  {
-    tier: "gold",
-    rank: 1,
-    competitorId: "student-services",
-    competitorName: "학생지원팀",
-    metricValue: 1200,
-  },
-  {
-    tier: "silver",
-    rank: 2,
-    competitorId: "humanities",
-    competitorName: "인문대학",
-    metricValue: 1100,
-  },
-  {
-    tier: "bronze",
-    rank: 3,
-    competitorId: "engineering",
-    competitorName: "공과대학",
-    metricValue: 1000,
-  },
+  { tier: "gold", rank: 1, competitorId: "student-services", competitorName: "Student Services", metricValue: 1200 },
+  { tier: "silver", rank: 2, competitorId: "humanities", competitorName: "Humanities", metricValue: 1100 },
+  { tier: "bronze", rank: 3, competitorId: "engineering", competitorName: "Engineering", metricValue: 1000 },
 ];
 
 describe("AwardPodium", () => {
@@ -71,10 +50,10 @@ describe("AwardPodium", () => {
     expect(lis[1].getAttribute("data-rank")).toBe("1");
 
     const text = container.textContent ?? "";
-    expect(text).toContain("학생지원팀");
-    expect(text).toContain("인문대학");
+    expect(text).toContain("문과대학");
     expect(text).toContain("공과대학");
     expect(text).toContain("1,200");
+    expect(text).toContain("학생지원"); // localized, not "student-services"/"학생지원팀"
 
     await act(async () => root.unmount());
   });

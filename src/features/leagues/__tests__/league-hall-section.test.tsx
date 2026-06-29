@@ -20,6 +20,7 @@ vi.mock("@/i18n/client", () => ({
         studentSectionTitle: "우수 학생",
         periodFormat: "{start} – {end}",
       },
+      demo: { groups: { engineering: "공과대학", humanities: "문과대학", "student-services": "학생지원" } },
     },
   }),
 }));
@@ -71,7 +72,7 @@ describe("LeagueHallSection", () => {
 
     const text = container.textContent ?? "";
     expect(text).toContain("영남대 단과대 에너지 절감 리그");
-    expect(text).toContain("학생지원팀");
+    expect(text).toContain("학생지원");
     expect(text).toContain("it1");
     expect(text).toContain("게스트 12");
 

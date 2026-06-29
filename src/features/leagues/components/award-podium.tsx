@@ -5,6 +5,7 @@ import { Crown, Medal } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { formatNumber } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
+import { competitorLabel } from "../domain/competitor-label";
 import {
   PODIUM_VISUAL_ORDER,
   TIER_PALETTE,
@@ -16,6 +17,7 @@ import styles from "./league-hall.module.css";
 export function AwardPodium({ teams }: { teams: TeamAward[] }) {
   const { locale, messages } = useI18n();
   const copy = messages.hallOfFame;
+  const groupLabels = messages.demo.groups;
   const tierLabel: Record<AwardTier, string> = {
     gold: copy.tierGold,
     silver: copy.tierSilver,
@@ -60,8 +62,11 @@ export function AwardPodium({ teams }: { teams: TeamAward[] }) {
                 )}
               </span>
 
-              <span className={styles.slotName} title={team.competitorName}>
-                {team.competitorName}
+              <span
+                className={styles.slotName}
+                title={competitorLabel(groupLabels, team.competitorId, team.competitorName)}
+              >
+                {competitorLabel(groupLabels, team.competitorId, team.competitorName)}
               </span>
 
               {team.metricValue !== null ? (
