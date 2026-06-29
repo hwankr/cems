@@ -597,8 +597,8 @@ export const estateAssetManifest = {
     "solar-array": sprite(
       "solar-array",
       "/estate-assets/solar-array.png",
-      242,
-      188,
+      256,
+      149,
       {
         renderLayer: 2,
         shadow: buildingShadow,
@@ -617,8 +617,8 @@ export const estateAssetManifest = {
     "wind-turbine": sprite(
       "wind-turbine",
       "/estate-assets/wind-turbine.png",
-      132,
-      232,
+      116,
+      270,
       {
         renderLayer: 2,
         shadow: smallShadow,
@@ -637,8 +637,8 @@ export const estateAssetManifest = {
     "battery-storage": sprite(
       "battery-storage",
       "/estate-assets/battery-storage.png",
-      200,
-      150,
+      216,
+      151,
       {
         renderLayer: 2,
         shadow: buildingShadow,
@@ -657,8 +657,8 @@ export const estateAssetManifest = {
     "geothermal-hub": sprite(
       "geothermal-hub",
       "/estate-assets/geothermal-hub.png",
-      242,
-      196,
+      248,
+      217,
       {
         renderLayer: 2,
         shadow: buildingShadow,
