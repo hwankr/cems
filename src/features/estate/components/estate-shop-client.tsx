@@ -114,7 +114,8 @@ export function EstateShopClient({ data, repository }: EstateShopClientProps) {
   }, []);
   const availableEco = useMemo(
     () => getAvailableEcoCredits(snapshot, itemDefinitions, nowIso),
-    [snapshot, nowIso],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- itemDefinitions is a module-level constant
+    [snapshot, nowIso, itemDefinitions],
   );
   const estateHref = `/${locale}/subjects/${data.subject.id}/estate`;
   const visibleItems = useMemo(
@@ -123,7 +124,8 @@ export function EstateShopClient({ data, repository }: EstateShopClientProps) {
         (definition) =>
           shopCategory === "all" || definition.category === shopCategory,
       ),
-    [shopCategory],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- itemDefinitions is a module-level constant
+    [shopCategory, itemDefinitions],
   );
 
   useEffect(() => {

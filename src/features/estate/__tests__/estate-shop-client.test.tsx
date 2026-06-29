@@ -91,6 +91,46 @@ describe("EstateShopClient", () => {
     expect(loaded.snapshot?.inventory.length ?? 0).toBeGreaterThan(0);
   });
 
+  it("eco and points items are gated independently by their own currency", async () => {
+    const repository = new MemoryEstateRepository();
+    await renderShop(repository);
+
+    // Eco balance: snapshot has ecoCredits=0, ecoCollectedAt=seed date (2026-06-24),
+    // main-building level 1 → 6 eco/hr, no generators, elapsed >>24h → capped at 24h →
+    // pending = floor(6 * 24) = 144. Available eco = 144.
+    // Fountain costs 220 > 144 → its Buy button must be disabled.
+    // Solar array costs 600 (points) <= 100000 (points balance) → its Buy button must be enabled.
+
+    // Find the Fountain card and assert its Buy button is disabled.
+    const fountainName = enMessages.estate.items.fountain;
+    const fountainHeading = [...container.querySelectorAll("h2")].find(
+      (h2) => h2.textContent === fountainName,
+    );
+    expect(fountainHeading).toBeInstanceOf(HTMLElement);
+    const fountainCard = fountainHeading!.closest("div.flex.gap-3");
+    const fountainBuyBtn = fountainCard?.querySelector("button");
+    expect(fountainBuyBtn).toBeInstanceOf(HTMLButtonElement);
+    expect(fountainBuyBtn!.disabled).toBe(true);
+
+    // Solar array is in the "generator" category — switch to that filter first.
+    const generatorBtn = [...container.querySelectorAll("button")].find(
+      (btn) => btn.textContent === enMessages.estate.categories.generator,
+    );
+    await act(async () => {
+      generatorBtn?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    const solarArrayName = enMessages.estate.items["solar-array"];
+    const solarArrayHeading = [...container.querySelectorAll("h2")].find(
+      (h2) => h2.textContent === solarArrayName,
+    );
+    expect(solarArrayHeading).toBeInstanceOf(HTMLElement);
+    const solarArrayCard = solarArrayHeading!.closest("div.flex.gap-3");
+    const solarArrayBuyBtn = solarArrayCard?.querySelector("button");
+    expect(solarArrayBuyBtn).toBeInstanceOf(HTMLButtonElement);
+    expect(solarArrayBuyBtn!.disabled).toBe(false);
+  });
+
   it("shows both currency balance chips and the generator category", async () => {
     const repository = new MemoryEstateRepository();
     await renderShop(repository);
