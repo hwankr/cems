@@ -3,6 +3,7 @@
 import { Lock, Mail } from "lucide-react";
 import Link from "next/link";
 import { useActionState } from "react";
+import { PendingButtonContent } from "@/features/ui/pending-button-content";
 import { useI18n } from "@/i18n/client";
 import { signUpAction, type AuthActionState } from "../actions/auth";
 import styles from "./auth-shell.module.css";
@@ -50,8 +51,17 @@ export function SignupForm() {
         />
       </label>
       {state.error ? <p className={styles.errorText}>{copy.failed}</p> : null}
-      <button type="submit" disabled={pending} className={styles.primaryButton}>
-        {pending ? copy.pending : copy.submit}
+      <button
+        type="submit"
+        disabled={pending}
+        aria-busy={pending}
+        className={styles.primaryButton}
+      >
+        <PendingButtonContent
+          pending={pending}
+          idleLabel={copy.submit}
+          pendingLabel={copy.pending}
+        />
       </button>
       <p className={styles.altText}>
         {copy.hasAccount}{" "}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { PendingButtonContent } from "@/features/ui/pending-button-content";
 import { useI18n } from "@/i18n/client";
 import { claimPeriodRewardAction, type ClaimState } from "../actions/points";
 
@@ -31,9 +32,14 @@ export function ClaimRewardButton() {
         disabled={
           pending || state.status === "claimed" || state.status === "already"
         }
+        aria-busy={pending}
         className="h-10 rounded-xl bg-accent px-4 text-sm font-semibold text-white disabled:opacity-60"
       >
-        {label}
+        <PendingButtonContent
+          pending={pending}
+          idleLabel={label}
+          pendingLabel={copy.pending}
+        />
       </button>
     </form>
   );

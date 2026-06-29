@@ -2,6 +2,7 @@
 
 import { Building2 } from "lucide-react";
 import { useActionState } from "react";
+import { PendingButtonContent } from "@/features/ui/pending-button-content";
 import { useI18n } from "@/i18n/client";
 import {
   signInDemoGuestAction,
@@ -34,7 +35,12 @@ function DemoGuestCard({
     <form action={formAction} className={styles.demoGuestForm}>
       <input type="hidden" name="locale" value={locale} />
       {next ? <input type="hidden" name="next" value={next} /> : null}
-      <button type="submit" disabled={pending} className={styles.demoGuestCard}>
+      <button
+        type="submit"
+        disabled={pending}
+        aria-busy={pending}
+        className={styles.demoGuestCard}
+      >
         <span className={styles.demoGuestIcon}>
           <DemoIcon guest={guest} />
         </span>
@@ -43,7 +49,12 @@ function DemoGuestCard({
           <span className={styles.demoGuestMeta}>{personaCopy.meta}</span>
         </span>
         <span className={styles.demoGuestAction}>
-          {pending ? copy.entering : copy.enter}
+          <PendingButtonContent
+            pending={pending}
+            idleLabel={copy.enter}
+            pendingLabel={copy.entering}
+            spinnerClassName="h-3 w-3"
+          />
         </span>
       </button>
       {state.error ? (

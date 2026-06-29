@@ -2,6 +2,7 @@
 
 import { Building2, User, Users } from "lucide-react";
 import { useActionState, useState } from "react";
+import { PendingButtonContent } from "@/features/ui/pending-button-content";
 import { useI18n } from "@/i18n/client";
 import { saveProfileAction, type ProfileActionState } from "../actions/profile";
 import type { GroupOption, SchoolOption } from "../domain/types";
@@ -84,8 +85,17 @@ export function OnboardingForm({
       {state.error ? (
         <p className={styles.errorText}>{copy.errors[state.error]}</p>
       ) : null}
-      <button type="submit" disabled={pending} className={styles.primaryButton}>
-        {pending ? copy.pending : copy.submit}
+      <button
+        type="submit"
+        disabled={pending}
+        aria-busy={pending}
+        className={styles.primaryButton}
+      >
+        <PendingButtonContent
+          pending={pending}
+          idleLabel={copy.submit}
+          pendingLabel={copy.pending}
+        />
       </button>
     </form>
   );

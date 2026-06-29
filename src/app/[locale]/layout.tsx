@@ -5,6 +5,7 @@ import Script from "next/script";
 import { themeInitScript } from "@/features/theme/theme";
 import { isLocale, supportedLocales } from "@/i18n/config";
 import { getMessages } from "@/i18n/dictionaries";
+import { RoutePendingOverlay } from "./route-pending-overlay";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -75,6 +76,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
         />
         {children}
+        <RoutePendingOverlay />
       </body>
     </html>
   );

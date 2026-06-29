@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState, useEffect } from "react";
+import { PendingButtonContent } from "@/features/ui/pending-button-content";
 import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
@@ -39,9 +40,15 @@ function CancelCheckInButton({ code }: { code: string }) {
       <button
         type="submit"
         disabled={busy}
+        aria-busy={busy}
         className="text-xs font-medium text-ink-subtle underline underline-offset-2 disabled:opacity-60"
       >
-        {busy ? messages.scan.cancelling : messages.scan.cancelTest}
+        <PendingButtonContent
+          pending={busy}
+          idleLabel={messages.scan.cancelTest}
+          pendingLabel={messages.scan.cancelling}
+          spinnerClassName="h-3 w-3"
+        />
       </button>
     </form>
   );
@@ -120,9 +127,14 @@ export function MissionConfirm({
       <button
         type="submit"
         disabled={pending}
+        aria-busy={pending}
         className="h-11 rounded-xl bg-accent font-semibold text-white disabled:opacity-60"
       >
-        {pending ? scan.confirming : scan.confirm}
+        <PendingButtonContent
+          pending={pending}
+          idleLabel={scan.confirm}
+          pendingLabel={scan.confirming}
+        />
       </button>
     </form>
   );
