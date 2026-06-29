@@ -15,6 +15,7 @@ import {
   Package,
   Paintbrush,
   ShoppingBag,
+  Sprout,
   X,
 } from "lucide-react";
 import {
@@ -37,6 +38,10 @@ import {
   awardEmblemDefinitionById,
   AWARD_EMBLEM_PREFIX,
 } from "../domain/award-emblem";
+import {
+  collectEcoCredits,
+  getAvailableEcoCredits,
+} from "../domain/eco-credit";
 import { TIER_PALETTE } from "@/features/leagues/domain/award-tier";
 import type { AwardTier } from "@/features/leagues/domain/types";
 import { estateExpansionCatalog } from "../data/estate-expansion-catalog";
@@ -180,6 +185,15 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
   const unlockedParcelCount = snapshot.unlockedParcelIds.length;
   const mainBuildingLevel = clampMainBuildingLevel(snapshot.mainBuildingLevel);
   const nextUpgradeCost = getMainBuildingUpgradeCost(mainBuildingLevel);
+  const [ecoNowIso, setEcoNowIso] = useState(() => new Date().toISOString());
+  useEffect(() => {
+    const id = setInterval(() => setEcoNowIso(new Date().toISOString()), 5_000);
+    return () => clearInterval(id);
+  }, []);
+  const availableEco = useMemo(
+    () => getAvailableEcoCredits(snapshot, allItemDefinitions, ecoNowIso),
+    [snapshot, allItemDefinitions, ecoNowIso],
+  );
   const pendingExpansionParcel = pendingExpansionParcelId
     ? estateExpansionCatalog.find(
         (parcel) => parcel.id === pendingExpansionParcelId,
@@ -536,6 +550,21 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
     }
   }, [applyCommand, copy.messages.upgraded, showMessage]);
 
+  const handleCollectEco = useCallback(() => {
+    const now = new Date().toISOString();
+    const next = collectEcoCredits(snapshotRef.current, allItemDefinitions, now);
+    if (next === snapshotRef.current) return;
+    const collected = next.ecoCredits - snapshotRef.current.ecoCredits;
+    snapshotRef.current = next;
+    setSnapshot(next);
+    scheduleSave(next);
+    showMessage(
+      interpolate(copy.eco.collected, {
+        amount: formatPoints(locale, collected),
+      }),
+    );
+  }, [allItemDefinitions, copy.eco.collected, locale, scheduleSave, showMessage]);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (isEstateShortcutEditableTarget(event.target)) return;
@@ -826,6 +855,18 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
               {formatPoints(locale, pointAccount.availablePoints)}
             </strong>
           </div>
+          <button
+            type="button"
+            onClick={handleCollectEco}
+            className={`${styles.chip} flex h-10 items-center gap-1.5 rounded-xl px-2.5`}
+            title={copy.eco.collect}
+            aria-label={copy.eco.collect}
+          >
+            <Sprout size={15} className={styles.coin} aria-hidden="true" />
+            <strong className="font-mono text-sm tabular-nums">
+              {formatPoints(locale, availableEco)}
+            </strong>
+          </button>
           <div
             className={`${styles.chip} hidden h-10 items-center gap-1.5 rounded-xl px-2.5 sm:flex`}
           >
