@@ -25,6 +25,13 @@ export function JoinLeagueButton({ leagueId }: { leagueId: string }) {
       >
         {label}
       </button>
+      <span
+        role="status"
+        aria-live="polite"
+        className={state.status === "error" ? "ml-2 text-[11px] text-overuse" : undefined}
+      >
+        {state.status === "error" ? copy.error : ""}
+      </span>
     </form>
   );
 }

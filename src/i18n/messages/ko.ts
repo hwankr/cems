@@ -386,7 +386,7 @@ export const koMessages = {
     sections: { active: "진행 중 · 내 그룹", browse: "리그 찾기", past: "지난 기록" },
     status: { upcoming: "예정", active: "진행 중", finalized: "종료" },
     search: { placeholder: "리그 이름 검색", noResults: "검색 결과가 없어요" },
-    join: { join: "참가하기", joining: "참가 중…", joined: "참가됨", leave: "참가 취소", leaving: "처리 중…", error: "잠시 후 다시 시도해주세요" },
+    join: { join: "참가하기", joining: "참가 중…", joined: "참가됨", error: "잠시 후 다시 시도해주세요" },
     standings: { rank: "순위", team: "팀", avg: "1인당 평균", total: "합계", members: "{count}명", you: "내 그룹", empty: "아직 순위가 없어요" },
     participants: "참가 {count}팀",
     period: "{start} – {end}",
@@ -399,7 +399,6 @@ export const koMessages = {
   me: {
     title: "내 페이지",
     backToMap: "지도로",
-    hallOfFameLink: "명예의 전당",
     goals: {
       title: "목표",
       claim: "보너스 받기",

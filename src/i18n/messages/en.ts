@@ -386,7 +386,7 @@ export const enMessages = {
     sections: { active: "In progress · my team", browse: "Find leagues", past: "Past results" },
     status: { upcoming: "Upcoming", active: "Live", finalized: "Ended" },
     search: { placeholder: "Search league name", noResults: "No matching leagues" },
-    join: { join: "Join", joining: "Joining…", joined: "Joined", leave: "Leave", leaving: "Processing…", error: "Please try again shortly" },
+    join: { join: "Join", joining: "Joining…", joined: "Joined", error: "Please try again shortly" },
     standings: { rank: "Rank", team: "Team", avg: "Avg / member", total: "Total", members: "{count}", you: "My team", empty: "No standings yet" },
     participants: "{count} teams",
     period: "{start} – {end}",
@@ -399,7 +399,6 @@ export const enMessages = {
   me: {
     title: "My page",
     backToMap: "To map",
-    hallOfFameLink: "Hall of Fame",
     goals: {
       title: "Goals",
       claim: "Claim bonus",
