@@ -332,7 +332,7 @@ export const koMessages = {
       settings: "설정",
       myOrg: "내 조직",
       profile: "내 페이지",
-      hallOfFame: "명예의 전당",
+      hallOfFame: "리그",
     },
     settings: {
       title: "설정",

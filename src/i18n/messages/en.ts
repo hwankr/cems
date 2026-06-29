@@ -332,7 +332,7 @@ export const enMessages = {
       settings: "Settings",
       myOrg: "My organization",
       profile: "My page",
-      hallOfFame: "Hall of Fame",
+      hallOfFame: "Leagues",
     },
     settings: {
       title: "Settings",

@@ -90,12 +90,12 @@ export default async function MePage({ params }: MePageProps) {
           />
           <AchievementHighlights achievements={achievements} />
           <Link
-            href={`/${locale}/hall-of-fame`}
+            href={`/${locale}/leagues`}
             className="mx-4 flex items-center justify-between rounded-xl border border-line bg-surface px-3 py-2.5 text-sm font-semibold text-ink transition hover:bg-surface-3"
           >
             <span className="flex items-center gap-2">
               <Trophy className="h-4 w-4 text-[#a07a00]" aria-hidden="true" />
-              {messages.hallOfFame.title}
+              {messages.leagues.title}
             </span>
             <span className="text-ink-subtle">→</span>
           </Link>

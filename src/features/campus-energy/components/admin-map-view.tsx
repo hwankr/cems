@@ -115,7 +115,7 @@ export function AdminMapView({
               orgSubjectId ? () => onSelectSubject(orgSubjectId) : undefined
             }
             profileHref={`/${locale}/me`}
-            hallOfFameHref={`/${locale}/hall-of-fame`}
+            hallOfFameHref={`/${locale}/leagues`}
             showLabels={showLabels}
             onToggleLabels={() => setShowLabels((value) => !value)}
             onOpenSettings={() => setSettingsOpen(true)}
