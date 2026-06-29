@@ -5,6 +5,7 @@ import type {
   LineLayerSpecification,
   SymbolLayerSpecification,
 } from "mapbox-gl";
+import { TIER_PALETTE } from "@/features/leagues/domain/award-tier";
 
 export const ENERGY_SUBJECT_POLYGON_HIT_PAINT: FillLayerSpecification["paint"] =
   {
@@ -18,11 +19,11 @@ export const ENERGY_SUBJECT_EXTRUSION_PAINT: FillExtrusionLayerSpecification["pa
       "match",
       ["coalesce", ["get", "awardTier"], ""],
       "gold",
-      "#f5c518",
+      TIER_PALETTE.gold.fill,
       "silver",
-      "#c3cad3",
+      TIER_PALETTE.silver.fill,
       "bronze",
-      "#cd7f32",
+      TIER_PALETTE.bronze.fill,
       [
         "match",
         ["get", "status"],
@@ -53,11 +54,11 @@ export const ENERGY_SUBJECT_EXTRUSION_PAINT_LIGHT: FillExtrusionLayerSpecificati
       "match",
       ["coalesce", ["get", "awardTier"], ""],
       "gold",
-      "#f5c518",
+      TIER_PALETTE.gold.fill,
       "silver",
-      "#c3cad3",
+      TIER_PALETTE.silver.fill,
       "bronze",
-      "#cd7f32",
+      TIER_PALETTE.bronze.fill,
       [
         "match",
         ["get", "status"],
@@ -85,11 +86,11 @@ export const ENERGY_SUBJECT_OUTLINE_PAINT: LineLayerSpecification["paint"] = {
     "match",
     ["coalesce", ["get", "awardTier"], ""],
     "gold",
-    "#caa204",
+    TIER_PALETTE.gold.outline,
     "silver",
-    "#9aa3ad",
+    TIER_PALETTE.silver.outline,
     "bronze",
-    "#a8651f",
+    TIER_PALETTE.bronze.outline,
     [
       "match",
       ["get", "status"],
@@ -112,17 +113,37 @@ export const ENERGY_SUBJECT_OUTLINE_PAINT: LineLayerSpecification["paint"] = {
 // Light text + dark halo reads on the dark basemap; flipped for the light one.
 export const ENERGY_SUBJECT_LABEL_PAINT_DARK: SymbolLayerSpecification["paint"] =
   {
-    "text-color": "#f8fafc",
+    "text-color": [
+      "match",
+      ["coalesce", ["get", "awardTier"], ""],
+      "gold",
+      TIER_PALETTE.gold.fill,
+      "silver",
+      "#e2e8f0",
+      "bronze",
+      "#e9b386",
+      "#f8fafc",
+    ],
     "text-halo-color": "rgba(2, 6, 23, 0.85)",
-    "text-halo-width": 1.4,
+    "text-halo-width": ["case", ["has", "awardTier"], 1.8, 1.4],
     "text-halo-blur": 0.4,
   };
 
 export const ENERGY_SUBJECT_LABEL_PAINT_LIGHT: SymbolLayerSpecification["paint"] =
   {
-    "text-color": "#1e293b",
+    "text-color": [
+      "match",
+      ["coalesce", ["get", "awardTier"], ""],
+      "gold",
+      TIER_PALETTE.gold.text,
+      "silver",
+      TIER_PALETTE.silver.text,
+      "bronze",
+      TIER_PALETTE.bronze.text,
+      "#1e293b",
+    ],
     "text-halo-color": "rgba(255, 255, 255, 0.9)",
-    "text-halo-width": 1.4,
+    "text-halo-width": ["case", ["has", "awardTier"], 1.8, 1.4],
     "text-halo-blur": 0.4,
   };
 

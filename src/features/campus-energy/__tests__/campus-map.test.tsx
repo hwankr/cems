@@ -397,11 +397,15 @@ describe("CampusMap", () => {
       "text-ignore-placement": false,
     });
     expect(labelLayer?.paint).toMatchObject({
-      "text-color": "#f8fafc",
       "text-halo-color": "rgba(2, 6, 23, 0.85)",
-      "text-halo-width": 1.4,
       "text-halo-blur": 0.4,
     });
+    expect(JSON.stringify(labelLayer?.paint?.["text-color"])).toContain(
+      "#f8fafc",
+    );
+    expect(JSON.stringify(labelLayer?.paint?.["text-color"])).toContain(
+      "awardTier",
+    );
     expect(pointFeature?.properties).not.toHaveProperty("displayHeightMeters");
 
     await act(async () => root.unmount());
@@ -629,7 +633,12 @@ describe("CampusMap", () => {
     expect(extrusionLayer?.paint).toMatchObject({
       "fill-extrusion-opacity": 1,
     });
-    expect(labelLayer?.paint).toMatchObject({ "text-color": "#1e293b" });
+    expect(JSON.stringify(labelLayer?.paint?.["text-color"])).toContain(
+      "#1e293b",
+    );
+    expect(JSON.stringify(labelLayer?.paint?.["text-color"])).toContain(
+      "awardTier",
+    );
 
     await act(async () => root.unmount());
   });

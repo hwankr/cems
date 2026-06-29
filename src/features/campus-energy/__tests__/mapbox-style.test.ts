@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import {
   ENERGY_SUBJECT_EXTRUSION_PAINT,
   ENERGY_SUBJECT_EXTRUSION_PAINT_LIGHT,
+  ENERGY_SUBJECT_LABEL_PAINT_DARK,
+  ENERGY_SUBJECT_LABEL_PAINT_LIGHT,
   ENERGY_SUBJECT_OUTLINE_PAINT,
   ENERGY_SUBJECT_POLYGON_HIT_PAINT,
 } from "../components/mapbox-style";
@@ -92,5 +94,14 @@ describe("award tier paint", () => {
   it("outline color reacts to awardTier", () => {
     const outline = JSON.stringify(ENERGY_SUBJECT_OUTLINE_PAINT["line-color"]);
     expect(outline).toContain("awardTier");
+  });
+
+  it("colors award-winning building labels by tier", () => {
+    const dark = JSON.stringify(ENERGY_SUBJECT_LABEL_PAINT_DARK["text-color"]);
+    const light = JSON.stringify(ENERGY_SUBJECT_LABEL_PAINT_LIGHT["text-color"]);
+    expect(dark).toContain("awardTier");
+    expect(light).toContain("awardTier");
+    expect(dark).toContain("#f5c518"); // bright gold on the dark basemap
+    expect(light).toContain("#a07a00"); // darker gold on the light basemap
   });
 });
