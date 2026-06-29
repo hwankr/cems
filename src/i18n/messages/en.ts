@@ -179,7 +179,8 @@ export const enMessages = {
       nature: "Nature",
       furniture: "Furniture",
       energy: "Energy",
-      facility: "Facility",
+      generator: "Facilities",
+      facility: "Amenities",
       ground: "Ground",
     },
     commandFailures: {
@@ -246,6 +247,10 @@ export const enMessages = {
       "grass-decoration": "Grass tile",
       "decorative-shrub": "Decorative shrub",
       "small-sculpture": "Small sculpture",
+      "solar-array": "Solar array",
+      "wind-turbine": "Wind turbine",
+      "battery-storage": "Battery storage",
+      "geothermal-hub": "Geothermal hub",
     },
     messages: {
       cannotLoad: "Could not load the saved estate.",

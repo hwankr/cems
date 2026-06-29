@@ -20,6 +20,10 @@ const requiredItemIds = [
   "grass-decoration",
   "decorative-shrub",
   "small-sculpture",
+  "solar-array",
+  "wind-turbine",
+  "battery-storage",
+  "geothermal-hub",
 ] as const;
 
 describe("estate item catalog", () => {
@@ -44,5 +48,32 @@ describe("estate item catalog", () => {
 
     expect(placementRules.get("solar-street-light")).toBe("land");
     expect(placementRules.get("campus-flag")).toBe("edge");
+  });
+
+  it("marks decorations as eco-priced and generators as point-priced producers", () => {
+    const byId = new Map(estateItemCatalog.map((item) => [item.id, item]));
+
+    for (const id of ["broadleaf-tree", "fountain", "small-sculpture"]) {
+      expect(byId.get(id)?.currency).toBe("eco");
+    }
+
+    for (const id of [
+      "solar-array",
+      "wind-turbine",
+      "battery-storage",
+      "geothermal-hub",
+    ]) {
+      const generator = byId.get(id);
+      expect(generator?.currency).toBe("points");
+      expect(generator?.category).toBe("generator");
+      expect(generator?.ecoRatePerHour ?? 0).toBeGreaterThan(0);
+    }
+  });
+
+  it("keeps ground tiles on the points currency", () => {
+    const byId = new Map(estateItemCatalog.map((item) => [item.id, item]));
+    for (const id of ["stone-path", "bright-sidewalk-block", "grass-decoration"]) {
+      expect(byId.get(id)?.currency ?? "points").toBe("points");
+    }
   });
 });

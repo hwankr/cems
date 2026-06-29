@@ -176,6 +176,7 @@ export const koMessages = {
       nature: "자연",
       furniture: "가구",
       energy: "에너지",
+      generator: "설비",
       facility: "시설",
       ground: "바닥",
     },
@@ -243,6 +244,10 @@ export const koMessages = {
       "grass-decoration": "잔디 타일",
       "decorative-shrub": "장식 관목",
       "small-sculpture": "소형 조형물",
+      "solar-array": "태양광 어레이",
+      "wind-turbine": "풍력 터빈",
+      "battery-storage": "에너지 저장 배터리",
+      "geothermal-hub": "지열·스마트그리드 허브",
     },
     messages: {
       cannotLoad: "저장된 영지를 불러오지 못했습니다.",

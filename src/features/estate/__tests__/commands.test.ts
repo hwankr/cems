@@ -80,7 +80,7 @@ describe("estate commands", () => {
       {
         id: "tx-bench",
         kind: "purchase-item",
-        pointDelta: -180,
+        pointDelta: -50,
         itemDefinitionId: "bench",
         createdAt: "2026-06-24T00:00:00.000Z",
       },
