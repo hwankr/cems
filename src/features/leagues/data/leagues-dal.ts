@@ -6,6 +6,8 @@ import type {
   FinalizedLeague,
   LeagueAwardRow,
   LeagueAwards,
+  LeagueSummary,
+  LeagueStatus,
   LeagueStanding,
   LeagueStandingRow,
   MyLeagueAward,
@@ -91,6 +93,101 @@ export async function getMyLeagueAwards(
       tier: row.tier,
       rank: row.rank,
     }));
+}
+
+type LeagueRow = {
+  id: string;
+  name: string;
+  scope: string;
+  status: string;
+  starts_at: string;
+  ends_at: string;
+  is_open: boolean;
+};
+
+function shapeLeague(row: LeagueRow): LeagueSummary {
+  return {
+    id: row.id,
+    name: row.name,
+    scope: row.scope === "school" ? "school" : "group",
+    status:
+      row.status === "active" || row.status === "finalized"
+        ? (row.status as LeagueStatus)
+        : "upcoming",
+    startsAt: row.starts_at,
+    endsAt: row.ends_at,
+    isOpen: Boolean(row.is_open),
+  };
+}
+
+const LEAGUE_COLUMNS = "id, name, scope, status, starts_at, ends_at, is_open";
+
+export async function getMyGroupLeagues(
+  groupId: string,
+): Promise<LeagueSummary[]> {
+  const supabase = await createServerSupabaseClient();
+  const { data, error } = await supabase
+    .from("league_participants")
+    .select(`leagues!inner(${LEAGUE_COLUMNS})`)
+    .eq("competitor_kind", "group")
+    .eq("competitor_id", groupId);
+  if (error) throw new Error(`Failed to load my group leagues: ${error.message}`);
+  return (data ?? [])
+    .map((row) => shapeLeague(row.leagues as unknown as LeagueRow))
+    .sort((a, b) => (a.endsAt < b.endsAt ? 1 : a.endsAt > b.endsAt ? -1 : 0));
+}
+
+export async function getJoinableLeagues(
+  groupId: string,
+): Promise<LeagueSummary[]> {
+  const supabase = await createServerSupabaseClient();
+  const [openRes, mineRes] = await Promise.all([
+    supabase
+      .from("leagues")
+      .select(LEAGUE_COLUMNS)
+      .eq("is_open", true)
+      .in("status", ["upcoming", "active"])
+      .order("ends_at", { ascending: true }),
+    supabase
+      .from("league_participants")
+      .select("league_id")
+      .eq("competitor_kind", "group")
+      .eq("competitor_id", groupId),
+  ]);
+  if (openRes.error)
+    throw new Error(`Failed to load open leagues: ${openRes.error.message}`);
+  if (mineRes.error)
+    throw new Error(`Failed to load my participations: ${mineRes.error.message}`);
+  const mine = new Set((mineRes.data ?? []).map((r) => r.league_id as string));
+  return (openRes.data ?? [])
+    .map((row) => shapeLeague(row as LeagueRow))
+    .filter((league) => !mine.has(league.id));
+}
+
+export async function getLeague(
+  leagueId: string,
+): Promise<LeagueSummary | null> {
+  const supabase = await createServerSupabaseClient();
+  const { data, error } = await supabase
+    .from("leagues")
+    .select(LEAGUE_COLUMNS)
+    .eq("id", leagueId)
+    .maybeSingle();
+  if (error) throw new Error(`Failed to load league: ${error.message}`);
+  return data ? shapeLeague(data as LeagueRow) : null;
+}
+
+export async function getLeagueParticipantCount(
+  leagueId: string,
+): Promise<number> {
+  const supabase = await createServerSupabaseClient();
+  const { count, error } = await supabase
+    .from("league_participants")
+    .select("*", { count: "exact", head: true })
+    .eq("league_id", leagueId);
+  if (error)
+    throw new Error(`Failed to count participants: ${error.message}`);
+  return count ?? 0;
 }
 
 export async function getSubjectAwardTiers(): Promise<SubjectAwardTiers> {

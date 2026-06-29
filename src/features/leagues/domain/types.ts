@@ -78,3 +78,15 @@ export type SubjectAwardTier = {
   leagueName: string;
 };
 export type SubjectAwardTiers = Record<string, SubjectAwardTier>;
+
+export type LeagueStatus = "upcoming" | "active" | "finalized";
+
+export type LeagueSummary = {
+  id: string;
+  name: string;
+  scope: CompetitorKind;
+  status: LeagueStatus;
+  startsAt: string;
+  endsAt: string;
+  isOpen: boolean;
+};
