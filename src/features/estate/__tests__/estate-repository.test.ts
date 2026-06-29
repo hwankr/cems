@@ -461,6 +461,8 @@ describe("estate persistence", () => {
     if (!result.ok) return;
     expect(result.snapshot.schemaVersion).toBe(3);
     expect(result.snapshot.mainBuildingLevel).toBe(1);
+    expect(result.snapshot.ecoCredits).toBe(0);
+    expect(result.snapshot.ecoCollectedAt).toBe("2026-06-24T00:00:00.000Z");
   });
 
   it("defaults eco-credit fields when migrating a v2 snapshot", () => {
