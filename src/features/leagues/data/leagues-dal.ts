@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { createServerSupabaseClient } from "@/features/account/supabase/server";
 import { groupLeagueAwards, shapeStandings } from "../domain/standings";
 import type {
@@ -164,18 +165,18 @@ export async function getJoinableLeagues(
     .filter((league) => !mine.has(league.id));
 }
 
-export async function getLeague(
-  leagueId: string,
-): Promise<LeagueSummary | null> {
-  const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase
-    .from("leagues")
-    .select(LEAGUE_COLUMNS)
-    .eq("id", leagueId)
-    .maybeSingle();
-  if (error) throw new Error(`Failed to load league: ${error.message}`);
-  return data ? shapeLeague(data as LeagueRow) : null;
-}
+export const getLeague = cache(
+  async (leagueId: string): Promise<LeagueSummary | null> => {
+    const supabase = await createServerSupabaseClient();
+    const { data, error } = await supabase
+      .from("leagues")
+      .select(LEAGUE_COLUMNS)
+      .eq("id", leagueId)
+      .maybeSingle();
+    if (error) throw new Error(`Failed to load league: ${error.message}`);
+    return data ? shapeLeague(data as LeagueRow) : null;
+  },
+);
 
 export async function getLeagueParticipantCount(
   leagueId: string,
