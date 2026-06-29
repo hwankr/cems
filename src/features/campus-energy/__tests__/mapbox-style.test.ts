@@ -104,4 +104,10 @@ describe("award tier paint", () => {
     expect(dark).toContain("#f5c518"); // bright gold on the dark basemap
     expect(light).toContain("#a07a00"); // darker gold on the light basemap
   });
+
+  it("widens the label halo for award-winning buildings", () => {
+    const expected = ["case", ["has", "awardTier"], 1.8, 1.4];
+    expect(ENERGY_SUBJECT_LABEL_PAINT_DARK["text-halo-width"]).toEqual(expected);
+    expect(ENERGY_SUBJECT_LABEL_PAINT_LIGHT["text-halo-width"]).toEqual(expected);
+  });
 });
