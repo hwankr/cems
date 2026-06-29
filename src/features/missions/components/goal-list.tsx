@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { Target } from "lucide-react";
+import { PendingButtonContent } from "@/features/ui/pending-button-content";
 import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
 import { claimGoalRewardAction, type ClaimGoalState } from "../actions/claim-goal";
@@ -59,9 +60,15 @@ function GoalCard({ goal }: { goal: GoalProgress }) {
             <button
               type="submit"
               disabled={pending}
+              aria-busy={pending}
               className="h-9 rounded-lg bg-accent px-3 text-xs font-semibold text-on-accent disabled:opacity-60"
             >
-              {pending ? copy.claiming : copy.claim}
+              <PendingButtonContent
+                pending={pending}
+                idleLabel={copy.claim}
+                pendingLabel={copy.claiming}
+                spinnerClassName="h-3 w-3"
+              />
             </button>
           </form>
         ) : (

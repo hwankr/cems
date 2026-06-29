@@ -27,6 +27,7 @@ The key abstraction is an **energy saving subject**. A subject can be a building
 ## Actual Repository State
 
 - The repository now contains the first campus energy MVP, committed and pushed as `94560de Add campus energy MVP`.
+- Current local working branch for the latest uncommitted work is `feat/loading-feedback-performance`. It adds a persistent route-pending overlay, map loading fallback, reusable pending-button feedback, and lazy Mapbox loading from the home map route; see the 2026-06-29 meeting note for before/after measurements and verification.
 - The stack is Next.js 16.2.9, React 19.2.4, TypeScript, Tailwind CSS v4, Mapbox GL JS, lucide-react, and Vitest.
 - The app now uses locale-prefixed routes for the main MVP: `/ko` and `/en`.
 - `src/proxy.ts` redirects locale-less requests to the saved `cems-locale` cookie when valid, or to Korean (`ko`) by default.

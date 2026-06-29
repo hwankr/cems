@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
+import { PendingButtonContent } from "@/features/ui/pending-button-content";
 import { useI18n } from "@/i18n/client";
 import {
   editProfileAction,
@@ -87,9 +88,14 @@ export function ProfileEditForm({
         <button
           type="submit"
           disabled={pending}
+          aria-busy={pending}
           className="h-10 rounded-lg bg-accent px-4 text-sm font-semibold text-on-accent disabled:opacity-60"
         >
-          {pending ? copy.saving : copy.save}
+          <PendingButtonContent
+            pending={pending}
+            idleLabel={copy.save}
+            pendingLabel={copy.saving}
+          />
         </button>
         <Link
           href={`/${locale}/me`}

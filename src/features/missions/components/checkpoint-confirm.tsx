@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
+import { PendingButtonContent } from "@/features/ui/pending-button-content";
 import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
@@ -109,9 +110,14 @@ export function CheckpointConfirm({
       <button
         type="submit"
         disabled={pending}
+        aria-busy={pending}
         className="h-11 rounded-xl bg-accent font-semibold text-white disabled:opacity-60"
       >
-        {pending ? scan.checkpointConfirming : scan.checkpointConfirm}
+        <PendingButtonContent
+          pending={pending}
+          idleLabel={scan.checkpointConfirm}
+          pendingLabel={scan.checkpointConfirming}
+        />
       </button>
     </form>
   );

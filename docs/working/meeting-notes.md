@@ -4,6 +4,18 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 
 ## 2026-06-29
 
+### Loading performance and pending-button feedback
+
+- The user reported that the app sometimes feels slow to load, and that after touching a button it is hard to tell whether the tap was accepted or nothing happened. The user asked to investigate the cause, say whether it is fixable, then proceed on a new branch and compare before/after.
+- Work was done on local branch `feat/loading-feedback-performance`; no commit or push was requested.
+- Verified root causes: the home map route was directly importing `CampusMap`, which pulled the large Mapbox GL client chunk into the initial home entry JavaScript, and mutation buttons mostly changed text only without a visible spinner/`aria-busy` signal. Server-side Supabase session refresh and data queries remain contributors to response time.
+- Implemented a route-level loading UI at `src/app/[locale]/loading.tsx`, a map-specific loading fallback, and a dynamic import for `CampusMap` from `AdminMapView` so Mapbox is loaded after the shell instead of in the required home entry bundle.
+- Follow-up adjustment: after the user said the route loader should not feel like a new screen, `src/app/[locale]/loading.tsx` was first changed to a fixed overlay, then removed when the user confirmed it still replaced the page area. Root cause: Next `loading.tsx` is a Suspense fallback that swaps the route segment, so it cannot preserve the previous page behind it. The loading feedback now lives in persistent layout code via `RoutePendingOverlay`, which dims the current screen during internal link navigation.
+- Added reusable `PendingButtonContent` and applied it to auth, demo login, profile save/sign-out, reward claim, league join, mission/checkpoint, goal-claim, and estate shop purchase buttons. Pending buttons now show a spinner and expose `aria-busy`.
+- Before/after build comparison for the home route's required entry JS: 2013.7 KB before, 251.3 KB after. The 1.8 MB Mapbox chunk still exists as an async chunk but is no longer part of the required home entry list.
+- Before/after local logged-in HTTP averages, 5 runs each: `/ko` 1705.0 ms -> 444.4 ms; `/ko/me` 700.2 ms -> 367.4 ms; `/ko/leagues` 638.4 ms -> 454.6 ms; `/ko/scan/chem-2f-stairs` 335.6 ms -> 210.2 ms; `/ko/subjects/yu-b04/estate` 614.6 ms -> 431.6 ms.
+- Verification: new red/green loading tests passed; targeted affected tests passed; full Vitest passed 393/393; ESLint had 0 errors and the same 2 pre-existing `game-preview.tsx` hook warnings; `npm run build` passed; `git diff --check` reported no whitespace errors, only CRLF conversion warnings for touched files.
+
 ### Demo QR mission seed and checkpoint direction
 
 - The user asked to create a few demo QR codes, starting with "화공관 2층 계단", and asked whether a sequential checkpoint flow such as "정문 1 → 2 → 3" is technically possible.

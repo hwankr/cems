@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { PendingButtonContent } from "@/features/ui/pending-button-content";
 import { useI18n } from "@/i18n/client";
 import { joinLeagueAction, type LeagueActionState } from "../actions/join-league";
 
@@ -21,9 +22,15 @@ export function JoinLeagueButton({ leagueId }: { leagueId: string }) {
       <button
         type="submit"
         disabled={pending || joined}
+        aria-busy={pending}
         className="h-9 rounded-full bg-accent px-4 text-xs font-semibold text-on-accent disabled:opacity-60"
       >
-        {label}
+        <PendingButtonContent
+          pending={pending}
+          idleLabel={label}
+          pendingLabel={copy.joining}
+          spinnerClassName="h-3 w-3"
+        />
       </button>
       <span
         role="status"

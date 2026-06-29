@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import { useTheme } from "@/features/theme/theme-provider";
 import { useI18n } from "@/i18n/client";
@@ -10,8 +11,9 @@ import type { SubjectAwardTiers } from "@/features/leagues/domain/types";
 import type { EnergyComparison, EnergySubject, School } from "../domain/types";
 import { BuildingPopup } from "./building-popup";
 import { BuildingRankPanel } from "./building-rank-panel";
-import { CampusMap, type ScreenPosition } from "./campus-map";
+import type { ScreenPosition } from "./campus-map";
 import { MapControls } from "./map-controls";
+import { MapLoadingFallback } from "./map-loading-fallback";
 import { MapLegend } from "./map-legend";
 import { MapSettingsPopover } from "./map-settings-popover";
 import { MapSummaryBar } from "./map-summary-bar";
@@ -21,6 +23,13 @@ import { MapTopBar } from "./map-top-bar";
 // Mapbox Standard gives the 3D buildings/trees + atmospheric sky; the light
 // preset is driven by the active theme (day vs night).
 const STANDARD_MAP_STYLE = "mapbox://styles/mapbox/standard";
+const CampusMap = dynamic(
+  () => import("./campus-map").then((module) => module.CampusMap),
+  {
+    ssr: false,
+    loading: () => <MapLoadingFallback />,
+  },
+);
 
 type AdminMapViewProps = {
   mapboxToken: string;

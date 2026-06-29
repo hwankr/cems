@@ -20,6 +20,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { PendingButtonContent } from "@/features/ui/pending-button-content";
 import { useI18n } from "@/i18n/client";
 import { formatKwh, formatPoints } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
@@ -335,10 +336,18 @@ export function EstateShopClient({ data, repository }: EstateShopClientProps) {
                       type="button"
                       className={`${styles.primaryBtn} inline-flex h-10 items-center gap-1.5 rounded-xl px-3.5 text-xs font-semibold`}
                       disabled={disabled}
+                      aria-busy={pending}
                       onClick={() => handlePurchase(definition)}
                     >
-                      <ShoppingBag size={14} aria-hidden="true" />
-                      {pending ? copy.shop.pending : copy.shop.buy}
+                      {pending ? null : (
+                        <ShoppingBag size={14} aria-hidden="true" />
+                      )}
+                      <PendingButtonContent
+                        pending={pending}
+                        idleLabel={copy.shop.buy}
+                        pendingLabel={copy.shop.pending}
+                        spinnerClassName="h-3 w-3"
+                      />
                     </button>
                   </div>
                 </div>
