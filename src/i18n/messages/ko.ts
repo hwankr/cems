@@ -216,6 +216,7 @@ export const koMessages = {
       notAdjacent: "먼저 인접한 구역을 해제해야 합니다.",
     },
     inventory: {
+      awarded: "수여된 우승 휘장",
       empty: "보유한 아이템이 없습니다. 상점에서 먼저 구매하세요.",
       owned: "보유",
       paint: "칠하기",

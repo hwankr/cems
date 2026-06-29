@@ -219,6 +219,7 @@ export const enMessages = {
       notAdjacent: "Unlock an adjacent parcel first.",
     },
     inventory: {
+      awarded: "Awarded winner emblem",
       empty: "No owned items. Buy from the shop first.",
       owned: "Owned",
       paint: "Paint",

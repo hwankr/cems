@@ -35,7 +35,10 @@ import {
 import {
   applyEmblemGrant,
   awardEmblemDefinitionById,
+  AWARD_EMBLEM_PREFIX,
 } from "../domain/award-emblem";
+import { TIER_PALETTE } from "@/features/leagues/domain/award-tier";
+import type { AwardTier } from "@/features/leagues/domain/types";
 import { estateExpansionCatalog } from "../data/estate-expansion-catalog";
 import type { EstatePageData } from "../data/get-estate-page-data";
 import {
@@ -1072,37 +1075,57 @@ function InventoryPanel({
 
   return (
     <div className="grid gap-2">
-      {entries.map(({ definition, quantity }) => (
-        <div
-          key={definition.id}
-          className={`${styles.card} flex items-center gap-3 rounded-2xl p-2.5`}
-        >
-          <ItemThumb definition={definition} />
-          <div className="min-w-0 flex-1">
-            <h2 className="truncate text-sm font-semibold">
-              {getItemName(definition, copy)}
-            </h2>
-            <p className={`${styles.subtle} text-xs`}>
-              {copy.inventory.quantity} {quantity} ·{" "}
-              {definition.footprintWidth}x{definition.footprintHeight}
-            </p>
-          </div>
-          <button
-            type="button"
-            className={`${styles.primaryBtn} inline-flex h-10 shrink-0 items-center gap-1.5 rounded-xl px-3.5 text-xs font-semibold`}
-            onClick={() => onUseItem(definition.id)}
+      {entries.map(({ definition, quantity }) => {
+        const tier = definition.id.startsWith(AWARD_EMBLEM_PREFIX)
+          ? (definition.id.slice(AWARD_EMBLEM_PREFIX.length) as AwardTier)
+          : null;
+        const palette = tier ? TIER_PALETTE[tier] : null;
+        return (
+          <div
+            key={definition.id}
+            className={`${styles.card} flex items-center gap-3 rounded-2xl p-2.5`}
+            style={
+              palette
+                ? { boxShadow: `inset 0 0 0 1.5px ${palette.fill}` }
+                : undefined
+            }
           >
-            {definition.placementRule === "ground" ? (
-              <Paintbrush size={14} aria-hidden="true" />
-            ) : (
-              <Package size={14} aria-hidden="true" />
-            )}
-            {definition.placementRule === "ground"
-              ? copy.inventory.paint
-              : copy.inventory.place}
-          </button>
-        </div>
-      ))}
+            <ItemThumb definition={definition} />
+            <div className="min-w-0 flex-1">
+              <h2 className="truncate text-sm font-semibold">
+                {getItemName(definition, copy)}
+              </h2>
+              {palette ? (
+                <p
+                  className="text-xs font-semibold"
+                  style={{ color: palette.text }}
+                >
+                  {copy.inventory.awarded}
+                </p>
+              ) : (
+                <p className={`${styles.subtle} text-xs`}>
+                  {copy.inventory.quantity} {quantity} ·{" "}
+                  {definition.footprintWidth}x{definition.footprintHeight}
+                </p>
+              )}
+            </div>
+            <button
+              type="button"
+              className={`${styles.primaryBtn} inline-flex h-10 shrink-0 items-center gap-1.5 rounded-xl px-3.5 text-xs font-semibold`}
+              onClick={() => onUseItem(definition.id)}
+            >
+              {definition.placementRule === "ground" ? (
+                <Paintbrush size={14} aria-hidden="true" />
+              ) : (
+                <Package size={14} aria-hidden="true" />
+              )}
+              {definition.placementRule === "ground"
+                ? copy.inventory.paint
+                : copy.inventory.place}
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 }
