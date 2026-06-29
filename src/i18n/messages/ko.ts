@@ -182,6 +182,7 @@ export const koMessages = {
     },
     commandFailures: {
       "insufficient-points": "절감 포인트가 부족합니다.",
+      "insufficient-eco": "에코 크레딧이 부족합니다.",
       "out-of-bounds": "잠금 해제된 영역 안에 배치해야 합니다.",
       "locked-cell": "아직 잠긴 셀에는 배치할 수 없습니다.",
       collision: "다른 오브젝트와 겹칩니다.",

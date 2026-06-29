@@ -185,6 +185,7 @@ export const enMessages = {
     },
     commandFailures: {
       "insufficient-points": "Not enough saving points.",
+      "insufficient-eco": "You do not have enough eco-credits.",
       "out-of-bounds": "Place it inside an unlocked area.",
       "locked-cell": "Locked cells cannot be used yet.",
       collision: "It overlaps another object.",

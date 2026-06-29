@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { estateExpansionCatalog } from "../data/estate-expansion-catalog";
+import { createDemoEstateSeedSnapshot } from "../data/demo-estate-data";
 import { estateItemCatalog } from "../data/estate-item-catalog";
 import {
   createInitialEstateSnapshot,
@@ -41,7 +42,7 @@ function withInventory(
 }
 
 describe("estate commands", () => {
-  it("rejects item purchases when available points are insufficient", () => {
+  it("rejects eco item purchases when eco-credits are insufficient", () => {
     const snapshot = createInitialEstateSnapshot("yu-e21", {
       now: () => "2026-06-24T00:00:00.000Z",
     });
@@ -55,33 +56,33 @@ describe("estate commands", () => {
     expect(result).toEqual({
       ok: false,
       snapshot,
-      reason: "insufficient-points",
+      reason: "insufficient-eco",
     });
   });
 
-  it("adds purchased items to inventory and records point spending", () => {
+  it("adds purchased points-currency items to inventory and records point spending", () => {
     const snapshot = createInitialEstateSnapshot("yu-e21", {
       now: () => "2026-06-24T00:00:00.000Z",
     });
 
     const result = purchaseEstateItem(
       snapshot,
-      { definitionId: "bench" },
-      createContext(1_000, ["tx-bench"]),
+      { definitionId: "solar-array" },
+      createContext(100_000, ["tx-solar-array"]),
     );
 
     expect(result.ok).toBe(true);
     if (!result.ok) return;
 
     expect(result.snapshot.inventory).toEqual([
-      { definitionId: "bench", quantity: 1 },
+      { definitionId: "solar-array", quantity: 1 },
     ]);
     expect(result.snapshot.transactions).toEqual([
       {
-        id: "tx-bench",
+        id: "tx-solar-array",
         kind: "purchase-item",
-        pointDelta: -50,
-        itemDefinitionId: "bench",
+        pointDelta: -600,
+        itemDefinitionId: "solar-array",
         createdAt: "2026-06-24T00:00:00.000Z",
       },
     ]);
@@ -123,17 +124,17 @@ describe("estate commands", () => {
   });
 
   it("returns removed placed items to inventory without refunding points", () => {
-    const purchased = purchaseEstateItem(
+    // Inject bench into inventory directly (bench is eco-currency; no point transaction recorded)
+    const withBench = withInventory(
       createInitialEstateSnapshot("yu-e21", {
         now: () => "2026-06-24T00:00:00.000Z",
       }),
-      { definitionId: "bench" },
-      createContext(1_000, ["tx-bench"]),
+      "bench",
+      1,
     );
-    if (!purchased.ok) throw new Error("purchase failed");
 
     const placed = placeEstateItem(
-      purchased.snapshot,
+      withBench,
       {
         definitionId: "bench",
         x: 0,
@@ -159,41 +160,44 @@ describe("estate commands", () => {
     expect(removed.snapshot.inventory).toEqual([
       { definitionId: "bench", quantity: 1 },
     ]);
-    expect(removed.snapshot.transactions).toEqual(
-      purchased.snapshot.transactions,
-    );
+    // No transactions because bench was injected directly (eco purchase leaves no transaction)
+    expect(removed.snapshot.transactions).toEqual([]);
   });
 
   it("supports the full purchase, place, move, rotate, and remove flow", () => {
-    const context = createContext(1_000, [
-      "tx-bench",
-      "instance-bench",
-      "unused",
-    ]);
-    const seed = createInitialEstateSnapshot("yu-e21", {
-      now: () => "2026-06-24T00:00:00.000Z",
-    });
+    // Give the snapshot enough eco-credits so the eco purchase of bench succeeds.
+    // Eco purchase does not consume a createId call, so placeEstateItem gets
+    // "instance-bench" as the first id from its own context.
+    const seed = {
+      ...createInitialEstateSnapshot("yu-e21", {
+        now: () => "2026-06-24T00:00:00.000Z",
+      }),
+      ecoCredits: 100_000,
+    };
 
+    const purchaseCtx = createContext(1_000, []);
     const purchased = purchaseEstateItem(
       seed,
       { definitionId: "bench" },
-      context,
+      purchaseCtx,
     );
     expect(purchased.ok).toBe(true);
     if (!purchased.ok) return;
 
+    const placeCtx = createContext(1_000, ["instance-bench"]);
     const placed = placeEstateItem(
       purchased.snapshot,
       { definitionId: "bench", x: 0, y: 0, rotation: 0 },
-      context,
+      placeCtx,
     );
     expect(placed.ok).toBe(true);
     if (!placed.ok) return;
 
+    const moveCtx = createContext(1_000);
     const moved = moveEstateItem(
       placed.snapshot,
       { instanceId: "instance-bench", x: 1, y: 0, rotation: 0 },
-      context,
+      moveCtx,
     );
     expect(moved.ok).toBe(true);
     if (!moved.ok) return;
@@ -201,7 +205,7 @@ describe("estate commands", () => {
     const rotated = moveEstateItem(
       moved.snapshot,
       { instanceId: "instance-bench", x: 1, y: 0, rotation: 1 },
-      context,
+      moveCtx,
     );
     expect(rotated.ok).toBe(true);
     if (!rotated.ok) return;
@@ -215,12 +219,13 @@ describe("estate commands", () => {
         rotation: 1,
       }),
     );
-    expect(rotated.snapshot.transactions).toHaveLength(1);
+    // Eco purchase produces no transaction
+    expect(rotated.snapshot.transactions).toHaveLength(0);
 
     const removed = removeEstateItem(
       rotated.snapshot,
       { instanceId: "instance-bench" },
-      context,
+      moveCtx,
     );
     expect(removed.ok).toBe(true);
     if (!removed.ok) return;
@@ -616,5 +621,53 @@ describe("estate commands", () => {
     expect(
       upgradeMainBuilding(maxed, { type: "upgrade-main-building" }, context),
     ).toEqual({ ok: false, snapshot: maxed, reason: "building-max-level" });
+  });
+
+  it("buys an eco-priced decoration from accrued eco-credits without a point transaction", () => {
+    const start = "2026-06-24T00:00:00.000Z";
+    const later = new Date(Date.parse(start) + 24 * 3_600_000).toISOString();
+    const seed = {
+      ...createDemoEstateSeedSnapshot("yu-e21"),
+      ecoCollectedAt: start,
+    };
+    const context: EstateCommandContext = {
+      earnedPoints: 0, // no points at all
+      itemDefinitions: estateItemCatalog,
+      parcelDefinitions: estateExpansionCatalog,
+      createId: () => "tx-eco",
+      now: () => later,
+    };
+
+    const result = purchaseEstateItem(
+      seed,
+      { definitionId: "broadleaf-tree" }, // eco cost 30
+      context,
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.snapshot.inventory).toEqual([
+      { definitionId: "broadleaf-tree", quantity: 1 },
+    ]);
+    expect(result.snapshot.transactions).toEqual([]); // eco does not touch the pool
+    expect(result.snapshot.ecoCredits).toBeGreaterThanOrEqual(0);
+  });
+
+  it("fails an eco purchase when eco-credits are insufficient", () => {
+    const start = "2026-06-24T00:00:00.000Z";
+    const seed = {
+      ...createDemoEstateSeedSnapshot("yu-e21"),
+      ecoCollectedAt: start,
+    };
+    const context: EstateCommandContext = {
+      earnedPoints: 0,
+      itemDefinitions: estateItemCatalog,
+      parcelDefinitions: estateExpansionCatalog,
+      createId: () => "tx-eco",
+      now: () => start, // no time elapsed => 0 pending, 0 banked
+    };
+
+    const result = purchaseEstateItem(seed, { definitionId: "fountain" }, context);
+    expect(result).toMatchObject({ ok: false, reason: "insufficient-eco" });
   });
 });

@@ -1,4 +1,5 @@
 import { baseEstateBuildingDefinition } from "../data/estate-item-catalog";
+import { spendEcoCredits } from "./eco-credit";
 import {
   findEstateParcelDefinition,
   getAllEstateCellKeys,
@@ -77,6 +78,26 @@ export function purchaseEstateItem(
     return fail(snapshot, "invalid-definition");
   }
 
+  const now = context.now();
+
+  if ((definition.currency ?? "points") === "eco") {
+    const spend = spendEcoCredits(
+      snapshot,
+      context.itemDefinitions,
+      definition.cost,
+      now,
+    );
+    if (!spend.ok) {
+      return fail(snapshot, "insufficient-eco");
+    }
+
+    return succeed({
+      ...spend.snapshot,
+      inventory: increaseInventory(spend.snapshot.inventory, definition.id, 1),
+      updatedAt: now,
+    });
+  }
+
   if (
     !hasEnoughEstatePoints(
       context.earnedPoints,
@@ -86,8 +107,6 @@ export function purchaseEstateItem(
   ) {
     return fail(snapshot, "insufficient-points");
   }
-
-  const now = context.now();
 
   return succeed({
     ...snapshot,
