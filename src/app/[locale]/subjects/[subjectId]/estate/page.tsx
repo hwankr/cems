@@ -7,6 +7,7 @@ import {
   getCurrentUser,
   getGroupPointPool,
   getPersonalPointTotal,
+  getSubjectContributorRankings,
 } from "@/features/account/data/account-dal";
 import { getSubjectAwardTiers } from "@/features/leagues/data/leagues-dal";
 import { EstateContributionChip } from "@/features/account/components/estate-contribution-chip";
@@ -41,10 +42,13 @@ export default async function EstatePage({ params }: EstatePageProps) {
 
   if (!data) notFound();
 
-  const [personalPoints, groupPool] = await Promise.all([
+  const [personalPoints, groupPool, contributorRankings] = await Promise.all([
     getPersonalPointTotal(profile.userId),
     getGroupPointPool(profile.groupId),
+    getSubjectContributorRankings(50),
   ]);
+
+  const contributors = contributorRankings[subjectId] ?? [];
 
   return (
     <CampusEnergyProviders locale={locale} messages={messages}>
@@ -52,7 +56,7 @@ export default async function EstatePage({ params }: EstatePageProps) {
         personalPoints={personalPoints}
         groupPoolPoints={groupPool.earnedPoints}
       />
-      <EstateGameClient data={data} />
+      <EstateGameClient data={data} contributors={contributors} />
     </CampusEnergyProviders>
   );
 }

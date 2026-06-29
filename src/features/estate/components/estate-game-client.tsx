@@ -89,8 +89,10 @@ import {
   type EstateMessages,
 } from "./estate-copy";
 import { EstateBuildingCard } from "./estate-building-card";
+import { EstateMemberPanel } from "./estate-member-panel";
 import { ItemThumb } from "./estate-item-thumb";
 import styles from "./estate-shell.module.css";
+import type { SubjectContributor } from "@/features/account/domain/contributor-ranking";
 
 const EstateCanvas = dynamic<EstateCanvasProps>(
   () => import("./estate-canvas").then((module) => module.default),
@@ -99,13 +101,18 @@ const EstateCanvas = dynamic<EstateCanvasProps>(
 
 type EstateGameClientProps = {
   data: EstatePageData;
+  contributors?: SubjectContributor[];
   repository?: EstateRepository;
 };
 
 const expensiveConfirmationPoint = 700;
 const saveDebounceMs = 360;
 
-export function EstateGameClient({ data, repository }: EstateGameClientProps) {
+export function EstateGameClient({
+  data,
+  contributors = [],
+  repository,
+}: EstateGameClientProps) {
   const { locale, messages } = useI18n();
   const copy = messages.estate;
   const grantedEmblemDefinition = useMemo(
@@ -899,7 +906,16 @@ export function EstateGameClient({ data, repository }: EstateGameClientProps) {
         </div>
       ) : null}
 
-      {selectedInstance && selectedDefinition ? (
+      {selectedIsProtected ? (
+        <div className="pointer-events-none absolute left-1/2 top-[4.25rem] z-40 -translate-x-1/2 px-2">
+          <EstateMemberPanel
+            contributors={contributors}
+            copy={copy}
+            locale={locale}
+            onClose={handleClearSelection}
+          />
+        </div>
+      ) : selectedInstance && selectedDefinition ? (
         <ContextualItemActions
           copy={copy}
           definition={selectedDefinition}

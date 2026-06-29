@@ -15,6 +15,7 @@ import type {
 } from "../domain/types";
 import type { EstateItemActionAnchor } from "../isometric/action-anchor";
 import { MemoryEstateRepository } from "../persistence/memory-estate-repository";
+import type { SubjectContributor } from "@/features/account/domain/contributor-ranking";
 
 // Expansion is reached only by tapping a locked parcel on the canvas, so the
 // mock exposes buttons that fire the same canvas callbacks used by the client.
@@ -266,6 +267,44 @@ describe("EstateGameClient accessibility", () => {
     await flushEffects();
 
     expect(queryToolbar()).toBeNull();
+  });
+
+  async function renderEstate({
+    contributors,
+  }: { contributors?: SubjectContributor[] } = {}) {
+    const data = await getEstatePageData("en", "yu-e21", {
+      getProfileGroupId: async () => "engineering",
+      getGroupEarnedPoints: async () => 100000,
+      getSubjectAwardTier: async () => null,
+    });
+    if (!data) throw new Error("Expected estate page data.");
+
+    root = createRoot(container);
+    await act(async () => {
+      root?.render(
+        <I18nProvider locale="en" messages={enMessages}>
+          <EstateGameClient
+            data={data}
+            contributors={contributors}
+            repository={new MemoryEstateRepository()}
+          />
+        </I18nProvider>,
+      );
+    });
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+  }
+
+  it("accepts a contributors prop without breaking the default render", async () => {
+    await renderEstate({
+      contributors: [
+        { userId: "a", displayName: "대표 데모", points: 1200, rank: 1, isMe: true },
+      ],
+    });
+    // Default mode is "view": the member panel is not shown until the main
+    // building is selected, but the prop must not throw.
+    expect(container.textContent).not.toContain("Saving participants");
   });
 
   it("keeps move mode until the selected move target is confirmed", async () => {
