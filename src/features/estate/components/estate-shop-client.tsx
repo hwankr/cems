@@ -11,6 +11,7 @@ import {
   Loader2,
   MapPin,
   ShoppingBag,
+  Sprout,
 } from "lucide-react";
 import {
   useCallback,
@@ -31,6 +32,7 @@ import {
   createEstatePurchaseLock,
   type EstateSaveStatus,
 } from "../domain/editor";
+import { getAvailableEcoCredits } from "../domain/eco-credit";
 import { getInventoryQuantity } from "../domain/inventory";
 import { calculateEstatePointAccount } from "../domain/point-account";
 import { estateReducer } from "../domain/reducer";
@@ -59,6 +61,7 @@ const itemDefinitions = estateItemCatalog;
 const purchaseLockMs = 420;
 const categoryOrder: EstateShopCategory[] = [
   "all",
+  "generator",
   "nature",
   "furniture",
   "energy",
@@ -103,6 +106,15 @@ export function EstateShopClient({ data, repository }: EstateShopClientProps) {
         snapshot.transactions,
       ),
     [data.pointAccount.earnedPoints, snapshot.transactions],
+  );
+  const [nowIso, setNowIso] = useState(() => new Date().toISOString());
+  useEffect(() => {
+    const id = setInterval(() => setNowIso(new Date().toISOString()), 5_000);
+    return () => clearInterval(id);
+  }, []);
+  const availableEco = useMemo(
+    () => getAvailableEcoCredits(snapshot, itemDefinitions, nowIso),
+    [snapshot, nowIso],
   );
   const estateHref = `/${locale}/subjects/${data.subject.id}/estate`;
   const visibleItems = useMemo(
@@ -247,10 +259,20 @@ export function EstateShopClient({ data, repository }: EstateShopClientProps) {
           </div>
           <div
             className={`${styles.chip} flex h-10 items-center gap-1.5 rounded-xl px-2.5`}
+            aria-label={copy.currency.points}
           >
             <Coins size={15} className={styles.coin} aria-hidden="true" />
             <strong className="font-mono text-sm tabular-nums">
               {formatPoints(locale, pointAccount.availablePoints)}
+            </strong>
+          </div>
+          <div
+            className={`${styles.chip} flex h-10 items-center gap-1.5 rounded-xl px-2.5`}
+            aria-label={copy.currency.eco}
+          >
+            <Sprout size={15} className={styles.coin} aria-hidden="true" />
+            <strong className="font-mono text-sm tabular-nums">
+              {formatPoints(locale, availableEco)}
             </strong>
           </div>
           <SaveChip status={saveStatus} label={copy.saveStatus[saveStatus]} />
@@ -301,9 +323,11 @@ export function EstateShopClient({ data, repository }: EstateShopClientProps) {
               snapshot.inventory,
               definition.id,
             );
+            const currency = definition.currency ?? "points";
+            const balance =
+              currency === "eco" ? availableEco : pointAccount.availablePoints;
             const pending = pendingPurchaseIds.has(definition.id);
-            const disabled =
-              pending || pointAccount.availablePoints < definition.cost;
+            const disabled = pending || balance < definition.cost;
 
             return (
               <div
@@ -323,8 +347,13 @@ export function EstateShopClient({ data, repository }: EstateShopClientProps) {
                       </p>
                     </div>
                     <span
-                      className={`${styles.priceTag} shrink-0 rounded-lg px-2 py-1 font-mono text-xs font-semibold`}
+                      className={`${styles.priceTag} flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 font-mono text-xs font-semibold`}
                     >
+                      {currency === "eco" ? (
+                        <Sprout size={12} aria-hidden="true" />
+                      ) : (
+                        <Coins size={12} aria-hidden="true" />
+                      )}
                       {formatPoints(locale, definition.cost)}
                     </span>
                   </div>

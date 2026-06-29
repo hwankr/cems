@@ -204,6 +204,18 @@ export const enMessages = {
       zoomIn: "Zoom in",
       zoomOut: "Zoom out",
     },
+    currency: {
+      points: "Saving points",
+      eco: "Eco-credits",
+    },
+    eco: {
+      balance: "Eco-credits",
+      perHour: "+{rate}/hr",
+      collect: "Collect",
+      collected: "Collected {amount} eco-credits",
+      empty: "No eco-credits accrued yet",
+      hint: "Build energy facilities to accrue faster",
+    },
     dialog: {
       adjacentRequirement: "Adjacent requirement",
       cancel: "Cancel",
@@ -309,7 +321,7 @@ export const enMessages = {
       goPlace: "Return to estate to place",
       owned: "Owned",
       pending: "Pending",
-      subtitle: "Spend saved points on items. Place them back in your estate.",
+      subtitle: "Buy facilities with saving points and decorations with eco-credits.",
       title: "Shop",
     },
   },

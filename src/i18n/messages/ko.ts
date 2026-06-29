@@ -200,6 +200,18 @@ export const koMessages = {
       zoomIn: "확대",
       zoomOut: "축소",
     },
+    currency: {
+      points: "절감 포인트",
+      eco: "에코 크레딧",
+    },
+    eco: {
+      balance: "에코 크레딧",
+      perHour: "시간당 +{rate}",
+      collect: "수급 받기",
+      collected: "에코 크레딧 {amount} 수급",
+      empty: "아직 수급된 크레딧이 없습니다",
+      hint: "에너지 설비를 지으면 더 빨리 쌓입니다",
+    },
     dialog: {
       adjacentRequirement: "인접 조건",
       cancel: "취소",
@@ -308,7 +320,7 @@ export const koMessages = {
       goPlace: "영지로 돌아가 배치하기",
       owned: "보유",
       pending: "처리 중",
-      subtitle: "절감 포인트로 아이템을 구매하세요. 배치는 영지에서 합니다.",
+      subtitle: "설비는 절감 포인트로, 꾸미기 아이템은 에코 크레딧으로 구매하세요.",
       title: "상점",
     },
   },
