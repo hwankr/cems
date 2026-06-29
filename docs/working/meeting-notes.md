@@ -13,6 +13,14 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 - The representative account has profile `대표 데모`, group `student-services`, 1,000,000 demo points, and gold demo awards for the student and student-services team surfaces. Auth login was verified by direct Supabase password-token API.
 - The operational SQL record is `docs/superpowers/migrations/2026-06-29-reset-representative-demo-account.sql`; it intentionally does not contain the real password.
 
+### Presentation league population
+
+- The user asked to keep the representative demo account as the main account and add many test accounts so it looks like a real energy-saving league is underway across other buildings and the user's building.
+- Live Supabase project `cems` now has 35 additional presentation accounts: 14 engineering users, 10 humanities users, and 11 student-services users, alongside `demo@cems.kr`.
+- The latest finalized league is `yu-college-2026-06-live-demo` ("영남대 여름 에너지 절감 리그"). Current standings are student-services gold, engineering silver, humanities bronze.
+- The representative demo account `demo@cems.kr` is the latest student gold winner and remains the rank 1 contributor for `yu-b04`; surrounding student-services users fill out that building's contributor preview, while engineering and humanities buildings also show populated top-5 contributor rankings.
+- The operational SQL record is `docs/superpowers/migrations/2026-06-29-seed-presentation-league-demo-users.sql`; it intentionally does not contain the shared presentation password.
+
 ## 2026-06-28
 
 ### 로그인·온보딩 화면 잔디 정원 리디자인 (+ main 머지·푸시)
