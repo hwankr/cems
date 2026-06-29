@@ -233,9 +233,86 @@ describe("estate commands", () => {
     expect(removed.snapshot.inventory).toEqual([
       { definitionId: "bench", quantity: 1 },
     ]);
+    // Eco purchase leaves no transactions; remove must not add any either.
+    expect(removed.snapshot.transactions).toEqual([]);
+  });
+
+  it("remove does not touch the transaction log when points transactions exist", () => {
+    // Purchase solar-array (points currency, cost 600) to generate a real transaction.
+    const seed = createInitialEstateSnapshot("yu-e21", {
+      now: () => "2026-06-24T00:00:00.000Z",
+    });
+
+    const purchaseCtx: EstateCommandContext = {
+      earnedPoints: 100_000,
+      itemDefinitions: estateItemCatalog,
+      parcelDefinitions: estateExpansionCatalog,
+      createId: () => "tx-solar-array",
+      now: () => "2026-06-24T00:00:00.000Z",
+    };
+
+    const purchased = purchaseEstateItem(
+      seed,
+      { definitionId: "solar-array" },
+      purchaseCtx,
+    );
+    expect(purchased.ok).toBe(true);
+    if (!purchased.ok) throw new Error("purchase failed");
+
+    // Confirm the purchase recorded exactly one purchase-item transaction.
+    expect(purchased.snapshot.transactions).toEqual([
+      {
+        id: "tx-solar-array",
+        kind: "purchase-item",
+        pointDelta: -600,
+        itemDefinitionId: "solar-array",
+        createdAt: "2026-06-24T00:00:00.000Z",
+      },
+    ]);
+
+    // Place the solar-array.
+    const placeCtx: EstateCommandContext = {
+      earnedPoints: 100_000,
+      itemDefinitions: estateItemCatalog,
+      parcelDefinitions: estateExpansionCatalog,
+      createId: () => "instance-solar-array",
+      now: () => "2026-06-24T00:00:00.000Z",
+    };
+
+    const placed = placeEstateItem(
+      purchased.snapshot,
+      { definitionId: "solar-array", x: 0, y: 0, rotation: 0 },
+      placeCtx,
+    );
+    expect(placed.ok).toBe(true);
+    if (!placed.ok) throw new Error("place failed");
+
+    // Remove the placed solar-array.
+    const removeCtx: EstateCommandContext = {
+      earnedPoints: 100_000,
+      itemDefinitions: estateItemCatalog,
+      parcelDefinitions: estateExpansionCatalog,
+      createId: () => "unused-id",
+      now: () => "2026-06-24T00:00:00.000Z",
+    };
+
+    const removed = removeEstateItem(
+      placed.snapshot,
+      { instanceId: "instance-solar-array" },
+      removeCtx,
+    );
+    expect(removed.ok).toBe(true);
+    if (!removed.ok) throw new Error("remove failed");
+
+    // The transaction log must be exactly the same as after purchase — remove
+    // neither strips nor duplicates existing transactions.
     expect(removed.snapshot.transactions).toEqual(
       purchased.snapshot.transactions,
     );
+    // Item returned to inventory.
+    expect(removed.snapshot.inventory).toEqual([
+      { definitionId: "solar-array", quantity: 1 },
+    ]);
   });
 
   it("moves an item without colliding with its own current footprint", () => {
@@ -650,7 +727,9 @@ describe("estate commands", () => {
       { definitionId: "broadleaf-tree", quantity: 1 },
     ]);
     expect(result.snapshot.transactions).toEqual([]); // eco does not touch the pool
-    expect(result.snapshot.ecoCredits).toBeGreaterThanOrEqual(0);
+    // Math: level-1 main building = 6 eco/hr, 24 h elapsed → floor(6 * 24) = 144 pending,
+    // 0 banked → 144 available. Spend 30 (broadleaf-tree) → 114 remaining.
+    expect(result.snapshot.ecoCredits).toBe(114);
   });
 
   it("fails an eco purchase when eco-credits are insufficient", () => {
