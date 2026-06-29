@@ -29,6 +29,11 @@
   pointer-events: none;
 }
 
+/* Hub variant — header is a single row, so the hero can be shorter. */
+.heroCompact {
+  height: 6rem;
+}
+
 /* Podium — 3 columns, pedestals bottom-aligned so heights read as a 시상대. */
 .podium {
   display: grid;

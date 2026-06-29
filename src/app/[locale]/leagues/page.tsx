@@ -65,18 +65,16 @@ export default async function LeaguesPage({ params }: LeaguesProps) {
     <CampusEnergyProviders locale={locale} messages={messages}>
       <main className={styles.surface}>
         <div className={styles.sheet}>
-          <div className={leagueStyles.hero}>
+          <div className={`${leagueStyles.hero} ${leagueStyles.heroCompact}`}>
             <div className={leagueStyles.heroBloom} />
-            <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between p-3">
+            <div className="absolute inset-0 z-10 flex items-center gap-3 p-4">
               <Link
                 href={`/${locale}`}
                 aria-label={copy.back}
-                className="grid h-9 w-9 place-items-center rounded-full bg-white/20 text-white backdrop-blur-sm transition-colors hover:bg-white/30"
+                className="grid h-9 w-9 flex-none place-items-center rounded-full bg-white/20 text-white backdrop-blur-sm transition-colors hover:bg-white/30"
               >
                 <ArrowLeft className="h-5 w-5" aria-hidden="true" />
               </Link>
-            </div>
-            <div className="absolute inset-x-0 bottom-0 z-10 flex items-center gap-3 p-4">
               <span className="grid h-11 w-11 flex-none place-items-center rounded-2xl bg-white/20 text-white backdrop-blur-sm">
                 <Trophy className="h-6 w-6" aria-hidden="true" />
               </span>
