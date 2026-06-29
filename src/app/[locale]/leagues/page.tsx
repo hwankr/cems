@@ -10,7 +10,6 @@ import {
 import {
   getFinalizedLeagues,
   getJoinableLeagues,
-  getLeague,
   getLeagueParticipantCount,
   getLeagueStandings,
   getMyGroupLeagues,
