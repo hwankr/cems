@@ -205,12 +205,8 @@ export const koMessages = {
       eco: "에코 크레딧",
     },
     eco: {
-      balance: "에코 크레딧",
-      perHour: "시간당 +{rate}",
       collect: "수급 받기",
       collected: "에코 크레딧 {amount} 수급",
-      empty: "아직 수급된 크레딧이 없습니다",
-      hint: "에너지 설비를 지으면 더 빨리 쌓입니다",
     },
     dialog: {
       adjacentRequirement: "인접 조건",

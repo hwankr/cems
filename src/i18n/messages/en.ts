@@ -209,12 +209,8 @@ export const enMessages = {
       eco: "Eco-credits",
     },
     eco: {
-      balance: "Eco-credits",
-      perHour: "+{rate}/hr",
       collect: "Collect",
       collected: "Collected {amount} eco-credits",
-      empty: "No eco-credits accrued yet",
-      hint: "Build energy facilities to accrue faster",
     },
     dialog: {
       adjacentRequirement: "Adjacent requirement",
