@@ -4,6 +4,17 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 
 ## 2026-06-29
 
+### Demo QR mission seed and checkpoint direction
+
+- The user asked to create a few demo QR codes, starting with "화공관 2층 계단", and asked whether a sequential checkpoint flow such as "정문 1 → 2 → 3" is technically possible.
+- A live Supabase demo mission `chem-2f-stairs` was seeded with 50 points, category `stairs`, and `active=true`.
+- The app message dictionaries now include labels for `chem-2f-stairs` plus future checkpoint demo labels `main-gate-1`, `main-gate-2`, and `main-gate-3`.
+- Printable demo QR artifacts were added at `docs/demo/qr-chem-2f-stairs.svg` and `docs/demo/qr-chem-2f-stairs.html`, encoding `https://cems-kappa.vercel.app/ko/scan/chem-2f-stairs`.
+- Verified: targeted i18n Vitest passed, ESLint passed with only the pre-existing `game-preview.tsx` warnings, and `npm run build` passed.
+- Sequential checkpoint recognition was then implemented for the demo route `main-gate-route`: `main-gate-1` → `main-gate-2` → `main-gate-3` is required, intermediate scans only record progress, and the final scan awards 100 points via `qr:main-gate-route` using the existing mission/point pipeline. Live Supabase now has `checkpoint_routes`, `checkpoint_steps`, `checkpoint_scans`, and RPC `complete_checkpoint_step(p_code)`; the route is seeded as "정문 에너지 루트".
+- Printable checkpoint QR artifacts were added at `docs/demo/qr-main-gate-1.svg`, `docs/demo/qr-main-gate-2.svg`, `docs/demo/qr-main-gate-3.svg`, and `docs/demo/qr-main-gate-checkpoints.html`, encoding the production scan URLs for the three steps.
+- Verified after implementation: targeted Vitest 14/14 passed; ESLint passed with 0 errors and the same 2 pre-existing `game-preview.tsx` warnings; `npm run build` passed. A rollback-style live DB probe confirmed `main-gate-2` first returns `out-of-order`, `main-gate-1`/`2` return `step`, `main-gate-3` returns `completed`, a repeat returns `already`, 3 checkpoint scans and 100 points appear inside the probe, and no probe data remains afterward.
+
 ### Representative demo account reset
 
 - The user said the demo password was forgotten and asked to remove the multiple demo accounts, then recreate one clean representative demo account.

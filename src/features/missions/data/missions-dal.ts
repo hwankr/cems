@@ -8,12 +8,38 @@ import {
 } from "../domain/goals";
 
 export type Mission = {
+  kind: "mission";
   code: string;
   points: number;
   category: string;
 };
 
 type MissionRow = { code: string; points: number; category: string };
+
+export type Checkpoint = {
+  kind: "checkpoint";
+  code: string;
+  routeId: string;
+  routeTitle: string;
+  stepTitle: string;
+  location: string;
+  stepOrder: number;
+  totalSteps: number;
+  rewardPoints: number;
+};
+
+type CheckpointStepRow = {
+  code: string;
+  route_id: string;
+  step_order: number;
+  title: string;
+  location_label: string;
+  checkpoint_routes: {
+    title: string;
+    reward_points: number;
+    active: boolean;
+  };
+};
 
 export async function getMission(code: string): Promise<Mission | null> {
   const supabase = await createServerSupabaseClient();
@@ -24,7 +50,53 @@ export async function getMission(code: string): Promise<Mission | null> {
     .eq("active", true)
     .maybeSingle();
   if (error) throw new Error(`Failed to load mission: ${error.message}`);
-  return (data as MissionRow | null) ?? null;
+  const row = (data as MissionRow | null) ?? null;
+  return row ? { kind: "mission", ...row } : null;
+}
+
+export async function getCheckpoint(code: string): Promise<Checkpoint | null> {
+  const supabase = await createServerSupabaseClient();
+  const { data, error } = await supabase
+    .from("checkpoint_steps")
+    .select(
+      "code, route_id, step_order, title, location_label, checkpoint_routes!inner(title, reward_points, active)",
+    )
+    .eq("code", code)
+    .eq("active", true)
+    .eq("checkpoint_routes.active", true)
+    .maybeSingle();
+  if (error) throw new Error(`Failed to load checkpoint: ${error.message}`);
+  const row = (data as unknown as CheckpointStepRow | null) ?? null;
+  if (!row) return null;
+
+  const { count, error: countError } = await supabase
+    .from("checkpoint_steps")
+    .select("code", { count: "exact", head: true })
+    .eq("route_id", row.route_id)
+    .eq("active", true);
+  if (countError) {
+    throw new Error(`Failed to load checkpoint count: ${countError.message}`);
+  }
+
+  return {
+    kind: "checkpoint",
+    code: row.code,
+    routeId: row.route_id,
+    routeTitle: row.checkpoint_routes.title,
+    stepTitle: row.title,
+    location: row.location_label,
+    stepOrder: row.step_order,
+    totalSteps: count ?? row.step_order,
+    rewardPoints: row.checkpoint_routes.reward_points,
+  };
+}
+
+export async function getScanTarget(
+  code: string,
+): Promise<Mission | Checkpoint | null> {
+  const mission = await getMission(code);
+  if (mission) return mission;
+  return getCheckpoint(code);
 }
 
 type GoalRow = {

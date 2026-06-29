@@ -61,3 +61,41 @@ export async function cancelMissionAction(
   if (data === "nothing") return { status: "nothing" };
   return { status: "error" };
 }
+
+export type CompleteCheckpointState = {
+  status:
+    | "idle"
+    | "step"
+    | "completed"
+    | "already"
+    | "already-step"
+    | "out-of-order"
+    | "invalid"
+    | "error";
+};
+
+export async function completeCheckpointAction(
+  _prevState: CompleteCheckpointState,
+  formData: FormData,
+): Promise<CompleteCheckpointState> {
+  const code = String(formData.get("code") ?? "");
+  const locale = normalizeLocale(formData.get("locale"));
+  const supabase = await createServerSupabaseClient();
+
+  const { data, error } = await supabase.rpc("complete_checkpoint_step", {
+    p_code: code,
+  });
+  if (error) return { status: "error" };
+
+  if (data === "step") return { status: "step" };
+  if (data === "completed") {
+    revalidatePath(`/${locale}/me`);
+    revalidatePath(`/${locale}`);
+    return { status: "completed" };
+  }
+  if (data === "already") return { status: "already" };
+  if (data === "already-step") return { status: "already-step" };
+  if (data === "out-of-order") return { status: "out-of-order" };
+  if (data === "invalid") return { status: "invalid" };
+  return { status: "error" };
+}

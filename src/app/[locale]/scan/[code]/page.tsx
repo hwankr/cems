@@ -1,8 +1,9 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { CampusEnergyProviders } from "@/features/campus-energy/components/campus-energy-providers";
+import { CheckpointConfirm } from "@/features/missions/components/checkpoint-confirm";
 import { MissionConfirm } from "@/features/missions/components/mission-confirm";
-import { getMission } from "@/features/missions/data/missions-dal";
+import { getScanTarget } from "@/features/missions/data/missions-dal";
 import {
   getCurrentProfile,
   getCurrentUser,
@@ -23,16 +24,18 @@ export default async function ScanPage({ params }: ScanPageProps) {
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/onboarding`);
 
-  const [messages, mission] = await Promise.all([
+  const [messages, target] = await Promise.all([
     getMessages(locale),
-    getMission(code),
+    getScanTarget(code),
   ]);
 
   return (
     <CampusEnergyProviders locale={locale} messages={messages}>
       <main className="mx-auto grid min-h-dvh max-w-sm content-center gap-6 px-5">
-        {mission ? (
-          <MissionConfirm code={mission.code} points={mission.points} />
+        {target?.kind === "mission" ? (
+          <MissionConfirm code={target.code} points={target.points} />
+        ) : target?.kind === "checkpoint" ? (
+          <CheckpointConfirm checkpoint={target} />
         ) : (
           <div className="grid gap-3 text-center">
             <h1 className="text-xl font-semibold text-ink">

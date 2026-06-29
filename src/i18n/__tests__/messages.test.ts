@@ -27,4 +27,19 @@ describe("messages", () => {
     expect(enMessages.mapView.controls.resetView).toBe("Reset view");
     expect(enMessages.mapView.title).toBe("Campus map");
   });
+
+  it("includes demo QR mission labels for generated stickers", () => {
+    const demoCodes = [
+      "chem-2f-stairs",
+      "main-gate-1",
+      "main-gate-2",
+      "main-gate-3",
+      "main-gate-route",
+    ];
+
+    for (const code of demoCodes) {
+      expect(koMessages.me.missions).toHaveProperty(code);
+      expect(enMessages.me.missions).toHaveProperty(code);
+    }
+  });
 });
