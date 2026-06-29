@@ -262,6 +262,15 @@ export const koMessages = {
       "battery-storage": "에너지 저장 배터리",
       "geothermal-hub": "지열·스마트그리드 허브",
     },
+    member: {
+      title: "절감 참여 인원",
+      subtitle: "누적 절감 포인트 순",
+      you: "나",
+      pointsUnit: "P",
+      empty: "아직 참여 인원이 없습니다",
+      emptyHint: "그룹원이 절감 포인트를 모으면 여기에 표시됩니다",
+      close: "닫기",
+    },
     messages: {
       cannotLoad: "저장된 영지를 불러오지 못했습니다.",
       cannotRotate: "회전할 수 없는 아이템입니다.",

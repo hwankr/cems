@@ -265,6 +265,15 @@ export const enMessages = {
       "battery-storage": "Battery storage",
       "geothermal-hub": "Geothermal hub",
     },
+    member: {
+      title: "Saving participants",
+      subtitle: "By cumulative saving points",
+      you: "You",
+      pointsUnit: "P",
+      empty: "No participants yet",
+      emptyHint: "Members appear here as they earn saving points",
+      close: "Close",
+    },
     messages: {
       cannotLoad: "Could not load the saved estate.",
       cannotRotate: "This item cannot rotate.",
