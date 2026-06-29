@@ -92,6 +92,8 @@ export function migrateEstateSnapshot(
       return validateEstateSnapshot(raw, subjectId, options.subjectId, 1);
     case 2:
       return validateEstateSnapshot(raw, subjectId, options.subjectId, 2);
+    case 3:
+      return validateEstateSnapshot(raw, subjectId, options.subjectId, 3);
     default:
       return {
         ok: false,
@@ -110,7 +112,7 @@ export function toPersistableEstateSnapshot(
   snapshot: EstateSnapshot,
 ): EstateSnapshot {
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     subjectId: snapshot.subjectId,
     mainBuildingLevel: clampMainBuildingLevel(snapshot.mainBuildingLevel),
     unlockedParcelIds: snapshot.unlockedParcelIds.map((parcelId) => parcelId),
@@ -120,6 +122,11 @@ export function toPersistableEstateSnapshot(
     transactions: snapshot.transactions.map((transaction) => ({
       ...transaction,
     })),
+    ecoCredits:
+      Number.isFinite(snapshot.ecoCredits) && snapshot.ecoCredits > 0
+        ? Math.floor(snapshot.ecoCredits)
+        : 0,
+    ecoCollectedAt: snapshot.ecoCollectedAt,
     updatedAt: snapshot.updatedAt,
   };
 }
@@ -188,7 +195,7 @@ function validateEstateSnapshot(
   raw: Record<string, unknown>,
   subjectId: string,
   expectedSubjectId: string | undefined,
-  sourceVersion: 1 | 2,
+  sourceVersion: 1 | 2 | 3,
 ): EstateMigrationResult {
   if (typeof raw.subjectId !== "string" || raw.subjectId.length === 0) {
     return invalidShape(subjectId);
@@ -232,14 +239,23 @@ function validateEstateSnapshot(
   const transactions = validateTransactions(raw.transactions, itemDefinitions);
   if (!transactions) return invalidShape(raw.subjectId);
 
-  // v1 rows have no level field; default to 1. v2 rows clamp to the legal range.
+  // v1 rows have no level field; default to 1. v2/v3 rows clamp to range.
   const mainBuildingLevel =
     sourceVersion === 1 ? 1 : clampMainBuildingLevel(raw.mainBuildingLevel);
+
+  const ecoCredits =
+    typeof raw.ecoCredits === "number" &&
+    Number.isFinite(raw.ecoCredits) &&
+    raw.ecoCredits > 0
+      ? Math.floor(raw.ecoCredits)
+      : 0;
+  const ecoCollectedAt =
+    typeof raw.ecoCollectedAt === "string" ? raw.ecoCollectedAt : raw.updatedAt;
 
   return {
     ok: true,
     snapshot: {
-      schemaVersion: 2,
+      schemaVersion: 3,
       subjectId: raw.subjectId,
       mainBuildingLevel,
       unlockedParcelIds,
@@ -247,6 +263,8 @@ function validateEstateSnapshot(
       inventory,
       groundTiles,
       transactions,
+      ecoCredits,
+      ecoCollectedAt,
       updatedAt: raw.updatedAt,
     },
   };

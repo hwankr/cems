@@ -11,6 +11,7 @@ export type EstateItemCategory =
   | "nature"
   | "furniture"
   | "energy"
+  | "generator"
   | "facility"
   | "ground";
 
@@ -27,6 +28,10 @@ export type EstateItemDefinition = {
   canRotate: boolean;
   assetId: string;
   placementRule: EstatePlacementRule;
+  /** Which currency buys this item. Defaults to "points" when unset. */
+  currency?: "points" | "eco";
+  /** Eco-credits generated per hour while this item is placed (generators only). */
+  ecoRatePerHour?: number;
 };
 
 export type EstateItemInstance = {
@@ -59,7 +64,7 @@ export type EstateTransaction = {
 };
 
 export type EstateSnapshot = {
-  schemaVersion: 2;
+  schemaVersion: 3;
   subjectId: string;
   mainBuildingLevel: number;
   unlockedParcelIds: string[];
@@ -67,11 +72,16 @@ export type EstateSnapshot = {
   inventory: EstateInventoryEntry[];
   groundTiles: EstateGroundTile[];
   transactions: EstateTransaction[];
+  /** Banked eco-credits (excludes uncollected pending accrual). */
+  ecoCredits: number;
+  /** ISO timestamp the eco-credit accrual was last banked from. */
+  ecoCollectedAt: string;
   updatedAt: string;
 };
 
 export type EstateCommandFailureReason =
   | "insufficient-points"
+  | "insufficient-eco"
   | "out-of-bounds"
   | "locked-cell"
   | "collision"

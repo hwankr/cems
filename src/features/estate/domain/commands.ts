@@ -40,7 +40,7 @@ export function createInitialEstateSnapshot(
   const now = options.now();
 
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     subjectId,
     mainBuildingLevel: 1,
     unlockedParcelIds: ["central-campus"],
@@ -57,6 +57,8 @@ export function createInitialEstateSnapshot(
     inventory: [],
     groundTiles: [],
     transactions: [],
+    ecoCredits: 0,
+    ecoCollectedAt: now,
     updatedAt: now,
   };
 }

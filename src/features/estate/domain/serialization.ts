@@ -18,7 +18,11 @@ export function parseEstateSnapshot(serialized: string): EstateParseResult {
     return { ok: false, reason: "invalid-shape" };
   }
 
-  if (value.schemaVersion !== 1 && value.schemaVersion !== 2) {
+  if (
+    value.schemaVersion !== 1 &&
+    value.schemaVersion !== 2 &&
+    value.schemaVersion !== 3
+  ) {
     return { ok: false, reason: "unsupported-schema-version" };
   }
 
@@ -29,7 +33,7 @@ export function parseEstateSnapshot(serialized: string): EstateParseResult {
   return {
     ok: true,
     snapshot: {
-      schemaVersion: 2,
+      schemaVersion: 3,
       subjectId: value.subjectId,
       mainBuildingLevel: clampMainBuildingLevel(value.mainBuildingLevel),
       unlockedParcelIds: value.unlockedParcelIds,
@@ -37,9 +41,20 @@ export function parseEstateSnapshot(serialized: string): EstateParseResult {
       inventory: value.inventory,
       groundTiles: value.groundTiles,
       transactions: value.transactions,
+      ecoCredits: normalizeEcoAmount(value.ecoCredits),
+      ecoCollectedAt:
+        typeof value.ecoCollectedAt === "string"
+          ? value.ecoCollectedAt
+          : value.updatedAt,
       updatedAt: value.updatedAt,
     } as EstateSnapshot,
   };
+}
+
+function normalizeEcoAmount(value: unknown): number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0
+    ? Math.floor(value)
+    : 0;
 }
 
 type EstateSnapshotShape = {

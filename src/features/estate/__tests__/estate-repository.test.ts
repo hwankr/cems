@@ -344,7 +344,7 @@ describe("estate persistence", () => {
   it("seeds a subject with only a centered level-1 main building on clean grass", () => {
     const snapshot = createDemoEstateSeedSnapshot("yu-e21");
 
-    expect(snapshot.schemaVersion).toBe(2);
+    expect(snapshot.schemaVersion).toBe(3);
     expect(snapshot.mainBuildingLevel).toBe(1);
     expect(snapshot.unlockedParcelIds).toEqual(["central-campus"]);
     expect(snapshot.items).toEqual([
@@ -443,7 +443,7 @@ describe("estate persistence", () => {
     vi.useRealTimers();
   });
 
-  it("migrates a v1 snapshot to v2 with a default main building level of 1", () => {
+  it("migrates a v1 snapshot to v3 with a default main building level of 1", () => {
     const v1 = {
       schemaVersion: 1,
       subjectId: "yu-e21",
@@ -459,8 +459,30 @@ describe("estate persistence", () => {
 
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    expect(result.snapshot.schemaVersion).toBe(2);
+    expect(result.snapshot.schemaVersion).toBe(3);
     expect(result.snapshot.mainBuildingLevel).toBe(1);
+  });
+
+  it("defaults eco-credit fields when migrating a v2 snapshot", () => {
+    const v2 = {
+      schemaVersion: 2,
+      subjectId: "yu-e21",
+      mainBuildingLevel: 2,
+      unlockedParcelIds: ["central-campus"],
+      items: [],
+      inventory: [],
+      groundTiles: [],
+      transactions: [],
+      updatedAt: "2026-06-24T00:00:00.000Z",
+    };
+
+    const result = migrateEstateSnapshot(v2, { subjectId: "yu-e21" });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.snapshot.schemaVersion).toBe(3);
+    expect(result.snapshot.ecoCredits).toBe(0);
+    expect(result.snapshot.ecoCollectedAt).toBe("2026-06-24T00:00:00.000Z");
   });
 
   it("accepts a v2 snapshot and clamps an out-of-range main building level", () => {
@@ -500,7 +522,7 @@ describe("estate persistence", () => {
       mainBuildingLevel: 3,
     });
 
-    expect(persisted.schemaVersion).toBe(2);
+    expect(persisted.schemaVersion).toBe(3);
     expect(persisted.mainBuildingLevel).toBe(3);
   });
 });

@@ -19,7 +19,7 @@ const seedTimestamp = "2026-06-24T00:00:00.000Z";
 // cells (6..8, 6..8), centered in the 0..14 core.
 export function createDemoEstateSeedSnapshot(subjectId: string): EstateSnapshot {
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     subjectId,
     mainBuildingLevel: 1,
     unlockedParcelIds: ["central-campus"],
@@ -36,6 +36,8 @@ export function createDemoEstateSeedSnapshot(subjectId: string): EstateSnapshot 
     inventory: [],
     groundTiles: [],
     transactions: [],
+    ecoCredits: 0,
+    ecoCollectedAt: seedTimestamp,
     updatedAt: seedTimestamp,
   };
 }
