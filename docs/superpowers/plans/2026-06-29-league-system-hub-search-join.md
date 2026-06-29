@@ -138,8 +138,10 @@ begin
 end;
 $$;
 
-revoke execute on function public.join_league(text) from anon;
-revoke execute on function public.leave_league(text) from anon;
+-- Revoke from PUBLIC (anon inherits the default PUBLIC EXECUTE grant; revoking
+-- from anon alone leaves it executable), then grant only authenticated.
+revoke execute on function public.join_league(text) from public;
+revoke execute on function public.leave_league(text) from public;
 grant execute on function public.join_league(text) to authenticated;
 grant execute on function public.leave_league(text) to authenticated;
 ```
@@ -218,11 +220,14 @@ git commit -m "feat(db): add is_open + join_league/leave_league RPCs"
 Run via MCP `execute_sql` and save identical SQL to `docs/superpowers/migrations/2026-06-29-seed-league-active-open.sql`:
 
 ```sql
--- Active, open league the demo group is in. Window starts AFTER the
--- 2026-06-27 1,000,000 manual:demo-topup so per-capita averages stay realistic.
+-- Active, open league the demo group is in. VERIFIED against live data: all
+-- current point_events are dated 2026-05-15 and 2026-06-29 (incl. the 1,000,000
+-- demo top-up + presentation seeds). The window therefore starts 2026-06-30 —
+-- after all that bulk data — and the balanced seed below is dated 2026-06-30 so
+-- it is the only data scored (realistic per-capita averages).
 insert into public.leagues (id, name, scope, school_id, starts_at, ends_at, status, is_open, badge_winner_count)
 values ('yu-energy-2026-summer', '영남대 여름 상시 에너지 리그', 'group', 'yeungnam',
-        '2026-06-28T00:00:00+09:00', '2026-07-31T23:59:59+09:00', 'active', true, 3)
+        '2026-06-30T00:00:00+09:00', '2026-07-31T23:59:59+09:00', 'active', true, 3)
 on conflict (id) do update set
   name=excluded.name, status=excluded.status, is_open=excluded.is_open,
   starts_at=excluded.starts_at, ends_at=excluded.ends_at;
@@ -237,17 +242,17 @@ on conflict do nothing;
 -- since avg = total/member_count and every member of a group gets the same):
 -- student-services 220 > humanities 200 > engineering 180.
 insert into public.point_events (user_id, points, reason, period_label, created_at)
-select id, 220, 'seed:league-active', '2026-W27-ss', '2026-06-29T00:00:00+09:00'
+select id, 220, 'seed:league-active', '2026-W27-ss', '2026-06-30T09:00:00+09:00'
 from public.profiles where group_id='student-services'
 on conflict (user_id, reason, period_label) do nothing;
 
 insert into public.point_events (user_id, points, reason, period_label, created_at)
-select id, 200, 'seed:league-active', '2026-W27-hu', '2026-06-29T00:00:00+09:00'
+select id, 200, 'seed:league-active', '2026-W27-hu', '2026-06-30T09:00:00+09:00'
 from public.profiles where group_id='humanities'
 on conflict (user_id, reason, period_label) do nothing;
 
 insert into public.point_events (user_id, points, reason, period_label, created_at)
-select id, 180, 'seed:league-active', '2026-W27-en', '2026-06-29T00:00:00+09:00'
+select id, 180, 'seed:league-active', '2026-W27-en', '2026-06-30T09:00:00+09:00'
 from public.profiles where group_id='engineering'
 on conflict (user_id, reason, period_label) do nothing;
 
