@@ -30,7 +30,7 @@ vi.mock("@/i18n/client", () => ({
   globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
-function render(achievements: Achievement[]) {
+function render() {
   const container = document.createElement("div");
   const root: Root = createRoot(container);
   document.body.append(container);
@@ -45,10 +45,7 @@ describe("AchievementHighlights top-student badge", () => {
   ];
 
   it("paints an earned gold top-student badge in gold tone", async () => {
-    const { container, root } = render([
-      ...base,
-      { key: "top-student", earned: true, locked: false, tier: "gold" },
-    ]);
+    const { container, root } = render();
     await act(async () =>
       root.render(
         <AchievementHighlights
@@ -66,7 +63,7 @@ describe("AchievementHighlights top-student badge", () => {
   });
 
   it("keeps a locked top-student slot when not earned", async () => {
-    const { container, root } = render(base);
+    const { container, root } = render();
     await act(async () =>
       root.render(
         <AchievementHighlights
