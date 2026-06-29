@@ -53,19 +53,28 @@ const teams: TeamAward[] = [
 describe("AwardPodium", () => {
   afterEach(() => document.body.replaceChildren());
 
-  it("renders all podium teams with names and per-capita average", async () => {
+  it("renders a podium with the champion centered and per-capita average", async () => {
     const container = document.createElement("div");
     const root: Root = createRoot(container);
     document.body.append(container);
 
     await act(async () => root.render(<AwardPodium teams={teams} />));
 
+    const lis = Array.from(container.querySelectorAll("li"));
+    expect(lis).toHaveLength(3);
+    // Visual order is silver, gold (center), bronze.
+    expect(lis.map((li) => li.getAttribute("data-tier"))).toEqual([
+      "silver",
+      "gold",
+      "bronze",
+    ]);
+    expect(lis[1].getAttribute("data-rank")).toBe("1");
+
     const text = container.textContent ?? "";
     expect(text).toContain("학생지원팀");
     expect(text).toContain("인문대학");
     expect(text).toContain("공과대학");
     expect(text).toContain("1,200");
-    expect(container.querySelectorAll("li")).toHaveLength(3);
 
     await act(async () => root.unmount());
   });

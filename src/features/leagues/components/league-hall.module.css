@@ -1,0 +1,142 @@
+/*
+ * Structure for the Hall of Fame. Lives under the page's profile-surface
+ * `.surface` wrapper, so the warm garden --color-* / --honey tokens are
+ * inherited. Tier colors arrive via inline --tier; this file stays tier-agnostic.
+ */
+
+/* Hero — mirrors the profile cover gradient, plus a celebratory gold bloom. */
+.hero {
+  position: relative;
+  height: 8.5rem;
+  background: linear-gradient(135deg, #0b5e3f 0%, #1f8a5d 48%, #6bbf93 100%);
+  overflow: hidden;
+}
+
+.hero::after {
+  /* soft top-right light bloom, same as profile-surface .cover */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(75% 120% at 88% -25%, rgb(255 255 255 / 0.3), transparent 60%);
+  pointer-events: none;
+}
+
+.heroBloom {
+  /* warm gold glow rising from the bottom-center, behind the title */
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(58% 130% at 50% 125%, rgb(245 197 24 / 0.5), transparent 70%);
+  pointer-events: none;
+}
+
+/* Podium — 3 columns, pedestals bottom-aligned so heights read as a 시상대. */
+.podium {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.5rem;
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
+  text-align: center;
+}
+
+.crest {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  border: 2px solid;
+}
+
+.crestGold {
+  box-shadow:
+    0 0 0 4px rgb(245 197 24 / 0.18),
+    0 8px 18px -8px rgb(245 197 24 / 0.75);
+}
+
+.slotName {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.pedestal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  width: 100%;
+  height: var(--pedestal-h);
+  margin-top: 0.2rem;
+  border-radius: 12px 12px 0 0;
+  border: 1px solid color-mix(in srgb, var(--tier) 45%, transparent);
+  border-bottom: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--tier) 32%, #ffffff) 0%,
+    color-mix(in srgb, var(--tier) 15%, #ffffff) 100%
+  );
+}
+
+.pedestalRank {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.pedestalTier {
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+/* Student winners — clean ranked rows with avatar + tier rank badge. */
+.studentRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.studentItem {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 14px;
+  background: var(--color-inset);
+}
+
+.studentRankBadge {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 800;
+}
+
+.studentAvatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  color: var(--color-on-accent);
+  background: linear-gradient(135deg, #2f9e6b, #0b5e3f);
+}

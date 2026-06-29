@@ -1,16 +1,17 @@
 "use client";
 
-import { Medal } from "lucide-react";
+import type { CSSProperties } from "react";
+import { Crown, Medal } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { formatNumber } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
+import {
+  PODIUM_VISUAL_ORDER,
+  TIER_PALETTE,
+  TIER_PEDESTAL_REM,
+} from "../domain/award-tier";
 import type { AwardTier, TeamAward } from "../domain/types";
-
-const TIER_STYLE: Record<AwardTier, { ring: string; text: string }> = {
-  gold: { ring: "border-[#f5c518] bg-[#fdf3cf]", text: "text-[#a07a00]" },
-  silver: { ring: "border-[#c3cad3] bg-[#eef1f4]", text: "text-[#5b6470]" },
-  bronze: { ring: "border-[#cd7f32] bg-[#f4e3d3]", text: "text-[#8a5320]" },
-};
+import styles from "./league-hall.module.css";
 
 export function AwardPodium({ teams }: { teams: TeamAward[] }) {
   const { locale, messages } = useI18n();
@@ -21,40 +22,78 @@ export function AwardPodium({ teams }: { teams: TeamAward[] }) {
     bronze: copy.tierBronze,
   };
 
+  const byTier = new Map(teams.map((team) => [team.tier, team] as const));
+  const slots = PODIUM_VISUAL_ORDER.map((tier) => byTier.get(tier)).filter(
+    (team): team is TeamAward => Boolean(team),
+  );
+
   return (
     <div>
-      <h3 className="mb-2 text-sm font-semibold text-ink">
+      <h3 className="mb-3 text-sm font-semibold text-ink">
         {copy.teamSectionTitle}
       </h3>
-      <ol className="flex flex-col gap-2">
-        {teams.map((team) => {
-          const style = TIER_STYLE[team.tier];
+      <ol className={styles.podium} aria-label={copy.teamSectionTitle}>
+        {slots.map((team) => {
+          const palette = TIER_PALETTE[team.tier];
+          const isGold = team.tier === "gold";
           return (
             <li
               key={team.competitorId}
-              className={`flex items-center gap-3 rounded-xl border-2 px-3 py-2.5 ${style.ring}`}
+              data-tier={team.tier}
+              data-rank={team.rank}
+              className={styles.slot}
             >
               <span
-                className={`grid h-9 w-9 flex-none place-items-center rounded-full bg-surface ${style.text}`}
+                className={`${styles.crest} ${isGold ? styles.crestGold : ""}`}
+                style={
+                  {
+                    color: palette.text,
+                    background: palette.soft,
+                    borderColor: palette.fill,
+                  } as CSSProperties
+                }
               >
-                <Medal className="h-5 w-5" aria-hidden="true" />
+                {isGold ? (
+                  <Crown className="h-5 w-5" aria-hidden="true" />
+                ) : (
+                  <Medal className="h-5 w-5" aria-hidden="true" />
+                )}
               </span>
-              <span className="flex min-w-0 flex-1 flex-col">
-                <span className="truncate text-sm font-bold text-ink">
-                  {team.competitorName}
-                </span>
-                <span className={`text-[11px] font-semibold ${style.text}`}>
-                  {tierLabel[team.tier]} · {team.rank}
-                  {copy.rankUnit}
-                </span>
+
+              <span className={styles.slotName} title={team.competitorName}>
+                {team.competitorName}
               </span>
+
               {team.metricValue !== null ? (
-                <span className="flex-none text-[11px] text-ink-subtle">
+                <span className="text-[11px] text-ink-subtle">
                   {interpolate(copy.avgPointsLabel, {
                     points: formatNumber(locale, Math.round(team.metricValue)),
                   })}
                 </span>
               ) : null}
+
+              <span
+                className={styles.pedestal}
+                style={
+                  {
+                    "--pedestal-h": `${TIER_PEDESTAL_REM[team.tier]}rem`,
+                    "--tier": palette.fill,
+                  } as CSSProperties
+                }
+              >
+                <span
+                  className={styles.pedestalRank}
+                  style={{ color: palette.text }}
+                >
+                  {team.rank}
+                </span>
+                <span
+                  className={styles.pedestalTier}
+                  style={{ color: palette.text }}
+                >
+                  {tierLabel[team.tier]}
+                </span>
+              </span>
             </li>
           );
         })}
