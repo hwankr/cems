@@ -76,12 +76,11 @@ import type {
   EstateSnapshot,
   QuarterTurn,
 } from "../domain/types";
-import type { EstateItemActionAnchor } from "../isometric/action-anchor";
 import type { EstateRepository } from "../persistence/estate-repository";
 import { createEstateTableClient } from "../persistence/estate-table-client";
 import { SupabaseEstateRepository } from "../persistence/supabase-estate-repository";
 import type { EstateCanvasProps } from "./estate-canvas";
-import { ContextualItemActions } from "./contextual-item-actions";
+import { EstateEditActionBar } from "./estate-edit-action-bar";
 import {
   createEstateId,
   getItemName,
@@ -142,8 +141,6 @@ export function EstateGameClient({
   const [saveStatus, setSaveStatus] = useState<EstateSaveStatus>("saved");
   const [fitViewSignal, setFitViewSignal] = useState(0);
   const [focusParcelId, setFocusParcelId] = useState<string | null>(null);
-  const [selectedActionAnchor, setSelectedActionAnchor] =
-    useState<EstateItemActionAnchor | null>(null);
   const [pendingExpansionParcelId, setPendingExpansionParcelId] = useState<
     string | null
   >(null);
@@ -189,6 +186,16 @@ export function EstateGameClient({
     : null;
   const selectedIsProtected =
     selectedInstance?.definitionId === baseEstateBuildingDefinition.id;
+  const activeDefinition =
+    mode.type === "placing"
+      ? findEstateItemDefinition(itemDefinitions, mode.definitionId)
+      : selectedDefinition;
+  const isEditingActive =
+    mode.type === "placing" ||
+    mode.type === "moving" ||
+    (mode.type === "selected" && !selectedIsProtected);
+  const canConfirmEdit =
+    mode.type === "moving" ? Boolean(mode.targetCell) : false;
   const unlockedParcelCount = snapshot.unlockedParcelIds.length;
   const mainBuildingLevel = clampMainBuildingLevel(snapshot.mainBuildingLevel);
   const nextUpgradeCost = getMainBuildingUpgradeCost(mainBuildingLevel);
@@ -810,7 +817,6 @@ export function EstateGameClient({
           onGroundPaintCell={handleGroundPaintCell}
           onItemSelect={handleItemSelect}
           onBackgroundTap={handleClearSelection}
-          onSelectedItemAnchorChange={setSelectedActionAnchor}
         />
       </div>
 
@@ -915,27 +921,26 @@ export function EstateGameClient({
             onClose={handleClearSelection}
           />
         </div>
-      ) : selectedInstance && selectedDefinition ? (
-        <ContextualItemActions
+      ) : null}
+
+      {isEditingActive ? (
+        <EstateEditActionBar
           copy={copy}
-          definition={selectedDefinition}
-          instance={selectedInstance}
           mode={mode}
-          protectedItem={selectedIsProtected}
-          anchor={selectedActionAnchor}
-          onCancel={cancelEditing}
-          onConfirmMove={confirmMoveSelected}
+          canRotate={Boolean(activeDefinition?.canRotate) && !selectedIsProtected}
+          canConfirm={canConfirmEdit}
           onMove={handleMoveSelected}
-          onRotate={
-            mode.type === "placing" ? handleRotatePlacing : rotateActiveItem
-          }
+          onRotate={mode.type === "placing" ? handleRotatePlacing : rotateActiveItem}
           onCollect={removeSelectedItem}
+          onConfirm={confirmMoveSelected}
+          onCancel={cancelEditing}
         />
       ) : null}
 
-      <aside
-        className={`${styles.panelStrong} fixed inset-x-2 bottom-2 z-30 flex flex-col overflow-hidden rounded-3xl lg:absolute lg:inset-x-auto lg:bottom-3 lg:right-3 lg:top-[4.75rem] lg:w-[22rem] lg:rounded-2xl`}
-      >
+      {mode.type === "view" ? (
+        <aside
+          className={`${styles.panelStrong} fixed inset-x-2 bottom-2 z-30 flex flex-col overflow-hidden rounded-3xl lg:absolute lg:inset-x-auto lg:bottom-3 lg:right-3 lg:top-[4.75rem] lg:w-[22rem] lg:rounded-2xl`}
+        >
         {sheetOpen ? (
           <button
             type="button"
@@ -1001,6 +1006,7 @@ export function EstateGameClient({
           />
         </div>
       </aside>
+      ) : null}
 
       {pendingExpansionParcel ? (
         <ExpansionConfirmDialog
