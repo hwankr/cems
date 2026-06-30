@@ -208,6 +208,13 @@ export function EstateGameClient({
     () => getAvailableEcoCredits(snapshot, allItemDefinitions, ecoNowIso),
     [snapshot, allItemDefinitions, ecoNowIso],
   );
+  const harvestBubbleItemIds = useMemo(() => {
+    if (availableEco <= 0) return [];
+    const main = snapshot.items.find(
+      (item) => item.definitionId === baseEstateBuildingDefinition.id,
+    );
+    return main ? [main.id] : [];
+  }, [availableEco, snapshot.items]);
   const pendingExpansionParcel = pendingExpansionParcelId
     ? estateExpansionCatalog.find(
         (parcel) => parcel.id === pendingExpansionParcelId,
@@ -853,6 +860,8 @@ export function EstateGameClient({
           onItemDragMove={handleItemDragMove}
           onItemDragEnd={handleItemDragEnd}
           onBackgroundTap={handleClearSelection}
+          harvestBubbleItemIds={harvestBubbleItemIds}
+          onHarvest={handleCollectEco}
         />
       </div>
 

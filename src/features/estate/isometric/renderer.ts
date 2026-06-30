@@ -1,4 +1,5 @@
 import { baseEstateBuildingDefinition } from "../data/estate-item-catalog";
+import { getHarvestBubbleScreenAnchor, HARVEST_BUBBLE_RADIUS } from "./harvest-bubble";
 import {
   getCellKey,
   getParcelCells,
@@ -94,6 +95,7 @@ export type EstateRenderScene = {
   animationProgress?: number;
   mainBuildingLevel: number;
   showBuildGrid: boolean;
+  harvestBubbleItemIds: string[];
 };
 
 export type CreateEstateRenderSceneInput = {
@@ -107,6 +109,7 @@ export type CreateEstateRenderSceneInput = {
   recentlyUnlockedParcelId?: string | null;
   animationProgress?: number;
   placementActive?: boolean;
+  harvestBubbleItemIds?: string[];
 };
 
 export function createEstateRenderScene({
@@ -120,6 +123,7 @@ export function createEstateRenderScene({
   recentlyUnlockedParcelId = null,
   animationProgress = 1,
   placementActive = false,
+  harvestBubbleItemIds = [],
 }: CreateEstateRenderSceneInput): EstateRenderScene {
   const unlockedParcelIds = new Set(snapshot.unlockedParcelIds);
   const itemDefinitionById = new Map(
@@ -163,6 +167,7 @@ export function createEstateRenderScene({
     animationProgress,
     mainBuildingLevel,
     showBuildGrid: placementActive,
+    harvestBubbleItemIds,
   };
 }
 
@@ -255,6 +260,7 @@ export class EstateIsometricRenderer {
       visibleWorldBounds,
     );
     this.drawMainBuildingBadge(scene, camera, viewport);
+    this.drawHarvestBubbles(scene, camera, viewport);
     this.drawPlacementPreview(scene, camera, viewport, assets, loadedAssets);
     this.drawSelectionOutline(scene, camera, viewport, "overlay");
     this.drawForegroundEffect(viewport);
@@ -941,6 +947,42 @@ export class EstateIsometricRenderer {
     ctx.textBaseline = "middle";
     ctx.fillText(label, anchor.x, liftY + 0.5);
     ctx.restore();
+  }
+
+  private drawHarvestBubbles(
+    scene: EstateRenderScene,
+    camera: IsometricCamera,
+    viewport: ViewportSize,
+  ) {
+    if (scene.harvestBubbleItemIds.length === 0) return;
+    const ids = new Set(scene.harvestBubbleItemIds);
+    const ctx = this.context;
+
+    for (const item of scene.items) {
+      if (!ids.has(item.id)) continue;
+      const anchor = getHarvestBubbleScreenAnchor(
+        item,
+        scene.metrics,
+        camera,
+        viewport,
+      );
+      const radius = HARVEST_BUBBLE_RADIUS * Math.max(0.8, camera.zoom);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(anchor.x, anchor.y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#f2b53c";
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#ffffff";
+      ctx.stroke();
+      // a small leaf/sprout mark
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.ellipse(anchor.x, anchor.y, radius * 0.32, radius * 0.5, Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
   }
 
   private drawSelectionFootprintGlow(

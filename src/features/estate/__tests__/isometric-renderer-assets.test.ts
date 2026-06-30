@@ -246,6 +246,7 @@ describe("estate isometric renderer asset placement", () => {
       placementPreview: null,
       mainBuildingLevel: 1,
       showBuildGrid: false,
+      harvestBubbleItemIds: [],
       items: [
         {
           id: "rotated-bench",
@@ -300,6 +301,7 @@ describe("estate isometric renderer asset placement", () => {
       placementPreview: null,
       mainBuildingLevel: 1,
       showBuildGrid: false,
+      harvestBubbleItemIds: [],
       items: [
         {
           id: "bench",
@@ -352,6 +354,7 @@ describe("estate isometric renderer asset placement", () => {
       placementPreview: null,
       mainBuildingLevel: 1,
       showBuildGrid: false,
+      harvestBubbleItemIds: [],
       items: [
         {
           id: "battery-storage",

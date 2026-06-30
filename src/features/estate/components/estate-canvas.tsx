@@ -50,6 +50,10 @@ import {
   getSelectedItemActionAnchor,
   type EstateItemActionAnchor,
 } from "../isometric/action-anchor";
+import {
+  getHarvestBubbleScreenAnchor,
+  isPointOnHarvestBubble,
+} from "../isometric/harvest-bubble";
 
 export type EstateCanvasProps = {
   snapshot: EstateSnapshot;
@@ -78,6 +82,8 @@ export type EstateCanvasProps = {
   onItemDragEnd?: (committed: boolean) => void;
   onBackgroundTap?: () => void;
   onSelectedItemAnchorChange?: (anchor: EstateItemActionAnchor | null) => void;
+  harvestBubbleItemIds?: string[];
+  onHarvest?: (instanceId: string) => void;
 };
 
 type CanvasViewport = ViewportSize & {
@@ -115,6 +121,15 @@ type PendingCanvasPress =
       action: {
         type: "clear-selection";
       };
+    }
+  | {
+      pointerId: number;
+      start: TouchPoint;
+      last: TouchPoint;
+      action: {
+        type: "harvest-bubble";
+        instanceId: string;
+      };
     };
 
 const itemDefinitions = [...baseEstateItemDefinitions, ...estateItemCatalog];
@@ -145,6 +160,8 @@ export function EstateCanvas({
   onItemDragEnd,
   onBackgroundTap,
   onSelectedItemAnchorChange,
+  harvestBubbleItemIds = [],
+  onHarvest,
 }: EstateCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -272,8 +289,10 @@ export function EstateCanvas({
         recentlyUnlockedParcelId,
         animationProgress: unlockAnimationProgress,
         placementActive: mode.type === "placing" || mode.type === "moving",
+        harvestBubbleItemIds,
       }),
     [
+      harvestBubbleItemIds,
       hoverCell,
       mode,
       placementPreview,
@@ -711,6 +730,20 @@ export function EstateCanvas({
       return;
     }
 
+    if (event.button === 0 && (mode.type === "view" || mode.type === "selected")) {
+      const bubbleId = findHarvestBubbleAtPoint(scene, point, camera, viewport);
+      if (bubbleId) {
+        event.currentTarget.setPointerCapture(event.pointerId);
+        pendingCanvasPressRef.current = {
+          pointerId: event.pointerId,
+          start: point,
+          last: point,
+          action: { type: "harvest-bubble", instanceId: bubbleId },
+        };
+        return;
+      }
+    }
+
     const item = cell ? findTopRenderItemAtCell(scene, cell) : null;
 
     if (item && event.button === 0) {
@@ -1038,6 +1071,11 @@ export function EstateCanvas({
   }
 
   function commitPendingCanvasPress(pendingPress: PendingCanvasPress) {
+    if (pendingPress.action.type === "harvest-bubble") {
+      onHarvest?.(pendingPress.action.instanceId);
+      return;
+    }
+
     if (pendingPress.action.type === "select-item") {
       onItemSelect?.(pendingPress.action.instanceId);
       return;
@@ -1079,6 +1117,21 @@ function getPointerFromReactEvent(
 ): TouchPoint {
   const rect = event.currentTarget.getBoundingClientRect();
   return getPointerCanvasPosition(event, rect, 1).css;
+}
+
+function findHarvestBubbleAtPoint(
+  scene: EstateRenderScene,
+  point: TouchPoint,
+  camera: IsometricCamera,
+  viewport: ViewportSize,
+): string | null {
+  for (const id of scene.harvestBubbleItemIds) {
+    const item = scene.items.find((candidate) => candidate.id === id);
+    if (!item) continue;
+    const anchor = getHarvestBubbleScreenAnchor(item, scene.metrics, camera, viewport);
+    if (isPointOnHarvestBubble(point, anchor)) return item.id;
+  }
+  return null;
 }
 
 function findSceneParcelAtCell(
