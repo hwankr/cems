@@ -1,0 +1,303 @@
+.shell {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  gap: 18px;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(33, 88, 56, 0.14);
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(251, 250, 246, 0.98)),
+    #fbfaf6;
+  box-shadow: 0 24px 58px -36px rgba(24, 42, 30, 0.48);
+}
+
+.shell::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: 230px;
+  background:
+    linear-gradient(140deg, #1f714c 0%, #5dac72 58%, #e7b75a 100%);
+}
+
+.shell::after {
+  content: "";
+  position: absolute;
+  inset: 152px -18% auto;
+  z-index: -1;
+  height: 104px;
+  border-radius: 50% 50% 0 0;
+  background: #fbfaf6;
+}
+
+.hero {
+  min-height: 308px;
+  display: grid;
+  align-content: space-between;
+  gap: 22px;
+  padding: 22px 20px 0;
+  color: #ffffff;
+}
+
+.topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.brand {
+  letter-spacing: 0;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  border-radius: 999px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.arena {
+  display: grid;
+  place-items: center;
+  padding-bottom: 10px;
+}
+
+.ring {
+  position: relative;
+  width: 210px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    conic-gradient(from -70deg, #f0c36a 0 78%, rgba(255, 255, 255, 0.24) 78% 100%);
+  box-shadow: 0 22px 42px -28px rgba(32, 83, 52, 0.7);
+}
+
+.ring::before {
+  content: "";
+  position: absolute;
+  inset: 15px;
+  border-radius: 50%;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.04)),
+    #246b4b;
+}
+
+.badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 114px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 32px;
+  background: linear-gradient(145deg, #66bd7c, #1f714c);
+  color: #ffffff;
+  font-size: 34px;
+  font-weight: 950;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+.content {
+  display: grid;
+  gap: 18px;
+  padding: 0 20px 22px;
+}
+
+.titleBlock {
+  display: grid;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  color: #17231b;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.16;
+  letter-spacing: 0;
+  word-break: keep-all;
+}
+
+.prompt {
+  margin: 0;
+  color: #637269;
+  font-size: 14px;
+  line-height: 1.55;
+  word-break: keep-all;
+}
+
+.rewardStrip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-block: 1px solid rgba(33, 88, 56, 0.14);
+}
+
+.rewardItem {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  align-content: center;
+  min-height: 78px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.rewardItem + .rewardItem {
+  border-left: 1px solid rgba(33, 88, 56, 0.14);
+}
+
+.rewardValue {
+  color: #24744f;
+  font-size: 20px;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.rewardLabel {
+  color: #6f7c72;
+  font-size: 11px;
+  font-weight: 760;
+  line-height: 1.25;
+  word-break: keep-all;
+}
+
+.error {
+  margin: 0;
+  color: #b95d4f;
+  font-size: 13px;
+  font-weight: 720;
+}
+
+.primaryButton {
+  min-height: 54px;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #24744f, #5dac72);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: 0 14px 32px -24px rgba(36, 116, 79, 0.86);
+}
+
+.primaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.64;
+}
+
+.secondaryLink {
+  color: #657267;
+  font-size: 13px;
+  font-weight: 760;
+  text-align: center;
+  text-decoration: none;
+}
+
+.completion {
+  display: grid;
+  gap: 18px;
+  padding: 24px 20px 22px;
+  text-align: center;
+}
+
+.completionMark {
+  width: 86px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  border-radius: 28px;
+  background: linear-gradient(145deg, #66bd7c, #24744f);
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: 950;
+}
+
+.completionTitle {
+  margin: 0;
+  color: #17231b;
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.completionBody {
+  margin: 8px 0 0;
+  color: #637269;
+  font-size: 14px;
+  line-height: 1.55;
+  word-break: keep-all;
+}
+
+.actions {
+  display: grid;
+  gap: 12px;
+}
+
+.primaryLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #24744f, #5dac72);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.cancelSlot {
+  display: grid;
+  justify-content: center;
+}
+
+.cancelButton {
+  border: 0;
+  background: transparent;
+  color: #7a867d;
+  font-size: 12px;
+  font-weight: 720;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.cancelButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 360px) {
+  .hero {
+    min-height: 292px;
+  }
+
+  .ring {
+    width: 188px;
+  }
+
+  .title {
+    font-size: 25px;
+  }
+
+  .rewardValue {
+    font-size: 18px;
+  }
+}

@@ -576,10 +576,20 @@ export const koMessages = {
   scan: {
     invalidTitle: "유효하지 않은 미션",
     invalidBody: "이 QR은 더 이상 사용할 수 없습니다.",
+    missionEyebrow: "캠퍼스 미션",
+    missionPrompt:
+      "{location}에서 에너지 절약 행동을 인증하고 보상을 받아보세요.",
     missionPoints: "{points} 적립 미션",
-    confirm: "미션 인증",
+    rewardPoints: "개인 포인트",
+    rewardCheckIn: "체크인",
+    confirm: "보상 받기",
     confirming: "처리 중…",
     completed: "{points} 적립 완료!",
+    completedTitle: "보상 획득!",
+    completedBody:
+      "{points}가 내 기록에 적립되었습니다. 내 페이지에서 성장 현황을 확인해 보세요.",
+    alreadyTitle: "이미 보상을 받았어요",
+    alreadyBody: "오늘은 이미 이 미션을 인증했습니다.",
     already: "오늘은 이미 인증했어요.",
     error: "인증에 실패했습니다. 다시 시도해 주세요.",
     toMyPage: "내 페이지로",

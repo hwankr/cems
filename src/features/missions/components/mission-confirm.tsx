@@ -6,6 +6,7 @@ import { PendingButtonContent } from "@/features/ui/pending-button-content";
 import { useI18n } from "@/i18n/client";
 import { formatPoints } from "@/i18n/format";
 import { interpolate } from "@/i18n/interpolate";
+import styles from "./mission-confirm.module.css";
 import {
   cancelMissionAction,
   completeMissionAction,
@@ -41,7 +42,7 @@ function CancelCheckInButton({ code }: { code: string }) {
         type="submit"
         disabled={busy}
         aria-busy={busy}
-        className="text-xs font-medium text-ink-subtle underline underline-offset-2 disabled:opacity-60"
+        className={styles.cancelButton}
       >
         <PendingButtonContent
           pending={busy}
@@ -72,70 +73,101 @@ export function MissionConfirm({
     completeMissionAction,
     initialState,
   );
+  const formattedPoints = formatPoints(locale, points);
+  const rewardPoints = `+${formattedPoints}`;
+  const missionLocation = mission?.location ?? code;
 
   if (state.status === "completed" || state.status === "already") {
+    const isCompleted = state.status === "completed";
+
     return (
-      <div className="grid gap-4 text-center">
-        <p className="text-lg font-semibold text-ink">
-          {state.status === "completed"
-            ? interpolate(scan.completed, {
-                points: formatPoints(locale, points),
-              })
-            : scan.already}
-        </p>
-        <div className="grid gap-2">
-          <Link
-            href={`/${locale}/me`}
-            className="h-11 rounded-xl bg-accent text-center font-semibold leading-[2.75rem] text-white"
-          >
-            {scan.toMyPage}
-          </Link>
-          <Link
-            href={`/${locale}`}
-            className="text-sm font-medium text-ink-muted"
-          >
-            {scan.toMap}
-          </Link>
-        </div>
-        <div className="pt-1">
-          <CancelCheckInButton code={code} />
+      <div className={styles.shell}>
+        <div className={styles.completion}>
+          <div className={styles.completionMark} aria-hidden="true">
+            {isCompleted ? "OK" : "!"}
+          </div>
+          <div>
+            <h1 className={styles.completionTitle}>
+              {isCompleted ? scan.completedTitle : scan.alreadyTitle}
+            </h1>
+            <p className={styles.completionBody}>
+              {isCompleted
+                ? interpolate(scan.completedBody, { points: formattedPoints })
+                : scan.alreadyBody}
+            </p>
+          </div>
+          <div className={styles.actions}>
+            <Link href={`/${locale}/me`} className={styles.primaryLink}>
+              {scan.toMyPage}
+            </Link>
+            <Link href={`/${locale}`} className={styles.secondaryLink}>
+              {scan.toMap}
+            </Link>
+          </div>
+          <div className={styles.cancelSlot}>
+            <CancelCheckInButton code={code} />
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <form action={formAction} className="grid gap-4">
+    <form action={formAction} className={styles.shell}>
       <input type="hidden" name="code" value={code} />
       <input type="hidden" name="locale" value={locale} />
-      <div>
-        <p className="text-xl font-semibold text-ink">
-          {mission?.title ?? code}
-        </p>
-        {mission?.location ? (
-          <p className="mt-0.5 text-sm text-ink-muted">{mission.location}</p>
-        ) : null}
-        <p className="mt-1 text-sm font-semibold text-accent">
-          {interpolate(scan.missionPoints, {
-            points: formatPoints(locale, points),
-          })}
-        </p>
+      <div className={styles.hero}>
+        <div className={styles.topline}>
+          <span className={styles.brand}>CEMS</span>
+          <span className={styles.eyebrow}>{scan.missionEyebrow}</span>
+        </div>
+        <div className={styles.arena}>
+          <div className={styles.ring} aria-hidden="true">
+            <div className={styles.badge}>{points}P</div>
+          </div>
+        </div>
       </div>
-      {state.status === "error" || state.status === "invalid" ? (
-        <p className="text-sm text-overuse">{scan.error}</p>
-      ) : null}
-      <button
-        type="submit"
-        disabled={pending}
-        aria-busy={pending}
-        className="h-11 rounded-xl bg-accent font-semibold text-white disabled:opacity-60"
-      >
-        <PendingButtonContent
-          pending={pending}
-          idleLabel={scan.confirm}
-          pendingLabel={scan.confirming}
-        />
-      </button>
+      <div className={styles.content}>
+        <div className={styles.titleBlock}>
+          <h1 className={styles.title}>{mission?.title ?? code}</h1>
+          <p className={styles.prompt}>
+            {interpolate(scan.missionPrompt, { location: missionLocation })}
+          </p>
+        </div>
+        <div
+          className={styles.rewardStrip}
+          aria-label={interpolate(scan.missionPoints, {
+            points: formattedPoints,
+          })}
+        >
+          <div className={styles.rewardItem}>
+            <span className={styles.rewardValue}>{rewardPoints}</span>
+            <span className={styles.rewardLabel}>{scan.rewardPoints}</span>
+          </div>
+          <div className={styles.rewardItem}>
+            <span className={styles.rewardValue}>+1</span>
+            <span className={styles.rewardLabel}>{scan.rewardCheckIn}</span>
+          </div>
+        </div>
+        {state.status === "error" || state.status === "invalid" ? (
+          <p className={styles.error}>{scan.error}</p>
+        ) : null}
+        <button
+          type="submit"
+          disabled={pending}
+          aria-busy={pending}
+          className={styles.primaryButton}
+        >
+          <PendingButtonContent
+            pending={pending}
+            idleLabel={scan.confirm}
+            pendingLabel={scan.confirming}
+          />
+        </button>
+        <Link href={`/${locale}`} className={styles.secondaryLink}>
+          {scan.toMap}
+        </Link>
+      </div>
     </form>
   );
 }
