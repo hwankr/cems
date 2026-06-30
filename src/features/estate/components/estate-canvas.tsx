@@ -47,11 +47,6 @@ import {
   type EstateRenderScene,
 } from "../isometric/renderer";
 import {
-  getFootprintActionAnchor,
-  getSelectedItemActionAnchor,
-  type EstateItemActionAnchor,
-} from "../isometric/action-anchor";
-import {
   getHarvestBubbleScreenAnchor,
   HARVEST_BUBBLE_RADIUS,
   isPointOnHarvestBubble,
@@ -83,7 +78,6 @@ export type EstateCanvasProps = {
   onItemDragMove?: (cell: EstateGridCell) => void;
   onItemDragEnd?: (committed: boolean) => void;
   onBackgroundTap?: () => void;
-  onSelectedItemAnchorChange?: (anchor: EstateItemActionAnchor | null) => void;
   harvestBubbleItemIds?: string[];
   onHarvest?: (instanceId: string) => void;
   onCanvasDropDefinition?: (definitionId: string, cell: EstateGridCell) => void;
@@ -162,7 +156,6 @@ export function EstateCanvas({
   onItemDragMove,
   onItemDragEnd,
   onBackgroundTap,
-  onSelectedItemAnchorChange,
   harvestBubbleItemIds = [],
   onHarvest,
   onCanvasDropDefinition,
@@ -312,15 +305,6 @@ export function EstateCanvas({
   const viewportRef = useRef<CanvasViewport>(viewport);
   const assetLoadSnapshotRef =
     useRef<EstateAssetLoadSnapshot>(assetLoadSnapshot);
-  const lastSelectedItemAnchorRef = useRef<{
-    anchor: EstateItemActionAnchor | null;
-    hasEmitted: boolean;
-    onChange: ((anchor: EstateItemActionAnchor | null) => void) | null;
-  }>({
-    anchor: null,
-    hasEmitted: false,
-    onChange: null,
-  });
 
   useEffect(() => {
     sceneRef.current = scene;
@@ -341,70 +325,6 @@ export function EstateCanvas({
   useEffect(() => {
     assetLoadSnapshotRef.current = assetLoadSnapshot;
   }, [assetLoadSnapshot]);
-
-  useEffect(() => {
-    if (!onSelectedItemAnchorChange) {
-      lastSelectedItemAnchorRef.current = {
-        anchor: null,
-        hasEmitted: false,
-        onChange: null,
-      };
-      return;
-    }
-
-    if (lastSelectedItemAnchorRef.current.onChange !== onSelectedItemAnchorChange) {
-      lastSelectedItemAnchorRef.current = {
-        anchor: null,
-        hasEmitted: false,
-        onChange: onSelectedItemAnchorChange,
-      };
-    }
-
-    if (!hasFitInitialViewportRef.current) return;
-
-    // While moving, ride along with the move preview (the ghost at the target
-    // or hovered cell) instead of the item's original spot, so the controls sit
-    // where the item is being placed.
-    const movePreviewHost =
-      mode.type === "moving" && placementPreview ? placementPreview : null;
-    const nextAnchor = movePreviewHost
-      ? getFootprintActionAnchor(
-          movePreviewHost,
-          scene.metrics,
-          camera,
-          viewport,
-        )
-      : selectedItemId
-        ? getSelectedItemActionAnchor(scene, {
-            itemId: selectedItemId,
-            camera,
-            viewport,
-          })
-        : null;
-    const lastEmission = lastSelectedItemAnchorRef.current;
-
-    if (
-      lastEmission.hasEmitted &&
-      areEstateItemActionAnchorsEqual(lastEmission.anchor, nextAnchor)
-    ) {
-      return;
-    }
-
-    lastSelectedItemAnchorRef.current = {
-      anchor: nextAnchor,
-      hasEmitted: true,
-      onChange: onSelectedItemAnchorChange,
-    };
-    onSelectedItemAnchorChange(nextAnchor);
-  }, [
-    camera,
-    mode,
-    onSelectedItemAnchorChange,
-    placementPreview,
-    scene,
-    selectedItemId,
-    viewport,
-  ]);
 
   const drawLatest = useCallback(() => {
     frameRef.current = null;
@@ -1226,21 +1146,6 @@ function getPinchGesture(
 
 function isPastTapMovementTolerance(start: TouchPoint, end: TouchPoint) {
   return Math.hypot(end.x - start.x, end.y - start.y) > tapMovementTolerancePx;
-}
-
-function areEstateItemActionAnchorsEqual(
-  left: EstateItemActionAnchor | null,
-  right: EstateItemActionAnchor | null,
-) {
-  if (left === right) return true;
-  if (!left || !right) return false;
-
-  return (
-    Object.is(left.x, right.x) &&
-    Object.is(left.y, right.y) &&
-    Object.is(left.viewportWidth, right.viewportWidth) &&
-    Object.is(left.viewportHeight, right.viewportHeight)
-  );
 }
 
 export default EstateCanvas;

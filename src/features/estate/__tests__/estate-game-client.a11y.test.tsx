@@ -13,21 +13,12 @@ import type {
   EstateItemInstance,
   EstateSnapshot,
 } from "../domain/types";
-import type { EstateItemActionAnchor } from "../isometric/action-anchor";
 import { MemoryEstateRepository } from "../persistence/memory-estate-repository";
 import type { SubjectContributor } from "@/features/account/domain/contributor-ranking";
 
 // Expansion is reached only by tapping a locked parcel on the canvas, so the
 // mock exposes buttons that fire the same canvas callbacks used by the client.
-vi.mock("../components/estate-canvas", async () => {
-  const React = await import("react");
-  const selectedItemAnchor: EstateItemActionAnchor = {
-    x: 240,
-    y: 180,
-    viewportWidth: 640,
-    viewportHeight: 480,
-  };
-
+vi.mock("../components/estate-canvas", () => {
   const Canvas = (props: {
     mode: EstateEditorMode;
     snapshot: EstateSnapshot;
@@ -36,25 +27,14 @@ vi.mock("../components/estate-canvas", async () => {
     onItemSelect?: (instanceId: string) => void;
     onBackgroundTap?: () => void;
     onLockedParcelClick?: (parcelId: string) => void;
-    onSelectedItemAnchorChange?: (
-      anchor: EstateItemActionAnchor | null,
-    ) => void;
   }) => {
     const {
       onBackgroundTap,
       onItemSelect,
       onLockedParcelClick,
-      onSelectedItemAnchorChange,
-      selectedItemId,
       snapshot,
     } = props;
     const bench = snapshot.items.find((item) => item.id === "bench-1");
-
-    React.useEffect(() => {
-      onSelectedItemAnchorChange?.(
-        selectedItemId === "bench-1" ? selectedItemAnchor : null,
-      );
-    }, [onSelectedItemAnchorChange, selectedItemId]);
 
     return (
       <>
