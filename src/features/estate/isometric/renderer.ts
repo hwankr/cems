@@ -944,14 +944,18 @@ export class EstateIsometricRenderer {
     if (!scene.placementPreview) return;
 
     const preview = scene.placementPreview;
-    const footprint = getFootprintDiamondPoints(preview, scene.metrics);
 
-    drawWorldPolygon(this.context, footprint, camera, viewport, {
-      fill: preview.valid ? "#6ee7b7" : "#fca5a5",
-      stroke: preview.valid ? "#059669" : "#dc2626",
-      alpha: preview.valid ? 0.3 : 0.36,
-      lineWidth: 2.5,
-    });
+    for (const cellDiamond of getPlacementPreviewCellDiamonds(
+      preview,
+      scene.metrics,
+    )) {
+      drawWorldPolygon(this.context, cellDiamond, camera, viewport, {
+        fill: preview.valid ? "#6ee7b7" : "#fca5a5",
+        stroke: preview.valid ? "#059669" : "#dc2626",
+        alpha: preview.valid ? 0.32 : 0.4,
+        lineWidth: 1.5,
+      });
+    }
 
     const spriteAsset = assets.items[preview.assetId];
     const spriteImage = loadedAssets?.items[preview.assetId]?.image ?? null;
@@ -1328,6 +1332,15 @@ function getFootprintDiamondPoints(
     ),
     gridToScreen({ x: item.x, y: item.y + footprint.height }, metrics),
   ];
+}
+
+export function getPlacementPreviewCellDiamonds(
+  preview: RenderFootprintItem,
+  metrics: IsometricTileMetrics,
+): ScreenPoint[][] {
+  return getRenderFootprintCells(preview).map((cell) =>
+    getCellDiamondPoints(cell, metrics),
+  );
 }
 
 function getItemWorldBounds(

@@ -5,6 +5,7 @@ import {
   EstateIsometricRenderer,
   getAnchoredSpriteDrawBox,
   getDisplayFootprintDiamond,
+  getPlacementPreviewCellDiamonds,
   getSpriteGroundingDiamond,
   getSpriteAnchorPoint,
   shouldDrawSpriteGrounding,
@@ -183,6 +184,26 @@ describe("estate isometric renderer asset placement", () => {
     expect(diamond[2].y).toBeCloseTo(113.92);
     expect(diamond[3].x).toBeCloseTo(-99.84);
     expect(diamond[3].y).toBe(64);
+  });
+
+  it("returns one diamond per occupied placement-preview cell", () => {
+    const diamonds = getPlacementPreviewCellDiamonds(
+      {
+        id: "__placement-preview__",
+        x: 0,
+        y: 0,
+        rotation: 0,
+        footprintWidth: 2,
+        footprintHeight: 2,
+      },
+      { tileWidth: 128, tileHeight: 64 },
+    );
+
+    // 2x2 footprint => 4 cell diamonds, each with 4 corner points.
+    expect(diamonds).toHaveLength(4);
+    expect(diamonds[0]).toHaveLength(4);
+    // First cell (0,0) top corner is the grid origin.
+    expect(diamonds[0][0]).toEqual({ x: 0, y: 0 });
   });
 
   it("skips decorative grounding for the main building sprite", () => {
