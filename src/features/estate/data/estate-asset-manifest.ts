@@ -50,6 +50,8 @@ export type EstateSpriteAssetDefinition = {
   renderLayer?: number;
   yOffset?: number;
   shadow?: EstateAssetShadowDefinition;
+  /** When true, the renderer skips its grounding patch — the art self-grounds (has a baked base). */
+  selfGrounded?: boolean;
   fallback: EstateProceduralAssetDefinition;
 };
 
@@ -601,7 +603,7 @@ export const estateAssetManifest = {
       149,
       {
         renderLayer: 2,
-        shadow: buildingShadow,
+        selfGrounded: true,
         fallback: {
           kind: "building",
           height: 58,
@@ -617,11 +619,11 @@ export const estateAssetManifest = {
     "wind-turbine": sprite(
       "wind-turbine",
       "/estate-assets/wind-turbine.png",
-      116,
-      270,
+      132,
+      221,
       {
         renderLayer: 2,
-        shadow: smallShadow,
+        selfGrounded: true,
         fallback: {
           kind: "building",
           height: 120,
@@ -637,11 +639,11 @@ export const estateAssetManifest = {
     "battery-storage": sprite(
       "battery-storage",
       "/estate-assets/battery-storage.png",
-      216,
-      151,
+      208,
+      187,
       {
         renderLayer: 2,
-        shadow: buildingShadow,
+        selfGrounded: true,
         fallback: {
           kind: "building",
           height: 52,
@@ -661,7 +663,7 @@ export const estateAssetManifest = {
       217,
       {
         renderLayer: 2,
-        shadow: buildingShadow,
+        selfGrounded: true,
         fallback: {
           kind: "building",
           height: 70,

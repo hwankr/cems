@@ -676,7 +676,8 @@ export class EstateIsometricRenderer {
 
     if (
       asset.fallback.kind === "building" &&
-      shouldDrawSpriteGrounding(item)
+      shouldDrawSpriteGrounding(item) &&
+      !asset.selfGrounded
     ) {
       this.drawSpriteGrounding(item, metrics, camera, viewport, alpha);
     }
