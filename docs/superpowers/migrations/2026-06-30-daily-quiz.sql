@@ -156,7 +156,7 @@ begin
       select day, row_number() over (order by day desc) as rn
       from public.quiz_attempts
       where user_id = v_user and day <= v_last
-    ) t where t.day = v_last - (t.rn - 1);
+    ) t where t.day = v_last - (t.rn - 1)::int;
   end if;
 
   select * into v_attempt from public.quiz_attempts
@@ -262,7 +262,7 @@ begin
     select day, row_number() over (order by day desc) as rn
     from public.quiz_attempts
     where user_id = v_user and day <= v_day
-  ) t where t.day = v_day - (t.rn - 1);
+  ) t where t.day = v_day - (t.rn - 1)::int;
 
   v_awarded := v_part
              + (case when v_is_correct then v_bonus else 0 end)
