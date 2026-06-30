@@ -208,6 +208,7 @@ describe("EstateGameClient accessibility", () => {
     await flushEffects();
 
     const toolbar = getToolbar();
+    expect(toolbar.getAttribute("aria-label")).toBeTruthy();
     expect(getButtonByAriaLabel(toolbar, "Move")).toBeInstanceOf(
       HTMLButtonElement,
     );

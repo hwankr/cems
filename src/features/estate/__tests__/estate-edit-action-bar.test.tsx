@@ -63,6 +63,14 @@ describe("EstateEditActionBar", () => {
     });
     expect(button("Confirm").disabled).toBe(true);
   });
+
+  it("shows rotate/cancel only when placing", async () => {
+    await render({ mode: { type: "placing", definitionId: "bench", rotation: 0 } });
+    expect(query("Confirm")).toBeNull();
+    expect(query("Move")).toBeNull();
+    expect(button("Rotate")).toBeInstanceOf(HTMLButtonElement);
+    expect(button("Cancel")).toBeInstanceOf(HTMLButtonElement);
+  });
 });
 
 async function render(
