@@ -83,6 +83,60 @@ describe("estate isometric renderer asset placement", () => {
     expect(anchor).toEqual({ x: -32, y: 208 });
   });
 
+  it("anchors self-grounded sprite bases to the front of their footprint", () => {
+    const squareAnchor = getSpriteAnchorPoint(
+      {
+        id: "solar-array",
+        definitionId: "solar-array",
+        assetId: "solar-array",
+        x: 0,
+        y: 0,
+        rotation: 0,
+        footprintWidth: 2,
+        footprintHeight: 2,
+      },
+      { tileWidth: 128, tileHeight: 64 },
+      { selfGrounded: true },
+    );
+
+    const wideAnchor = getSpriteAnchorPoint(
+      {
+        id: "battery-storage",
+        definitionId: "battery-storage",
+        assetId: "battery-storage",
+        x: 0,
+        y: 0,
+        rotation: 0,
+        footprintWidth: 2,
+        footprintHeight: 1,
+      },
+      { tileWidth: 128, tileHeight: 64 },
+      { selfGrounded: true },
+    );
+
+    expect(squareAnchor).toEqual({ x: 0, y: 128 });
+    expect(wideAnchor).toEqual({ x: 64, y: 96 });
+  });
+
+  it("applies sprite y offsets to the draw anchor", () => {
+    const anchor = getSpriteAnchorPoint(
+      {
+        id: "bench",
+        definitionId: "bench",
+        assetId: "bench",
+        x: 2,
+        y: 3,
+        rotation: 0,
+        footprintWidth: 2,
+        footprintHeight: 1,
+        yOffset: 12,
+      },
+      { tileWidth: 128, tileHeight: 64 },
+    );
+
+    expect(anchor).toEqual({ x: -32, y: 220 });
+  });
+
   it("keeps ordinary item display footprints on their occupied cells", () => {
     const diamond = getDisplayFootprintDiamond(
       {
@@ -202,6 +256,115 @@ describe("estate isometric renderer asset placement", () => {
 
     expect(context.translate).toHaveBeenCalled();
     expect(context.rotate).toHaveBeenCalledWith(Math.PI / 2);
+  });
+
+  it("applies asset y offsets when drawing loaded sprites", () => {
+    const context = createMockCanvasContext();
+    const image = {} as HTMLImageElement;
+    const asset = { ...estateAssetManifest.items.bench, yOffset: 12 };
+    const manifest = {
+      ...estateAssetManifest,
+      items: {
+        ...estateAssetManifest.items,
+        bench: asset,
+      },
+    };
+    const scene: EstateRenderScene = {
+      metrics: { tileWidth: 128, tileHeight: 64 },
+      parcels: [],
+      groundTiles: [],
+      hoverCell: null,
+      selectedItemId: null,
+      placementPreview: null,
+      mainBuildingLevel: 1,
+      items: [
+        {
+          id: "bench",
+          definitionId: "bench",
+          assetId: "bench",
+          x: 2,
+          y: 3,
+          rotation: 0,
+          footprintWidth: 2,
+          footprintHeight: 1,
+        },
+      ],
+    };
+    const loadedAssets = createEstateAssetLoadSnapshot(manifest);
+    loadedAssets.status = "loaded";
+    loadedAssets.items.bench = {
+      ...loadedAssets.items.bench,
+      status: "loaded",
+      image,
+      error: null,
+    };
+
+    new EstateIsometricRenderer(context).draw(
+      scene,
+      { x: 0, y: 0, zoom: 1 },
+      { width: 400, height: 300 },
+      manifest,
+      loadedAssets,
+    );
+
+    expect(context.drawImage).toHaveBeenCalledWith(
+      image,
+      90,
+      266,
+      asset.logicalWidth,
+      asset.logicalHeight,
+    );
+  });
+
+  it("draws self-grounded loaded sprites from the footprint front anchor", () => {
+    const context = createMockCanvasContext();
+    const image = {} as HTMLImageElement;
+    const asset = estateAssetManifest.items["battery-storage"];
+    const scene: EstateRenderScene = {
+      metrics: { tileWidth: 128, tileHeight: 64 },
+      parcels: [],
+      groundTiles: [],
+      hoverCell: null,
+      selectedItemId: null,
+      placementPreview: null,
+      mainBuildingLevel: 1,
+      items: [
+        {
+          id: "battery-storage",
+          definitionId: "battery-storage",
+          assetId: "battery-storage",
+          x: 0,
+          y: 0,
+          rotation: 0,
+          footprintWidth: 2,
+          footprintHeight: 1,
+        },
+      ],
+    };
+    const loadedAssets = createEstateAssetLoadSnapshot(estateAssetManifest);
+    loadedAssets.status = "loaded";
+    loadedAssets.items["battery-storage"] = {
+      ...loadedAssets.items["battery-storage"],
+      status: "loaded",
+      image,
+      error: null,
+    };
+
+    new EstateIsometricRenderer(context).draw(
+      scene,
+      { x: 0, y: 0, zoom: 1 },
+      { width: 400, height: 300 },
+      estateAssetManifest,
+      loadedAssets,
+    );
+
+    expect(context.drawImage).toHaveBeenCalledWith(
+      image,
+      160,
+      59,
+      asset.logicalWidth,
+      asset.logicalHeight,
+    );
   });
 });
 

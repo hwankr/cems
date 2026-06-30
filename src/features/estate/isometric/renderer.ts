@@ -74,6 +74,11 @@ type DisplayFootprintItem = RenderFootprintItem & {
   assetId?: string;
 };
 
+type SpriteAnchorOptions = {
+  selfGrounded?: boolean;
+  yOffset?: number;
+};
+
 const MAIN_BUILDING_SPRITE_ANCHOR_Y_OFFSET_TILES = 0.625;
 
 export type EstateRenderScene = {
@@ -670,7 +675,14 @@ export class EstateIsometricRenderer {
     image: HTMLImageElement,
     alpha = 1,
   ) {
-    const anchor = worldToCanvas(getSpriteAnchorPoint(item, metrics), camera, viewport);
+    const anchor = worldToCanvas(
+      getSpriteAnchorPoint(item, metrics, {
+        selfGrounded: asset.selfGrounded,
+        yOffset: getSpriteYOffset(item, asset),
+      }),
+      camera,
+      viewport,
+    );
     const box = getAnchoredSpriteDrawBox(anchor, asset, camera.zoom);
     const ctx = this.context;
 
@@ -682,7 +694,7 @@ export class EstateIsometricRenderer {
       this.drawSpriteGrounding(item, metrics, camera, viewport, alpha);
     }
 
-    if (asset.shadow) {
+    if (asset.shadow && !asset.selfGrounded) {
       ctx.save();
       ctx.globalAlpha = asset.shadow.opacity * alpha;
       ctx.fillStyle = "rgba(61, 79, 38, 0.62)";
@@ -1371,16 +1383,28 @@ export function getDisplayFootprintDiamond(
 export function getSpriteAnchorPoint(
   item: DisplayFootprintItem,
   metrics: IsometricTileMetrics,
+  options: SpriteAnchorOptions = {},
 ): ScreenPoint {
-  const anchor = getFootprintAnchorPoint(item, metrics);
+  const isMainBuilding = isMainBuildingDisplayItem(item);
+  const anchor =
+    options.selfGrounded && !isMainBuilding
+      ? getFootprintFrontAnchorPoint(item, metrics)
+      : getFootprintAnchorPoint(item, metrics);
+  const yOffset = options.yOffset ?? item.yOffset ?? 0;
 
-  if (!isMainBuildingDisplayItem(item)) {
-    return anchor;
+  if (!isMainBuilding) {
+    return {
+      x: anchor.x,
+      y: anchor.y + yOffset,
+    };
   }
 
   return {
     x: anchor.x,
-    y: anchor.y + metrics.tileHeight * MAIN_BUILDING_SPRITE_ANCHOR_Y_OFFSET_TILES,
+    y:
+      anchor.y +
+      metrics.tileHeight * MAIN_BUILDING_SPRITE_ANCHOR_Y_OFFSET_TILES +
+      yOffset,
   };
 }
 
@@ -1393,6 +1417,20 @@ function getFootprintAnchorPoint(
   metrics: IsometricTileMetrics,
 ): ScreenPoint {
   return averagePoints(getFootprintDiamondPoints(item, metrics));
+}
+
+function getFootprintFrontAnchorPoint(
+  item: RenderFootprintItem,
+  metrics: IsometricTileMetrics,
+): ScreenPoint {
+  return getFootprintDiamondPoints(item, metrics)[2];
+}
+
+function getSpriteYOffset(
+  item: DisplayFootprintItem,
+  asset: EstateSpriteAssetDefinition,
+): number {
+  return asset.yOffset ?? asset.fallback.yOffset ?? item.yOffset ?? 0;
 }
 
 function intersectsWorldBounds(first: WorldBounds, second: WorldBounds) {
