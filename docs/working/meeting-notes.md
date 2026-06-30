@@ -2,6 +2,20 @@
 
 User-stated decisions and verified working facts are recorded here by date. Do not treat unstated product, architecture, ML, or deployment ideas as confirmed.
 
+## 2026-06-30
+
+### 영지 배치·건물 UI 클래시오브클랜화 (+ main 머지·푸시·배포)
+
+- 사용자가 "영지에서 물건 배치·특정 건물 기능의 퀄리티를 클래시오브클랜처럼 올려달라, 옮길 때 UI가 겹치는 문제가 있다, 새 브랜치에서 진행"을 요청.
+- AskUserQuestion으로 방향 확정: (1) 이동 제스처 = **드래그 + 탭-들기 둘 다 지원**(꾹 눌러 끌어 놓기 / 짧게 탭해 들었다 하단 바로 확인), (2) 범위 = HUD 정리·드래그 이동·칸별 초록빨강 발판·격자 오버레이·통합 건물 패널·수확 버블·상점→캔버스 드래그 **전부 포함**, (3) **새 건물/아이템 종류 추가는 제외**. 사용자가 밝힌 "그 외" = 영지 HUD/오버레이 자체 정비(본인 기여·건물 레벨업 UI 겹침, 본관 클릭 시 팀원 명단 UI가 투박).
+- 확인한 근본 원인: 이동 컨트롤이 떠다니는 아이콘 클러스터(`ContextualItemActions`)라 옮길 칸·상단 HUD를 가림. 발판 유효성(`canPlaceEstateItem`)·초록/빨강 미리보기는 이미 연결돼 있었음. 본관 멤버 패널·레벨 카드가 상단 같은 띠에서 충돌.
+- 스펙 `docs/superpowers/specs/2026-06-30-estate-clash-placement-building-ux-design.md`, 계획 `docs/superpowers/plans/2026-06-30-estate-clash-placement-building-ux.md` 작성 후, **subagent-driven-development**로 8개 태스크를 TDD·태스크별 2단계 리뷰(스펙+품질)·최종 전체 브랜치 리뷰(opus)로 실행. 브랜치 `feat/estate-clash-placement-building-ux`.
+- 구현(태스크 단위 커밋): ① 칸별 초록/빨강 발판 틴트, ② 배치/이동 중 격자 오버레이(`showBuildGrid` scene 플래그), ③ 하단 고정 편집 액션 바(떠다니는 클러스터 대체 — 겹침 해결), ④ 드래그 이동 + 탭-들기 + 모바일 고스트 추종(캔버스 포인터/터치 상태기계 + 클라이언트 배선), ⑤ 통합 하단 건물 패널(레벨·업그레이드·에코 생산/수확·기여 랭킹 — 멤버 패널·레벨 카드 흡수), ⑥ 본관 위 수확 버블(줌 일치 히트 반경), ⑦ 인벤토리→캔버스 HTML5 드래그 배치, ⑧ 정리(고아 파일 8개 삭제: contextual-item-actions·estate-building-card·estate-member-panel·action-anchor + 각 테스트, 캔버스 앵커 머신·죽은 `.contextCluster` CSS 제거).
+- 작업 중 확인/처리한 사실: Vitest는 esbuild라 타입체크를 안 해, 필수 scene 필드(`showBuildGrid`·`harvestBubbleItemIds`)를 타입 주석된 테스트 리터럴에 추가하지 않으면 `tsc --noEmit`에서만 깨짐 — 두 번 다 보완 커밋. 경제/서버(`save_estate`·에코 계산·포인트·카탈로그)는 불변. i18n은 `building.production` 한 키만 추가(ko/en 대칭). 수확 버블은 본관만 표시(에코가 영지 전체 단위라 의도된 단순화; 발전기별 분배는 후속 과제).
+- 검증: 머지 결과 `npm run test` **86파일/400 통과**, `npx eslint src/features/estate` 0 errors, `npm run build` 통과. 최종 전체 브랜치 리뷰(opus, 12커밋) = **머지 가능, Critical/Important 0**(하단 도크 3종 상호배타 검증, 제스처 상태기계 분기 중복/도달불가 없음·ref 누수 없음, `confirmMoveSelected` 렌더 클로저 안전, 경제/서버 미변경 `git diff` 확인). 캔버스 풀블리드 라우트는 프리뷰 스크린샷이 멈추는 기존 제약이라 실제 드래그·버블·패널 느낌은 dev/배포 확인 몫.
+- 사용자 지시로 스펙·계획 문서 커밋(`415bad7`) 후 `feat/estate-clash-placement-building-ux`를 `main`에 fast-forward 머지(`b9a07e9..415bad7`, 13커밋), `origin/main` 푸시(Vercel 자동 배포), 머지된 브랜치 삭제. 기존 무관 브랜치 `feat/estate-eco-credit-economy`는 그대로 둠.
+- 남은 비차단 항목(최종 리뷰가 defer로 분류, 문서화): 드래그→커밋 클라이언트 레벨 통합 테스트 부재, 상점 드롭 테스트의 키-무시 `getData` 목, 에코 생산율 `formatPoints` 미적용, 캔버스 빈 줄 1줄. 기존 `isometric-renderer-assets.test.ts`의 6개 `TS2322 "loaded"` tsc 에러는 이 브랜치 이전부터 존재(테스트 파일 한정, 빌드 무관).
+
 ## 2026-06-29
 
 ### Loading performance and pending-button feedback
