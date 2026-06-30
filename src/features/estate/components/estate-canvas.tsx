@@ -52,6 +52,7 @@ import {
 } from "../isometric/action-anchor";
 import {
   getHarvestBubbleScreenAnchor,
+  HARVEST_BUBBLE_RADIUS,
   isPointOnHarvestBubble,
 } from "../isometric/harvest-bubble";
 
@@ -1129,7 +1130,10 @@ function findHarvestBubbleAtPoint(
     const item = scene.items.find((candidate) => candidate.id === id);
     if (!item) continue;
     const anchor = getHarvestBubbleScreenAnchor(item, scene.metrics, camera, viewport);
-    if (isPointOnHarvestBubble(point, anchor)) return item.id;
+    // Match the zoom-scaled radius used by the renderer's draw pass so the tap
+    // zone tracks the visible glyph at every zoom level.
+    const radius = HARVEST_BUBBLE_RADIUS * Math.max(0.8, camera.zoom);
+    if (isPointOnHarvestBubble(point, anchor, radius)) return item.id;
   }
   return null;
 }

@@ -25,6 +25,8 @@ describe("harvest bubble", () => {
     // applies, then the bubble lifts upward (smaller y).
     expect(anchor.x).toBeCloseTo(200); // viewport center x
     expect(anchor.y).toBeLessThan(150);
+    // center y=150 lifted by 54*zoom (zoom 1) => 96; pins the lift constant.
+    expect(anchor.y).toBeCloseTo(96, 0);
   });
 
   it("hits within the bubble radius and misses outside", () => {
