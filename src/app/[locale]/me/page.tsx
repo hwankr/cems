@@ -8,6 +8,7 @@ import { ContributionGraph } from "@/features/account/components/contribution-gr
 import { PointsHistory } from "@/features/account/components/points-history";
 import { EstateContribution } from "@/features/account/components/estate-contribution";
 import { ClaimRewardButton } from "@/features/account/components/claim-reward-button";
+import { DailyQuiz } from "@/features/quiz/components/daily-quiz";
 import { GoalList } from "@/features/missions/components/goal-list";
 import {
   getCurrentProfile,
@@ -19,6 +20,7 @@ import {
 } from "@/features/account/data/account-dal";
 import { getMyLeagueAwards } from "@/features/leagues/data/leagues-dal";
 import { getGoalsWithProgress } from "@/features/missions/data/missions-dal";
+import { getTodayQuiz } from "@/features/quiz/data/quiz-dal";
 import {
   buildContributionGraph,
   seoulDayLabel,
@@ -51,6 +53,7 @@ export default async function MePage({ params }: MePageProps) {
     goals,
     estateSubjectId,
     myLeagueAwards,
+    quiz,
   ] = await Promise.all([
     getMessages(locale),
     getPersonalPointTotal(profile.userId),
@@ -59,6 +62,7 @@ export default async function MePage({ params }: MePageProps) {
     getGoalsWithProgress(profile.userId),
     getGroupEstateSubjectId(profile.groupId),
     getMyLeagueAwards(profile.userId),
+    getTodayQuiz(),
   ]);
 
   const todayLabel = seoulDayLabel(new Date().toISOString());
@@ -100,6 +104,7 @@ export default async function MePage({ params }: MePageProps) {
             <span className="text-ink-subtle">→</span>
           </Link>
           <ContributionGraph graph={graph} />
+          <DailyQuiz quiz={quiz} />
           <GoalList goals={goals} />
           <EstateContribution
             personalPoints={personalPoints}

@@ -22,6 +22,7 @@ export function PointsHistory({ events }: { events: PointEvent[] }) {
     if (parsed.kind === "mission") return missions[parsed.code]?.title ?? parsed.code;
     if (parsed.kind === "goal")
       return `${goalTitles[parsed.id] ?? parsed.id} · ${me.history.goalBonus}`;
+    if (parsed.kind === "quiz") return me.history.quiz;
     return parsed.reason;
   }
 

@@ -14,4 +14,7 @@ describe("parsePointEventReason", () => {
   it("falls back to other", () => {
     expect(parsePointEventReason("mystery")).toEqual({ kind: "other", reason: "mystery" });
   });
+  it("recognizes a quiz reason", () => {
+    expect(parsePointEventReason("quiz:daily")).toEqual({ kind: "quiz" });
+  });
 });
