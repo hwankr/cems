@@ -91,4 +91,17 @@ describe("estate isometric render scene", () => {
       level3.items.find((item) => item.id === "yu-e21:landmark")?.assetId,
     ).toBe("campus-building-lv3");
   });
+
+  it("marks the build grid visible only while placement is active", () => {
+    const base = {
+      snapshot: createDemoEstateSeedSnapshot("yu-e21"),
+      itemDefinitions: [...baseEstateItemDefinitions, ...estateItemCatalog],
+      parcelDefinitions: estateExpansionCatalog,
+    };
+
+    expect(createEstateRenderScene(base).showBuildGrid).toBe(false);
+    expect(
+      createEstateRenderScene({ ...base, placementActive: true }).showBuildGrid,
+    ).toBe(true);
+  });
 });

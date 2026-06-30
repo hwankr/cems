@@ -93,6 +93,7 @@ export type EstateRenderScene = {
   recentlyUnlockedParcelId?: string | null;
   animationProgress?: number;
   mainBuildingLevel: number;
+  showBuildGrid: boolean;
 };
 
 export type CreateEstateRenderSceneInput = {
@@ -105,6 +106,7 @@ export type CreateEstateRenderSceneInput = {
   placementPreview?: EstateRenderPlacementPreview | null;
   recentlyUnlockedParcelId?: string | null;
   animationProgress?: number;
+  placementActive?: boolean;
 };
 
 export function createEstateRenderScene({
@@ -117,6 +119,7 @@ export function createEstateRenderScene({
   placementPreview = null,
   recentlyUnlockedParcelId = null,
   animationProgress = 1,
+  placementActive = false,
 }: CreateEstateRenderSceneInput): EstateRenderScene {
   const unlockedParcelIds = new Set(snapshot.unlockedParcelIds);
   const itemDefinitionById = new Map(
@@ -159,6 +162,7 @@ export function createEstateRenderScene({
     recentlyUnlockedParcelId,
     animationProgress,
     mainBuildingLevel,
+    showBuildGrid: placementActive,
   };
 }
 
@@ -236,6 +240,7 @@ export class EstateIsometricRenderer {
       loadedAssets,
       visibleWorldBounds,
     );
+    this.drawBuildGrid(scene, camera, viewport, visibleWorldBounds);
     this.drawParcelHoverGlow(scene, camera, viewport);
     this.drawUnlockAnimation(scene, camera, viewport);
     this.drawHoverOverlay(scene, camera, viewport);
@@ -601,6 +606,34 @@ export class EstateIsometricRenderer {
           asset,
         );
       }
+    }
+  }
+
+  private drawBuildGrid(
+    scene: EstateRenderScene,
+    camera: IsometricCamera,
+    viewport: ViewportSize,
+    visibleWorldBounds: WorldBounds,
+  ) {
+    if (!scene.showBuildGrid) return;
+
+    for (const cell of getSceneUnlockedCells(scene)) {
+      if (
+        !intersectsWorldBounds(
+          getCellsWorldBounds([cell], scene.metrics),
+          visibleWorldBounds,
+        )
+      ) {
+        continue;
+      }
+
+      strokeWorldPolygon(
+        this.context,
+        getCellDiamondPoints(cell, scene.metrics),
+        camera,
+        viewport,
+        { stroke: "#ffffff", alpha: 0.16, lineWidth: 1 },
+      );
     }
   }
 

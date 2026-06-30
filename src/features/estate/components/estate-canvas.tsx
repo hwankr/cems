@@ -256,9 +256,11 @@ export function EstateCanvas({
         placementPreview,
         recentlyUnlockedParcelId,
         animationProgress: unlockAnimationProgress,
+        placementActive: mode.type === "placing" || mode.type === "moving",
       }),
     [
       hoverCell,
+      mode,
       placementPreview,
       recentlyUnlockedParcelId,
       selectedItemId,
