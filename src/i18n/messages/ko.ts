@@ -452,6 +452,7 @@ export const koMessages = {
       verifiedSavings: "주간 절감 보상",
       goalBonus: "목표 보너스",
       empty: "아직 적립 내역이 없습니다.",
+      quiz: "환경 퀴즈",
     },
     contribution: {
       title: "내 영지 기여",

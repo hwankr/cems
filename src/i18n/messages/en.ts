@@ -455,6 +455,7 @@ export const enMessages = {
       verifiedSavings: "Weekly saving reward",
       goalBonus: "Goal bonus",
       empty: "No points earned yet.",
+      quiz: "Eco quiz",
     },
     contribution: {
       title: "My estate contribution",
