@@ -13,10 +13,15 @@ export async function submitQuizAnswerAction(
   formData: FormData,
 ): Promise<SubmitQuizState> {
   const questionId = String(formData.get("questionId") ?? "");
-  const selectedIndex = Number(formData.get("selectedIndex"));
+  const rawSelectedIndex = formData.get("selectedIndex");
+  const selectedIndex = Number(rawSelectedIndex);
   const locale = normalizeLocale(formData.get("locale"));
 
-  if (!Number.isInteger(selectedIndex)) return { status: "invalid" };
+  // Reject a missing field too: Number(null) === 0 would otherwise pass as a
+  // real "answer 0" submission and burn the day's attempt.
+  if (rawSelectedIndex === null || !Number.isInteger(selectedIndex)) {
+    return { status: "invalid" };
+  }
 
   const supabase = await createServerSupabaseClient();
 
