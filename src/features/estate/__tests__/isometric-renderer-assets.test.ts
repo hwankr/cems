@@ -245,6 +245,7 @@ describe("estate isometric renderer asset placement", () => {
       selectedItemId: null,
       placementPreview: null,
       mainBuildingLevel: 1,
+      showBuildGrid: false,
       items: [
         {
           id: "rotated-bench",
@@ -298,6 +299,7 @@ describe("estate isometric renderer asset placement", () => {
       selectedItemId: null,
       placementPreview: null,
       mainBuildingLevel: 1,
+      showBuildGrid: false,
       items: [
         {
           id: "bench",
@@ -349,6 +351,7 @@ describe("estate isometric renderer asset placement", () => {
       selectedItemId: null,
       placementPreview: null,
       mainBuildingLevel: 1,
+      showBuildGrid: false,
       items: [
         {
           id: "battery-storage",
