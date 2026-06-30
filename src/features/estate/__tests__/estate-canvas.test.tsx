@@ -287,6 +287,52 @@ describe("EstateCanvas", () => {
     await act(async () => root.unmount());
   });
 
+  it("drags a movable item to a new cell and commits on release", async () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const onItemDragStart = vi.fn();
+    const onItemDragMove = vi.fn();
+    const onItemDragEnd = vi.fn();
+    const onItemSelect = vi.fn();
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="1 placed object, 1 unlocked parcel, and 0 ground tiles."
+          controls={{
+            assetsLoading: "Estate assets loading",
+            fitView: "Fit view",
+            zoomIn: "Zoom in",
+            zoomOut: "Zoom out",
+          }}
+          onItemSelect={onItemSelect}
+          onItemDragStart={onItemDragStart}
+          onItemDragMove={onItemDragMove}
+          onItemDragEnd={onItemDragEnd}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+
+    const canvas = getCanvas();
+    const from = getInitialCanvasPointForCell(snapshot, { x: 7, y: 7 });
+
+    await dispatchPointer(canvas, "pointerdown", from);
+    await dispatchPointer(canvas, "pointermove", { x: from.x + 60, y: from.y });
+    await dispatchPointer(canvas, "pointerup", { x: from.x + 60, y: from.y });
+
+    expect(onItemDragStart).toHaveBeenCalledWith("yu-e21:landmark");
+    expect(onItemDragMove).toHaveBeenCalled();
+    expect(onItemDragEnd).toHaveBeenCalledWith(true);
+    expect(onItemSelect).not.toHaveBeenCalled();
+
+    await act(async () => root.unmount());
+  });
+
   it("cancels locked parcel popups when the pointer moves like a pan", async () => {
     const snapshot = createDemoEstateSeedSnapshot("yu-e21");
     const onLockedParcelClick = vi.fn();

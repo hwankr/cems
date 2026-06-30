@@ -73,6 +73,9 @@ export type EstateCanvasProps = {
   onGroundPaintCell?: (cell: EstateGridCell) => void;
   onGroundPaintEnd?: () => void;
   onItemSelect?: (instanceId: string) => void;
+  onItemDragStart?: (instanceId: string) => void;
+  onItemDragMove?: (cell: EstateGridCell) => void;
+  onItemDragEnd?: (committed: boolean) => void;
   onBackgroundTap?: () => void;
   onSelectedItemAnchorChange?: (anchor: EstateItemActionAnchor | null) => void;
 };
@@ -137,6 +140,9 @@ export function EstateCanvas({
   onGroundPaintCell,
   onGroundPaintEnd,
   onItemSelect,
+  onItemDragStart,
+  onItemDragMove,
+  onItemDragEnd,
   onBackgroundTap,
   onSelectedItemAnchorChange,
 }: EstateCanvasProps) {
@@ -149,6 +155,14 @@ export function EstateCanvas({
     last: TouchPoint;
   } | null>(null);
   const pendingCanvasPressRef = useRef<PendingCanvasPress | null>(null);
+  const itemDragRef = useRef<{
+    pointerId: number;
+    instanceId: string;
+    fromMoving: boolean;
+    moved: boolean;
+    lastCellKey: string | null;
+    start: TouchPoint;
+  } | null>(null);
   const paintPointerRef = useRef<number | null>(null);
   const touchPanRef = useRef<TouchPoint | null>(null);
   const pinchRef = useRef<{
@@ -156,6 +170,7 @@ export function EstateCanvas({
     midpoint: TouchPoint;
   } | null>(null);
   const cameraAnimationRef = useRef<number | null>(null);
+  const modeRef = useRef(mode);
   const [viewport, setViewport] = useState<CanvasViewport>({
     width: 1,
     height: 1,
@@ -295,6 +310,10 @@ export function EstateCanvas({
   useEffect(() => {
     viewportRef.current = viewport;
   }, [viewport]);
+
+  useEffect(() => {
+    modeRef.current = mode;
+  }, [mode]);
 
   useEffect(() => {
     assetLoadSnapshotRef.current = assetLoadSnapshot;
@@ -561,7 +580,12 @@ export function EstateCanvas({
       event.preventDefault();
 
       if (event.touches.length === 1) {
-        touchPanRef.current = getTouchPoint(event.touches[0], canvas);
+        const editing =
+          modeRef.current.type === "placing" ||
+          modeRef.current.type === "moving";
+        touchPanRef.current = editing
+          ? null
+          : getTouchPoint(event.touches[0], canvas);
         pinchRef.current = null;
         return;
       }
@@ -662,13 +686,27 @@ export function EstateCanvas({
       return;
     }
 
-    if (
-      event.button === 0 &&
-      (mode.type === "placing" || mode.type === "moving")
-    ) {
+    if (event.button === 0 && mode.type === "placing") {
       if (cell) {
         setHoverCell(cell);
         onCellClick?.(cell);
+      }
+      return;
+    }
+
+    if (event.button === 0 && mode.type === "moving") {
+      if (cell) {
+        event.currentTarget.setPointerCapture(event.pointerId);
+        itemDragRef.current = {
+          pointerId: event.pointerId,
+          instanceId: mode.instanceId,
+          fromMoving: true,
+          moved: false,
+          lastCellKey: `${cell.x}:${cell.y}`,
+          start: point,
+        };
+        setHoverCell(cell);
+        onCellClick?.(cell); // sets the target cell (tap-to-target)
       }
       return;
     }
@@ -746,12 +784,53 @@ export function EstateCanvas({
       return;
     }
 
+    const itemDrag = itemDragRef.current;
+
+    if (itemDrag?.pointerId === event.pointerId) {
+      if (!itemDrag.moved && isPastTapMovementTolerance(itemDrag.start, point)) {
+        itemDrag.moved = true;
+      }
+      if (cell) {
+        const key = `${cell.x}:${cell.y}`;
+        if (key !== itemDrag.lastCellKey) {
+          itemDrag.lastCellKey = key;
+          setHoverCell(cell);
+          if (itemDrag.fromMoving) {
+            onCellClick?.(cell); // moving: update target each cell
+          } else {
+            onItemDragMove?.(cell);
+          }
+        }
+      }
+      return;
+    }
+
     const pendingPress = pendingCanvasPressRef.current;
 
     if (pendingPress?.pointerId === event.pointerId) {
       pendingPress.last = point;
 
       if (isPastTapMovementTolerance(pendingPress.start, point)) {
+        if (pendingPress.action.type === "select-item") {
+          const instanceId = pendingPress.action.instanceId;
+          pendingCanvasPressRef.current = null;
+          itemDragRef.current = {
+            pointerId: event.pointerId,
+            instanceId,
+            fromMoving: false,
+            moved: true,
+            lastCellKey: cell ? `${cell.x}:${cell.y}` : null,
+            start: pendingPress.start,
+          };
+          onItemDragStart?.(instanceId);
+          if (cell) {
+            setHoverCell(cell);
+            onItemDragMove?.(cell);
+          }
+          return;
+        }
+
+        // open-locked-parcel / clear-selection: convert to a camera pan (unchanged).
         pendingCanvasPressRef.current = null;
         pointerPanRef.current = {
           pointerId: event.pointerId,
@@ -803,6 +882,18 @@ export function EstateCanvas({
       return;
     }
 
+    if (itemDragRef.current?.pointerId === event.pointerId) {
+      const drag = itemDragRef.current;
+      itemDragRef.current = null;
+      if (drag.fromMoving) {
+        // moving: a real drag commits; an unmoved tap leaves the target set.
+        if (drag.moved) onItemDragEnd?.(true);
+      } else {
+        onItemDragEnd?.(drag.moved);
+      }
+      return;
+    }
+
     if (pendingCanvasPressRef.current?.pointerId === event.pointerId) {
       const pendingPress = pendingCanvasPressRef.current;
       const releasePoint = getPointerFromReactEvent(event);
@@ -824,6 +915,11 @@ export function EstateCanvas({
     if (paintPointerRef.current === event.pointerId) {
       paintPointerRef.current = null;
       onGroundPaintEnd?.();
+    }
+
+    if (itemDragRef.current?.pointerId === event.pointerId) {
+      itemDragRef.current = null;
+      onItemDragEnd?.(false);
     }
 
     if (pendingCanvasPressRef.current?.pointerId === event.pointerId) {

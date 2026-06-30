@@ -760,6 +760,39 @@ export function EstateGameClient({
     setMode({ type: "selected", instanceId });
   }
 
+  function handleItemDragStart(instanceId: string) {
+    const instance = snapshotRef.current.items.find(
+      (item) => item.id === instanceId,
+    );
+    const definition = instance
+      ? findEstateItemDefinition(allItemDefinitions, instance.definitionId)
+      : null;
+    if (!instance || !definition) return;
+    if (instance.definitionId === baseEstateBuildingDefinition.id) {
+      // Protected base building: a drag selects it (shows the panel) instead of moving.
+      setMode({ type: "selected", instanceId });
+      return;
+    }
+    setSheetOpen(false);
+    setMode({
+      type: "moving",
+      instanceId,
+      rotation: instance.rotation,
+      targetCell: { x: instance.x, y: instance.y },
+    });
+  }
+
+  function handleItemDragMove(cell: EstateGridCell) {
+    setMode((current) =>
+      current.type === "moving" ? { ...current, targetCell: cell } : current,
+    );
+  }
+
+  function handleItemDragEnd(committed: boolean) {
+    if (!committed) return;
+    confirmMoveSelected();
+  }
+
   function handleClearSelection() {
     setMode((current) =>
       current.type === "selected" ? { type: "view" } : current,
@@ -816,6 +849,9 @@ export function EstateGameClient({
           onGroundPaintStart={handleGroundPaintStart}
           onGroundPaintCell={handleGroundPaintCell}
           onItemSelect={handleItemSelect}
+          onItemDragStart={handleItemDragStart}
+          onItemDragMove={handleItemDragMove}
+          onItemDragEnd={handleItemDragEnd}
           onBackgroundTap={handleClearSelection}
         />
       </div>
