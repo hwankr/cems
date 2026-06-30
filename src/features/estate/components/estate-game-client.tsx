@@ -940,7 +940,6 @@ export function EstateGameClient({
         <EstateBuildingPanel
           copy={copy}
           locale={locale}
-          variant="main-building"
           title={copy.building.cardTitle}
           level={mainBuildingLevel}
           maxLevel={MAIN_BUILDING_MAX_LEVEL}

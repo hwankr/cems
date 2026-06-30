@@ -34,7 +34,6 @@ describe("EstateBuildingPanel", () => {
   it("shows the level, an upgrade button, and the contributor list for the main building", async () => {
     const onUpgrade = vi.fn();
     await render({
-      variant: "main-building",
       level: 3,
       maxLevel: 5,
       nextCost: 4500,
@@ -52,11 +51,6 @@ describe("EstateBuildingPanel", () => {
     await click(button(enMessages.estate.building.upgrade));
     expect(onUpgrade).toHaveBeenCalledTimes(1);
   });
-
-  it("hides upgrade/contributors for an ordinary item", async () => {
-    await render({ variant: "item", title: "Bench" });
-    expect(query(enMessages.estate.building.upgrade)).toBeNull();
-  });
 });
 
 async function render(
@@ -64,7 +58,7 @@ async function render(
 ) {
   root = createRoot(container);
   await act(async () => {
-    root?.render(<EstateBuildingPanel {...base} variant="item" {...overrides} />);
+    root?.render(<EstateBuildingPanel {...base} {...overrides} />);
   });
 }
 
