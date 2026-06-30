@@ -677,6 +677,27 @@ export function EstateGameClient({
     });
   }
 
+  function handleCanvasDropDefinition(definitionId: string, cell: EstateGridCell) {
+    const definition = findEstateItemDefinition(itemDefinitions, definitionId);
+    if (!definition || definition.placementRule === "ground") return;
+    if (getInventoryQuantity(snapshotRef.current.inventory, definition.id) < 1) {
+      showMessage(copy.commandFailures["missing-inventory"]);
+      return;
+    }
+    setSheetOpen(false);
+    const result = applyCommand({
+      type: "place-item",
+      definitionId: definition.id,
+      x: cell.x,
+      y: cell.y,
+      rotation: 0,
+    });
+    if (result.ok) {
+      setMode({ type: "view" });
+      showMessage(copy.messages.placed);
+    }
+  }
+
   function handleCellClick(cell: EstateGridCell) {
     if (mode.type === "placing") {
       const result = applyCommand({
@@ -862,6 +883,7 @@ export function EstateGameClient({
           onBackgroundTap={handleClearSelection}
           harvestBubbleItemIds={harvestBubbleItemIds}
           onHarvest={handleCollectEco}
+          onCanvasDropDefinition={handleCanvasDropDefinition}
         />
       </div>
 
@@ -1186,6 +1208,11 @@ function InventoryPanel({
         return (
           <div
             key={definition.id}
+            draggable={definition.placementRule !== "ground"}
+            onDragStart={(event) => {
+              event.dataTransfer.setData("application/x-estate-item", definition.id);
+              event.dataTransfer.effectAllowed = "copy";
+            }}
             className={`${styles.card} flex items-center gap-3 rounded-2xl p-2.5`}
             style={
               palette

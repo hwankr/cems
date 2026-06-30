@@ -655,6 +655,58 @@ describe("EstateCanvas", () => {
     await act(async () => root.unmount());
   });
 
+  it("maps an HTML drop to a grid cell and reports the dropped definition", async () => {
+    const snapshot = createDemoEstateSeedSnapshot("yu-e21");
+    const onCanvasDropDefinition = vi.fn();
+    const container = document.createElement("div");
+    const root: Root = createRoot(container);
+    document.body.append(container);
+
+    await act(async () =>
+      root.render(
+        <EstateCanvas
+          snapshot={snapshot}
+          ariaLabel="Interactive isometric estate canvas"
+          ariaSummary="1 placed object, 1 unlocked parcel, and 0 ground tiles."
+          controls={{
+            assetsLoading: "Estate assets loading",
+            fitView: "Fit view",
+            zoomIn: "Zoom in",
+            zoomOut: "Zoom out",
+          }}
+          onCanvasDropDefinition={onCanvasDropDefinition}
+        />,
+      ),
+    );
+    await flushAnimationFrames();
+
+    const canvas = getCanvas();
+    const point = getInitialCanvasPointForCell(snapshot, { x: 8, y: 8 });
+
+    await act(async () => {
+      const event = new Event("drop", { bubbles: true, cancelable: true }) as Event & {
+        dataTransfer: DataTransfer;
+        clientX: number;
+        clientY: number;
+      };
+      Object.defineProperties(event, {
+        clientX: { value: point.x },
+        clientY: { value: point.y },
+        dataTransfer: {
+          value: { getData: () => "broadleaf-tree" } as unknown as DataTransfer,
+        },
+      });
+      canvas.dispatchEvent(event);
+    });
+
+    expect(onCanvasDropDefinition).toHaveBeenCalledWith(
+      "broadleaf-tree",
+      expect.objectContaining({ x: expect.any(Number), y: expect.any(Number) }),
+    );
+
+    await act(async () => root.unmount());
+  });
+
   it("does not re-emit an unchanged selected item anchor for hover-only scene changes", async () => {
     const snapshot = createDemoEstateSeedSnapshot("yu-e21");
     const onSelectedItemAnchorChange = vi.fn();

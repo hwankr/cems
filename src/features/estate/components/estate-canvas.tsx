@@ -7,6 +7,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type DragEvent as ReactDragEvent,
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
@@ -85,6 +86,7 @@ export type EstateCanvasProps = {
   onSelectedItemAnchorChange?: (anchor: EstateItemActionAnchor | null) => void;
   harvestBubbleItemIds?: string[];
   onHarvest?: (instanceId: string) => void;
+  onCanvasDropDefinition?: (definitionId: string, cell: EstateGridCell) => void;
 };
 
 type CanvasViewport = ViewportSize & {
@@ -163,6 +165,7 @@ export function EstateCanvas({
   onSelectedItemAnchorChange,
   harvestBubbleItemIds = [],
   onHarvest,
+  onCanvasDropDefinition,
 }: EstateCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -965,6 +968,19 @@ export function EstateCanvas({
     }
   };
 
+  const handleCanvasDrop = (event: ReactDragEvent<HTMLCanvasElement>) => {
+    if (!onCanvasDropDefinition) return;
+    const definitionId = event.dataTransfer.getData("application/x-estate-item");
+    if (!definitionId) return;
+    event.preventDefault();
+    const rect = event.currentTarget.getBoundingClientRect();
+    const point = getPointerCanvasPosition(event, rect, 1).css;
+    const cell = hitTestDiamondCellAtCanvasPoint(point, camera, viewport, {
+      allowedCells: getSceneCellList(scene),
+    });
+    if (cell) onCanvasDropDefinition(definitionId, cell);
+  };
+
   return (
     <div
       ref={containerRef}
@@ -985,6 +1001,10 @@ export function EstateCanvas({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerCancel}
+        onDragOver={(event) => {
+          if (onCanvasDropDefinition) event.preventDefault();
+        }}
+        onDrop={handleCanvasDrop}
       />
 
       <div className="absolute bottom-3 left-3 hidden overflow-hidden rounded-xl border border-[var(--es-line)] bg-[var(--es-panel)] shadow-[0_10px_26px_-14px_rgba(30,50,30,0.45)] backdrop-blur-md lg:flex">
