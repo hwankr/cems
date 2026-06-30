@@ -172,6 +172,7 @@ export const enMessages = {
       upgrade: "Upgrade",
       maxLevel: "Max level reached",
       insufficient: "Not enough points",
+      production: "Eco output",
     },
     categories: {
       all: "All",

@@ -87,8 +87,8 @@ import {
   getParcelName,
   type EstateMessages,
 } from "./estate-copy";
-import { EstateBuildingCard } from "./estate-building-card";
-import { EstateMemberPanel } from "./estate-member-panel";
+import { EstateBuildingPanel } from "./estate-building-panel";
+import { getEstateEcoRatePerHour } from "../domain/eco-credit";
 import { ItemThumb } from "./estate-item-thumb";
 import styles from "./estate-shell.module.css";
 import type { SubjectContributor } from "@/features/account/domain/contributor-ranking";
@@ -928,18 +928,6 @@ export function EstateGameClient({
         </div>
       </div>
 
-      <div className="pointer-events-none absolute left-2 top-[4.25rem] z-30 sm:left-3">
-        <EstateBuildingCard
-          copy={copy}
-          locale={locale}
-          level={mainBuildingLevel}
-          maxLevel={MAIN_BUILDING_MAX_LEVEL}
-          nextCost={nextUpgradeCost}
-          availablePoints={pointAccount.availablePoints}
-          onUpgrade={handleUpgradeBuilding}
-        />
-      </div>
-
       {message ? (
         <div
           className={`${styles.toast} pointer-events-none absolute left-1/2 top-[4.5rem] z-40 max-w-[calc(100vw_-_1.5rem)] -translate-x-1/2 rounded-xl px-3.5 py-2 text-center text-[13px] font-medium`}
@@ -948,15 +936,23 @@ export function EstateGameClient({
         </div>
       ) : null}
 
-      {selectedIsProtected ? (
-        <div className="pointer-events-none absolute left-1/2 top-[4.25rem] z-40 -translate-x-1/2 px-2">
-          <EstateMemberPanel
-            contributors={contributors}
-            copy={copy}
-            locale={locale}
-            onClose={handleClearSelection}
-          />
-        </div>
+      {mode.type === "selected" && selectedIsProtected ? (
+        <EstateBuildingPanel
+          copy={copy}
+          locale={locale}
+          variant="main-building"
+          title={copy.building.cardTitle}
+          level={mainBuildingLevel}
+          maxLevel={MAIN_BUILDING_MAX_LEVEL}
+          nextCost={nextUpgradeCost}
+          availablePoints={pointAccount.availablePoints}
+          ecoRatePerHour={getEstateEcoRatePerHour(snapshot, allItemDefinitions)}
+          ecoAvailable={availableEco}
+          contributors={contributors}
+          onUpgrade={handleUpgradeBuilding}
+          onCollectEco={handleCollectEco}
+          onClose={handleClearSelection}
+        />
       ) : null}
 
       {isEditingActive ? (

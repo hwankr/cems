@@ -169,6 +169,7 @@ export const koMessages = {
       upgrade: "레벨업",
       maxLevel: "최고 레벨 달성",
       insufficient: "포인트가 부족합니다",
+      production: "에코 생산",
     },
     categories: {
       all: "전체",
