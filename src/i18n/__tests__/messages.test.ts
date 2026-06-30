@@ -28,6 +28,21 @@ describe("messages", () => {
     expect(enMessages.mapView.title).toBe("Campus map");
   });
 
+  it("keeps quiz question ids symmetric across locales", () => {
+    expect(Object.keys(enMessages.me.quizQuestions)).toEqual(
+      Object.keys(koMessages.me.quizQuestions),
+    );
+    for (const id of Object.keys(koMessages.me.quizQuestions)) {
+      const ko = koMessages.me.quizQuestions[
+        id as keyof typeof koMessages.me.quizQuestions
+      ];
+      const en = enMessages.me.quizQuestions[
+        id as keyof typeof enMessages.me.quizQuestions
+      ];
+      expect(en.options.length).toBe(ko.options.length);
+    }
+  });
+
   it("includes demo QR mission labels for generated stickers", () => {
     const demoCodes = [
       "chem-2f-stairs",
