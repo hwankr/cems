@@ -4,6 +4,23 @@ User-stated decisions and verified working facts are recorded here by date. Do n
 
 ## 2026-06-30
 
+### 일간 환경 퀴즈로 포인트 적립 기능 (설계→구현→라이브 버그픽스→main 머지·푸시·배포)
+
+- 사용자가 `/superpowers:writing-plans`로 "일간 에너지·환경 퀴즈를 통해 포인트를 쌓는 기능"의 구현 계획과, 그 외 보강할 부분 제안을 요청. 브레인스토밍 스킬로 먼저 요구사항을 확정함.
+- AskUserQuestion으로 확정한 방향: (1) 구성 = **하루 1문제**(시드 풀에서 Asia/Seoul 날짜 기준 결정적 회전), (2) 지급 = **참여 보상 + 정답 보너스**(한 `point_event`에 합산), (3) 오답 처리 = **하루 1회·제출 후 정답+해설 공개**(재시도 불가), (4) 노출 = **`/me` 프로필 카드**. 기본값: 참여 +10, 정답 보너스 +30.
+- 보강 항목(사용자 선택): **퀴즈 연속 참여 스트릭 보너스**(마일스톤 3/7/14/30 → +20/50/100/200)와 **해설 → 관련 미션 딥링크**. 선택 안 한 것: 주간 퀴즈 목표 연동, 지난 퀴즈 다시보기.
+- 설계 스펙 `docs/superpowers/specs/2026-06-30-daily-environment-quiz-design.md`, 구현 계획 `docs/superpowers/plans/2026-06-30-daily-environment-quiz.md` 작성. 사용자가 검토 후 "구현 진행(subagent-driven)" 지시 → 새 브랜치 `feat/daily-environment-quiz`.
+- 패턴: 기존 missions/goals를 그대로 재사용. 문항 텍스트·보기·해설은 i18n(ko/en)에 두고, DB에는 정답·숫자만. 포인트는 `point_events` 단일 경로라 개인 포인트·캐릭터·그룹 풀·영지 예산·잔디 그래프·기여 랭킹·리그에 자동 반영(경제 코드 변경 0).
+- **subagent-driven-development**로 8개 태스크를 TDD·태스크별 2단계 리뷰(스펙+품질)·최종 전체 브랜치 리뷰(opus)로 실행. Task 1(DB)은 라이브 MCP 적용이라 컨트롤러가 직접 처리하되 적용 전 SQL 리뷰를 먼저 받음.
+- **작업 중 확인·처리한 핵심 사실:**
+  1. **적용 전 SQL 리뷰가 CRITICAL을 잡음:** Postgres RLS는 행 단위라 열 단위 차단이 안 됨 → `correct_index`를 client-readable `quiz_questions`에 두면 인증 사용자가 PostgREST/JS로 제출 전 정답을 직접 조회 가능(스펙 요구사항 위반). 정답을 **별도 `quiz_answers` 테이블**(RLS on·정책 없음·anon/authenticated grant revoke)로 격리하고 SECURITY DEFINER 함수만 읽도록 2테이블로 수정 후 적용. `quiz_streak_bonus`에 `set search_path`+grant도 보강.
+  2. **라이브 테스트로 버그 발견(사용자가 클릭 시 "잠시 후 다시 시도" 에러):** Postgres 로그 `operator does not exist: date - bigint`. 원인은 스트릭 gaps-and-islands 쿼리의 `row_number()`가 bigint를 반환해 `day - (rn-1)`이 `date - bigint`가 됨(Postgres는 `date - integer`만 지원). `get_today_quiz`는 첫 응시 전 스트릭 블록을 건너뛰어 정상이었지만 `submit_quiz_answer`는 항상 실행 → 매번 에러(함수 통째 롤백이라 응시·포인트 잔여 없음). 두 함수에 `(t.rn - 1)::int` 캐스트로 수정·재적용. 스트릭 3연속/갭 케이스 프로브로 검증. (이 버그는 적용 전 프로브가 스트릭 서브쿼리를 직접 호출하지 않았고 SQL 리뷰가 rn을 integer로 가정해 놓쳤음 — 라이브 테스트가 잡음.)
+  3. 서버 액션 방어: 누락된 `selectedIndex`가 `Number(null)=0`으로 통과해 "0번 답"으로 채점되는 것을 raw 값 null 체크로 차단(최종 opus 리뷰가 Minor로 정정 지적, 적용).
+- DB(라이브 `cems`, ref `zvuqmagfpdyrrzyjntue`): 마이그레이션 `daily_quiz`(기록 `docs/superpowers/migrations/2026-06-30-daily-quiz.sql`) — 테이블 `quiz_questions`/`quiz_answers`(정답 격리)/`quiz_attempts`(하루1회 unique) + RPC `today_quiz_question_id`/`get_today_quiz`/`submit_quiz_answer` + 헬퍼 `quiz_streak_bonus`, 8문항 시드. advisor는 신규 3 RPC의 양성 SECURITY DEFINER WARN + `quiz_answers`의 `rls_enabled_no_policy`(의도된 잠금, INFO)만, ERROR 0.
+- 코드: 신규 feature `src/features/quiz/`(domain 타입+`quizStreakBonus`, DAL `getTodayQuiz`, 서버 액션 `submitQuizAnswerAction`, `DailyQuiz` 카드, 각 테스트), `point-reason.ts`에 `quiz` 종류 + `points-history` 라벨, i18n ko/en `me.quiz`+`me.quizQuestions`(8문항)+`me.history.quiz`, `me/page.tsx`에 카드 배치(잔디 그래프 ↔ 목표 사이).
+- 검증: Vitest **88파일/410 통과**, ESLint 0 errors(기존 `game-preview.tsx` 경고 2), `npm run build` 통과. 최종 opus 전체 리뷰 = **머지 가능(Critical/Important 0)**, 4건 Minor(누락 인덱스 방어=적용; 정적 리스트 index key·중첩 header() 헬퍼·미응시 비노출 테스트의 null 픽스처=비차단 잔류). 풀블리드가 아닌 일반 `/me` 라우트라 사용자 라이브 확인 가능.
+- 사용자 지시로 `feat/daily-environment-quiz`(11커밋)를 `main`에 `--no-ff` 머지 커밋(`d081068`)으로 합치고 `origin/main` 푸시(Vercel 자동 배포), 머지된 브랜치 삭제. 로컬·원격 단일 `main`.
+
 ### 영지 배치·건물 UI 클래시오브클랜화 (+ main 머지·푸시·배포)
 
 - 사용자가 "영지에서 물건 배치·특정 건물 기능의 퀄리티를 클래시오브클랜처럼 올려달라, 옮길 때 UI가 겹치는 문제가 있다, 새 브랜치에서 진행"을 요청.
