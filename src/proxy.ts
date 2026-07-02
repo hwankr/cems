@@ -18,9 +18,26 @@ function getPreferredLocale(request: NextRequest) {
   return isLocale(cookieLocale) ? cookieLocale : defaultLocale;
 }
 
+function getPathPartsAfterOptionalLocale(pathname: string) {
+  const parts = pathname.split("/").filter(Boolean);
+  return parts.length > 0 && isLocale(parts[0]) ? parts.slice(1) : parts;
+}
+
+function isAuthEntryPath(pathname: string) {
+  const parts = getPathPartsAfterOptionalLocale(pathname);
+
+  if (parts.length === 1) {
+    return parts[0] === "login" || parts[0] === "signup";
+  }
+
+  return parts.length === 2 && parts[0] === "auth" && parts[1] === "callback";
+}
+
 export async function proxy(request: NextRequest) {
-  const sessionResponse = await updateSupabaseSession(request);
   const { pathname } = request.nextUrl;
+  const sessionResponse = isAuthEntryPath(pathname)
+    ? NextResponse.next({ request })
+    : await updateSupabaseSession(request);
 
   if (pathnameHasLocale(pathname)) {
     return sessionResponse;

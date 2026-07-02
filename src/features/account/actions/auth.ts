@@ -75,7 +75,6 @@ export async function signInDemoGuestAction(
   }
 
   const supabase = await createServerSupabaseClient();
-  await supabase.auth.signOut();
   const { error } = await supabase.auth.signInWithPassword(credential);
 
   if (error) {
@@ -87,6 +86,6 @@ export async function signInDemoGuestAction(
 
 export async function signOutAction(): Promise<void> {
   const supabase = await createServerSupabaseClient();
-  await supabase.auth.signOut();
+  await supabase.auth.signOut({ scope: "local" });
   redirect("/ko/login");
 }
