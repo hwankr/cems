@@ -11,7 +11,7 @@ type AuthShellProps = {
 };
 
 /**
- * Illustrated centered card for the auth flow (/login, /signup, /onboarding).
+ * Illustrated centered card for the auth flow (/login, /onboarding).
  * A warm garden header (gradient sky, sun bloom, the campus building art, a
  * cream wave) curves into a cream card body that slots a form via `children`.
  * Pure presentation — copy comes in as props, so this stays a server component

@@ -44,10 +44,8 @@ describe("locale proxy", () => {
   it("does not refresh Supabase sessions on auth entry routes", async () => {
     for (const pathname of [
       "/ko/login",
-      "/ko/signup",
       "/ko/auth/callback",
       "/login",
-      "/signup",
       "/auth/callback",
     ]) {
       updateSupabaseSessionMock.mockClear();

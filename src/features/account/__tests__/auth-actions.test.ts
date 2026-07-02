@@ -9,12 +9,10 @@ const mocks = vi.hoisted(() => {
   });
   const signInWithPassword = vi.fn();
   const signOut = vi.fn();
-  const signUp = vi.fn();
   const createServerSupabaseClient = vi.fn(async () => ({
     auth: {
       signInWithPassword,
       signOut,
-      signUp,
     },
   }));
 
@@ -23,7 +21,6 @@ const mocks = vi.hoisted(() => {
     redirect,
     signInWithPassword,
     signOut,
-    signUp,
   };
 });
 
@@ -51,10 +48,8 @@ describe("auth actions", () => {
     mocks.redirect.mockClear();
     mocks.signInWithPassword.mockReset();
     mocks.signOut.mockReset();
-    mocks.signUp.mockReset();
     mocks.signInWithPassword.mockResolvedValue({ error: null });
     mocks.signOut.mockResolvedValue({ error: null });
-    mocks.signUp.mockResolvedValue({ error: null });
   });
 
   it("enters the representative demo account without revoking other sessions", async () => {

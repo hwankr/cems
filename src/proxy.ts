@@ -27,7 +27,7 @@ function isAuthEntryPath(pathname: string) {
   const parts = getPathPartsAfterOptionalLocale(pathname);
 
   if (parts.length === 1) {
-    return parts[0] === "login" || parts[0] === "signup";
+    return parts[0] === "login";
   }
 
   return parts.length === 2 && parts[0] === "auth" && parts[1] === "callback";
