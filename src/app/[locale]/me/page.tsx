@@ -7,7 +7,6 @@ import { AchievementHighlights } from "@/features/account/components/achievement
 import { ContributionGraph } from "@/features/account/components/contribution-graph";
 import { PointsHistory } from "@/features/account/components/points-history";
 import { EstateContribution } from "@/features/account/components/estate-contribution";
-import { ClaimRewardButton } from "@/features/account/components/claim-reward-button";
 import { DailyQuiz } from "@/features/quiz/components/daily-quiz";
 import { GoalList } from "@/features/missions/components/goal-list";
 import {
@@ -109,7 +108,6 @@ export default async function MePage({ params }: MePageProps) {
           <EstateContribution
             personalPoints={personalPoints}
             groupPoolPoints={groupPool.earnedPoints}
-            action={<ClaimRewardButton />}
           />
           <PointsHistory events={events} />
         </div>

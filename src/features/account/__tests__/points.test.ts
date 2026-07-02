@@ -1,11 +1,6 @@
 import { describe, expect, it } from "vitest";
-import {
-  calculateMemberPeriodReward,
-  countMissionCheckIns,
-  sumPersonalPoints,
-} from "../domain/points";
+import { countMissionCheckIns, sumPersonalPoints } from "../domain/points";
 import type { PointEvent } from "../domain/points";
-import type { EnergyComparison } from "@/features/campus-energy/domain/types";
 
 const event = (points: number): PointEvent => ({
   id: `e-${points}`,
@@ -23,29 +18,6 @@ describe("sumPersonalPoints", () => {
 
   it("adds every event's points", () => {
     expect(sumPersonalPoints([event(120), event(80)])).toBe(200);
-  });
-});
-
-describe("calculateMemberPeriodReward", () => {
-  it("returns 0 when there is no comparison", () => {
-    expect(calculateMemberPeriodReward(null)).toBe(0);
-  });
-
-  it("mirrors calculatePoints for a saving comparison", () => {
-    const comparison: EnergyComparison = {
-      subjectId: "yu-e21",
-      actualKwh: 1360,
-      forecastKwh: 1500,
-      periodLabel: "2026-W25",
-      deltaKwh: -140,
-      savingsKwh: 140,
-      overuseKwh: 0,
-      savingsRate: 140 / 1500,
-      status: "saving",
-    };
-
-    // calculatePoints = round(savingsKwh * 10) = 1400
-    expect(calculateMemberPeriodReward(comparison)).toBe(1400);
   });
 });
 

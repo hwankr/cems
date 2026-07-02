@@ -25,12 +25,6 @@ export const enMessages = {
         unknown: "Could not save. Please try again.",
       },
     },
-    reward: {
-      claim: "Claim this week's saving reward",
-      claimed: "Reward claimed!",
-      alreadyClaimed: "This week's reward is already claimed.",
-      pending: "Processing…",
-    },
     estatePool: {
       label: "Group estate points",
       memberCount: "{count} members",

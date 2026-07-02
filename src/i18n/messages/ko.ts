@@ -23,12 +23,6 @@ export const koMessages = {
         unknown: "저장에 실패했습니다. 다시 시도해 주세요.",
       },
     },
-    reward: {
-      claim: "이번 주 절감 보상 받기",
-      claimed: "보상을 받았습니다!",
-      alreadyClaimed: "이번 주 보상은 이미 받았습니다.",
-      pending: "처리 중…",
-    },
     estatePool: {
       label: "그룹 영지 포인트",
       memberCount: "{count}명 참여",
